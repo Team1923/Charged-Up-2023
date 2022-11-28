@@ -27,4 +27,9 @@ public final class Constants {
     /** Replaying from a log file. */
     REPLAY
   }
+
+  public static final double CAMERA_HEIGHT_METERS = 0;
+  public static final double TARGET_HEIGHT_METERS = 0;
+  public static final double CAMERA_PITCH_RADIANS = 0;
+
 }
