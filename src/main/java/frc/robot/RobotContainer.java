@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -27,7 +26,7 @@ public class RobotContainer {
 
 
   // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+  private final XboxController controller = new XboxController(0);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser = new LoggedDashboardChooser<>("Auto Choices");
