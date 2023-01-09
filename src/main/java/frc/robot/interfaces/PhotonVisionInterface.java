@@ -74,7 +74,7 @@ public class PhotonVisionInterface {
     }
 
     public List<TargetCorner> getTargetCorner(PhotonTrackedTarget target){
-        return target.getCorners();
+        return target.getDetectedCorners();
     }
 
     public double getSkew(PhotonTrackedTarget target){

@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import frc.robot.commands.ArmDefaultCommand;
+import frc.robot.subsystems.ArmSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -23,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
  */
 public class RobotContainer {
   // Subsystems
-
+  private ArmSubsystem armSubsystem = new ArmSubsystem();
 
   // Controller
   private final XboxController controller = new XboxController(0);
@@ -58,6 +60,8 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+
+    setDefaultCommands();
   }
 
   /**
@@ -68,6 +72,10 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
+  }
+
+  private void setDefaultCommands(){
+    armSubsystem.setDefaultCommand(new ArmDefaultCommand(armSubsystem));
   }
 
   /**
