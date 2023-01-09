@@ -25,7 +25,7 @@ public class ArmSubsystem extends SubsystemBase {
   private ProfiledPIDController elbowPIDController;
 
   private ArmFeedforward shoulderFeedForward;
-  private ArmFeedforward elbowFeedforward;
+  private ArmFeedforward elbowFeedForward;
 
   private double goalShoulderPosition;
   private double goalElbowPosition;
@@ -56,7 +56,7 @@ public class ArmSubsystem extends SubsystemBase {
     shoulderFeedForward = new ArmFeedforward(ArmConstants.shoulderkSVolts, ArmConstants.shoulderkGVolts, 
       ArmConstants.shoulderkVVoltSecondPerRad, ArmConstants.shoulderkAVoltSecondSquaredPerRad);
 
-    elbowFeedforward = new ArmFeedforward(ArmConstants.elbowkSVolts, ArmConstants.elbowkGVolts, 
+    elbowFeedForward = new ArmFeedforward(ArmConstants.elbowkSVolts, ArmConstants.elbowkGVolts, 
       ArmConstants.elbowkVVoltSecondPerRad, ArmConstants.elbowkAVoltSecondSquaredPerRad);
 
     setShoulderPosition(ArmConstants.kShoulderOffsetRads);
@@ -115,13 +115,13 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getAngleToCG(){
-    double shoulderCGX = Math.cos(getShoulderPosition()) * ArmConstants.shoulderCGDistance;
+    double shoulderCGX = Math.cos(getShoulderGoal()) * ArmConstants.shoulderCGDistance;
     double shoulderCGY = Math.sin(getShoulderGoal()) * ArmConstants.shoulderCGDistance;
-    double shoulderLengthX = Math.cos(getShoulderPosition()) * ArmConstants.lengthOfShoulder;
-    double shoulderLengthY = Math.sin(getShoulderPosition()) * ArmConstants.lengthOfShoulder;
+    double shoulderLengthX = Math.cos(getShoulderGoal()) * ArmConstants.lengthOfShoulder;
+    double shoulderLengthY = Math.sin(getShoulderGoal()) * ArmConstants.lengthOfShoulder;
 
-    double elbowCGX = Math.cos(getElbowPosition()) * ArmConstants.elbowCGDistance + shoulderLengthX;
-    double elbowCGY = Math.sin(getElbowPosition()) * ArmConstants.elbowCGDistance + shoulderLengthY;
+    double elbowCGX = Math.cos(getElbowGoal()) * ArmConstants.elbowCGDistance + shoulderLengthX;
+    double elbowCGY = Math.sin(getElbowGoal()) * ArmConstants.elbowCGDistance + shoulderLengthY;
 
     double averageXG = ((ArmConstants.elbowMass * elbowCGX) + ArmConstants.shoulderMass * shoulderCGX) / (ArmConstants.elbowMass + ArmConstants.shoulderMass);
     double averageYG = ((ArmConstants.elbowMass * elbowCGY) + ArmConstants.shoulderMass * shoulderCGY) / (ArmConstants.elbowMass + ArmConstants.shoulderMass);
@@ -134,7 +134,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double calculateElbowFeedforward(){
-    return shoulderFeedForward.calculate(getElbowPosition(), 0);
+    return elbowFeedForward.calculate(getElbowGoal(), 0);
   }
 
   public double getShoulderPIDOutput(){
