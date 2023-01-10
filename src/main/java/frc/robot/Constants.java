@@ -35,16 +35,6 @@ public final class Constants {
   public final class ArmConstants{
     public static final int shoulderMotorID = 0; //needs to be changed
     public static final int elbowMotorID = 0; //needs to be changed
-    public static final double shoulderkSVolts = 0;
-    public static final double shoulderkGVolts = 0;
-    public static final double shoulderkVVoltSecondPerRad = 0;
-    public static final double shoulderkAVoltSecondSquaredPerRad = 0;
-    public static final double shoulderInitialPosition = 0;
-
-    public static final double elbowkSVolts = 0;
-    public static final double elbowkGVolts = 0;
-    public static final double elbowkVVoltSecondPerRad = 0;
-    public static final double elbowkAVoltSecondSquaredPerRad = 0;
 
     public static final double shoulderkP = 0;
     public static final double shoulderkI = 0;
@@ -80,6 +70,17 @@ public final class Constants {
     public static final double elbowCGDistance = 1;
 
     public static final double lengthOfShoulder = 1;
+    public static final double lengthOfElbow = 1;
+
+    public static final double maxShoulderVel = 10000;
+    public static final double maxShoulderAccel = 5000;
+
+    public static final double maxElbowVel = 10000;
+    public static final double maxElbowAccel = 5000;
+
+    public static final double maxElbowGravityConstant = 1;
+    public static final double maxShoulderGravityConstant = 1;
+
   }
 
 

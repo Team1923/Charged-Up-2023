@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -21,12 +23,6 @@ public class ArmSubsystem extends SubsystemBase {
   private WPI_TalonFX shoulderMotor = new WPI_TalonFX(ArmConstants.shoulderMotorID);
   private WPI_TalonFX elbowMotor = new WPI_TalonFX(ArmConstants.elbowMotorID);
 
-  private ProfiledPIDController shoulderPIDController;
-  private ProfiledPIDController elbowPIDController;
-
-  private ArmFeedforward shoulderFeedForward;
-  private ArmFeedforward elbowFeedForward;
-
   private double goalShoulderPosition;
   private double goalElbowPosition;
   
@@ -37,44 +33,56 @@ public class ArmSubsystem extends SubsystemBase {
     shoulderMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, Constants.timeoutMs);
     elbowMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, Constants.timeoutMs);
 
-    // shoulderMotor.config_kP(0, ArmConstants.shoulderkP, Constants.timeoutMs);
-    // shoulderMotor.config_kI(0, ArmConstants.shoulderkI, Constants.timeoutMs);
-    // shoulderMotor.config_kD(0, ArmConstants.shoulderkD, Constants.timeoutMs);
+    shoulderMotor.config_kP(0, ArmConstants.shoulderkP, Constants.timeoutMs);
+    shoulderMotor.config_kI(0, ArmConstants.shoulderkI, Constants.timeoutMs);
+    shoulderMotor.config_kD(0, ArmConstants.shoulderkD, Constants.timeoutMs);
 
-    // elbowMotor.config_kP(0, ArmConstants.elbowkP, Constants.timeoutMs);
-    // elbowMotor.config_kI(0, ArmConstants.elbowkI, Constants.timeoutMs);
-    // elbowMotor.config_kD(0, ArmConstants.elbowkD, Constants.timeoutMs);
+    elbowMotor.config_kP(0, ArmConstants.elbowkP, Constants.timeoutMs);
+    elbowMotor.config_kI(0, ArmConstants.elbowkI, Constants.timeoutMs);
+    elbowMotor.config_kD(0, ArmConstants.elbowkD, Constants.timeoutMs);
 
-    //WPILib PID controller :(
-    shoulderPIDController = new ProfiledPIDController(ArmConstants.shoulderkP, ArmConstants.shoulderkI, ArmConstants.shoulderkD, 
-      new TrapezoidProfile.Constraints(ArmConstants.shoulderkMaxVelocityRadPerSecond, ArmConstants.shoulderkAVoltSecondSquaredPerRad));
 
-    elbowPIDController = new ProfiledPIDController(ArmConstants.elbowkP, ArmConstants.elbowkI, ArmConstants.elbowkD, 
-      new TrapezoidProfile.Constraints(ArmConstants.elbowkMaxVelocityRadPerSecond, ArmConstants.elbowkMaxAccelerationRadPerSecSquared));
-
-    //Arm feedforward stuff
-    shoulderFeedForward = new ArmFeedforward(ArmConstants.shoulderkSVolts, ArmConstants.shoulderkGVolts, 
-      ArmConstants.shoulderkVVoltSecondPerRad, ArmConstants.shoulderkAVoltSecondSquaredPerRad);
-
-    elbowFeedForward = new ArmFeedforward(ArmConstants.elbowkSVolts, ArmConstants.elbowkGVolts, 
-      ArmConstants.elbowkVVoltSecondPerRad, ArmConstants.elbowkAVoltSecondSquaredPerRad);
-
-    setShoulderPosition(ArmConstants.kShoulderOffsetRads);
-    setElbowPosition(ArmConstants.kElbowOffsetRads);
+    resetShoulderPosition(0);
+    resetElbowPosition(0);
 
     goalShoulderPosition = ArmConstants.kShoulderOffsetRads;
     goalElbowPosition = ArmConstants.kElbowOffsetRads;
+
+    shoulderMotor.configMotionCruiseVelocity(ArmConstants.maxShoulderVel);
+    shoulderMotor.configMotionAcceleration(ArmConstants.maxShoulderAccel);
+    elbowMotor.configMotionCruiseVelocity(ArmConstants.maxElbowVel);
+    elbowMotor.configMotionAcceleration(ArmConstants.maxElbowAccel);
 
     shoulderMotor.setNeutralMode(NeutralMode.Brake);
     elbowMotor.setNeutralMode(NeutralMode.Brake);
   }
 
-  public void setShoulderPosition(double setPoint){
+  public void resetShoulderPosition(double setPoint){
     shoulderMotor.setSelectedSensorPosition(setPoint * ArmConstants.shoulderRadsToTicks);
   }
 
-  public void setElbowPosition(double setPoint){
+  public void resetElbowPosition(double setPoint){
     elbowMotor.setSelectedSensorPosition(setPoint * ArmConstants.shoulderRadsToTicks);
+  }
+
+  public void setShoulderPosition(double setPoint){
+    shoulderMotor.set(ControlMode.MotionMagic, setPoint, DemandType.ArbitraryFeedForward, calculateShoulderFeedforward());
+  }
+
+  public void setElbowPosition(double setPoint){
+    elbowMotor.set(ControlMode.MotionMagic, setPoint - getShoulderPosition() * ArmConstants.shoulderRadsToTicks, DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
+  }
+
+  public void setShoulderPosition(){
+    shoulderMotor.set(ControlMode.MotionMagic, getShoulderGoal() * ArmConstants.shoulderRadsToTicks, DemandType.ArbitraryFeedForward, calculateShoulderFeedforward());
+  }
+
+  public void setElbowPosition(){
+    elbowMotor.set(ControlMode.MotionMagic, (getElbowGoal() * ArmConstants.elbowRadsToTicks) - (getShoulderPosition() * ArmConstants.elbowTicksToRad), DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
+  }
+
+  public void setArmCartesian(){
+
   }
 
   public double getShoulderPosition(){
@@ -84,6 +92,7 @@ public class ArmSubsystem extends SubsystemBase {
   public double getElbowPosition(){
     return (elbowMotor.getSelectedSensorPosition() * ArmConstants.elbowTicksToRad) + ArmConstants.kElbowOffsetRads;
   }
+
 
   public double getShoulderGoal(){
     return goalShoulderPosition;
@@ -115,13 +124,13 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getAngleToCG(){
-    double shoulderCGX = Math.cos(getShoulderGoal()) * ArmConstants.shoulderCGDistance;
-    double shoulderCGY = Math.sin(getShoulderGoal()) * ArmConstants.shoulderCGDistance;
-    double shoulderLengthX = Math.cos(getShoulderGoal()) * ArmConstants.lengthOfShoulder;
-    double shoulderLengthY = Math.sin(getShoulderGoal()) * ArmConstants.lengthOfShoulder;
+    double shoulderCGX = Math.cos(getShoulderPosition()) * ArmConstants.shoulderCGDistance;
+    double shoulderCGY = Math.sin(getShoulderPosition()) * ArmConstants.shoulderCGDistance;
+    double shoulderLengthX = Math.cos(getShoulderPosition()) * ArmConstants.lengthOfShoulder;
+    double shoulderLengthY = Math.sin(getShoulderPosition()) * ArmConstants.lengthOfShoulder;
 
-    double elbowCGX = Math.cos(getElbowGoal()) * ArmConstants.elbowCGDistance + shoulderLengthX;
-    double elbowCGY = Math.sin(getElbowGoal()) * ArmConstants.elbowCGDistance + shoulderLengthY;
+    double elbowCGX = Math.cos(getElbowPosition()) * ArmConstants.elbowCGDistance + shoulderLengthX;
+    double elbowCGY = Math.sin(getElbowPosition()) * ArmConstants.elbowCGDistance + shoulderLengthY;
 
     double averageXG = ((ArmConstants.elbowMass * elbowCGX) + ArmConstants.shoulderMass * shoulderCGX) / (ArmConstants.elbowMass + ArmConstants.shoulderMass);
     double averageYG = ((ArmConstants.elbowMass * elbowCGY) + ArmConstants.shoulderMass * shoulderCGY) / (ArmConstants.elbowMass + ArmConstants.shoulderMass);
@@ -130,20 +139,13 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double calculateShoulderFeedforward(){
-    return shoulderFeedForward.calculate(getAngleToCG(), 0);
+    return ArmConstants.maxShoulderGravityConstant * Math.cos(getAngleToCG());
   }
 
   public double calculateElbowFeedforward(){
-    return elbowFeedForward.calculate(getElbowGoal(), 0);
+    return ArmConstants.maxElbowGravityConstant * Math.cos(getElbowPosition());
   }
 
-  public double getShoulderPIDOutput(){
-    return shoulderPIDController.calculate(getShoulderPosition(), goalShoulderPosition);
-  }
-
-  public double getElbowPIDOutput(){
-    return elbowPIDController.calculate(getElbowPosition(), goalElbowPosition);
-  }
 
 
   @Override

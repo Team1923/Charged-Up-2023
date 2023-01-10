@@ -30,11 +30,8 @@ public class ArmDefaultCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shoulderGoal = armSubsystem.getShoulderGoal();
-    elbowGoal = armSubsystem.getElbowGoal();
-
-    armSubsystem.setShoulderVoltage(armSubsystem.getShoulderPIDOutput() + armSubsystem.calculateShoulderFeedforward());
-    armSubsystem.setElbowVoltage(armSubsystem.getElbowPIDOutput() + armSubsystem.calculateElbowFeedforward());
+    armSubsystem.setShoulderPosition();
+    armSubsystem.setElbowPosition();
   }
 
   // Called once the command ends or is interrupted.
