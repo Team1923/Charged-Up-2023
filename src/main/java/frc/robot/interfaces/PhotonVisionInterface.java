@@ -3,7 +3,6 @@ package frc.robot.interfaces;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.opencv.photo.Photo;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;

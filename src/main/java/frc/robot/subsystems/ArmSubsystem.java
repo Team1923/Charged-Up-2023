@@ -7,14 +7,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
-import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -42,7 +36,6 @@ public class ArmSubsystem extends SubsystemBase {
     elbowMotor.config_kP(0, ArmConstants.elbowkP, Constants.timeoutMs);
     elbowMotor.config_kI(0, ArmConstants.elbowkI, Constants.timeoutMs);
     elbowMotor.config_kD(0, ArmConstants.elbowkD, Constants.timeoutMs);
-
 
     resetShoulderPosition(Math.PI/2);
     resetElbowPosition(-Math.PI/2);
@@ -101,6 +94,18 @@ public class ArmSubsystem extends SubsystemBase {
 
     setShoulderGoal(shoulderGoal);
     setElbowGoal(elbowGoal);
+  }
+
+  public double[] calculateArmCartesian(double x, double y){
+    double elbowGoal = (Math.acos(((x*x) + (y*y) - (Math.pow(ArmConstants.lengthOfShoulder, 2)) - (Math.pow(ArmConstants.lengthOfElbow, 2))) 
+    / (2 * ArmConstants.lengthOfShoulder * ArmConstants.lengthOfElbow)));
+
+    double shoulderGoal = (Math.atan(y/x) - 
+      Math.atan((ArmConstants.lengthOfElbow * Math.sin(elbowGoal)) / (ArmConstants.lengthOfShoulder + ArmConstants.lengthOfElbow * Math.cos(elbowGoal))));
+
+    double[] conv = {shoulderGoal, elbowGoal};
+
+    return conv;
   }
 
   public double getShoulderPosition(){
@@ -164,6 +169,14 @@ public class ArmSubsystem extends SubsystemBase {
     return ArmConstants.maxElbowGravityConstant * Math.cos(getElbowPosition());
   }
 
+  public double[] anglesToCartesian(double shoulderTheta, double elbowTheta) {
+
+    double x = ArmConstants.lengthOfShoulder*Math.cos(shoulderTheta) + ArmConstants.lengthOfElbow*Math.cos(shoulderTheta+elbowTheta);
+    double y = ArmConstants.lengthOfShoulder*Math.sin(shoulderTheta) + ArmConstants.lengthOfElbow*Math.sin(shoulderTheta+elbowTheta);
+
+    double[] conv = {x,y};
+    return conv;
+  }
 
 
   @Override
@@ -179,6 +192,15 @@ public class ArmSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Elbow Output", elbowMotor.getMotorOutputPercent());
 
+    double[] angles = calculateArmCartesian(1, 1);
+
+    SmartDashboard.putNumber("Polar Shoulder: ", Math.toDegrees(angles[0]));
+    SmartDashboard.putNumber("Polar Elbow: ", Math.toDegrees(angles[1]));
+
+    double[] cartesian = anglesToCartesian(angles[0],angles[1]);
+
+    SmartDashboard.putNumber("Cartesian Shoulder: ", cartesian[0]);
+    SmartDashboard.putNumber("Cartesian Elbow: ", cartesian[1]);
 
   }
 }

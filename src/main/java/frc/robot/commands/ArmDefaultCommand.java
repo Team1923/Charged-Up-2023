@@ -10,12 +10,8 @@ import frc.robot.subsystems.ArmSubsystem;
 public class ArmDefaultCommand extends CommandBase {
   /** Creates a new ArmDefaultCommand. */
   private ArmSubsystem armSubsystem;
-  private double shoulderGoal;
-  private double elbowGoal;
   public ArmDefaultCommand(ArmSubsystem aSubsystem) {
     armSubsystem = aSubsystem;
-    shoulderGoal = 0;
-    elbowGoal = 0;
     addRequirements(armSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -23,8 +19,6 @@ public class ArmDefaultCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shoulderGoal = armSubsystem.getShoulderGoal();
-    elbowGoal = armSubsystem.getElbowGoal();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
