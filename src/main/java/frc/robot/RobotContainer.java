@@ -69,7 +69,6 @@ public class RobotContainer {
 
     setDefaultCommands();
 
-
     aButton.whileHeld(new ShoulderToPosition(armSubsystem, -Math.PI/2));
     bButton.whileHeld(new ArmToPositionCartesian(armSubsystem, 1.5, 0.91));
     xButton.onTrue(new InstantCommand(() -> {armSubsystem.resetElbowEncoders();}));
