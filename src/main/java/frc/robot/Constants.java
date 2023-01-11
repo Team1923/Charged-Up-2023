@@ -33,53 +33,50 @@ public final class Constants {
   public static final double CAMERA_PITCH_RADIANS = 0;
 
   public final class ArmConstants{
-    public static final int shoulderMotorID = 0; //needs to be changed
-    public static final int elbowMotorID = 0; //needs to be changed
+    public static final int shoulderMotorID = 18; //needs to be changed
+    public static final int elbowMotorID = 17; //needs to be changed
 
-    public static final double shoulderkP = 0;
+    public static final double shoulderkP = 0.1;
     public static final double shoulderkI = 0;
     public static final double shoulderkD = 0;
 
-    public static final double elbowkP = 0;
+    public static final double elbowkP = 0.1;
     public static final double elbowkI = 0;
     public static final double elbowkD = 0;
 
-    public static final double shoulderkMaxVelocityRadPerSecond = 0;
-    public static final double shoulderkMaxAccelerationRadPerSecSquared = 0;
-
-    public static final double elbowkMaxVelocityRadPerSecond = 0;
-    public static final double elbowkMaxAccelerationRadPerSecSquared = 0;
-
 
     //CCW positive
-    public static final double kShoulderOffsetRads = Math.PI/2;
-    public static final double kElbowOffsetRads = -Math.PI/2;
+    public static final double kShoulderOffsetRads = 0;
+    public static final double kElbowOffsetRads = 0;
 
-    public static final double shoulderGearRatio = 2;
+    public static final double shoulderGearRatio = 100 * 16 / 16;
     public static final double shoulderTicksToRad = (2 * Math.PI) / (ticksPerRev * shoulderGearRatio);
     public static final double shoulderRadsToTicks = 1 / shoulderTicksToRad;
 
-    public static final double elbowGearRatio = 2;
+    public static final double elbowGearRatio = 100 * 16 / 16;
     public static final double elbowTicksToRad = (2 * Math.PI) / (ticksPerRev * elbowGearRatio);
     public static final double elbowRadsToTicks = 1 / shoulderTicksToRad;
 
-    public static final double shoulderMass = 1;
-    public static final double elbowMass = 1;
+    public static final double shoulderMass = 2;
+    public static final double elbowMass = 0.454;
 
-    public static final double shoulderCGDistance = 1;
-    public static final double elbowCGDistance = 1;
+    public static final double shoulderCGDistance = 0.279;
+    public static final double elbowCGDistance = 0.305;
 
-    public static final double lengthOfShoulder = 1;
-    public static final double lengthOfElbow = 1;
+    public static final double lengthOfShoulder = 0.889;
+    public static final double lengthOfElbow = 0.61;
 
-    public static final double maxShoulderVel = 10000;
-    public static final double maxShoulderAccel = 5000;
+    public static final double maxShoulderVel = 2*35000;
+    public static final double maxShoulderAccel = 2*20000;
 
-    public static final double maxElbowVel = 10000;
-    public static final double maxElbowAccel = 5000;
+    public static final double maxElbowVel = 4*35000;
+    public static final double maxElbowAccel = 4*20000;
 
-    public static final double maxElbowGravityConstant = 1;
+    public static final double maxElbowGravityConstant = 0;
     public static final double maxShoulderGravityConstant = 1;
+
+    public static final double elbowHome = -Math.PI/2;
+    public static final double shoulderHome = Math.PI/2;
 
   }
 

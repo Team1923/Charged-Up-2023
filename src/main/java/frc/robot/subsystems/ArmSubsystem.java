@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -14,6 +15,7 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
@@ -42,19 +44,20 @@ public class ArmSubsystem extends SubsystemBase {
     elbowMotor.config_kD(0, ArmConstants.elbowkD, Constants.timeoutMs);
 
 
-    resetShoulderPosition(0);
-    resetElbowPosition(0);
+    resetShoulderPosition(Math.PI/2);
+    resetElbowPosition(-Math.PI/2);
 
-    goalShoulderPosition = ArmConstants.kShoulderOffsetRads;
-    goalElbowPosition = ArmConstants.kElbowOffsetRads;
+    goalShoulderPosition = ArmConstants.shoulderHome;
+    goalElbowPosition = ArmConstants.elbowHome;
 
     shoulderMotor.configMotionCruiseVelocity(ArmConstants.maxShoulderVel);
     shoulderMotor.configMotionAcceleration(ArmConstants.maxShoulderAccel);
     elbowMotor.configMotionCruiseVelocity(ArmConstants.maxElbowVel);
     elbowMotor.configMotionAcceleration(ArmConstants.maxElbowAccel);
 
-    shoulderMotor.setNeutralMode(NeutralMode.Brake);
-    elbowMotor.setNeutralMode(NeutralMode.Brake);
+    shoulderMotor.setNeutralMode(NeutralMode.Coast);
+    elbowMotor.setNeutralMode(NeutralMode.Coast);
+
   }
 
   public void resetShoulderPosition(double setPoint){
@@ -62,7 +65,15 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void resetElbowPosition(double setPoint){
-    elbowMotor.setSelectedSensorPosition(setPoint * ArmConstants.shoulderRadsToTicks);
+    elbowMotor.setSelectedSensorPosition(-setPoint * ArmConstants.shoulderRadsToTicks);
+  }
+
+  public void resetShoulderEncoders(){
+    shoulderMotor.setSelectedSensorPosition(0);
+  }
+
+  public void resetElbowEncoders(){
+    elbowMotor.setSelectedSensorPosition(0);
   }
 
   public void setShoulderPosition(double setPoint){
@@ -70,7 +81,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void setElbowPosition(double setPoint){
-    elbowMotor.set(ControlMode.MotionMagic, setPoint, DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
+    elbowMotor.set(ControlMode.MotionMagic, -setPoint, DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
   }
 
   public void setShoulderPosition(){
@@ -78,7 +89,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void setElbowPosition(){
-    elbowMotor.set(ControlMode.MotionMagic, (getElbowGoal() * ArmConstants.elbowRadsToTicks), DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
+    elbowMotor.set(ControlMode.MotionMagic, (-getElbowGoal() * ArmConstants.elbowRadsToTicks), DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
   }
 
   public void setArmCartesian(double x, double y){
@@ -97,7 +108,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getElbowPosition(){
-    return (elbowMotor.getSelectedSensorPosition() * ArmConstants.elbowTicksToRad) + ArmConstants.kElbowOffsetRads;
+    return (-elbowMotor.getSelectedSensorPosition() * ArmConstants.elbowTicksToRad) + ArmConstants.kElbowOffsetRads;
   }
 
 
@@ -158,6 +169,16 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Elbow Position:", Math.toDegrees(getElbowPosition()));
+    SmartDashboard.putNumber("Shoulder Position:", Math.toDegrees(getShoulderPosition()));
+
+    SmartDashboard.putNumber("CG Angle:", Math.toDegrees(getAngleToCG()));
+    
+    SmartDashboard.putNumber("Elbow Goal:", getElbowGoal());
+    SmartDashboard.putNumber("Shoulder Goal:", getShoulderGoal());
+
+    SmartDashboard.putNumber("Elbow Output", elbowMotor.getMotorOutputPercent());
+
 
   }
 }

@@ -13,7 +13,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmDefaultCommand;
+import frc.robot.commands.ArmToPosition;
+import frc.robot.commands.ArmToPositionCartesian;
+import frc.robot.commands.ElbowToPosition;
+import frc.robot.commands.ShoulderToPosition;
 import frc.robot.subsystems.ArmSubsystem;
 
 /**
@@ -29,6 +34,11 @@ public class RobotContainer {
 
   // Controller
   private final XboxController controller = new XboxController(0);
+  private final JoystickButton aButton = new JoystickButton(controller, 1);
+  private final JoystickButton bButton = new JoystickButton(controller, 2);
+  private final JoystickButton xButton = new JoystickButton(controller, 3);
+  private final JoystickButton yButton = new JoystickButton(controller, 4);
+  
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser = new LoggedDashboardChooser<>("Auto Choices");
@@ -62,6 +72,15 @@ public class RobotContainer {
     configureButtonBindings();
 
     setDefaultCommands();
+
+
+    aButton.whileHeld(new ShoulderToPosition(armSubsystem, -Math.PI/2));
+    bButton.whileHeld(new ArmToPositionCartesian(armSubsystem, 1.5, 0.91));
+    xButton.onTrue(new InstantCommand(() -> {armSubsystem.resetElbowEncoders();}));
+    yButton.onTrue(new InstantCommand(() -> {armSubsystem.resetShoulderEncoders();}));
+
+    
+    
   }
 
   /**
