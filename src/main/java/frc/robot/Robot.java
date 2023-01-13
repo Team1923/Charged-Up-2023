@@ -122,7 +122,8 @@ if (true) {//isReal()) {
     SmartDashboard.putNumber("Verticle Offset", limelight.getVerticalOffset());
     SmartDashboard.putNumber("Area", limelight.getArea());
     SmartDashboard.putNumber("Skew", limelight.getSkew());
-
+    SmartDashboard.putNumberArray("Camera Transformation", limelight.getCamtransformation());
+    SmartDashboard.putNumber("Tag ID", limelight.getID());
     if(limelight.getBotPose().length != 0) {
       SmartDashboard.putString("Bot Pose", limelight.getBotPose()[0] + " " + limelight.getBotPose()[1] + " " + limelight.getBotPose()[2] + " " + limelight.getBotPose()[3] + " " + limelight.getBotPose()[4] + " " + limelight.getBotPose()[5]);
     }

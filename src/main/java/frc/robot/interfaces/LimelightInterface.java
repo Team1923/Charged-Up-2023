@@ -132,13 +132,23 @@ public class LimelightInterface extends SubsystemBase {
     return getEntry("getpipe");
   }
 
-  public double[] getBotPose(){
+  public double getID(){ // returns id of primary april tag
+    return getEntry("tid");
+  }
+
+  public double getClassID(){ // returns class id of primary neural detector result
+    return getEntry("tclass");
+  }
+
+  public double[] getCamtransformation(){ // returns translational and rotaional transformation of camera
+    return getEntryArray("camtran");
+  }
+
+  public double[] getBotPose(){ // does not work as of yet, returns pose as an array
     return getEntryArray("botpose");
   }
 
-  /* public int getBotPose(){
-    return getEntry("botpose");
-  } */
+
 
   public void setLEDMode(ledMode mode) {
     setEntry("ledMode", mode.state);
