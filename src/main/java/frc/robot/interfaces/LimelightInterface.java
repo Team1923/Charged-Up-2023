@@ -6,6 +6,7 @@ package frc.robot.interfaces;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
@@ -14,6 +15,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  */
 public class LimelightInterface extends SubsystemBase {
 
+  private static LimelightInterface limelight;
+
+  private static double[] arr = { 999,999,999,999,999,999};
+
+  public static synchronized LimelightInterface getInstance() {
+    if (limelight == null) {
+      limelight = new LimelightInterface();
+    }
+    return limelight;
+  }
 
   /*
    * TO-DO: add limelight constants
@@ -121,6 +132,14 @@ public class LimelightInterface extends SubsystemBase {
     return getEntry("getpipe");
   }
 
+  public double[] getBotPose(){
+    return getEntryArray("botpose");
+  }
+
+  /* public int getBotPose(){
+    return getEntry("botpose");
+  } */
+
   public void setLEDMode(ledMode mode) {
     setEntry("ledMode", mode.state);
   }
@@ -164,6 +183,14 @@ public class LimelightInterface extends SubsystemBase {
   private static double getEntry(String key) {
     return table.getEntry(key).getDouble(0);
   }
+
+  private static double[] getEntryArray(String key) {
+    return table.getEntry(key).getDoubleArray(arr);
+  }
+
+  
+
+  
 
   public double distanceToTarget() {
     // Returns distance to target assuming 

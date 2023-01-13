@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmDefaultCommand;
 import frc.robot.commands.ArmToPositionCartesian;
+import frc.robot.commands.ChangePipelineCommand;
 import frc.robot.commands.ShoulderToPosition;
+import frc.robot.interfaces.LimelightInterface;
 import frc.robot.subsystems.ArmSubsystem;
 
 /**
@@ -67,12 +69,16 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    setDefaultCommands();
+    //setDefaultCommands();
 
-    aButton.whileHeld(new ShoulderToPosition(armSubsystem, -Math.PI/2));
-    bButton.whileHeld(new ArmToPositionCartesian(armSubsystem, 1.5, 0.91));
-    xButton.onTrue(new InstantCommand(() -> {armSubsystem.resetElbowEncoders();}));
-    yButton.onTrue(new InstantCommand(() -> {armSubsystem.resetShoulderEncoders();}));
+    //aButton.whileHeld(new ShoulderToPosition(armSubsystem, -Math.PI/2));
+    //bButton.whileHeld(new ArmToPositionCartesian(armSubsystem, 1.5, 0.91));
+    //xButton.onTrue(new InstantCommand(() -> armSubsystem.resetElbowEncoders()));
+    //yButton.onTrue(new InstantCommand(() -> LimelightInterface.getInstance().setPipeline(1)));
+    yButton.whileTrue(new ChangePipelineCommand(1));
+  
+
+    
 
     
     

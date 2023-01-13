@@ -13,8 +13,10 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.interfaces.LimelightInterface;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,6 +35,7 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
+
 
     Logger.getInstance().recordMetadata("ProjectName", "MyProject"); // Set a metadata value
 
@@ -110,6 +113,23 @@ if (true) {//isReal()) {
     // This must be called from the robot's periodic block in order for anything in
     // the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    LimelightInterface limelight = LimelightInterface.getInstance();
+
+  
+
+    SmartDashboard.putNumber("Horizontal Offset", limelight.getHorizontalOffset());
+    SmartDashboard.putNumber("Verticle Offset", limelight.getVerticalOffset());
+    SmartDashboard.putNumber("Area", limelight.getArea());
+    SmartDashboard.putNumber("Skew", limelight.getSkew());
+
+    if(limelight.getBotPose().length != 0) {
+      SmartDashboard.putString("Bot Pose", limelight.getBotPose()[0] + " " + limelight.getBotPose()[1] + " " + limelight.getBotPose()[2] + " " + limelight.getBotPose()[3] + " " + limelight.getBotPose()[4] + " " + limelight.getBotPose()[5]);
+    }
+    
+
+
+    
   }
 
   /** This function is called once when the robot is disabled. */
