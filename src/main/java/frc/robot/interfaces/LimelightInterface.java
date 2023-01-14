@@ -214,7 +214,7 @@ public class LimelightInterface extends SubsystemBase {
 
   public Pose3d getRobotPose(){
     double[] result  = getBotPose();
-    Translation3d tran3d = new Translation3d(result[0], result [1], result[3]);
+    Translation3d tran3d = new Translation3d(result[0], result [1], result[2]);
     Rotation3d r3d = new Rotation3d(result[3], result[4], result[5]);
     Pose3d p3d = new Pose3d(tran3d, r3d);
 
