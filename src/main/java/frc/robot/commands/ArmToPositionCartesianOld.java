@@ -9,21 +9,23 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class ShoulderToPosition extends CommandBase {
+public class ArmToPositionCartesianOld extends CommandBase {
   /** Creates a new ElbowToPosition. */
   private ArmSubsystem armSubsystem;
-  private double position;
+  private double xPos;
+  private double yPos;
   
-  public ShoulderToPosition(ArmSubsystem a, double position) {
+  public ArmToPositionCartesianOld(ArmSubsystem a, double x, double y) {
     armSubsystem = a;
-    this.position = position;
+    xPos = x;
+    yPos = y;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    armSubsystem.setShoulderGoal(position);
+    armSubsystem.setArmCartesianOld(xPos, yPos);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,6 +36,7 @@ public class ShoulderToPosition extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     SmartDashboard.putBoolean("End Command", true);
+    armSubsystem.setElbowGoal(ArmConstants.elbowHome);
     armSubsystem.setShoulderGoal(ArmConstants.shoulderHome);
   }
 

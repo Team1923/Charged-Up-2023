@@ -66,14 +66,14 @@ public final class Constants {
     public static final double lengthOfShoulder = 0.889;
     public static final double lengthOfElbow = 0.61;
 
-    public static final double maxShoulderVel = 2*35000;
-    public static final double maxShoulderAccel = 2*20000;
+    public static final double maxShoulderVel = 35000;
+    public static final double maxShoulderAccel = 20000;
 
-    public static final double maxElbowVel = 4*35000;
+    public static final double maxElbowVel = 2*35000;
     public static final double maxElbowAccel = 4*20000;
 
     public static final double maxElbowGravityConstant = 0;
-    public static final double maxShoulderGravityConstant = 1;
+    public static final double maxShoulderGravityConstant = 0.06;
 
     public static final double elbowHome = -Math.PI/2;
     public static final double shoulderHome = Math.PI/2;

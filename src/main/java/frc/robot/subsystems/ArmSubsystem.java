@@ -69,20 +69,20 @@ public class ArmSubsystem extends SubsystemBase {
     elbowMotor.setSelectedSensorPosition(0);
   }
 
-  public void setShoulderPosition(double setPoint){
-    shoulderMotor.set(ControlMode.MotionMagic, setPoint, DemandType.ArbitraryFeedForward, calculateShoulderFeedforward());
-  }
+  // public void setShoulderPosition(double setPoint){
+  //   shoulderMotor.set(ControlMode.MotionMagic, setPoint, DemandType.ArbitraryFeedForward, calculateShoulderFeedforward());
+  // }
 
-  public void setElbowPosition(double setPoint){
-    elbowMotor.set(ControlMode.MotionMagic, -setPoint, DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
-  }
+  // public void setElbowPosition(double setPoint){
+  //   elbowMotor.set(ControlMode.MotionMagic, -setPoint, DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
+  // }
 
   public void setShoulderPosition(){
     shoulderMotor.set(ControlMode.MotionMagic, getShoulderGoal() * ArmConstants.shoulderRadsToTicks, DemandType.ArbitraryFeedForward, calculateShoulderFeedforward());
   }
 
   public void setElbowPosition(){
-    elbowMotor.set(ControlMode.MotionMagic, (-getElbowGoal() * ArmConstants.elbowRadsToTicks), DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
+    elbowMotor.set(ControlMode.MotionMagic, ((-getElbowGoal()-((Math.PI/2)-getShoulderGoal())) * ArmConstants.elbowRadsToTicks), DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
   }
 
   public void setArmCartesian(double x, double y){
@@ -92,8 +92,24 @@ public class ArmSubsystem extends SubsystemBase {
     double shoulderGoal = (Math.atan(y/x) - 
       Math.atan((ArmConstants.lengthOfElbow * Math.sin(elbowGoal)) / (ArmConstants.lengthOfShoulder + ArmConstants.lengthOfElbow * Math.cos(elbowGoal))));
 
+    shoulderGoal = (Math.PI/2 - shoulderGoal);
     setShoulderGoal(shoulderGoal);
-    setElbowGoal(elbowGoal);
+
+    double newElbowGoal = Math.atan((y - ArmConstants.lengthOfShoulder*Math.sin(shoulderGoal)) / 
+      (x - ArmConstants.lengthOfShoulder*Math.cos(shoulderGoal)));
+    System.out.println("Shoulder Goal: " + shoulderGoal);
+    setElbowGoal(newElbowGoal);
+  }
+
+  public void setArmCartesianOld(double x, double y){
+    double elbowGoal = (Math.acos(((x*x) + (y*y) - (Math.pow(ArmConstants.lengthOfShoulder, 2)) - (Math.pow(ArmConstants.lengthOfElbow, 2))) 
+    / (2 * ArmConstants.lengthOfShoulder * ArmConstants.lengthOfElbow)));
+
+    double shoulderGoal = (Math.atan(y/x) - 
+      Math.atan((ArmConstants.lengthOfElbow * Math.sin(elbowGoal)) / (ArmConstants.lengthOfShoulder + ArmConstants.lengthOfElbow * Math.cos(elbowGoal))));
+
+    setShoulderGoal(shoulderGoal);
+    setElbowGoal(elbowGoal +shoulderGoal);
   }
 
   public double[] calculateArmCartesian(double x, double y){
