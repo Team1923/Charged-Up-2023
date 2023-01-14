@@ -4,6 +4,9 @@
 
 package frc.robot.interfaces;
 
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,7 +20,7 @@ public class LimelightInterface extends SubsystemBase {
 
   private static LimelightInterface limelight;
 
-  private static double[] arr = { 999,999,999,999,999,999};
+  private static double[] arr = {999,999,999};
 
   public static synchronized LimelightInterface getInstance() {
     if (limelight == null) {
@@ -30,11 +33,11 @@ public class LimelightInterface extends SubsystemBase {
    * TO-DO: add limelight constants
    */
   // height in inches of camera from ground
-  private double limelight_height = 0;
+  private double limelight_height = 21.5;
   // height in inches of center of target from ground
-  private double target_height = 0;
+  private double target_height = 29;
   // limelight mounting angle above positive x axis in degrees
-  private double limelight_mount_angle = 0;
+  private double limelight_mount_angle = -4;
 
   private static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   
@@ -204,7 +207,18 @@ public class LimelightInterface extends SubsystemBase {
 
   public double distanceToTarget() {
     // Returns distance to target assuming 
-    return (target_height - limelight_height) / (Math.tan(Math.toRadians(limelight_mount_angle + getVerticalOffset())));
+    return (target_height - limelight_height) /(Math.tan(Math.toRadians(limelight_mount_angle + (getVerticalOffset()))));
+
+
+  }
+
+  public Pose3d getRobotPose(){
+    double[] result  = getBotPose();
+    Translation3d tran3d = new Translation3d(result[0], result [1], result[3]);
+    Rotation3d r3d = new Rotation3d(result[3], result[4], result[5]);
+    Pose3d p3d = new Pose3d(tran3d, r3d);
+
+    return p3d;
   }
 
 }
