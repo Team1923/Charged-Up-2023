@@ -25,7 +25,19 @@ public class ArmToPositionCartesian extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    armSubsystem.setArmCartesian(xPos, yPos);
+    double[] intersection = calculateCircleIntersection(0, 0, ArmConstants.lengthOfShoulder, xPos, yPos, ArmConstants.lengthOfElbow);
+    double shoulderAngle = ArmConstants.shoulderHome; //setting these as default
+    double elbowAngle = ArmConstants.elbowHome; //setting these as default
+    if(intersection[0] < 0){
+      shoulderAngle = Math.PI - Math.asin(intersection[1] / ArmConstants.lengthOfShoulder);
+      elbowAngle = Math.PI - Math.asin((yPos-intersection[1]) / ArmConstants.lengthOfElbow);
+    }
+    else{
+      shoulderAngle = Math.asin(intersection[1] / ArmConstants.lengthOfShoulder);
+      elbowAngle = Math.asin((yPos-intersection[1]) / ArmConstants.lengthOfElbow);
+    }
+    armSubsystem.setShoulderGoal(shoulderAngle);
+    armSubsystem.setElbowGoal(elbowAngle); //relative to horizontal, so don't need to add shoulder angle??
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -87,4 +99,6 @@ public class ArmToPositionCartesian extends CommandBase {
 
     return solutions;
   }
+
+
 }

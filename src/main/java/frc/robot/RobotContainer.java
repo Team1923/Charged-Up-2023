@@ -21,6 +21,7 @@ import frc.robot.commands.ElbowToPosition;
 import frc.robot.commands.ShoulderToPosition;
 import frc.robot.interfaces.LimelightInterface;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -32,6 +33,7 @@ import frc.robot.subsystems.ArmSubsystem;
 public class RobotContainer {
   // Subsystems
   private ArmSubsystem armSubsystem = new ArmSubsystem();
+  private SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
 
   // Controller
   private final XboxController controller = new XboxController(0);
@@ -43,7 +45,6 @@ public class RobotContainer {
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser = new LoggedDashboardChooser<>("Auto Choices");
-  private final LoggedDashboardNumber flywheelSpeedInput = new LoggedDashboardNumber("Flywheel Speed", 1500.0);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.

@@ -11,6 +11,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.LimeLightConstants;
 
 /**
  * This class allows for interaction with the Limelight
@@ -33,11 +34,11 @@ public class LimelightInterface extends SubsystemBase {
    * TO-DO: add limelight constants
    */
   // height in inches of camera from ground
-  private double limelight_height = 21.5;
+  private double limelight_height = LimeLightConstants.CAMERA_HEIGHT_METERS;
   // height in inches of center of target from ground
-  private double target_height = 29;
+  private double target_height = LimeLightConstants.TARGET_HEIGHT_METERS;
   // limelight mounting angle above positive x axis in degrees
-  private double limelight_mount_angle = -4;
+  private double limelight_mount_angle = LimeLightConstants.CAMERA_PITCH_RADIANS;
 
   private static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   
