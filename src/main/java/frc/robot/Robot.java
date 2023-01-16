@@ -51,7 +51,7 @@ public class Robot extends LoggedRobot {
 
 
 
-  public double  RotatetoTag(){
+  public double RotatetoTag(){
     double error = limelight.getHorizontalOffset();
    if(Math.abs(error) > 2){
      return  - limelight.getHorizontalOffset()*txtune;

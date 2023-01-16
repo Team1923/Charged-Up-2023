@@ -85,21 +85,21 @@ public class ArmSubsystem extends SubsystemBase {
     elbowMotor.set(ControlMode.MotionMagic, ((-getElbowGoal()-((Math.PI/2)-getShoulderGoal())) * ArmConstants.elbowRadsToTicks), DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
   }
 
-  public void setArmCartesian(double x, double y){
-    double elbowGoal = (Math.acos(((x*x) + (y*y) - (Math.pow(ArmConstants.lengthOfShoulder, 2)) - (Math.pow(ArmConstants.lengthOfElbow, 2))) 
-    / (2 * ArmConstants.lengthOfShoulder * ArmConstants.lengthOfElbow)));
+  // public void setArmCartesian(double x, double y){
+  //   double elbowGoal = (Math.acos(((x*x) + (y*y) - (Math.pow(ArmConstants.lengthOfShoulder, 2)) - (Math.pow(ArmConstants.lengthOfElbow, 2))) 
+  //   / (2 * ArmConstants.lengthOfShoulder * ArmConstants.lengthOfElbow)));
 
-    double shoulderGoal = (Math.atan(y/x) - 
-      Math.atan((ArmConstants.lengthOfElbow * Math.sin(elbowGoal)) / (ArmConstants.lengthOfShoulder + ArmConstants.lengthOfElbow * Math.cos(elbowGoal))));
+  //   double shoulderGoal = (Math.atan(y/x) - 
+  //     Math.atan((ArmConstants.lengthOfElbow * Math.sin(elbowGoal)) / (ArmConstants.lengthOfShoulder + ArmConstants.lengthOfElbow * Math.cos(elbowGoal))));
 
-    shoulderGoal = (Math.PI/2 - shoulderGoal);
-    setShoulderGoal(shoulderGoal);
+  //   shoulderGoal = (Math.PI/2 - shoulderGoal);
+  //   setShoulderGoal(shoulderGoal);
 
-    double newElbowGoal = Math.atan((y - ArmConstants.lengthOfShoulder*Math.sin(shoulderGoal)) / 
-      (x - ArmConstants.lengthOfShoulder*Math.cos(shoulderGoal)));
-    System.out.println("Shoulder Goal: " + shoulderGoal);
-    setElbowGoal(newElbowGoal);
-  }
+  //   double newElbowGoal = Math.atan((y - ArmConstants.lengthOfShoulder*Math.sin(shoulderGoal)) / 
+  //     (x - ArmConstants.lengthOfShoulder*Math.cos(shoulderGoal)));
+  //   System.out.println("Shoulder Goal: " + shoulderGoal);
+  //   setElbowGoal(newElbowGoal);
+  // }
 
   public void setArmCartesianOld(double x, double y){
     double elbowGoal = (Math.acos(((x*x) + (y*y) - (Math.pow(ArmConstants.lengthOfShoulder, 2)) - (Math.pow(ArmConstants.lengthOfElbow, 2))) 
@@ -122,6 +122,64 @@ public class ArmSubsystem extends SubsystemBase {
     double[] conv = {shoulderGoal, elbowGoal};
 
     return conv;
+  }
+
+  public double[] calculateCircleIntersection(double x1, double y1, double r1, double x2, double y2, double r2){
+    double[] solutions = new double[2];
+    double centerdx = x1 - x2;
+    double centerdy = y1 - y2;
+    double R = Math.sqrt(centerdx * centerdx + centerdy * centerdy);
+    if (!(Math.abs(r1 - r2) <= R && R <= r1 + r2)) { // no intersection
+      setShoulderGoal(ArmConstants.shoulderHome);
+      setElbowGoal(ArmConstants.elbowHome);
+      return null;
+    }
+    // intersection(s) should exist
+
+    double R2 = R*R;
+    double R4 = R2*R2;
+    double a = (r1*r1 - r2*r2) / (2 * R2);
+    double r2r2 = (r1*r1 - r2*r2);
+    double c = Math.sqrt(2 * (r1*r1 + r2*r2) / R2 - (r2r2 * r2r2) / R4 - 1);
+
+    double fx = (x1+x2) / 2 + a * (x2 - x1);
+    double gx = c * (y2 - y1) / 2;
+    double ix1 = fx + gx;
+    double ix2 = fx - gx;
+
+    double fy = (y1+y2) / 2 + a * (y2 - y1);
+    double gy = c * (x1 - x2) / 2;
+    double iy1 = fy + gy;
+    double iy2 = fy - gy;
+
+    // note if gy == 0 and gx == 0 then the circles are tangent and there is only one solution
+    // but that one solution will just be duplicated as the code is currently written
+    if(iy2 >= iy1){
+      solutions[0] = ix2;
+      solutions[1] = iy2;
+    }
+    else{
+      solutions[0] = ix1;
+      solutions[1] = iy1;
+    }
+
+    return solutions;
+  }
+
+  public void setArmCartesian(double x, double y){
+    double[] intersection = calculateCircleIntersection(0, 0, ArmConstants.lengthOfShoulder, x, y, ArmConstants.lengthOfElbow);
+    double shoulderAngle = ArmConstants.shoulderHome; //setting these as default
+    double elbowAngle = ArmConstants.elbowHome; //setting these as default
+    if(intersection[0] < 0){
+      shoulderAngle = Math.PI - Math.asin(intersection[1] / ArmConstants.lengthOfShoulder);
+      elbowAngle = Math.PI - Math.asin((y-intersection[1]) / ArmConstants.lengthOfElbow);
+    }
+    else{
+      shoulderAngle = Math.asin(intersection[1] / ArmConstants.lengthOfShoulder);
+      elbowAngle = Math.asin((y-intersection[1]) / ArmConstants.lengthOfElbow);
+    }
+    setShoulderGoal(shoulderAngle);
+    setElbowGoal(elbowAngle);
   }
 
   public double getShoulderPosition(){
