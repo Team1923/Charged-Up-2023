@@ -2,19 +2,19 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.ArmCommands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class ShoulderToPosition extends CommandBase {
+public class ElbowToPosition extends CommandBase {
   /** Creates a new ElbowToPosition. */
   private ArmSubsystem armSubsystem;
   private double position;
   
-  public ShoulderToPosition(ArmSubsystem a, double position) {
+  public ElbowToPosition(ArmSubsystem a, double position) {
     armSubsystem = a;
     this.position = position;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -23,7 +23,7 @@ public class ShoulderToPosition extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    armSubsystem.setShoulderGoal(position);
+    armSubsystem.setElbowGoal(position);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,7 +34,7 @@ public class ShoulderToPosition extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     SmartDashboard.putBoolean("End Command", true);
-    armSubsystem.setShoulderGoal(ArmConstants.shoulderHome);
+    armSubsystem.setElbowGoal(0);
   }
 
   // Returns true when the command should end.

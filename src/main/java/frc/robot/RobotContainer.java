@@ -12,13 +12,14 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.ArmDefaultCommand;
-import frc.robot.commands.ArmToPosition;
-import frc.robot.commands.ArmToPositionCartesian;
+import frc.robot.commands.ArmCommands.ArmDefaultCommand;
+import frc.robot.commands.ArmCommands.ArmToPosition;
+import frc.robot.commands.ArmCommands.ArmToPositionCartesian;
 import frc.robot.commands.ChangePipelineCommand;
-import frc.robot.commands.ElbowToPosition;
-import frc.robot.commands.SequentialArmToPosition;
-import frc.robot.commands.ShoulderToPosition;
+import frc.robot.commands.ArmCommands.ElbowToPosition;
+import frc.robot.commands.ArmCommands.SequentialArmToPosition;
+import frc.robot.commands.SwerveCommands.SwerveDriveCommand;
+import frc.robot.commands.SwerveCommands.WheelsToPosition;
 import frc.robot.interfaces.LimelightInterface;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -75,10 +76,11 @@ public class RobotContainer {
 
     setDefaultCommands();
 
-  
-    bButton.whileTrue(new ArmToPositionCartesian(armSubsystem, -1, 1));
-    yButton.whileTrue(new ArmToPositionCartesian(armSubsystem, 1, 1));
-    xButton.whileTrue(new SequentialArmToPosition(armSubsystem));
+    // bButton.whileTrue(new ArmToPositionCartesian(armSubsystem, -1, 1));
+    // yButton.whileTrue(new ArmToPositionCartesian(armSubsystem, 1, 1));
+    // xButton.whileTrue(new SequentialArmToPosition(armSubsystem));
+
+    aButton.whileTrue(new WheelsToPosition(swerveSubsystem, Math.PI/4, Math.PI/4, Math.PI/4, Math.PI/4));
 
   }
 
@@ -94,6 +96,16 @@ public class RobotContainer {
 
   private void setDefaultCommands(){
     armSubsystem.setDefaultCommand(new ArmDefaultCommand(armSubsystem));
+
+    //VERIFY THE AXES
+    swerveSubsystem.setDefaultCommand(
+      new SwerveDriveCommand(swerveSubsystem,
+       () -> -controller.getRawAxis(1), //front and back
+       () -> -controller.getRawAxis(0), //left and right
+       () -> -controller.getRawAxis(4), //rotation
+       () -> !controller.getRawButton(6) //robot centric? (right bumper for now)
+       )
+    );
   }
 
   /**

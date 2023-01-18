@@ -100,16 +100,15 @@ public final class Constants {
     public static final double kDriveMotorGearRatio = 1.0 / 6.55;                
     public static final double kTurningGearRatio = 1.0 / 10.29;                   
     public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
-    public static final double kDriveEncoderTicks2Meter = kDriveEncoderRot2Meter / kTicksPerRotation; // ? Wrote this to convert from ticks -> rpm -> meters, 0-2-Auto used built in RPM measurements instead. Need to test this logic 
+    public static final double kDriveEncoderTicks2Meter = kDriveEncoderRot2Meter / kTicksPerRotation;  
     public static final double kTurningEncoderRot2Rad = kTurningGearRatio * 2 * Math.PI;
-    public static final double kturningEncoderTicks2Rad = kTurningEncoderRot2Rad / kTicksPerRotation; // ? Similar to the drive equivilent, didn't test this yet and needs to be proven
+    public static final double kturningEncoderTicks2Rad = kTurningEncoderRot2Rad / kTicksPerRotation; 
     public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60; 
-    public static final double kDriveEncoderTicks2MeterPerSec = (10 * 60 / kTicksPerRotation) * kDriveEncoderRPM2MeterPerSec; // ? Did this in my head. No clue if it will work. Velocity is ticks per 100ms, so multiply 
-                                                                                                                               // by 10 and by 60 to get ticks per minute, divide by ticks_per_rotation for RPM, then multiply by 
-                                                                                                                               // RPM to meters per second to get MPS.
+    public static final double kDriveEncoderTicks2MeterPerSec = (10 * 60 / kTicksPerRotation) * kDriveEncoderRPM2MeterPerSec; 
+
     public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
-    public static final double kTurningEncoderTicks2RadPerSec = (10 * 60 / kTicksPerRotation) * kTurningEncoderRPM2RadPerSec; // ? Similar logic to kDriveEncoderTicks2MetersPerSec, must be tested and proven
-    public static final double kPTurning = 0.36;                                // ? Guess number, used by Zero to Autonomous so probably will be close
+    public static final double kTurningEncoderTicks2RadPerSec = (10 * 60 / kTicksPerRotation) * kTurningEncoderRPM2RadPerSec; 
+    public static final double kPTurning = 0.36;                                
     public static final double kDTurning = 0.0;
 }
 

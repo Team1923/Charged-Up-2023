@@ -15,6 +15,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.interfaces.SwerveModule;
@@ -65,6 +67,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   private Pigeon2 gyro = new Pigeon2(DriveConstants.pigeonCANID, "Default Name");
   private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, getRotation2d(), getModulePositions());
+  private final Field2d field2D = new Field2d();
 
   public SwerveSubsystem() {
     new Thread(
@@ -78,12 +81,30 @@ public class SwerveSubsystem extends SubsystemBase {
       }
     ).start();
 
+    //field 2D stuff. WPILib recommands doing it this way
+    SmartDashboard.putData("Field", field2D);
+
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     odometer.update(getRotation2d(), getModulePositions());
+
+    SmartDashboard.putString("Front Left: ", frontLeft.getSwerveModuleState().toString());
+    SmartDashboard.putString("Front Right: ", frontRight.getSwerveModuleState().toString());
+    SmartDashboard.putString("Back Left: ", backLeft.getSwerveModuleState().toString());
+    SmartDashboard.putString("Back Right: ", backRight.getSwerveModuleState().toString());
+
+    SmartDashboard.putNumber("Front Left ABS ENCODER:", frontLeft.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("Front Right ABS ENCODER:", frontRight.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("Back Left ABS ENCODER:", backLeft.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("Back Right ABS ENCODER:", backRight.getAbsoluteEncoderRad());
+
+    SmartDashboard.putNumber("Heading", getHeading());
+
+    //update robot pose for field2D. access in glass.
+    field2D.setRobotPose(odometer.getPoseMeters());
   }
 
   public double getHeading(){
