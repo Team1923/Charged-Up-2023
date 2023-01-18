@@ -32,12 +32,6 @@ public final class Constants {
     REPLAY
   }
 
-  public final class FalconConstants{
-    public static final double ticksPerRev = 2048;
-    public static final int timeoutMs = 20;
-    public static final double falconMaxRPM = 6380;
-
-  }
 
   public final class LimeLightConstants{
     public static final double CAMERA_HEIGHT_METERS = 0;
@@ -45,6 +39,12 @@ public final class Constants {
     public static final double CAMERA_PITCH_RADIANS = 0;
   }
 
+  
+  public final class FalconConstants{
+    public static final double ticksPerRev = 2048;
+    public static final int timeoutMs = 20;
+    public static final double falconMaxRPM = 6380;
+  }
 
   public final class ArmConstants{
     public static final int shoulderMotorID = 18; //needs to be changed

@@ -4,22 +4,27 @@
 
 package frc.robot.commands;
 
+import java.util.Timer;
+
+import com.ctre.phoenix.time.StopWatch;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class ArmToPositionCartesian extends CommandBase {
+public class ArmToPositionCartesianSine extends CommandBase {
   /** Creates a new ElbowToPosition. */
   private ArmSubsystem armSubsystem;
   private double xPos;
   private double yPos;
   private double counter = 0;
   private double counterThreshold = 5;
+  private edu.wpi.first.wpilibj.Timer timer = new edu.wpi.first.wpilibj.Timer();
   
-  public ArmToPositionCartesian(ArmSubsystem a, double x, double y) {
+  public ArmToPositionCartesianSine(ArmSubsystem a, double y) {
     armSubsystem = a;
-    xPos = x;
+    xPos = 0;
     yPos = y;
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -27,10 +32,11 @@ public class ArmToPositionCartesian extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timer.reset();
     counter = 0;
     SmartDashboard.putBoolean("Is starting", true);
     System.out.println("Running");
-    setAngle();
+    timer.start();
 
   }
 
@@ -38,6 +44,7 @@ public class ArmToPositionCartesian extends CommandBase {
   @Override
   public void execute() {
     System.out.println("XX");
+    setAngle();
   }
 
   // Called once the command ends or is interrupted.
@@ -52,20 +59,7 @@ public class ArmToPositionCartesian extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double proximalError = Math.abs(armSubsystem.getShoulderPosition() - armSubsystem.getShoulderGoal());
-    double distalError = Math.abs(armSubsystem.getElbowPosition() - armSubsystem.getElbowGoal());
-
-    SmartDashboard.putNumber("proximal error", proximalError);
-    SmartDashboard.putNumber("distal error", distalError);
-
-    if(Math.abs(armSubsystem.getShoulderPosition() - armSubsystem.getShoulderGoal()) < 0.6 
-    && Math.abs(armSubsystem.getElbowPosition() - armSubsystem.getElbowGoal()) < 0.6){
-      counter++;
-    }
-    else{
-      counter = 0;
-    }
-    return counter >= counterThreshold;
+    return false;
   }
 
   public double[] calculateCircleIntersection(double x1, double y1, double r1, double x2, double y2, double r2){
@@ -111,7 +105,10 @@ public class ArmToPositionCartesian extends CommandBase {
   }
 
   public void setAngle(){
-    double[] intersection = calculateCircleIntersection(0, 0, ArmConstants.lengthOfShoulder, xPos, yPos, ArmConstants.lengthOfElbow);
+    double[] intersection = calculateCircleIntersection(0, 0, ArmConstants.lengthOfShoulder, Math.sin(0.1*timer.get()), yPos, ArmConstants.lengthOfElbow);
+    
+    System.out.println(intersection.toString());
+
     double shoulderAngle = ArmConstants.shoulderHome; //setting these as default
     double elbowAngle = ArmConstants.elbowHome; //setting these as default
     if(xPos < 0){

@@ -37,53 +37,53 @@ public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
 
-  private LimelightInterface limelight = LimelightInterface.getInstance();
+  // private LimelightInterface limelight = LimelightInterface.getInstance();
 
-  private final double txtune = 0.01;
-  private final double tdtune = 0.005;
+  // private final double txtune = 0.01;
+  // private final double tdtune = 0.005;
 
-  private WPI_TalonFX leftdriveprimary = new WPI_TalonFX(1);
-  private WPI_TalonFX leftdrive1 = new WPI_TalonFX(2);
-  private WPI_TalonFX leftdrive2 = new WPI_TalonFX(3);
-  private WPI_TalonFX rightdriveprimary = new WPI_TalonFX(4);
-  private WPI_TalonFX rightdrive1 = new WPI_TalonFX(5);
-  private WPI_TalonFX rightdrive2 = new WPI_TalonFX(6);
+  // private WPI_TalonFX leftdriveprimary = new WPI_TalonFX(1);
+  // private WPI_TalonFX leftdrive1 = new WPI_TalonFX(2);
+  // private WPI_TalonFX leftdrive2 = new WPI_TalonFX(3);
+  // private WPI_TalonFX rightdriveprimary = new WPI_TalonFX(4);
+  // private WPI_TalonFX rightdrive1 = new WPI_TalonFX(5);
+  // private WPI_TalonFX rightdrive2 = new WPI_TalonFX(6);
 
 
 
-  public double RotatetoTag(){
-    double error = limelight.getHorizontalOffset();
-   if(Math.abs(error) > 2){
-     return  - limelight.getHorizontalOffset()*txtune;
-   }
-   else{
-    return 0;
-   }
-  }
+  // public double RotatetoTag(){
+  //   double error = limelight.getHorizontalOffset();
+  //  if(Math.abs(error) > 2){
+  //    return  - limelight.getHorizontalOffset()*txtune;
+  //  }
+  //  else{
+  //   return 0;
+  //  }
+  // }
 
-  public double GettoTag(){
-    double error = limelight.distanceToTarget();
-    if(error > 20){
-      return limelight.distanceToTarget()*tdtune;
-    }
-    else{
-      return  0;
-    }
-  }
+  // public double GettoTag(){
+  //   double error = limelight.distanceToTarget();
+  //   if(error > 20){
+  //     return limelight.distanceToTarget()*tdtune;
+  //   }
+  //   else{
+  //     return  0;
+  //   }
+  // }
 
-  public void Drive() {
+  // public void Drive() {
 
-    double rot = RotatetoTag();
-    double trans = GettoTag();
+  //   double rot = RotatetoTag();
+  //   double trans = GettoTag();
 
-    SmartDashboard.putNumber("Rotational", rot);
-    SmartDashboard.putNumber("Translational", trans);
-    SmartDashboard.putNumber("Distance to Target", limelight.distanceToTarget());
+  //   SmartDashboard.putNumber("Rotational", rot);
+  //   SmartDashboard.putNumber("Translational", trans);
+  //   SmartDashboard.putNumber("Distance to Target", limelight.distanceToTarget());
 
-    leftdriveprimary.set(ControlMode.PercentOutput, rot + trans);
-    rightdriveprimary.set(ControlMode.PercentOutput, rot - trans);
+  //   leftdriveprimary.set(ControlMode.PercentOutput, rot + trans);
+  //   rightdriveprimary.set(ControlMode.PercentOutput, rot - trans);
 
-  }
+  // }
   
 
 
@@ -157,22 +157,22 @@ if (true) {//isReal()) {
     // Start AdvantageKit logger
     logger.start();
     
-    leftdrive1.configFactoryDefault();
-    leftdrive2.configFactoryDefault();
-    rightdrive1.configFactoryDefault();
-    rightdrive2.configFactoryDefault();
-    leftdriveprimary.configFactoryDefault();
-    rightdriveprimary.configFactoryDefault();
+    // leftdrive1.configFactoryDefault();
+    // leftdrive2.configFactoryDefault();
+    // rightdrive1.configFactoryDefault();
+    // rightdrive2.configFactoryDefault();
+    // leftdriveprimary.configFactoryDefault();
+    // rightdriveprimary.configFactoryDefault();
 
 
-    leftdrive1.follow(leftdriveprimary);
-    leftdrive2.follow(leftdriveprimary);
-    rightdrive1.follow(rightdriveprimary);
-    rightdrive2.follow(rightdriveprimary);
+    // leftdrive1.follow(leftdriveprimary);
+    // leftdrive2.follow(leftdriveprimary);
+    // rightdrive1.follow(rightdriveprimary);
+    // rightdrive2.follow(rightdriveprimary);
 
-    leftdriveprimary.setInverted(InvertType.None);
-    leftdrive1.setInverted(InvertType.FollowMaster);
-    leftdrive2.setInverted(InvertType.FollowMaster);
+    // leftdriveprimary.setInverted(InvertType.None);
+    // leftdrive1.setInverted(InvertType.FollowMaster);
+    // leftdrive2.setInverted(InvertType.FollowMaster);
 
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
@@ -252,7 +252,7 @@ if (true) {//isReal()) {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    Drive();
+    //Drive();
   }
 
   /** This function is called once when test mode is enabled. */

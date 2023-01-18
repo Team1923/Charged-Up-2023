@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.FalconConstants;
 
 public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
@@ -26,16 +27,16 @@ public class ArmSubsystem extends SubsystemBase {
     shoulderMotor.configFactoryDefault();
     elbowMotor.configFactoryDefault();
     
-    shoulderMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, Constants.timeoutMs);
-    elbowMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, Constants.timeoutMs);
+    shoulderMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
+    elbowMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
 
-    shoulderMotor.config_kP(0, ArmConstants.shoulderkP, Constants.timeoutMs);
-    shoulderMotor.config_kI(0, ArmConstants.shoulderkI, Constants.timeoutMs);
-    shoulderMotor.config_kD(0, ArmConstants.shoulderkD, Constants.timeoutMs);
+    shoulderMotor.config_kP(0, ArmConstants.shoulderkP, FalconConstants.timeoutMs);
+    shoulderMotor.config_kI(0, ArmConstants.shoulderkI, FalconConstants.timeoutMs);
+    shoulderMotor.config_kD(0, ArmConstants.shoulderkD, FalconConstants.timeoutMs);
 
-    elbowMotor.config_kP(0, ArmConstants.elbowkP, Constants.timeoutMs);
-    elbowMotor.config_kI(0, ArmConstants.elbowkI, Constants.timeoutMs);
-    elbowMotor.config_kD(0, ArmConstants.elbowkD, Constants.timeoutMs);
+    elbowMotor.config_kP(0, ArmConstants.elbowkP, FalconConstants.timeoutMs);
+    elbowMotor.config_kI(0, ArmConstants.elbowkI, FalconConstants.timeoutMs);
+    elbowMotor.config_kD(0, ArmConstants.elbowkD, FalconConstants.timeoutMs);
 
     resetShoulderPosition(Math.PI/2);
     resetElbowPosition(-Math.PI/2);

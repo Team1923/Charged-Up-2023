@@ -16,8 +16,10 @@ import frc.robot.commands.ArmDefaultCommand;
 import frc.robot.commands.ArmToPosition;
 import frc.robot.commands.ArmToPositionCartesian;
 import frc.robot.commands.ArmToPositionCartesianOld;
+import frc.robot.commands.ArmToPositionCartesianSine;
 import frc.robot.commands.ChangePipelineCommand;
 import frc.robot.commands.ElbowToPosition;
+import frc.robot.commands.SequentialArmToPosition;
 import frc.robot.commands.ShoulderToPosition;
 import frc.robot.interfaces.LimelightInterface;
 import frc.robot.subsystems.ArmSubsystem;
@@ -75,13 +77,10 @@ public class RobotContainer {
 
     setDefaultCommands();
 
-    //aButton.whileTrue(new ArmToPosition(armSubsystem, Math.PI/4, Math.PI/4));
-    bButton.whileTrue(new ArmToPositionCartesian(armSubsystem, 1, 0.8));
-    xButton.onTrue(new InstantCommand(() -> armSubsystem.resetElbowEncoders()));
-    yButton.onTrue(new InstantCommand(() -> armSubsystem.resetShoulderEncoders()));
-    // yButton.onTrue(new InstantCommand(() -> LimelightInterface.getInstance().setPipeline(1)));
-    // yButton.whileTrue(new ChangePipelineCommand(1));
-    aButton.whileTrue(new ArmToPositionCartesianOld(armSubsystem, 1, 0.8));
+    aButton.whileTrue(new ArmToPositionCartesianSine(armSubsystem, 1));
+    bButton.whileTrue(new ArmToPositionCartesian(armSubsystem, -1, 1));
+    yButton.whileTrue(new ArmToPositionCartesian(armSubsystem, 1, 1));
+    xButton.whileTrue(new SequentialArmToPosition(armSubsystem));
 
   }
 
