@@ -37,22 +37,21 @@ public class ArmToPositionCartesian extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("XX");
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     SmartDashboard.putBoolean("End Command", true);
-    // armSubsystem.setElbowGoal(ArmConstants.elbowHome);
-    // armSubsystem.setShoulderGoal(ArmConstants.shoulderHome);
-    System.out.println("Ended");
+     armSubsystem.setElbowGoal(ArmConstants.elbowHome);
+     armSubsystem.setShoulderGoal(ArmConstants.shoulderHome);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double proximalError = Math.abs(armSubsystem.getShoulderPosition() - armSubsystem.getShoulderGoal());
+    /*double proximalError = Math.abs(armSubsystem.getShoulderPosition() - armSubsystem.getShoulderGoal());
     double distalError = Math.abs(armSubsystem.getElbowPosition() - armSubsystem.getElbowGoal());
 
     SmartDashboard.putNumber("proximal error", proximalError);
@@ -65,7 +64,8 @@ public class ArmToPositionCartesian extends CommandBase {
     else{
       counter = 0;
     }
-    return counter >= counterThreshold;
+    return counter >= counterThreshold;*/
+    return false;
   }
 
   public double[] calculateCircleIntersection(double x1, double y1, double r1, double x2, double y2, double r2){

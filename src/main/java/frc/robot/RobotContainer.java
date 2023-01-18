@@ -15,8 +15,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmDefaultCommand;
 import frc.robot.commands.ArmToPosition;
 import frc.robot.commands.ArmToPositionCartesian;
-import frc.robot.commands.ArmToPositionCartesianOld;
-import frc.robot.commands.ArmToPositionCartesianSine;
 import frc.robot.commands.ChangePipelineCommand;
 import frc.robot.commands.ElbowToPosition;
 import frc.robot.commands.SequentialArmToPosition;
@@ -77,7 +75,7 @@ public class RobotContainer {
 
     setDefaultCommands();
 
-    aButton.whileTrue(new ArmToPositionCartesianSine(armSubsystem, 1));
+  
     bButton.whileTrue(new ArmToPositionCartesian(armSubsystem, -1, 1));
     yButton.whileTrue(new ArmToPositionCartesian(armSubsystem, 1, 1));
     xButton.whileTrue(new SequentialArmToPosition(armSubsystem));

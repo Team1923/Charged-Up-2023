@@ -102,17 +102,6 @@ public class ArmSubsystem extends SubsystemBase {
   //   setElbowGoal(newElbowGoal);
   // }
 
-  public void setArmCartesianOld(double x, double y){
-    double elbowGoal = (Math.acos(((x*x) + (y*y) - (Math.pow(ArmConstants.lengthOfShoulder, 2)) - (Math.pow(ArmConstants.lengthOfElbow, 2))) 
-    / (2 * ArmConstants.lengthOfShoulder * ArmConstants.lengthOfElbow)));
-
-    double shoulderGoal = (Math.atan(y/x) - 
-      Math.atan((ArmConstants.lengthOfElbow * Math.sin(elbowGoal)) / (ArmConstants.lengthOfShoulder + ArmConstants.lengthOfElbow * Math.cos(elbowGoal))));
-
-    setShoulderGoal(shoulderGoal);
-    setElbowGoal(elbowGoal +shoulderGoal);
-  }
-
   public double[] calculateArmCartesian(double x, double y){
     double elbowGoal = (Math.acos(((x*x) + (y*y) - (Math.pow(ArmConstants.lengthOfShoulder, 2)) - (Math.pow(ArmConstants.lengthOfElbow, 2))) 
     / (2 * ArmConstants.lengthOfShoulder * ArmConstants.lengthOfElbow)));
