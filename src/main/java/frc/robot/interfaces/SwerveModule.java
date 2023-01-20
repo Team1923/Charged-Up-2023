@@ -4,6 +4,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
+import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -42,10 +44,10 @@ public class SwerveModule {
     * reading of the encoder.
     */
 
-    private final AnalogInput absoluteEncoder;
-    private final double absoluteEncoderID;
-    private final boolean absoluteEncoderReversed;
-    private final double absoluteEncoderOffsetRad;
+    private final WPI_CANCoder canCoder;;
+    private final double canCoderID;
+    private final boolean canCoderReversed;
+    private final double canCoderOffsetRad;
 
     /*
     * We then define some more variables to determine
@@ -65,10 +67,18 @@ public class SwerveModule {
             * We begin by instantiating everything necessary
             * for the absolute encoder
             */
-        absoluteEncoder = new AnalogInput(absoluteEncoderID);
-        this.absoluteEncoderID = absoluteEncoderID;
-        this.absoluteEncoderOffsetRad = absoluteEncoderOffset;
-        this.absoluteEncoderReversed = absoluteEncoderReversed;
+        canCoder = new WPI_CANCoder(absoluteEncoderID, "Default Name");
+        this.canCoderID = absoluteEncoderID;
+        this.canCoderOffsetRad = absoluteEncoderOffset;
+        this.canCoderReversed = absoluteEncoderReversed;
+        canCoder.configFactoryDefault();
+        if(canCoderReversed){
+            canCoder.configSensorDirection(absoluteEncoderReversed);
+        }
+
+        canCoder.configMagnetOffset(absoluteEncoderOffset);
+        canCoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
+
 
         /*
         * Motor-specific instantiations
@@ -122,18 +132,9 @@ public class SwerveModule {
     }
 
     public double getAbsoluteEncoderRad() {
-        double angle = absoluteEncoder.getVoltage() / RobotController.getVoltage5V();
-        angle *= 2.0 * Math.PI;
-        angle -= absoluteEncoderOffsetRad;
-        double r = angle * (absoluteEncoderReversed ? -1.0 : 1.0);
-        return r;
+        return Math.toRadians(canCoder.getPosition());
     }
 
-    public double getAbsoluteEncoderRadZero() {
-        double angle = absoluteEncoder.getVoltage() / RobotController.getVoltage5V();
-        angle *= 2.0 * Math.PI;
-        return angle * (absoluteEncoderReversed ? -1.0 : 1.0);
-    }
 
     /*
         * WPILib has specific SwerveModule objects
