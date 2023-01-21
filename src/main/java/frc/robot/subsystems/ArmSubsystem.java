@@ -185,25 +185,25 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Elbow Position:", Math.toDegrees(getElbowPosition()));
-    SmartDashboard.putNumber("Shoulder Position:", Math.toDegrees(getShoulderPosition()));
+    // SmartDashboard.putNumber("Elbow Position:", Math.toDegrees(getElbowPosition()));
+    // SmartDashboard.putNumber("Shoulder Position:", Math.toDegrees(getShoulderPosition()));
 
-    SmartDashboard.putNumber("CG Angle:", Math.toDegrees(getAngleToCG()));
+    // SmartDashboard.putNumber("CG Angle:", Math.toDegrees(getAngleToCG()));
     
-    SmartDashboard.putNumber("Elbow Goal:", getElbowGoal());
-    SmartDashboard.putNumber("Shoulder Goal:", getShoulderGoal());
+    // SmartDashboard.putNumber("Elbow Goal:", getElbowGoal());
+    // SmartDashboard.putNumber("Shoulder Goal:", getShoulderGoal());
 
-    SmartDashboard.putNumber("Elbow Output", elbowMotor.getMotorOutputPercent());
+    // SmartDashboard.putNumber("Elbow Output", elbowMotor.getMotorOutputPercent());
 
-    double[] angles = calculateArmCartesian(1, 1);
+    // double[] angles = calculateArmCartesian(1, 1);
 
-    SmartDashboard.putNumber("Polar Shoulder: ", Math.toDegrees(angles[0]));
-    SmartDashboard.putNumber("Polar Elbow: ", Math.toDegrees(angles[1]));
+    // SmartDashboard.putNumber("Polar Shoulder: ", Math.toDegrees(angles[0]));
+    // SmartDashboard.putNumber("Polar Elbow: ", Math.toDegrees(angles[1]));
 
-    double[] cartesian = anglesToCartesian(angles[0],angles[1]);
+    // double[] cartesian = anglesToCartesian(angles[0],angles[1]);
 
-    SmartDashboard.putNumber("Cartesian Shoulder: ", cartesian[0]);
-    SmartDashboard.putNumber("Cartesian Elbow: ", cartesian[1]);
+    // SmartDashboard.putNumber("Cartesian Shoulder: ", cartesian[0]);
+    // SmartDashboard.putNumber("Cartesian Elbow: ", cartesian[1]);
 
   }
 }

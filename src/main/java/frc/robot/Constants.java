@@ -96,9 +96,9 @@ public final class Constants {
 
   public static final class ModuleConstants {
     public static final double kTicksPerRotation = 2048;
-    public static final double kWheelDiameterMeters = Units.inchesToMeters(3.7); 
-    public static final double kDriveMotorGearRatio = 1.0 / 6.55;                
-    public static final double kTurningGearRatio = 1.0 / 10.29;                   
+    public static final double kWheelDiameterMeters = Units.inchesToMeters(4); 
+    public static final double kDriveMotorGearRatio = 1.0 / 6.12;                
+    public static final double kTurningGearRatio = 1.0 / 21.428;                   
     public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
     public static final double kDriveEncoderTicks2Meter = kDriveEncoderRot2Meter / kTicksPerRotation;  
     public static final double kTurningEncoderRot2Rad = kTurningGearRatio * 2 * Math.PI;
@@ -108,18 +108,18 @@ public final class Constants {
 
     public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
     public static final double kTurningEncoderTicks2RadPerSec = (10 * 60 / kTicksPerRotation) * kTurningEncoderRPM2RadPerSec; 
-    public static final double kPTurning = 0.36;                                
+    public static final double kPTurning = 0.4;                                
     public static final double kDTurning = 0.0;
 }
 
   public static final class DriveConstants {
     //ID for Pigeon2 - need to update
-    public static final int pigeonCANID = 1;
+    public static final int pigeonCANID = 12;
 
     // Distance between right and left wheels
-    public static final double kTrackWidth = Units.inchesToMeters(20.25); 
+    public static final double kTrackWidth = Units.inchesToMeters(18.75); 
     // Distance between front and back wheels
-    public static final double kWheelBase = Units.inchesToMeters(20.25); 
+    public static final double kWheelBase = Units.inchesToMeters(18.75); 
 
     /*the sign of the Translation2d objects were updated to match 1706
       For driving purposes, we can revert the constants if needed.
@@ -133,9 +133,9 @@ public final class Constants {
             new Translation2d(-kWheelBase / 2, kTrackWidth / 2),  // - -
             new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));  // - +
 
-    //All of these constants need to be updated to match new swerve modules
-    public static final double kPhysicalMaxSpeedMetersPerSecond = 5.18;                   
-    public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 61; // Using this number from 1706
+
+    public static final double kPhysicalMaxSpeedMetersPerSecond = 5.4864;                   
+    public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 54;
     public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
     public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
     public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond;
@@ -146,8 +146,8 @@ public final class Constants {
     public static final int kFrontLeftTurningMotorPort = 1;
     public static final boolean kFrontLeftDriveReversed = true;
     public static final boolean kFrontLeftTurningReversed = true;
-    public static final int kFrontLeftDriveAbsoluteEncoderPort = 0;
-    public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = .71; //0.77
+    public static final int kFrontLeftDriveAbsoluteEncoderPort = 8;
+    public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 5.74; //0.77
     public static final boolean kFrontLeftDriveAbsoluteEncoderOffsetReversed = false;
 
     // Front Right Module - UPDATE
@@ -155,17 +155,17 @@ public final class Constants {
     public static final int kFrontRightTurningMotorPort = 3;
     public static final boolean kFrontRightDriveReversed = true;
     public static final boolean kFrontRightTurningReversed = true;
-    public static final int kFrontRightDriveAbsoluteEncoderPort = 1;
-    public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 2.74;  //0.56
+    public static final int kFrontRightDriveAbsoluteEncoderPort = 9;
+    public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = -0.2;  //0.56
     public static final boolean kFrontRightDriveAbsoluteEncoderOffsetReversed = false;
 
     // Back Right Module - UPDATE
-    public static final int kBackRightDriveMotorPort = 4;  //prioritize
+    public static final int kBackRightDriveMotorPort = 4; 
     public static final int kBackRightTurningMotorPort = 5;
-    public static final boolean kBackRightDriveReversed = true;
+    public static final boolean kBackRightDriveReversed = false;
     public static final boolean kBackRightTurningReversed = true;
-    public static final int kBackRightDriveAbsoluteEncoderPort = 2;
-    public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 0.048; //0.46
+    public static final int kBackRightDriveAbsoluteEncoderPort = 10;
+    public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 1.72; //0.4
     public static final boolean kBackRightDriveAbsoluteEncoderOffsetReversed = false;
 
     // Back Left Module - UPDATE
@@ -173,8 +173,8 @@ public final class Constants {
     public static final int kBackLeftTurningMotorPort = 7;
     public static final boolean kBackLeftDriveReversed = true;
     public static final boolean kBackLeftTurningReversed = true;
-    public static final int kBackLeftDriveAbsoluteEncoderPort = 3;
-    public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 5.46; //3.71
+    public static final int kBackLeftDriveAbsoluteEncoderPort = 11;
+    public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 0.2; //3.71
     public static final boolean kBackLeftDriveAbsoluteEncoderOffsetReversed = false;
 
     public static final double kMinRotationCommand = DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond

@@ -65,7 +65,7 @@ public class SwerveSubsystem extends SubsystemBase {
       DriveConstants.kBackLeftDriveAbsoluteEncoderOffsetRad,
       DriveConstants.kBackLeftDriveAbsoluteEncoderOffsetReversed);
 
-  private Pigeon2 gyro = new Pigeon2(DriveConstants.pigeonCANID, "Default Name");
+  private Pigeon2 gyro = new Pigeon2(DriveConstants.pigeonCANID, "rio");
   private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, getRotation2d(), getModulePositions());
   private final Field2d field2D = new Field2d();
 
@@ -96,6 +96,8 @@ public class SwerveSubsystem extends SubsystemBase {
     SmartDashboard.putString("Back Left: ", backLeft.getSwerveModuleState().toString());
     SmartDashboard.putString("Back Right: ", backRight.getSwerveModuleState().toString());
 
+    SmartDashboard.putNumber("Front Left Turning Position Rads", frontLeft.getTurningPositionRads());
+
     SmartDashboard.putNumber("Front Left ABS ENCODER:", frontLeft.getAbsoluteEncoderRad());
     SmartDashboard.putNumber("Front Right ABS ENCODER:", frontRight.getAbsoluteEncoderRad());
     SmartDashboard.putNumber("Back Left ABS ENCODER:", backLeft.getAbsoluteEncoderRad());
@@ -103,12 +105,19 @@ public class SwerveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Heading", getHeading());
 
+    SmartDashboard.putNumber("Front right ticks", frontRight.getTurningTicks());
+    SmartDashboard.putNumber("Front left ticks", frontLeft.getTurningTicks());
+    SmartDashboard.putNumber("Back left ticks", backLeft.getTurningTicks());
+    SmartDashboard.putNumber("Back right ticks", backRight.getTurningTicks());
+
+
+
     //update robot pose for field2D. access in glass.
     field2D.setRobotPose(odometer.getPoseMeters());
   }
 
   public double getHeading(){
-    return Math.IEEEremainder(gyro.getYaw(), 360);
+    return Math.IEEEremainder(-gyro.getYaw(), 360);
   }
 
   public double getHeading(double offset){

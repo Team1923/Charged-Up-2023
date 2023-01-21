@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
 
@@ -46,7 +47,6 @@ public class SwerveModule {
 
     private final WPI_CANCoder canCoder;;
     private final double canCoderID;
-    private final boolean canCoderReversed;
     private final double canCoderOffsetRad;
 
     /*
@@ -67,16 +67,13 @@ public class SwerveModule {
             * We begin by instantiating everything necessary
             * for the absolute encoder
             */
-        canCoder = new WPI_CANCoder(absoluteEncoderID, "Default Name");
+        canCoder = new WPI_CANCoder(absoluteEncoderID, "rio");
         this.canCoderID = absoluteEncoderID;
         this.canCoderOffsetRad = absoluteEncoderOffset;
-        this.canCoderReversed = absoluteEncoderReversed;
         canCoder.configFactoryDefault();
-        if(canCoderReversed){
-            canCoder.configSensorDirection(absoluteEncoderReversed);
-        }
+        canCoder.configSensorDirection(absoluteEncoderReversed);
 
-        canCoder.configMagnetOffset(absoluteEncoderOffset);
+        canCoder.configMagnetOffset(Math.toDegrees(absoluteEncoderOffset));
         canCoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
 
 
@@ -132,7 +129,7 @@ public class SwerveModule {
     }
 
     public double getAbsoluteEncoderRad() {
-        return Math.toRadians(canCoder.getPosition());
+        return Math.toRadians(canCoder.getAbsolutePosition());
     }
 
 
@@ -184,7 +181,6 @@ public class SwerveModule {
         }
 
         state = SwerveModuleState.optimize(state, getSwerveModuleState().angle);
-        System.out.println(state.speedMetersPerSecond);
 
         driveMotor.set(ControlMode.PercentOutput, (state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond));
         turningMotor.set(ControlMode.PercentOutput, turningPIDController.calculate(getTurningPositionRads(), state.angle.getRadians()));
