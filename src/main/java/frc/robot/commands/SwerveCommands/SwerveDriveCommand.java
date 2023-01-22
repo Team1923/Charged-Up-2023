@@ -1,6 +1,7 @@
 package frc.robot.commands.SwerveCommands;
 
 import frc.robot.Constants;
+import frc.robot.Constants.ControllerConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
 import java.util.function.BooleanSupplier;
@@ -31,9 +32,9 @@ public class SwerveDriveCommand extends CommandBase {
     @Override
     public void execute() {
         /* Get Values, Deadband*/
-        double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband);
-        double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband);
-        double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
+        double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), ControllerConstants.stickDeadband);
+        double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), ControllerConstants.stickDeadband);
+        double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), ControllerConstants.stickDeadband);
 
         /* Drive */
         s_Swerve.drive(

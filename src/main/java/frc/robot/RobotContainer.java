@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmCommands.ArmDefaultCommand;
 import frc.robot.commands.ArmCommands.ArmToPosition;
 import frc.robot.commands.ArmCommands.ArmToPositionCartesian;
+import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.ChangePipelineCommand;
 import frc.robot.commands.ArmCommands.ElbowToPosition;
 import frc.robot.commands.ArmCommands.SequentialArmToPosition;
@@ -100,10 +101,10 @@ public class RobotContainer {
     //VERIFY THE AXES
     swerveSubsystem.setDefaultCommand(
       new SwerveDriveCommand(swerveSubsystem,
-       () -> -controller.getRawAxis(1), //front and back
-       () -> -controller.getRawAxis(0), //left and right
-       () -> -controller.getRawAxis(4), //rotation
-       () -> controller.getRawButton(6) //robot centric? (right bumper for now)
+       () -> -controller.getRawAxis(ControllerConstants.xBoxLeftYAxis), //front and back
+       () -> -controller.getRawAxis(ControllerConstants.xBoxLeftXAxis), //left and right
+       () -> -controller.getRawAxis(ControllerConstants.xBoxRightXAxis), //rotation
+       () -> controller.getRawButton(ControllerConstants.xBoxRightBumper) //robot centric? (right bumper for now)
        )
     );
   }
