@@ -103,7 +103,7 @@ public class RobotContainer {
        () -> -controller.getRawAxis(1), //front and back
        () -> -controller.getRawAxis(0), //left and right
        () -> -controller.getRawAxis(4), //rotation
-       () -> controller.getRawButton(6) //robot centric? (right bumper for now)
+       () -> !controller.getRawButton(6) //robot centric? (right bumper for now)
        )
     );
   }
