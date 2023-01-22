@@ -84,6 +84,12 @@ public class SwerveSubsystem extends SubsystemBase {
     //field 2D stuff. WPILib recommands doing it this way
     SmartDashboard.putData("Field", field2D);
 
+    Timer.delay(1);
+    frontLeft.resetEncoders();
+    frontRight.resetEncoders();
+    backLeft.resetEncoders();
+    backRight.resetEncoders();
+
   }
 
   @Override

@@ -100,7 +100,8 @@ public class SwerveModule {
         * Once the module is instantiated,
         we reset our encoders.
         */
-        resetEncoders();
+        //REMOVING THE BELOW - ISSUE IN SETTING POSITION
+        //resetEncoders(); 
         
     }
 
