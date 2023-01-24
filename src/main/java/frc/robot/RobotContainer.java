@@ -5,7 +5,6 @@
 package frc.robot;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -13,15 +12,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmCommands.ArmDefaultCommand;
-import frc.robot.commands.ArmCommands.ArmToPosition;
-import frc.robot.commands.ArmCommands.ArmToPositionCartesian;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.commands.ChangePipelineCommand;
-import frc.robot.commands.ArmCommands.ElbowToPosition;
-import frc.robot.commands.ArmCommands.SequentialArmToPosition;
 import frc.robot.commands.SwerveCommands.SwerveDriveCommand;
 import frc.robot.commands.SwerveCommands.WheelsToPosition;
-import frc.robot.interfaces.LimelightInterface;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -32,6 +25,8 @@ import frc.robot.subsystems.SwerveSubsystem;
  * scheduler calls). Instead, the structure of the robot (including subsystems,
  * commands, and button mappings) should be declared here.
  */
+
+
 public class RobotContainer {
   // Subsystems
   private ArmSubsystem armSubsystem = new ArmSubsystem();
@@ -43,6 +38,8 @@ public class RobotContainer {
   private final JoystickButton bButton = new JoystickButton(controller, 2);
   private final JoystickButton xButton = new JoystickButton(controller, 3);
   private final JoystickButton yButton = new JoystickButton(controller, 4);
+  private final JoystickButton leftBumper = new JoystickButton(controller, 5);
+
   
 
   // Dashboard inputs
@@ -81,7 +78,6 @@ public class RobotContainer {
     // yButton.whileTrue(new ArmToPositionCartesian(armSubsystem, 1, 1));
     // xButton.whileTrue(new SequentialArmToPosition(armSubsystem));
 
-    aButton.whileTrue(new WheelsToPosition(swerveSubsystem, Math.PI/4, Math.PI/4, Math.PI/4, Math.PI/4));
 
   }
 
@@ -93,6 +89,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
+    aButton.whileTrue(new WheelsToPosition(swerveSubsystem, Math.PI/4, Math.PI/4, Math.PI/4, Math.PI/4));
+    yButton.onTrue(new InstantCommand(() -> swerveSubsystem.zeroGyro()));
+
   }
 
   private void setDefaultCommands(){
@@ -100,12 +99,13 @@ public class RobotContainer {
 
     //VERIFY THE AXES
     swerveSubsystem.setDefaultCommand(
-      new SwerveDriveCommand(swerveSubsystem,
-       () -> -controller.getRawAxis(ControllerConstants.xBoxLeftYAxis), //front and back
-       () -> -controller.getRawAxis(ControllerConstants.xBoxLeftXAxis), //left and right
-       () -> -controller.getRawAxis(ControllerConstants.xBoxRightXAxis), //rotation
-       () -> controller.getRawButton(ControllerConstants.xBoxRightBumper) //robot centric? (right bumper for now)
-       )
+      new SwerveDriveCommand(
+      swerveSubsystem, 
+      () -> -controller.getRawAxis(ControllerConstants.xBoxLeftXAxis), 
+      () -> -controller.getRawAxis(ControllerConstants.xBoxLeftYAxis), 
+      () -> -controller.getRawAxis(ControllerConstants.xBoxRightXAxis), 
+      () ->  leftBumper.getAsBoolean()
+      )
     );
   }
 

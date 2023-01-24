@@ -235,9 +235,9 @@ public final class Constants {
 
   public static final class ControllerConstants{
     public static final double stickDeadband = 0.05;
-    public static final double xBoxLeftYAxis = 1;
-    public static final double xBoxLeftXAxis = 0;
-    public static final double xBoxRightXAxis = 4;
+    public static final int xBoxLeftYAxis = 1;
+    public static final int xBoxLeftXAxis = 0;
+    public static final int xBoxRightXAxis = 4;
   }
 
 

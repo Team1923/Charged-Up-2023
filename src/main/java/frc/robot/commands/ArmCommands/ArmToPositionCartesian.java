@@ -14,8 +14,6 @@ public class ArmToPositionCartesian extends CommandBase {
   private ArmSubsystem armSubsystem;
   private double xPos;
   private double yPos;
-  private double counter = 0;
-  private double counterThreshold = 5;
   
   public ArmToPositionCartesian(ArmSubsystem a, double x, double y) {
     armSubsystem = a;
@@ -27,7 +25,6 @@ public class ArmToPositionCartesian extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    counter = 0;
     SmartDashboard.putBoolean("Is starting", true);
     System.out.println("Running");
     setAngle();
