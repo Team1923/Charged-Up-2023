@@ -40,7 +40,13 @@ public class LimelightInterface extends SubsystemBase {
   // limelight mounting angle above positive x axis in degrees
   private double limelight_mount_angle = LimeLightConstants.CAMERA_PITCH_RADIANS;
 
-  private static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  public enum Limelight{
+    LEFT_LIMELIGHT,
+    RIGHT_LIMELIGHT
+  }
+
+  private static NetworkTable leftLimelight = NetworkTableInstance.getDefault().getTable("leftLimelight");
+  private static NetworkTable rightLimelight = NetworkTableInstance.getDefault().getTable("rightLimelight");
   
   public static boolean tracking = false;
 
@@ -81,10 +87,14 @@ public class LimelightInterface extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    table = NetworkTableInstance.getDefault().getTable("limelight");
+    leftLimelight = NetworkTableInstance.getDefault().getTable("leftLimelight");
+    rightLimelight = NetworkTableInstance.getDefault().getTable("rightLimelight");
   }
 
-  public boolean validTargets() {
+  public boolean validTargets(Limelight limelight) {
+    if(limelight == Limelight.LEFT_LIMELIGHT){
+
+    }
     if (getEntry("tv") == 1.0) {
       return true;
     } else {
@@ -194,8 +204,14 @@ public class LimelightInterface extends SubsystemBase {
     table.getEntry(key).setDouble(value);
   }
   
-  private static double getEntry(String key) {
-    return table.getEntry(key).getDouble(0);
+  private static double getEntry(String key, Limelight limelight) {
+    if(limelight == Limelight.LEFT_LIMELIGHT){
+      return leftLimelight.getEntry(key).getDouble(0);
+    }
+    else{
+      return rightLimelight.getEntry(key).getDouble(0);
+    }
+    
   }
 
   private static double[] getEntryArray(String key) {
