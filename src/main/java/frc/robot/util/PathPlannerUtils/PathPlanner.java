@@ -63,7 +63,7 @@ public class PathPlanner {
 
                 Object o = jsonWaypoint.get("holonomicAngle");
                 double angle = Double.parseDouble(o.toString());
-                System.out.println(angle);
+                //System.out.println(angle);
                 Rotation2d holonomicAngle = Rotation2d.fromDegrees(angle);
                 boolean isReversal = (boolean) jsonWaypoint.get("isReversal");
                 double velOverride = -1;
