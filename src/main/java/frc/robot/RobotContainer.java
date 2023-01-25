@@ -84,7 +84,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return null;
+        return new TestPath(s_Swerve);
     }
 }
 
