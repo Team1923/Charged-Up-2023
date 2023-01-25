@@ -37,54 +37,7 @@ public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
 
-  // private LimelightInterface limelight = LimelightInterface.getInstance();
-
-  // private final double txtune = 0.01;
-  // private final double tdtune = 0.005;
-
-  // private WPI_TalonFX leftdriveprimary = new WPI_TalonFX(1);
-  // private WPI_TalonFX leftdrive1 = new WPI_TalonFX(2);
-  // private WPI_TalonFX leftdrive2 = new WPI_TalonFX(3);
-  // private WPI_TalonFX rightdriveprimary = new WPI_TalonFX(4);
-  // private WPI_TalonFX rightdrive1 = new WPI_TalonFX(5);
-  // private WPI_TalonFX rightdrive2 = new WPI_TalonFX(6);
-
-
-
-  // public double RotatetoTag(){
-  //   double error = limelight.getHorizontalOffset();
-  //  if(Math.abs(error) > 2){
-  //    return  - limelight.getHorizontalOffset()*txtune;
-  //  }
-  //  else{
-  //   return 0;
-  //  }
-  // }
-
-  // public double GettoTag(){
-  //   double error = limelight.distanceToTarget();
-  //   if(error > 20){
-  //     return limelight.distanceToTarget()*tdtune;
-  //   }
-  //   else{
-  //     return  0;
-  //   }
-  // }
-
-  // public void Drive() {
-
-  //   double rot = RotatetoTag();
-  //   double trans = GettoTag();
-
-  //   SmartDashboard.putNumber("Rotational", rot);
-  //   SmartDashboard.putNumber("Translational", trans);
-  //   SmartDashboard.putNumber("Distance to Target", limelight.distanceToTarget());
-
-  //   leftdriveprimary.set(ControlMode.PercentOutput, rot + trans);
-  //   rightdriveprimary.set(ControlMode.PercentOutput, rot - trans);
-
-  // }
-  
+  public static CTREConfigs ctreConfigs = new CTREConfigs();
 
 
   /**
