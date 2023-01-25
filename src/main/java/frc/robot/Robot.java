@@ -143,18 +143,8 @@ if (true) {//isReal()) {
     // the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    LimelightInterface limelight = LimelightInterface.getInstance();
 
   
-
-    SmartDashboard.putNumber("Horizontal Offset", limelight.getHorizontalOffset());
-    SmartDashboard.putNumber("Verticle Offset", limelight.getVerticalOffset());
-    SmartDashboard.putNumber("Area", limelight.getArea());
-    SmartDashboard.putNumber("Skew", limelight.getSkew());
-    SmartDashboard.putNumberArray("Camera Transformation", limelight.getCamtransformation());
-    SmartDashboard.putNumber("Tag ID", limelight.getID());
-    SmartDashboard.putString("Botpose", Arrays.toString(limelight.getBotPose()));
-   
     
 
 

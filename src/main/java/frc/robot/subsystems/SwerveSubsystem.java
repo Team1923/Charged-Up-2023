@@ -5,7 +5,9 @@
 package frc.robot.subsystems;
 
 
+import frc.robot.interfaces.LimelightInterface;
 import frc.robot.interfaces.SwerveModule;
+import frc.robot.interfaces.LimelightInterface.Limelight;
 import frc.robot.Constants;
 import frc.robot.Constants.Swerve;
 import frc.robot.Constants.Swerve.Mod0;
@@ -130,6 +132,10 @@ public class SwerveSubsystem extends SubsystemBase {
         return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw()) : Rotation2d.fromDegrees(gyro.getYaw());
     }
 
+    public double getYawIEEE(){
+        return Math.IEEEremainder(getYaw().getDegrees(), 360);
+    }
+
 
     public void resetModulesToAbsolute(){
         for(SwerveModule mod : mSwerveMods){
@@ -138,7 +144,18 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void stop(){
-        
+        for(SwerveModule mod : mSwerveMods){
+            mod.stop();
+        }
+    }
+
+    public Limelight getCorrectLimelight(){
+        if(getYawIEEE() >= 0 && getYawIEEE() <= 180){
+            return Limelight.LEFT_LIMELIGHT;
+        }
+        else{
+            return Limelight.RIGHT_LIMELIGHT;
+        }
     }
 
 

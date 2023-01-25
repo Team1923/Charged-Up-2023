@@ -92,116 +92,120 @@ public class LimelightInterface extends SubsystemBase {
   }
 
   public boolean validTargets(Limelight limelight) {
-    if(limelight == Limelight.LEFT_LIMELIGHT){
-
-    }
-    if (getEntry("tv") == 1.0) {
+    if (getEntry("tv", limelight ) == 1.0) {
       return true;
     } else {
       return false;
     }
   }
 
-  public double getHorizontalOffset() { /** LL1: -27 degrees to 27 degrees */
-    return getEntry("tx");
+  public double getHorizontalOffset(Limelight limelight) { /** LL1: -27 degrees to 27 degrees */
+    return getEntry("tx", limelight);
   }
 
-  public double getVerticalOffset() { /** LL1: -20.5 degrees to 20.5 degrees */
-    return getEntry("ty");
+  public double getVerticalOffset(Limelight limelight) { /** LL1: -20.5 degrees to 20.5 degrees */
+    return getEntry("ty", limelight);
   }
 
-  public double getArea() { /** 0% of image to 100% of image */
-    return getEntry("ta");
+  public double getArea(Limelight limelight) { /** 0% of image to 100% of image */
+    return getEntry("ta", limelight);
   }
 
-  public double getSkew() { /** -90 degrees to 0 degrees */
-    return getEntry("ts");
+  public double getSkew(Limelight limelight) { /** -90 degrees to 0 degrees */
+    return getEntry("ts", limelight);
   }
 
-  public double getLatency() { /** The pipeline’s latency contribution (ms) Add at least 11ms for image capture latency. */
-    return getEntry("tl");
+  public double getLatency(Limelight limelight) { /** The pipeline’s latency contribution (ms) Add at least 11ms for image capture latency. */
+    return getEntry("tl", limelight);
   }
 
-  public double getColor() {
-    return getEntry("tc");
+  public double getColor(Limelight limelight) {
+    return getEntry("tc", limelight );
   }
 
-  public double getBoundingBoxShortLength() { /** Sidelength of shortest side of the fitted bounding box (pixels) */
-    return getEntry("tshort");
+  public double getBoundingBoxShortLength(Limelight limelight) { /** Sidelength of shortest side of the fitted bounding box (pixels) */
+    return getEntry("tshort", limelight);
   }
 
-  public double getBoundingBoxLongLength() { /** Sidelength of longest side of the fitted bounding box (pixels) */
-    return getEntry("tlong");
+  public double getBoundingBoxLongLength(Limelight limelight) { /** Sidelength of longest side of the fitted bounding box (pixels) */
+    return getEntry("tlong", limelight);
   }
 
-  public double thor() { /** Horizontal sidelength of the rough bounding box (0 - 320 pixels) */
-    return getEntry("tshort");
+  public double thor(Limelight limelight) { /** Horizontal sidelength of the rough bounding box (0 - 320 pixels) */
+    return getEntry("tshort", limelight);
   }
 
-  public double tvert() { /** Vertical sidelength of the rough bounding box (0 - 320 pixels) */
-    return getEntry("tlong");
+  public double tvert(Limelight limelight) { /** Vertical sidelength of the rough bounding box (0 - 320 pixels) */
+    return getEntry("tlong", limelight);
   }
 
-  public double getPipeline() { /** True active pipeline index of the camera (0 .. 9) */
-    return getEntry("getpipe");
+  public double getPipeline(Limelight limelight) { /** True active pipeline index of the camera (0 .. 9) */
+    return getEntry("getpipe", limelight);
   }
 
-  public double getID(){ // returns id of primary april tag
-    return getEntry("tid");
+  public double getID(Limelight limelight){ // returns id of primary april tag
+    return getEntry("tid", limelight);
   }
 
-  public double getClassID(){ // returns class id of primary neural detector result
-    return getEntry("tclass");
+  public double getClassID(Limelight limelight){ // returns class id of primary neural detector result
+    return getEntry("tclass", limelight);
   }
 
-  public double[] getCamtransformation(){ // returns translational and rotaional transformation of camera
-    return getEntryArray("camtran");
+  public double[] getCamtransformation(Limelight limelight){ // returns translational and rotaional transformation of camera
+    return getEntryArray("camtran", limelight);
   }
 
-  public double[] getBotPose(){ // does not work as of yet, returns pose as an array
-    return getEntryArray("botpose");
+  public double[] getBotPose(Limelight limelight){ // does not work as of yet, returns pose as an array
+    return getEntryArray("botpose", limelight);
   }
 
 
 
-  public void setLEDMode(ledMode mode) {
-    setEntry("ledMode", mode.state);
+  public void setLEDMode(ledMode mode, Limelight limelight) {
+    setEntry("ledMode", mode.state, limelight);
   }
 
-  public double getLEDMode() {
-    return getEntry("ledMode");
+  public double getLEDMode(Limelight limelight) {
+    return getEntry("ledMode", limelight);
   }
 
-  public boolean checkLimelight() {
-    if(getLEDMode() == 1) {
+  public boolean checkLimelight(Limelight limelight) {
+    if(getLEDMode(limelight) == 1) {
       return true;
     } else {
       return false;
     }
   }
 
-  public void setCamMode(camMode mode) {
-    setEntry("camMode", mode.state);
+  public void setCamMode(camMode mode, Limelight limelight) {
+    setEntry("camMode", mode.state, limelight);
   }
 
-  public void setPipeline(int pipeline) { /** True active pipeline index of the camera (0 .. 9) */
-    setEntry("pipeline", pipeline);
+  public void setPipeline(int pipeline, Limelight limelight) { /** True active pipeline index of the camera (0 .. 9) */
+    setEntry("pipeline", pipeline, limelight);
   }
 
-  public void setStreamingMode(streamingMode mode) { /** True active pipeline index of the camera (0 .. 9) */
-    setEntry("pipeline", mode.state);
+  public void setStreamingMode(streamingMode mode, Limelight limelight) { /** True active pipeline index of the camera (0 .. 9) */
+    setEntry("pipeline", mode.state, limelight);
   }
 
-  public void setSnapshots(boolean snapshot) {
+  public void setSnapshots(boolean snapshot, Limelight limelight) {
     if (snapshot) {
-      setEntry("snapshot", 1);
+      setEntry("snapshot", 1, limelight);
     } else {
-      setEntry("snapshot", 0);
+      setEntry("snapshot", 0, limelight);
     }
   } 
 
-  private static void setEntry(String key, int value) {
-    table.getEntry(key).setDouble(value);
+  private static void setEntry(String key, int value, Limelight limelight) {
+    if(limelight == Limelight.LEFT_LIMELIGHT){
+      leftLimelight.getEntry(key).setDouble(value);
+    }
+    else{
+      rightLimelight.getEntry(key).setDouble(value);
+
+    }
+    
   }
   
   private static double getEntry(String key, Limelight limelight) {
@@ -214,23 +218,29 @@ public class LimelightInterface extends SubsystemBase {
     
   }
 
-  private static double[] getEntryArray(String key) {
-    return table.getEntry(key).getDoubleArray(arr);
+  private static double[] getEntryArray(String key, Limelight limelight) {
+    if(limelight == Limelight.LEFT_LIMELIGHT){
+      return leftLimelight.getEntry(key).getDoubleArray(arr);
+    }
+    else{
+      return rightLimelight.getEntry(key).getDoubleArray(arr);
+    }
+
   }
 
   
 
   
 
-  public double distanceToTarget() {
+  public double distanceToTarget(Limelight limelight) {
     // Returns distance to target assuming 
-    return (target_height - limelight_height) /(Math.tan(Math.toRadians(limelight_mount_angle + (getVerticalOffset()))));
+    return (target_height - limelight_height) /(Math.tan(Math.toRadians(limelight_mount_angle + (getVerticalOffset(limelight)))));
 
 
   }
 
-  public Pose3d getRobotPose(){
-    double[] result  = getBotPose();
+  public Pose3d getRobotPose(Limelight limelight){
+    double[] result  = getBotPose(limelight);
     Translation3d tran3d = new Translation3d(result[0], result [1], result[2]);
     Rotation3d r3d = new Rotation3d(result[3], result[4], result[5]);
     Pose3d p3d = new Pose3d(tran3d, r3d);

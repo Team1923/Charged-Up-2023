@@ -6,19 +6,22 @@ package frc.robot.commands.Scoring;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.interfaces.LimelightInterface;
+import frc.robot.interfaces.LimelightInterface.Limelight;
 
 public class ChangePipelineCommand extends CommandBase {
   /** Creates a new ChangePipelineCommand. */
   int pipeid;
-  public ChangePipelineCommand(int id) {
+  Limelight limelight;
+  public ChangePipelineCommand(int id, Limelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.pipeid = id;
+    this.limelight = limelight;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    LimelightInterface.getInstance().setPipeline(pipeid);
+    LimelightInterface.getInstance().setPipeline(pipeid, limelight);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -28,7 +31,7 @@ public class ChangePipelineCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    LimelightInterface.getInstance().setPipeline(0);
+    LimelightInterface.getInstance().setPipeline(0, limelight);
   }
 
   // Returns true when the command should end.
