@@ -14,8 +14,7 @@ public class ArmToPositionCartesian extends CommandBase {
   private ArmSubsystem armSubsystem;
   private double xPos;
   private double yPos;
-  private double counter = 0;
-  private double counterThreshold = 5;
+
   
   public ArmToPositionCartesian(ArmSubsystem a, double x, double y) {
     armSubsystem = a;
@@ -27,7 +26,6 @@ public class ArmToPositionCartesian extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    counter = 0;
     SmartDashboard.putBoolean("Is starting", true);
     System.out.println("Running");
     setAngle();
@@ -51,20 +49,6 @@ public class ArmToPositionCartesian extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    /*double proximalError = Math.abs(armSubsystem.getShoulderPosition() - armSubsystem.getShoulderGoal());
-    double distalError = Math.abs(armSubsystem.getElbowPosition() - armSubsystem.getElbowGoal());
-
-    SmartDashboard.putNumber("proximal error", proximalError);
-    SmartDashboard.putNumber("distal error", distalError);
-
-    if(Math.abs(armSubsystem.getShoulderPosition() - armSubsystem.getShoulderGoal()) < 0.6 
-    && Math.abs(armSubsystem.getElbowPosition() - armSubsystem.getElbowGoal()) < 0.6){
-      counter++;
-    }
-    else{
-      counter = 0;
-    }
-    return counter >= counterThreshold;*/
     return false;
   }
 

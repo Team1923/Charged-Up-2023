@@ -15,12 +15,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.Swerve;
-import frc.robot.commands.SwerveCommands.AlignScoringCommand;
 import frc.robot.interfaces.LimelightInterface;
 import frc.robot.interfaces.LimelightInterface.Limelight;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -65,9 +63,9 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
   }
   
   public Trajectory generateTrajectory(){
-    Pose2d center = new Pose2d(0, 0, null);
-    Pose2d left = new Pose2d(0, -0.5, null);
-    Pose2d right = new Pose2d(0, 0.5, null);
+    Pose2d center = new Pose2d(0, 0, new Rotation2d(0));
+    Pose2d left = new Pose2d(0, -0.5, new Rotation2d(0));
+    Pose2d right = new Pose2d(0, 0.5, new Rotation2d(0));
 
     Limelight limelight = swerve.getCorrectLimelight();
     Pose3d currentRobotPose = LimelightInterface.getInstance().getRobotPose(limelight);
