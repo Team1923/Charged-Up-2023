@@ -36,6 +36,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public Pigeon2 gyro = new Pigeon2(Swerve.pigeonID);
+    private Field2d field2D = new Field2d();
 
 
     public SwerveSubsystem() {
@@ -59,6 +60,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), getModulePositions());
+
+        SmartDashboard.putData("Field", field2D);
     }
 
 
@@ -127,6 +130,10 @@ public class SwerveSubsystem extends SubsystemBase {
         gyro.setYaw(0);
     }
 
+    public void zeroGyro(double yaw) {
+        gyro.setYaw(yaw);
+    }
+
 
     public Rotation2d getYaw() {
         return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw()) : Rotation2d.fromDegrees(gyro.getYaw());
@@ -170,8 +177,10 @@ public class SwerveSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
         }
 
-
+        
         SmartDashboard.putString("heading", getYaw().toString());
+
+        field2D.setRobotPose(getPose());
     }
 }
 

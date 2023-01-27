@@ -52,6 +52,21 @@ public final class Constants {
     public static final double falconMaxRPM = 6380;
   }
 
+  public final class GamePieceColorConstants{
+    public static final int CONERED = 177;
+    public static final int CONEGREEN = 166;
+    public static final int CONEBLUE = 12;
+
+    public static final int CUBERED = 151;
+    public static final int CUBEGREEN = 23;
+    public static final int CUBEBLUE = 160;
+  }
+
+  public final class DigitalIDConstants{
+    public static final int DigitalID = 0;//Change later
+  }
+
+
   public final class ArmConstants{
     public static final int shoulderMotorID = 18; //needs to be changed
     public static final int elbowMotorID = 17; //needs to be changed
@@ -115,7 +130,7 @@ public final class Constants {
       /* Drivetrain Constants */
       public static final double trackWidth = Units.inchesToMeters(18.75); //TODO: This must be tuned to specific robot
       public static final double wheelBase = Units.inchesToMeters(18.75); //TODO: This must be tuned to specific robot
-      public static final double wheelCircumference = chosenModule.wheelCircumference;
+      public static final double wheelCircumference = chosenModule.wheelCircumference *.95;
 
 
       /* Swerve Kinematics
@@ -241,12 +256,12 @@ public final class Constants {
   public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
       public static final double kMaxSpeedMetersPerSecond = 3;
       public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-      public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-      public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+      public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI * 2;
+      public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI * 2;
  
-      public static final double kPXController = 1;
-      public static final double kPYController = 1;
-      public static final double kPThetaController = 1;
+      public static final double kPXController = 2;
+      public static final double kPYController = 2;
+      public static final double kPThetaController = 8;
  
       /* Constraint for the motion profilied robot angle controller */
       public static final TrapezoidProfile.Constraints kThetaControllerConstraints =

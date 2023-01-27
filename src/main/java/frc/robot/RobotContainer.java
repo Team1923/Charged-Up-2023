@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import frc.robot.commands.Autos.McDonaldsPath;
 import frc.robot.commands.Autos.TestPath;
 import frc.robot.commands.Scoring.Test;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
@@ -63,6 +63,7 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         runAuto.toggleOnTrue(new TestPath(s_Swerve));
+        bButton.toggleOnTrue(new McDonaldsPath(s_Swerve));
         SmartDashboard.putData(new Test());
         
     }

@@ -34,7 +34,8 @@ public class AutoFromPathPlanner extends SequentialCommandGroup {
     if(endStationary){
     // Run path following command, then stop at the end.
       addCommands(
-         new InstantCommand(() -> SmartDashboard.putString("AutoPath", pathName)),
+          new InstantCommand(() -> thetaController.reset(0)),
+          new InstantCommand(() -> SmartDashboard.putString("AutoPath", pathName)),
           swerveControllerCommand, 
           new InstantCommand(() -> drive.stop()));
     }

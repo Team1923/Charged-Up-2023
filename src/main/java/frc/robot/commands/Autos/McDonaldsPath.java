@@ -6,25 +6,28 @@ package frc.robot.commands.Autos;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.PathPlannerUtils.AutoFromPathPlanner;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TestPath extends SequentialCommandGroup {
+public class McDonaldsPath extends SequentialCommandGroup {
   /** Creates a new TestPath. */
-  public TestPath(SwerveSubsystem swerve) {
+  public McDonaldsPath(SwerveSubsystem swerve) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
-    final AutoFromPathPlanner testPath = new AutoFromPathPlanner(swerve, "TestPath", 2.5, true);
+    final AutoFromPathPlanner mcd1 = new AutoFromPathPlanner(swerve, "McDonalds", 2.5, false);
+    final AutoFromPathPlanner mcd2 = new AutoFromPathPlanner(swerve, "McDonalds2", 2.5, true);
 
     addCommands(
-      new InstantCommand(() -> swerve.resetOdometry(testPath.getInitialPose())),
-      new InstantCommand(() -> swerve.zeroGyro(testPath.getInitialPose().getRotation().getDegrees())),
-      testPath
+      new InstantCommand(() -> swerve.resetOdometry(mcd1.getInitialPose())),
+      new InstantCommand(() -> swerve.zeroGyro(mcd1.getInitialPose().getRotation().getDegrees())),
+      mcd1,
+      new InstantCommand(() -> swerve.resetOdometry(mcd2.getInitialPose())),
+      new InstantCommand(() -> swerve.zeroGyro(mcd2.getInitialPose().getRotation().getDegrees())),
+      mcd2
     );
   }
 }
