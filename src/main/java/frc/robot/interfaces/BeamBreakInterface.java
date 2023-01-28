@@ -34,4 +34,3 @@ public static synchronized BeamBreakInterface getInstance() {
 
 }
 
-

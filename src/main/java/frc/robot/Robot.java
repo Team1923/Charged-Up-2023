@@ -19,11 +19,15 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.MKILib.MKIPicoColorSensor;
+import frc.robot.interfaces.ColorSensorInterface;
 import frc.robot.interfaces.LimelightInterface;
 import frc.robot.interfaces.LimelightInterfaceCopy;
 import frc.robot.interfaces.LimelightInterface.Limelight;
@@ -41,6 +45,11 @@ public class Robot extends LoggedRobot {
 
   public static CTREConfigs ctreConfigs = new CTREConfigs();
   private LimelightInterfaceCopy lInterface = new LimelightInterfaceCopy();
+
+  ColorSensorInterface c = ColorSensorInterface.getInstance();
+
+  AnalogInput throughBEncoder = new AnalogInput(0);
+  
 
 
   /**
@@ -144,6 +153,16 @@ if (true) {//isReal()) {
     // finished or interrupted commands, and running subsystem periodic() methods.
     // This must be called from the robot's periodic block in order for anything in
     // the Command-based framework to work.
+
+
+    SmartDashboard.putNumber("RedToGreen ", 1.0*c.GetRed()/c.GetGreen());
+    SmartDashboard.putNumber("BlueToGreen ", 1.0* c.GetBlue()/c.GetGreen());
+    SmartDashboard.putNumber("RedToBlue ", 1.0*c.GetRed()/c.GetBlue());
+    SmartDashboard.putBoolean("If Cube", c.isCube());
+    SmartDashboard.putBoolean("If Cone", c.isCone());
+    SmartDashboard.putString("Game Piece", c.getGamePiece().toString());
+    SmartDashboard.putNumber("Encoder Stuff",throughBEncoder.getVoltage());
+    //SmartDashboard.putString("GamePieceType", c.getGamePiece().toString());
     CommandScheduler.getInstance().run();
 
     
@@ -198,6 +217,10 @@ if (true) {//isReal()) {
   @Override
   public void teleopPeriodic() {
     //Drive();
+  
+    
+  
+
   }
 
   /** This function is called once when test mode is enabled. */
