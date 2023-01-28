@@ -8,11 +8,14 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.util.PathPlannerUtils.PathPlannerTrajectory.PathPlannerState;
 
 import java.util.function.Consumer;
@@ -159,7 +162,20 @@ public class AutoSwerveController extends CommandBase {
     SmartDashboard.putNumber("Desired Auto Vel", desiredState.velocityMetersPerSecond);
 
     var targetChassisSpeeds = m_controller.calculate(m_pose.get(), desiredState, desiredState.holonomicRotation);
-    var targetModuleStates = m_kinematics.toSwerveModuleStates(targetChassisSpeeds);
+    /*
+     * 254 suggestion for drifting. 
+     * REMOVE THE BELOW LINES IF CAUSING ISSUES.
+     */
+
+    Pose2d robot_pose_vel = new Pose2d(targetChassisSpeeds.vxMetersPerSecond * AutoConstants.looperUpdateTime, 
+      targetChassisSpeeds.vyMetersPerSecond * AutoConstants.looperUpdateTime, 
+      Rotation2d.fromRadians(targetChassisSpeeds.omegaRadiansPerSecond * AutoConstants.looperUpdateTime));
+    Twist2d twistVel = new Twist2d(robot_pose_vel.getX(), robot_pose_vel.getY(), robot_pose_vel.getRotation().getRadians());
+    var newChassisSpeeds = new ChassisSpeeds(twistVel.dx / AutoConstants.looperUpdateTime, 
+      twistVel.dy / AutoConstants.looperUpdateTime, 
+      twistVel.dtheta / AutoConstants.looperUpdateTime);
+
+    var targetModuleStates = m_kinematics.toSwerveModuleStates(newChassisSpeeds); //CHANGE BACK TO ORIG CHASSIS SPEEDS IF FAILURE
 
     SmartDashboard.putNumber("Auto Target Vx", targetChassisSpeeds.vxMetersPerSecond);
     SmartDashboard.putNumber("Auto Target Vy", targetChassisSpeeds.vyMetersPerSecond);
