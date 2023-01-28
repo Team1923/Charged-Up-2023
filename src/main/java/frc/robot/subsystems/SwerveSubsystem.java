@@ -135,7 +135,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public double getYawIEEE(){
-        return Math.IEEEremainder(getYaw().getDegrees(), 360);
+        return Math.IEEEremainder(gyro.getYaw(), 360);
     }
 
 
@@ -176,6 +176,9 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putString("heading", getYaw().toString());
 
         field2D.setRobotPose(getPose());
+
+        SmartDashboard.putString("CORRECT LIMELIGHT", getCorrectLimelight().toString());
+        SmartDashboard.putNumber("YAW IEEE", getYawIEEE());
     }
 }
 

@@ -92,14 +92,14 @@ public final class Constants {
     public static final double elbowTicksToRad = (2 * Math.PI) / (FalconConstants.ticksPerRev * elbowGearRatio);
     public static final double elbowRadsToTicks = 1 / shoulderTicksToRad;
 
-    public static final double shoulderMass = 2;
-    public static final double elbowMass = 0.454;
+    public static final double shoulderMass = 1.81437;
+    public static final double elbowMass = 0.907185;
 
-    public static final double shoulderCGDistance = 0.279;
-    public static final double elbowCGDistance = 0.305;
+    public static final double shoulderCGDistance = 0.7112;
+    public static final double elbowCGDistance = 0.5715;
 
-    public static final double lengthOfShoulder = 0.889;
-    public static final double lengthOfElbow = 0.61;
+    public static final double lengthOfShoulder = 1.0922;
+    public static final double lengthOfElbow = 0.83185;
 
     public static final double maxShoulderVel = 35000;
     public static final double maxShoulderAccel = 20000;
