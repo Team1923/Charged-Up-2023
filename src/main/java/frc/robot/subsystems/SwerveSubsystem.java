@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 
+import frc.robot.interfaces.LimelightInterface;
+import frc.robot.interfaces.RightLimelightInterface;
 import frc.robot.interfaces.SwerveModule;
 import frc.robot.interfaces.LimelightInterface.Limelight;
 import frc.robot.Constants;
@@ -20,6 +22,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -179,6 +184,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
         SmartDashboard.putString("CORRECT LIMELIGHT", getCorrectLimelight().toString());
         SmartDashboard.putNumber("YAW IEEE", getYawIEEE());
+        SmartDashboard.putNumber("left limelight botpose", RightLimelightInterface.getInstance().getArea());
     }
 }
 

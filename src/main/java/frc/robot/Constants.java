@@ -68,8 +68,8 @@ public final class Constants {
 
 
   public final class ArmConstants{
-    public static final int shoulderMotorID = 18; //needs to be changed
-    public static final int elbowMotorID = 17; //needs to be changed
+    public static final int shoulderMotorID = 14; //needs to be changed
+    public static final int elbowMotorID = 13; //needs to be changed
 
     public static final double shoulderkP = 0.1;
     public static final double shoulderkI = 0;
@@ -84,11 +84,11 @@ public final class Constants {
     public static final double kShoulderOffsetRads = 0;
     public static final double kElbowOffsetRads = 0;
 
-    public static final double shoulderGearRatio = 100 * 16 / 16;
+    public static final double shoulderGearRatio = 180;
     public static final double shoulderTicksToRad = (2 * Math.PI) / (FalconConstants.ticksPerRev * shoulderGearRatio);
     public static final double shoulderRadsToTicks = 1 / shoulderTicksToRad;
 
-    public static final double elbowGearRatio = 100 * 16 / 16;
+    public static final double elbowGearRatio = 180;
     public static final double elbowTicksToRad = (2 * Math.PI) / (FalconConstants.ticksPerRev * elbowGearRatio);
     public static final double elbowRadsToTicks = 1 / shoulderTicksToRad;
 
@@ -105,13 +105,17 @@ public final class Constants {
     public static final double maxShoulderAccel = 20000;
 
     public static final double maxElbowVel = 2*35000;
-    public static final double maxElbowAccel = 4*20000;
+    public static final double maxElbowAccel = 2 *20000;
 
     public static final double maxElbowGravityConstant = 0;
-    public static final double maxShoulderGravityConstant = 0.06;
+    //THE NUMERICAL GRAVITY CONSTANT IS DIVIDED BY COS(21 degrees)
+    public static final double maxShoulderGravityConstant = 0.171383199;
 
     public static final double elbowHome = -Math.PI/2;
     public static final double shoulderHome = Math.PI/2;
+
+    public static final double shoulderCobra = 110 * Math.PI / 180;
+    public static final double elbowCobra = 0;
 
   }
 
@@ -347,6 +351,16 @@ public final class Constants {
     * Math.pow(.1, 2);
 }
 
+public enum ScoringHeights {
+  LOW,
+  MID,
+  HIGH
+}
+public enum ScoringLocations{
+  LEFT,
+  CENTER,
+  RIGHT
+}
  
 
 }

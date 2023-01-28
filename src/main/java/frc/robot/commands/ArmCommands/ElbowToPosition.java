@@ -6,6 +6,7 @@ package frc.robot.commands.ArmCommands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 public class ElbowToPosition extends CommandBase {
@@ -33,7 +34,7 @@ public class ElbowToPosition extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     SmartDashboard.putBoolean("End Command", true);
-    armSubsystem.setElbowGoal(0);
+    armSubsystem.setElbowGoal(ArmConstants.elbowHome);
   }
 
   // Returns true when the command should end.

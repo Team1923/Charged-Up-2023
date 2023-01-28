@@ -4,7 +4,6 @@
 
 package frc.robot.commands.ArmCommands;
 
-
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -12,19 +11,14 @@ import frc.robot.subsystems.ArmSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SequentialArmToPosition extends SequentialCommandGroup {
-  /** Creates a new SequentialArmToPosition. */
-  public SequentialArmToPosition(ArmSubsystem armSubsystem) {
+public class ArmOut extends SequentialCommandGroup {
+  /** Creates a new ArmOut. */
+  public ArmOut(ArmSubsystem arm) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ArmToPositionCartesian(armSubsystem, 1, 1),
-      new ArmToPositionCartesian(armSubsystem, -1, 1),
-      new ArmToPositionCartesian(armSubsystem, -.5, 1),
-      new ArmToPositionCartesian(armSubsystem, 0.5, 1),
-      new ArmToPositionCartesian(armSubsystem, -0.75, 0.75),
-      new ArmToPosition(armSubsystem, ArmConstants.shoulderHome, ArmConstants.elbowHome)
-
+      new ArmToPositionExits(arm, ArmConstants.shoulderCobra, ArmConstants.elbowCobra, 0,0, true),
+      new ArmToPositionExits(arm, Math.toRadians(50), Math.toRadians(10), 0, 0, true)
     );
   }
 }

@@ -4,6 +4,8 @@
 
 package frc.robot.commands.ArmCommands;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
@@ -14,24 +16,35 @@ public class ArmToPosition extends CommandBase {
   private ArmSubsystem armSubsystem;
   private double shoulderPosition;
   private double elbowPosition;
+  private BooleanSupplier booleanSupplier;
   
-  public ArmToPosition(ArmSubsystem a, double sPosition, double ePosition) {
+  public ArmToPosition(ArmSubsystem a, double sPosition, double ePosition, BooleanSupplier supplier) {
     armSubsystem = a;
     shoulderPosition = sPosition;
     elbowPosition = ePosition;
+    booleanSupplier = supplier;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    armSubsystem.setElbowGoal(elbowPosition);
-    armSubsystem.setShoulderGoal(shoulderPosition);
+    // armSubsystem.setElbowGoal(elbowPosition);
+    // armSubsystem.setShoulderGoal(shoulderPosition);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if(booleanSupplier.getAsBoolean()){
+      armSubsystem.setElbowGoal(elbowPosition);
+      armSubsystem.setShoulderGoal(shoulderPosition);
+    }
+    else{
+      armSubsystem.setElbowGoal(ArmConstants.elbowCobra);
+      armSubsystem.setShoulderGoal(ArmConstants.shoulderCobra);
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override

@@ -23,10 +23,8 @@ public class McDonaldsPath extends SequentialCommandGroup {
 
     addCommands(
       new InstantCommand(() -> swerve.resetOdometry(mcd1.getInitialPose())),
-      new InstantCommand(() -> swerve.zeroGyro(mcd1.getInitialPose().getRotation().getDegrees())),
       mcd1,
       new InstantCommand(() -> swerve.resetOdometry(mcd2.getInitialPose())),
-      new InstantCommand(() -> swerve.zeroGyro(mcd2.getInitialPose().getRotation().getDegrees())),
       mcd2
     );
   }

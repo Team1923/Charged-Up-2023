@@ -1,16 +1,15 @@
 package frc.robot;
 
 
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Autos.McDonaldsPath;
+import frc.robot.commands.ArmCommands.ArmDefaultCommand;
 import frc.robot.commands.Autos.TestPath;
-import frc.robot.commands.Scoring.Test;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.subsystems.*;
 
@@ -35,12 +34,16 @@ public class RobotContainer {
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-    private final JoystickButton runAuto = new JoystickButton(driver, XboxController.Button.kA.value);
+    private final JoystickButton aButton = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
+    private final JoystickButton xButton = new JoystickButton(driver, XboxController.Button.kX.value);
+    private final JoystickButton yButton = new JoystickButton(driver, XboxController.Button.kY.value);
+
 
 
     /* Subsystems */
     private final SwerveSubsystem s_Swerve = new SwerveSubsystem();
+    public final ArmSubsystem armSubsystem = new ArmSubsystem();
 
 
 
@@ -62,10 +65,12 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        runAuto.toggleOnTrue(new TestPath(s_Swerve));
-        bButton.toggleOnTrue(new McDonaldsPath(s_Swerve));
-        SmartDashboard.putData(new Test());
-        
+        aButton.toggleOnTrue(new TestPath(s_Swerve));
+        bButton.toggleOnTrue(new TestPath(s_Swerve));
+        // SmartDashboard.putData(new Test());
+        // xButton.whileTrue(new ArmOut(armSubsystem));
+        // xButton.onFalse(new ArmIn(armSubsystem));
+
     }
 
     private void setDefaultCommands(){
@@ -78,6 +83,8 @@ public class RobotContainer {
             () -> robotCentric.getAsBoolean()
         )
     );
+
+       armSubsystem.setDefaultCommand(new ArmDefaultCommand(armSubsystem));
     }
 
 
@@ -88,7 +95,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new Test();
+        return null;
     }
 }
 

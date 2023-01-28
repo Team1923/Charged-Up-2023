@@ -34,7 +34,7 @@ public class AutoFromPathPlanner extends SequentialCommandGroup {
     if(endStationary){
     // Run path following command, then stop at the end.
       addCommands(
-          new InstantCommand(() -> thetaController.reset(0)),
+          new InstantCommand(() -> thetaController.reset(m_trajectory.getInitialPose().getRotation().getRadians())),
           new InstantCommand(() -> SmartDashboard.putString("AutoPath", pathName)),
           swerveControllerCommand, 
           new InstantCommand(() -> drive.stop()));
@@ -52,6 +52,15 @@ public class AutoFromPathPlanner extends SequentialCommandGroup {
   public Pose2d getInitialPose() {
     return new Pose2d(m_trajectory.getInitialState().poseMeters.getX(),
         m_trajectory.getInitialState().poseMeters.getY(),
-        m_trajectory.getInitialState().holonomicRotation.times(-1.0));
+        m_trajectory.getInitialState().holonomicRotation.times(1.0));
+  }
+
+  public void instantiate(AutoSwerveController a, SwerveSubsystem drive, ProfiledPIDController thetaController) {
+    a = new AutoSwerveController(m_trajectory, drive::getPose,
+    frc.robot.Constants.Swerve.swerveKinematics,
+
+    // Position controllers
+    new PIDController(AutoConstants.kPXController, 0, 0), new PIDController(AutoConstants.kPYController, 0, 0),
+    thetaController, drive::setModuleStates, drive);
   }
 }

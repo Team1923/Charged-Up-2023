@@ -7,8 +7,11 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.FalconConstants;
@@ -36,8 +39,6 @@ public class ArmSubsystem extends SubsystemBase {
     elbowMotor.config_kI(0, ArmConstants.elbowkI, FalconConstants.timeoutMs);
     elbowMotor.config_kD(0, ArmConstants.elbowkD, FalconConstants.timeoutMs);
 
-    resetShoulderPosition(Math.PI/2);
-    resetElbowPosition(-Math.PI/2);
 
     goalShoulderPosition = ArmConstants.shoulderHome;
     goalElbowPosition = ArmConstants.elbowHome;
@@ -47,9 +48,11 @@ public class ArmSubsystem extends SubsystemBase {
     elbowMotor.configMotionCruiseVelocity(ArmConstants.maxElbowVel);
     elbowMotor.configMotionAcceleration(ArmConstants.maxElbowAccel);
 
-    shoulderMotor.setNeutralMode(NeutralMode.Coast);
-    elbowMotor.setNeutralMode(NeutralMode.Coast);
+    shoulderMotor.setNeutralMode(NeutralMode.Brake);
+    elbowMotor.setNeutralMode(NeutralMode.Brake);
 
+    resetShoulderPosition(Math.PI/2);
+    resetElbowPosition(-Math.PI/2);
   }
 
   public void resetShoulderPosition(double setPoint){
@@ -57,7 +60,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void resetElbowPosition(double setPoint){
-    elbowMotor.setSelectedSensorPosition(-setPoint * ArmConstants.shoulderRadsToTicks);
+    elbowMotor.setSelectedSensorPosition(setPoint * ArmConstants.shoulderRadsToTicks);
   }
 
   public void resetShoulderEncoders(){
@@ -81,7 +84,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void setElbowPosition(){
-    elbowMotor.set(ControlMode.MotionMagic, ((-getElbowGoal()-((Math.PI/2)-getShoulderGoal())) * ArmConstants.elbowRadsToTicks), DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
+    elbowMotor.set(ControlMode.MotionMagic, getElbowGoal() * ArmConstants.elbowRadsToTicks, DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
   }
 
 
@@ -114,7 +117,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getElbowPosition(){
-    return (-elbowMotor.getSelectedSensorPosition() * ArmConstants.elbowTicksToRad) + ArmConstants.kElbowOffsetRads;
+    return (elbowMotor.getSelectedSensorPosition() * ArmConstants.elbowTicksToRad) + ArmConstants.kElbowOffsetRads;
   }
 
 
@@ -177,6 +180,16 @@ public class ArmSubsystem extends SubsystemBase {
 
     double[] conv = {x,y};
     return conv;
+  }
+
+  public void setCoast(){
+    elbowMotor.setNeutralMode(NeutralMode.Coast);
+    shoulderMotor.setNeutralMode(NeutralMode.Coast);
+  }
+
+  public void setBrake(){
+    elbowMotor.setNeutralMode(NeutralMode.Brake);
+    shoulderMotor.setNeutralMode(NeutralMode.Brake);
   }
 
 
