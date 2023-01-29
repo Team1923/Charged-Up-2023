@@ -5,10 +5,9 @@
 package frc.robot.subsystems;
 
 
-import frc.robot.interfaces.LimelightInterface;
 import frc.robot.interfaces.RightLimelightInterface;
 import frc.robot.interfaces.SwerveModule;
-import frc.robot.interfaces.LimelightInterface.Limelight;
+import frc.robot.interfaces.BetterLimelightInterface.SpecificLimelight;
 import frc.robot.Constants;
 import frc.robot.Constants.Swerve;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -156,12 +155,12 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
-    public Limelight getCorrectLimelight(){
+    public SpecificLimelight getCorrectLimelight(){
         if(getYawIEEE() >= 0 && getYawIEEE() <= 180){
-            return Limelight.LEFT_LIMELIGHT;
+            return SpecificLimelight.LEFT_LIMELIGHT;
         }
         else{
-            return Limelight.RIGHT_LIMELIGHT;
+            return SpecificLimelight.RIGHT_LIMELIGHT;
         }
     }
 

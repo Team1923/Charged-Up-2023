@@ -19,8 +19,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.Swerve;
-import frc.robot.interfaces.LimelightInterface;
-import frc.robot.interfaces.LimelightInterface.Limelight;
+import frc.robot.interfaces.BetterLimelightInterface;
+import frc.robot.interfaces.BetterLimelightInterface.SpecificLimelight;
 import frc.robot.subsystems.SwerveSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -67,12 +67,12 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
     Pose2d left = new Pose2d(0, -0.5, new Rotation2d(0));
     Pose2d right = new Pose2d(0, 0.5, new Rotation2d(0));
 
-    Limelight limelight = swerve.getCorrectLimelight();
-    Pose3d currentRobotPose = LimelightInterface.getInstance().getRobotPose(limelight);
+    SpecificLimelight limelight = swerve.getCorrectLimelight();
+    Pose3d currentRobotPose = BetterLimelightInterface.getInstance().robotPose3d(limelight);
     double robotX = 0;
     double robotY = 0;
     /* rotation */
-    if(limelight == Limelight.LEFT_LIMELIGHT){
+    if(limelight == SpecificLimelight.LEFT_LIMELIGHT){
       robotX = -currentRobotPose.getY();
       robotY = currentRobotPose.getX();
     }
