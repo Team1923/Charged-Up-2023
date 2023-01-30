@@ -28,9 +28,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.MKILib.MKIPicoColorSensor;
 import frc.robot.interfaces.ColorSensorInterface;
-import frc.robot.interfaces.LimelightInterface;
-import frc.robot.interfaces.LimelightInterfaceCopy;
-import frc.robot.interfaces.LimelightInterface.Limelight;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -44,7 +41,6 @@ public class Robot extends LoggedRobot {
   private RobotContainer robotContainer;
 
   public static CTREConfigs ctreConfigs = new CTREConfigs();
-  private LimelightInterfaceCopy lInterface = new LimelightInterfaceCopy();
 
   ColorSensorInterface c = ColorSensorInterface.getInstance();
 
@@ -166,7 +162,6 @@ if (true) {//isReal()) {
     CommandScheduler.getInstance().run();
 
     
-    SmartDashboard.putNumber("area test", LimelightInterfaceCopy.getInstance().getArea());
     
   }
 
