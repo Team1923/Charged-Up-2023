@@ -116,24 +116,8 @@ if (true) {//isReal()) {
     }
 
     // Start AdvantageKit logger
-    logger.start();
+    //logger.start();
     
-    // leftdrive1.configFactoryDefault();
-    // leftdrive2.configFactoryDefault();
-    // rightdrive1.configFactoryDefault();
-    // rightdrive2.configFactoryDefault();
-    // leftdriveprimary.configFactoryDefault();
-    // rightdriveprimary.configFactoryDefault();
-
-
-    // leftdrive1.follow(leftdriveprimary);
-    // leftdrive2.follow(leftdriveprimary);
-    // rightdrive1.follow(rightdriveprimary);
-    // rightdrive2.follow(rightdriveprimary);
-
-    // leftdriveprimary.setInverted(InvertType.None);
-    // leftdrive1.setInverted(InvertType.FollowMaster);
-    // leftdrive2.setInverted(InvertType.FollowMaster);
 
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
@@ -151,13 +135,13 @@ if (true) {//isReal()) {
     // the Command-based framework to work.
 
 
-    SmartDashboard.putNumber("RedToGreen ", 1.0*c.GetRed()/c.GetGreen());
-    SmartDashboard.putNumber("BlueToGreen ", 1.0* c.GetBlue()/c.GetGreen());
-    SmartDashboard.putNumber("RedToBlue ", 1.0*c.GetRed()/c.GetBlue());
-    SmartDashboard.putBoolean("If Cube", c.isCube());
-    SmartDashboard.putBoolean("If Cone", c.isCone());
-    SmartDashboard.putString("Game Piece", c.getGamePiece().toString());
-    SmartDashboard.putNumber("Encoder Stuff",throughBEncoder.getVoltage());
+    // SmartDashboard.putNumber("RedToGreen ", 1.0*c.GetRed()/c.GetGreen());
+    // SmartDashboard.putNumber("BlueToGreen ", 1.0* c.GetBlue()/c.GetGreen());
+    // SmartDashboard.putNumber("RedToBlue ", 1.0*c.GetRed()/c.GetBlue());
+    // SmartDashboard.putBoolean("If Cube", c.isCube());
+    // SmartDashboard.putBoolean("If Cone", c.isCone());
+    // SmartDashboard.putString("Game Piece", c.getGamePiece().toString());
+    // SmartDashboard.putNumber("Encoder Stuff",throughBEncoder.getVoltage());
     //SmartDashboard.putString("GamePieceType", c.getGamePiece().toString());
     CommandScheduler.getInstance().run();
 

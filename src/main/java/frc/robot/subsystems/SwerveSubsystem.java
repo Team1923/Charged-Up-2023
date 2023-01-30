@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 
+import frc.robot.interfaces.BetterLimelightInterface;
 import frc.robot.interfaces.RightLimelightInterface;
 import frc.robot.interfaces.SwerveModule;
 import frc.robot.interfaces.BetterLimelightInterface.SpecificLimelight;
@@ -183,7 +184,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
         SmartDashboard.putString("CORRECT LIMELIGHT", getCorrectLimelight().toString());
         SmartDashboard.putNumber("YAW IEEE", getYawIEEE());
-        SmartDashboard.putNumber("left limelight botpose", RightLimelightInterface.getInstance().getArea());
+        SmartDashboard.putNumber("left limelight botpose", BetterLimelightInterface.getInstance().getTargetArea(getCorrectLimelight()));
     }
 }
 
