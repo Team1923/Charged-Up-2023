@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmCommands.ArmDefaultCommand;
 import frc.robot.commands.Autos.TestPath;
+import frc.robot.commands.Scoring.ManipulatorDefaultCommand;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.subsystems.*;
 
@@ -44,6 +45,8 @@ public class RobotContainer {
     /* Subsystems */
     private final SwerveSubsystem s_Swerve = new SwerveSubsystem();
     public final ArmSubsystem armSubsystem = new ArmSubsystem();
+    private final Manipulator gripper = new Manipulator();
+
 
 
 
@@ -85,6 +88,7 @@ public class RobotContainer {
     );
 
        armSubsystem.setDefaultCommand(new ArmDefaultCommand(armSubsystem));
+       gripper.setDefaultCommand(new ManipulatorDefaultCommand(gripper));
     }
 
 
