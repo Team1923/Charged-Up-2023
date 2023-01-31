@@ -80,7 +80,7 @@ public class StateHandler {
 
     }
 
-    public boolean getManipulator() {
+    public boolean getResetManipulator() {
         return resetManipulator;
     }
 
