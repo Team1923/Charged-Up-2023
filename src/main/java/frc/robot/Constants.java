@@ -96,9 +96,6 @@ public final class Constants {
     //THE NUMERICAL GRAVITY CONSTANT IS DIVIDED BY COS(21 degrees)
     public static final double maxShoulderGravityConstant = 0.171383199;
 
-    public static final double elbowHome = -Math.PI/2;
-    public static final double shoulderHome = Math.PI/2;
-
     public static final double shoulderCobra = 110 * Math.PI / 180;
     public static final double elbowCobra = 0;
 
@@ -356,16 +353,7 @@ public final class Constants {
     * Math.pow(.1, 2);
 }
 
-public enum ScoringHeights {
-  LOW,
-  MID,
-  HIGH
-}
-public enum ScoringLocations{
-  LEFT,
-  CENTER,
-  RIGHT
-}
+
  
 
 }

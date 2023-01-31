@@ -1,4 +1,4 @@
-package frc.robot.MKILib;
+package frc.robot.interfaces;
 
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicBoolean;

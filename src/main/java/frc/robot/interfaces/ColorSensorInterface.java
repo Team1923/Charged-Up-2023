@@ -8,8 +8,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.GamePieceColorConstants;
-import frc.robot.MKILib.MKIPicoColorSensor;
-import frc.robot.MKILib.MKIPicoColorSensor.RawColor;
+import frc.robot.interfaces.MKIPicoColorSensor.RawColor;
 
 public class ColorSensorInterface extends SubsystemBase {
 

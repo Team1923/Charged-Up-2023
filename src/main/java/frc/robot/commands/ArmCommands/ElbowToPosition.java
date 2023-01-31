@@ -6,7 +6,6 @@ package frc.robot.commands.ArmCommands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 public class ElbowToPosition extends CommandBase {
@@ -17,24 +16,25 @@ public class ElbowToPosition extends CommandBase {
   public ElbowToPosition(ArmSubsystem a, double position) {
     armSubsystem = a;
     this.position = position;
+    addRequirements(a);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    armSubsystem.setElbowGoal(position);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    armSubsystem.setElbowPosition(position);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     SmartDashboard.putBoolean("End Command", true);
-    armSubsystem.setElbowGoal(ArmConstants.elbowHome);
   }
 
   // Returns true when the command should end.

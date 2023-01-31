@@ -6,6 +6,7 @@ package frc.robot.commands.ArmCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.util.StateHandler;
 
 public class ArmDefaultCommand extends CommandBase {
   /** Creates a new ArmDefaultCommand. */
@@ -24,8 +25,8 @@ public class ArmDefaultCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    armSubsystem.setShoulderPosition();
-    armSubsystem.setElbowPosition();
+    armSubsystem.setShoulderPosition(StateHandler.getInstance().getArmPositions().getArmAngles().getShoulderAngle());
+    armSubsystem.setElbowPosition(StateHandler.getInstance().getArmPositions().getArmAngles().getElbowAngle());
   }
 
   // Called once the command ends or is interrupted.

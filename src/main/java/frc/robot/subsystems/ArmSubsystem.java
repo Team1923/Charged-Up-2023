@@ -15,14 +15,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.FalconConstants;
+import frc.robot.util.StateVariables;
 
 public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
   private WPI_TalonFX shoulderMotor = new WPI_TalonFX(ArmConstants.shoulderMotorID);
   private WPI_TalonFX elbowMotor = new WPI_TalonFX(ArmConstants.elbowMotorID);
-
-  private double goalShoulderPosition;
-  private double goalElbowPosition;
   
   public ArmSubsystem() {
     shoulderMotor.configFactoryDefault();
@@ -38,10 +36,6 @@ public class ArmSubsystem extends SubsystemBase {
     elbowMotor.config_kP(0, ArmConstants.elbowkP, FalconConstants.timeoutMs);
     elbowMotor.config_kI(0, ArmConstants.elbowkI, FalconConstants.timeoutMs);
     elbowMotor.config_kD(0, ArmConstants.elbowkD, FalconConstants.timeoutMs);
-
-
-    goalShoulderPosition = ArmConstants.shoulderHome;
-    goalElbowPosition = ArmConstants.elbowHome;
 
     shoulderMotor.configMotionCruiseVelocity(ArmConstants.maxShoulderVel);
     shoulderMotor.configMotionAcceleration(ArmConstants.maxShoulderAccel);
@@ -79,24 +73,12 @@ public class ArmSubsystem extends SubsystemBase {
   //   elbowMotor.set(ControlMode.MotionMagic, -setPoint, DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
   // }
 
-  public void setShoulderPosition(){
-    shoulderMotor.set(ControlMode.MotionMagic, getShoulderGoal() * ArmConstants.shoulderRadsToTicks, DemandType.ArbitraryFeedForward, calculateShoulderFeedforward());
+  public void setShoulderPosition(double shoulderAngle){
+    shoulderMotor.set(ControlMode.MotionMagic, shoulderAngle * ArmConstants.shoulderRadsToTicks, DemandType.ArbitraryFeedForward, calculateShoulderFeedforward());
   }
 
-  public void setElbowPosition(){
-    elbowMotor.set(ControlMode.MotionMagic, getElbowGoal() * ArmConstants.elbowRadsToTicks, DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
-  }
-
-
-  public void setArmCartesianOld(double x, double y){
-    double elbowGoal = (Math.acos(((x*x) + (y*y) - (Math.pow(ArmConstants.lengthOfShoulder, 2)) - (Math.pow(ArmConstants.lengthOfElbow, 2))) 
-    / (2 * ArmConstants.lengthOfShoulder * ArmConstants.lengthOfElbow)));
-
-    double shoulderGoal = (Math.atan(y/x) - 
-      Math.atan((ArmConstants.lengthOfElbow * Math.sin(elbowGoal)) / (ArmConstants.lengthOfShoulder + ArmConstants.lengthOfElbow * Math.cos(elbowGoal))));
-
-    setShoulderGoal(shoulderGoal);
-    setElbowGoal(elbowGoal + shoulderGoal);
+  public void setElbowPosition(double elbowAngle){
+    elbowMotor.set(ControlMode.MotionMagic, elbowAngle * ArmConstants.elbowRadsToTicks, DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
   }
 
   public double[] calculateArmCartesian(double x, double y){
@@ -118,23 +100,6 @@ public class ArmSubsystem extends SubsystemBase {
 
   public double getElbowPosition(){
     return (elbowMotor.getSelectedSensorPosition() * ArmConstants.elbowTicksToRad) + ArmConstants.kElbowOffsetRads;
-  }
-
-
-  public double getShoulderGoal(){
-    return goalShoulderPosition;
-  }
-
-  public double getElbowGoal(){
-    return goalElbowPosition;
-  }
-
-  public void setShoulderGoal(double sGoal){
-    goalShoulderPosition = sGoal;
-  }
-
-  public void setElbowGoal(double eGoal){
-    goalElbowPosition = eGoal;
   }
 
   public void setShoulderVoltage(double stpt){
