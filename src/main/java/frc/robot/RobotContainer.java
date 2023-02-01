@@ -9,10 +9,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmCommands.ArmDefaultCommand;
+import frc.robot.commands.ArmCommands.ArmToPosition;
 import frc.robot.commands.Autos.TestPath;
 import frc.robot.commands.Scoring.ManipulatorDefaultCommand;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.subsystems.*;
+import frc.robot.util.StateVariables.ArmPositions;
 
 
 /**
@@ -68,11 +70,10 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        aButton.toggleOnTrue(new TestPath(s_Swerve));
-        bButton.toggleOnTrue(new TestPath(s_Swerve));
-        // SmartDashboard.putData(new Test());
-        // xButton.whileTrue(new ArmOut(armSubsystem));
-        // xButton.onFalse(new ArmIn(armSubsystem));
+        aButton.onTrue(new ArmToPosition(ArmPositions.CONE_HIGH));
+        bButton.onTrue(new ArmToPosition(ArmPositions.CONE_LOW));
+        xButton.onTrue(new ArmToPosition(ArmPositions.COBRA));
+        yButton.onTrue(new ArmToPosition(ArmPositions.STOW));
 
     }
 

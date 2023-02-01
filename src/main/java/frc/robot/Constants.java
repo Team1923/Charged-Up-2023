@@ -69,11 +69,11 @@ public final class Constants {
     public static final double kShoulderOffsetRads = 0;
     public static final double kElbowOffsetRads = 0;
 
-    public static final double shoulderGearRatio = 180;
+    public static final double shoulderGearRatio = 27*5;
     public static final double shoulderTicksToRad = (2 * Math.PI) / (FalconConstants.ticksPerRev * shoulderGearRatio);
     public static final double shoulderRadsToTicks = 1 / shoulderTicksToRad;
 
-    public static final double elbowGearRatio = 180;
+    public static final double elbowGearRatio = 27*5;
     public static final double elbowTicksToRad = (2 * Math.PI) / (FalconConstants.ticksPerRev * elbowGearRatio);
     public static final double elbowRadsToTicks = 1 / shoulderTicksToRad;
 
@@ -86,15 +86,15 @@ public final class Constants {
     public static final double lengthOfShoulder = 1.0922;
     public static final double lengthOfElbow = 0.83185;
 
-    public static final double maxShoulderVel = 35000;
-    public static final double maxShoulderAccel = 20000;
+    public static final double maxShoulderVel = (5/4)*35000;
+    public static final double maxShoulderAccel = 2*20000;
 
-    public static final double maxElbowVel = 2*35000;
+    public static final double maxElbowVel = (5/4)*2*35000;
     public static final double maxElbowAccel = 2 *20000;
 
     public static final double maxElbowGravityConstant = 0;
     //THE NUMERICAL GRAVITY CONSTANT IS DIVIDED BY COS(21 degrees)
-    public static final double maxShoulderGravityConstant = 0.171383199;
+    public static final double maxShoulderGravityConstant = 0.1968;
 
     public static final double shoulderCobra = 110 * Math.PI / 180;
     public static final double elbowCobra = 0;

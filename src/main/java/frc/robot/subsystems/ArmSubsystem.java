@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.FalconConstants;
+import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables;
 
 public class ArmSubsystem extends SubsystemBase {
@@ -163,15 +164,16 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    // SmartDashboard.putNumber("Elbow Position:", Math.toDegrees(getElbowPosition()));
-    // SmartDashboard.putNumber("Shoulder Position:", Math.toDegrees(getShoulderPosition()));
+    SmartDashboard.putNumber("Elbow Position:", Math.toDegrees(getElbowPosition()));
+    SmartDashboard.putNumber("Shoulder Position:", Math.toDegrees(getShoulderPosition()));
 
     // SmartDashboard.putNumber("CG Angle:", Math.toDegrees(getAngleToCG()));
     
-    // SmartDashboard.putNumber("Elbow Goal:", getElbowGoal());
+    // SmartDashboard.putNumber("Elbow Goal:", StateHandler.getInstance().getArmPosition()));
     // SmartDashboard.putNumber("Shoulder Goal:", getShoulderGoal());
 
-    // SmartDashboard.putNumber("Elbow Output", elbowMotor.getMotorOutputPercent());
+    SmartDashboard.putNumber("Elbow Output", elbowMotor.getMotorOutputPercent());
+    SmartDashboard.putNumber("Shoulder Output", shoulderMotor.getMotorOutputPercent());
 
     // double[] angles = calculateArmCartesian(1, 1);
 
