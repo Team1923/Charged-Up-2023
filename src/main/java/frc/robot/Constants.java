@@ -52,52 +52,95 @@ public final class Constants {
     public static final double falconMaxRPM = 6380;
   }
 
+  public final class IntakeConstants{
+    public static final int intakeProximalID = 0;
+    public static final int intakeDistalID = 0;
+    public static final int intakeProximalAbsoluteEncoderID = 0;
+    public static final int intakeDistalAbsoluteEncoderID = 0;
+
+    public static final double intakeProximalkP = 0;
+    public static final double intakeProximalkI = 0;
+    public static final double intakeProximalkD = 0;
+    public static final double intakeDistalkP = 0;
+    public static final double intakeDistalkI = 0;
+    public static final double intakeDistalkD = 0;
+
+    public static final double maxIntakeProximalVel = 0;
+    public static final double maxIntakeProximalAccel = 0;
+    public static final double maxIntakeDistalVel = 0;
+    public static final double maxIntakeDistalAccel = 0;
+
+    public static final double intakeProximalGearRatio = 0;
+    public static final double intakeProximalTicksToRad = (2 * Math.PI) / (FalconConstants.ticksPerRev * intakeProximalGearRatio);
+    public static final double intakeProximalRadsToTicks = 1 / intakeProximalTicksToRad;
+
+    public static final double intakeDistalGearRatio = 0;
+    public static final double intakeDistalTicksToRad = (2 * Math.PI) / (FalconConstants.ticksPerRev * intakeDistalGearRatio);
+    public static final double intakeDistalRadsToTicks = 1 / intakeDistalTicksToRad;
+
+  }
+
   public final class ArmConstants{
-    public static final int shoulderMotorID = 14; //needs to be changed
-    public static final int elbowMotorID = 13; //needs to be changed
+    public static final int proximalMotorID = 14; //needs to be changed
+    public static final int distalMotorID = 13; //needs to be changed
 
-    public static final double shoulderkP = 0.1;
-    public static final double shoulderkI = 0;
-    public static final double shoulderkD = 0;
+    public static final double proximalkP = 0.1;
+    public static final double proximalkI = 0;
+    public static final double proximalkD = 0;
 
-    public static final double elbowkP = 0.1;
-    public static final double elbowkI = 0;
-    public static final double elbowkD = 0;
+    public static final double distalkP = 0.1;
+    public static final double distalkI = 0;
+    public static final double distalkD = 0;
 
 
     //CCW positive
-    public static final double kShoulderOffsetRads = 0;
-    public static final double kElbowOffsetRads = 0;
+    public static final double kProximalOffsetRads = 0;
+    public static final double kDistalOffsetRads = 0;
 
-    public static final double shoulderGearRatio = 27*5;
-    public static final double shoulderTicksToRad = (2 * Math.PI) / (FalconConstants.ticksPerRev * shoulderGearRatio);
-    public static final double shoulderRadsToTicks = 1 / shoulderTicksToRad;
+    public static final double proximalGearRatio = 27*5;
+    public static final double proximalTicksToRad = (2 * Math.PI) / (FalconConstants.ticksPerRev * proximalGearRatio);
+    public static final double proximalRadsToTicks = 1 / proximalTicksToRad;
 
-    public static final double elbowGearRatio = 27*5;
-    public static final double elbowTicksToRad = (2 * Math.PI) / (FalconConstants.ticksPerRev * elbowGearRatio);
-    public static final double elbowRadsToTicks = 1 / shoulderTicksToRad;
+    public static final double distalGearRatio = 27*5;
+    public static final double distalTicksToRad = (2 * Math.PI) / (FalconConstants.ticksPerRev * distalGearRatio);
+    public static final double distalRadsToTicks = 1 / proximalTicksToRad;
 
-    public static final double shoulderMass = 1.81437;
-    public static final double elbowMass = 0.907185;
+    public static final double proximalMass = 1.81437;
+    public static final double distalMass = 0.907185;
 
-    public static final double shoulderCGDistance = 0.7112;
-    public static final double elbowCGDistance = 0.5715;
+    public static final double proximalCGDistance = 0.7112;
+    public static final double distalCGDistance = 0.5715;
 
-    public static final double lengthOfShoulder = 1.0922;
-    public static final double lengthOfElbow = 0.83185;
+    public static final double lengthOfProximal = 1.0922;
+    public static final double lengthOfDistal = 0.83185;
 
-    public static final double maxShoulderVel = (5/4)*35000;
-    public static final double maxShoulderAccel = 2*20000;
+    public static final double maxProximalVel = (5/4)*35000;
+    public static final double maxProximalAccel = 2*20000;
 
-    public static final double maxElbowVel = (5/4)*2*35000;
-    public static final double maxElbowAccel = 2 *20000;
+    public static final double maxDistalVel = (5/4)*2*35000;
+    public static final double maxDistalAccel = 2 *20000;
 
-    public static final double maxElbowGravityConstant = 0;
+    public static final double maxDistalGravityConstant = 0;
     //THE NUMERICAL GRAVITY CONSTANT IS DIVIDED BY COS(21 degrees)
-    public static final double maxShoulderGravityConstant = 0.1968;
+    public static final double maxProximalGravityConstant = 0.1968;
 
-    public static final double shoulderCobra = 110 * Math.PI / 180;
-    public static final double elbowCobra = 0;
+    public static final double proximalCobra = 110 * Math.PI / 180;
+    public static final double distalCobra = 0;
+
+    public static final int proximalEncoderID = 0;
+    public static final int distalEncoderID = 1;
+
+    public static final double proximalAbsoluteEncoderToTicks = ArmConstants.proximalGearRatio * 2048;
+    public static final double distalAbsoluteEncoderToTicks = ArmConstants.distalGearRatio * 2048;
+    public static final double proximalAbsoluteEncoderToRadians = ArmConstants.proximalAbsoluteEncoderToTicks * ArmConstants.proximalTicksToRad;
+    public static final double distalAbsoluteEncoderToRadians = ArmConstants.distalAbsoluteEncoderToTicks * ArmConstants.distalTicksToRad;
+
+    public static final double proximalHardstop = 21 * Math.PI / 180;
+    public static final double distalHardstop = 0;
+    public static final double proximalEncoderHardstop = 0;
+    public static final double distalEncoderHardstop = 0;
+
+    public static final double errorThreshold = 0.05;
 
   }
 

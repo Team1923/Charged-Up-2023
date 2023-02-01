@@ -47,7 +47,7 @@ public class RobotContainer {
     /* Subsystems */
     private final SwerveSubsystem s_Swerve = new SwerveSubsystem();
     public final ArmSubsystem armSubsystem = new ArmSubsystem();
-    private final Manipulator gripper = new Manipulator();
+    private final ManipulatorSubsystem gripper = new ManipulatorSubsystem();
 
 
 

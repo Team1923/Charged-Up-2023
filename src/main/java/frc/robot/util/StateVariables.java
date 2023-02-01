@@ -1,10 +1,5 @@
 package frc.robot.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import frc.robot.Constants.ArmConstants;
-
 public class StateVariables {
     public static enum VerticalLocations {
         LOW,
@@ -23,6 +18,11 @@ public class StateVariables {
         CONE
     }
 
+    public static enum CurrentRobotDirection{
+        LEFT, 
+        RIGHT
+    }
+
     public static enum ArmPositions{
         STOW(new ArmAngles(Math.PI/2,-Math.PI/2)),
         COBRA(new ArmAngles(Math.toRadians(110),0)), 
@@ -33,19 +33,18 @@ public class StateVariables {
         CUBE_MID(new ArmAngles(1.238, 0.669)),
         CUBE_HIGH(new ArmAngles(0.986, 0.141));
 
-        private static final Map<ArmAngles, ArmPositions> BY_ANGLES = new HashMap<>();
         private ArmAngles armAngles;
+        private ArmAngles reflectedAngles;
         private ArmPositions(ArmAngles a){
             this.armAngles = a;
-        }
-        static{
-            for(ArmPositions a : values()){
-                BY_ANGLES.put(a.armAngles, a);
-            }
+            this.reflectedAngles = new ArmAngles(Math.PI - armAngles.getProximalAngle(), Math.PI - armAngles.getDistalAngle());
         }
 
         public ArmAngles getArmAngles(){
             return armAngles;
+        }
+        public ArmAngles getReflectedArmAngles(){
+            return reflectedAngles;
         }
     }
 
@@ -76,28 +75,28 @@ public class StateVariables {
     }
 
     public static class ArmAngles {
-        private double shoulderAngle;
-        private double elbowAngle;
+        private double proximalAngle;
+        private double distalAngle;
 
         public ArmAngles(double s, double e) {
-            shoulderAngle = s;
-            elbowAngle = e;
+            proximalAngle = s;
+            distalAngle = e;
         }
 
-        public void setShoulderAngle(double s) {
-            shoulderAngle = s;
+        public void setProximalAngle(double s) {
+            proximalAngle = s;
         }
 
-        public void setElbowAngle(double e) {
-            elbowAngle = e;
+        public void setDistalAngle(double e) {
+            distalAngle = e;
         }
 
-        public double getShoulderAngle() {
-            return shoulderAngle;
+        public double getProximalAngle() {
+            return proximalAngle;
         }
 
-        public double getElbowAngle() {
-            return elbowAngle;
+        public double getDistalAngle() {
+            return distalAngle;
         }
     }
 }

@@ -4,10 +4,11 @@
 
 package frc.robot.subsystems;
 
+
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -17,173 +18,193 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.FalconConstants;
 import frc.robot.util.StateHandler;
-import frc.robot.util.StateVariables;
 
 public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
-  private WPI_TalonFX shoulderMotor = new WPI_TalonFX(ArmConstants.shoulderMotorID);
-  private WPI_TalonFX elbowMotor = new WPI_TalonFX(ArmConstants.elbowMotorID);
-  private DutyCycleEncoder DIO = new DutyCycleEncoder(0); // change this
+  private WPI_TalonFX proximalMotor = new WPI_TalonFX(ArmConstants.proximalMotorID);
+  private WPI_TalonFX distalMotor = new WPI_TalonFX(ArmConstants.distalMotorID);
+  private DutyCycleEncoder proximalEncoder = new DutyCycleEncoder(ArmConstants.proximalEncoderID); // change this
+  private DutyCycleEncoder distalEncoder = new DutyCycleEncoder(ArmConstants.distalEncoderID);
+  private StateHandler stateHandler = StateHandler.getInstance();
   
   public ArmSubsystem() {
-    shoulderMotor.configFactoryDefault();
-    elbowMotor.configFactoryDefault();
+    proximalMotor.configFactoryDefault();
+    distalMotor.configFactoryDefault();
     
-    shoulderMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
-    elbowMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
+    proximalMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
+    distalMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
 
-    shoulderMotor.config_kP(0, ArmConstants.shoulderkP, FalconConstants.timeoutMs);
-    shoulderMotor.config_kI(0, ArmConstants.shoulderkI, FalconConstants.timeoutMs);
-    shoulderMotor.config_kD(0, ArmConstants.shoulderkD, FalconConstants.timeoutMs);
+    proximalMotor.config_kP(0, ArmConstants.proximalkP, FalconConstants.timeoutMs);
+    proximalMotor.config_kI(0, ArmConstants.proximalkI, FalconConstants.timeoutMs);
+    proximalMotor.config_kD(0, ArmConstants.proximalkD, FalconConstants.timeoutMs);
 
-    elbowMotor.config_kP(0, ArmConstants.elbowkP, FalconConstants.timeoutMs);
-    elbowMotor.config_kI(0, ArmConstants.elbowkI, FalconConstants.timeoutMs);
-    elbowMotor.config_kD(0, ArmConstants.elbowkD, FalconConstants.timeoutMs);
+    distalMotor.config_kP(0, ArmConstants.distalkP, FalconConstants.timeoutMs);
+    distalMotor.config_kI(0, ArmConstants.distalkI, FalconConstants.timeoutMs);
+    distalMotor.config_kD(0, ArmConstants.distalkD, FalconConstants.timeoutMs);
 
-    shoulderMotor.configMotionCruiseVelocity(ArmConstants.maxShoulderVel);
-    shoulderMotor.configMotionAcceleration(ArmConstants.maxShoulderAccel);
-    elbowMotor.configMotionCruiseVelocity(ArmConstants.maxElbowVel);
-    elbowMotor.configMotionAcceleration(ArmConstants.maxElbowAccel);
+    proximalMotor.configMotionCruiseVelocity(ArmConstants.maxProximalVel);
+    proximalMotor.configMotionAcceleration(ArmConstants.maxProximalAccel);
+    distalMotor.configMotionCruiseVelocity(ArmConstants.maxDistalVel);
+    distalMotor.configMotionAcceleration(ArmConstants.maxDistalAccel);
 
-    shoulderMotor.setNeutralMode(NeutralMode.Brake);
-    elbowMotor.setNeutralMode(NeutralMode.Brake);
+    proximalMotor.setNeutralMode(NeutralMode.Brake);
+    distalMotor.setNeutralMode(NeutralMode.Brake);
 
-    resetShoulderPosition(Math.PI/2);
-    resetElbowPosition(-Math.PI/2);
+    resetDistalPosition();
+    resetDistalPosition();
   }
 
-  public void resetShoulderPosition(double setPoint){
-    shoulderMotor.setSelectedSensorPosition(setPoint * ArmConstants.shoulderRadsToTicks);
+  public void resetProximalPosition(){
+    proximalMotor.setSelectedSensorPosition((getProximalAbsoluteEncoderRads() - ArmConstants.proximalEncoderHardstop + ArmConstants.proximalHardstop) * ArmConstants.proximalRadsToTicks);
   }
 
-  public void resetElbowPosition(double setPoint){
-    elbowMotor.setSelectedSensorPosition(setPoint * ArmConstants.shoulderRadsToTicks);
+  public void resetDistalPosition(){
+    distalMotor.setSelectedSensorPosition((getDistalAbsoluteEncoderRads() - ArmConstants.distalEncoderHardstop + ArmConstants.distalHardstop) * ArmConstants.distalRadsToTicks * ArmConstants.distalRadsToTicks);
   }
 
-  public void resetShoulderEncoders(){
-    shoulderMotor.setSelectedSensorPosition(0);
+  public void resetProximalEncoders(){
+    proximalMotor.setSelectedSensorPosition(0);
   }
 
-  public void resetElbowEncoders(){
-    elbowMotor.setSelectedSensorPosition(0);
+  public void resetDistalEncoders(){
+    distalMotor.setSelectedSensorPosition(0);
   }
 
-  // public void setShoulderPosition(double setPoint){
-  //   shoulderMotor.set(ControlMode.MotionMagic, setPoint, DemandType.ArbitraryFeedForward, calculateShoulderFeedforward());
+  // public void setproximalPosition(double setPoint){
+  //   proximalMotor.set(ControlMode.MotionMagic, setPoint, DemandType.ArbitraryFeedForward, calculateproximalFeedforward());
   // }
 
-  // public void setElbowPosition(double setPoint){
-  //   elbowMotor.set(ControlMode.MotionMagic, -setPoint, DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
+  // public void setdistalPosition(double setPoint){
+  //   distalMotor.set(ControlMode.MotionMagic, -setPoint, DemandType.ArbitraryFeedForward, calculatedistalFeedforward());
   // }
 
-  public void setShoulderPosition(double shoulderAngle){
-    shoulderMotor.set(ControlMode.MotionMagic, shoulderAngle * ArmConstants.shoulderRadsToTicks, DemandType.ArbitraryFeedForward, calculateShoulderFeedforward());
+  public void setProximalPosition(double proximalAngle){
+    proximalMotor.set(ControlMode.MotionMagic, proximalAngle * ArmConstants.proximalRadsToTicks, DemandType.ArbitraryFeedForward, calculateproximalFeedforward());
   }
 
-  public void setElbowPosition(double elbowAngle){
-    elbowMotor.set(ControlMode.MotionMagic, elbowAngle * ArmConstants.elbowRadsToTicks, DemandType.ArbitraryFeedForward, calculateElbowFeedforward());
+  public void setDistalPosition(double distalAngle){
+    distalMotor.set(ControlMode.MotionMagic, distalAngle * ArmConstants.distalRadsToTicks, DemandType.ArbitraryFeedForward, calculatedistalFeedforward());
   }
 
   public double[] calculateArmCartesian(double x, double y){
-    double elbowGoal = (Math.acos(((x*x) + (y*y) - (Math.pow(ArmConstants.lengthOfShoulder, 2)) - (Math.pow(ArmConstants.lengthOfElbow, 2))) 
-    / (2 * ArmConstants.lengthOfShoulder * ArmConstants.lengthOfElbow)));
+    double distalGoal = (Math.acos(((x*x) + (y*y) - (Math.pow(ArmConstants.lengthOfProximal, 2)) - (Math.pow(ArmConstants.lengthOfDistal, 2))) 
+    / (2 * ArmConstants.lengthOfProximal * ArmConstants.lengthOfDistal)));
 
-    double shoulderGoal = (Math.atan(y/x) - 
-      Math.atan((ArmConstants.lengthOfElbow * Math.sin(elbowGoal)) / (ArmConstants.lengthOfShoulder + ArmConstants.lengthOfElbow * Math.cos(elbowGoal))));
+    double proximalGoal = (Math.atan(y/x) - 
+      Math.atan((ArmConstants.lengthOfDistal * Math.sin(distalGoal)) / (ArmConstants.lengthOfProximal + ArmConstants.lengthOfDistal * Math.cos(distalGoal))));
 
-    double[] conv = {shoulderGoal, elbowGoal};
+    double[] conv = {proximalGoal, distalGoal};
 
     return conv;
   }
 
 
-  public double getShoulderPosition(){
-    return (shoulderMotor.getSelectedSensorPosition() * ArmConstants.shoulderTicksToRad) + ArmConstants.kShoulderOffsetRads;
+  public double getProximalPosition(){
+    return (proximalMotor.getSelectedSensorPosition() * ArmConstants.proximalTicksToRad) + ArmConstants.kProximalOffsetRads;
   }
 
-  public double getElbowPosition(){
-    return (elbowMotor.getSelectedSensorPosition() * ArmConstants.elbowTicksToRad) + ArmConstants.kElbowOffsetRads;
+  public double getDistalPosition(){
+    return (distalMotor.getSelectedSensorPosition() * ArmConstants.distalTicksToRad) + ArmConstants.kDistalOffsetRads;
   }
 
-  public void setShoulderVoltage(double stpt){
-    shoulderMotor.setVoltage(stpt);
+  public void setProximalVoltage(double stpt){
+    proximalMotor.setVoltage(stpt);
   }
 
-  public void setElbowVoltage(double stpt){
-    elbowMotor.setVoltage(stpt);
+  public void setDistalVoltage(double stpt){
+    distalMotor.setVoltage(stpt);
   }
 
   public void stop(){
-    shoulderMotor.stopMotor();
-    elbowMotor.stopMotor();
+    proximalMotor.stopMotor();
+    distalMotor.stopMotor();
   }
 
   public double getAngleToCG(){
-    double shoulderCGX = Math.cos(getShoulderPosition()) * ArmConstants.shoulderCGDistance;
-    double shoulderCGY = Math.sin(getShoulderPosition()) * ArmConstants.shoulderCGDistance;
-    double shoulderLengthX = Math.cos(getShoulderPosition()) * ArmConstants.lengthOfShoulder;
-    double shoulderLengthY = Math.sin(getShoulderPosition()) * ArmConstants.lengthOfShoulder;
+    double proximalCGX = Math.cos(getDistalPosition()) * ArmConstants.proximalCGDistance;
+    double proximalCGY = Math.sin(getDistalPosition()) * ArmConstants.proximalCGDistance;
+    double proximalLengthX = Math.cos(getDistalPosition()) * ArmConstants.lengthOfProximal;
+    double proximalLengthY = Math.sin(getDistalPosition()) * ArmConstants.lengthOfProximal;
 
-    double elbowCGX = Math.cos(getElbowPosition()) * ArmConstants.elbowCGDistance + shoulderLengthX;
-    double elbowCGY = Math.sin(getElbowPosition()) * ArmConstants.elbowCGDistance + shoulderLengthY;
+    double distalCGX = Math.cos(getDistalPosition()) * ArmConstants.distalCGDistance + proximalLengthX;
+    double distalCGY = Math.sin(getDistalPosition()) * ArmConstants.distalCGDistance + proximalLengthY;
 
-    double averageXG = ((ArmConstants.elbowMass * elbowCGX) + ArmConstants.shoulderMass * shoulderCGX) / (ArmConstants.elbowMass + ArmConstants.shoulderMass);
-    double averageYG = ((ArmConstants.elbowMass * elbowCGY) + ArmConstants.shoulderMass * shoulderCGY) / (ArmConstants.elbowMass + ArmConstants.shoulderMass);
+    double averageXG = ((ArmConstants.distalMass * distalCGX) + ArmConstants.proximalMass * proximalCGX) / (ArmConstants.distalMass + ArmConstants.proximalMass);
+    double averageYG = ((ArmConstants.distalMass * distalCGY) + ArmConstants.proximalMass * proximalCGY) / (ArmConstants.distalMass + ArmConstants.proximalMass);
 
     return Math.atan(averageYG / averageXG);
   }
 
-  public double calculateShoulderFeedforward(){
-    return ArmConstants.maxShoulderGravityConstant * Math.cos(getAngleToCG());
+  public double calculateproximalFeedforward(){
+    return ArmConstants.maxProximalGravityConstant * Math.cos(getAngleToCG());
   }
 
-  public double calculateElbowFeedforward(){
-    return ArmConstants.maxElbowGravityConstant * Math.cos(getElbowPosition());
+  public double calculatedistalFeedforward(){
+    return ArmConstants.maxDistalGravityConstant * Math.cos(getDistalPosition());
   }
 
-  public double[] anglesToCartesian(double shoulderTheta, double elbowTheta) {
+  public double[] anglesToCartesian(double proximalTheta, double distalTheta) {
 
-    double x = ArmConstants.lengthOfShoulder*Math.cos(shoulderTheta) + ArmConstants.lengthOfElbow*Math.cos(shoulderTheta+elbowTheta);
-    double y = ArmConstants.lengthOfShoulder*Math.sin(shoulderTheta) + ArmConstants.lengthOfElbow*Math.sin(shoulderTheta+elbowTheta);
+    double x = ArmConstants.lengthOfProximal*Math.cos(proximalTheta) + ArmConstants.lengthOfDistal*Math.cos(proximalTheta+distalTheta);
+    double y = ArmConstants.lengthOfProximal*Math.sin(proximalTheta) + ArmConstants.lengthOfDistal*Math.sin(proximalTheta+distalTheta);
 
     double[] conv = {x,y};
     return conv;
   }
 
   public void setCoast(){
-    elbowMotor.setNeutralMode(NeutralMode.Coast);
-    shoulderMotor.setNeutralMode(NeutralMode.Coast);
+    distalMotor.setNeutralMode(NeutralMode.Coast);
+    proximalMotor.setNeutralMode(NeutralMode.Coast);
   }
 
   public void setBrake(){
-    elbowMotor.setNeutralMode(NeutralMode.Brake);
-    shoulderMotor.setNeutralMode(NeutralMode.Brake);
+    distalMotor.setNeutralMode(NeutralMode.Brake);
+    proximalMotor.setNeutralMode(NeutralMode.Brake);
   }
+
+  public double getProximalAbsoluteEncoderRads(){
+    return proximalEncoder.getAbsolutePosition() * ArmConstants.proximalAbsoluteEncoderToRadians;
+  }
+
+  public double getDistalAbsoluteEncoderRads(){
+    return distalEncoder.getAbsolutePosition() * ArmConstants.distalAbsoluteEncoderToRadians;
+  }
+
+  public double getProximalAbsoluteEncoderTicks(){
+    return proximalEncoder.getAbsolutePosition() * ArmConstants.proximalAbsoluteEncoderToTicks;
+  }
+
+  public double getDistalAbsoluteEncoderTicks(){
+    return distalEncoder.getAbsolutePosition() * ArmConstants.distalAbsoluteEncoderToTicks;
+  }
+
 
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Elbow Position:", Math.toDegrees(getElbowPosition()));
-    SmartDashboard.putNumber("Shoulder Position:", Math.toDegrees(getShoulderPosition()));
+    SmartDashboard.putNumber("distal Position:", Math.toDegrees(getDistalPosition()));
+    SmartDashboard.putNumber("proximal Position:", Math.toDegrees(getDistalPosition()));
 
-    // SmartDashboard.putNumber("CG Angle:", Math.toDegrees(getAngleToCG()));
-    
-    // SmartDashboard.putNumber("Elbow Goal:", StateHandler.getInstance().getArmPosition()));
-    // SmartDashboard.putNumber("Shoulder Goal:", getShoulderGoal());
+    SmartDashboard.putNumber("Proximal Rads", getProximalAbsoluteEncoderRads());
+    SmartDashboard.putNumber("Distal Rads", getDistalAbsoluteEncoderRads());
 
-    SmartDashboard.putNumber("Elbow Output", elbowMotor.getMotorOutputPercent());
-    SmartDashboard.putNumber("Shoulder Output", shoulderMotor.getMotorOutputPercent());
+    double proximalError = Math.abs(getProximalPosition() - stateHandler.getArmPositions().getArmAngles().getProximalAngle());
+    double distalError = Math.abs(getDistalPosition() - stateHandler.getArmPositions().getArmAngles().getDistalAngle());
 
-    // double[] angles = calculateArmCartesian(1, 1);
+    if(proximalError < ArmConstants.errorThreshold){
+      stateHandler.updateArmPosition(true);
+    }
+    else{
+      stateHandler.updateArmPosition(false);
+    }
+    if(distalError < ArmConstants.errorThreshold){
+      stateHandler.updateArmPosition(true);
+    }
+    else{
+      stateHandler.updateArmPosition(false);
+    }
 
-    // SmartDashboard.putNumber("Polar Shoulder: ", Math.toDegrees(angles[0]));
-    // SmartDashboard.putNumber("Polar Elbow: ", Math.toDegrees(angles[1]));
-
-    // double[] cartesian = anglesToCartesian(angles[0],angles[1]);
-
-    // SmartDashboard.putNumber("Cartesian Shoulder: ", cartesian[0]);
-    // SmartDashboard.putNumber("Cartesian Elbow: ", cartesian[1]);
 
   }
 }

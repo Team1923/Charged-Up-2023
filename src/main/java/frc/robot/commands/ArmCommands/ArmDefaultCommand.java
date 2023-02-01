@@ -7,10 +7,12 @@ package frc.robot.commands.ArmCommands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.StateHandler;
+import frc.robot.util.StateVariables.CurrentRobotDirection;
 
 public class ArmDefaultCommand extends CommandBase {
   /** Creates a new ArmDefaultCommand. */
   private ArmSubsystem armSubsystem;
+  private StateHandler stateHandler = StateHandler.getInstance();
   public ArmDefaultCommand(ArmSubsystem aSubsystem) {
     armSubsystem = aSubsystem;
     addRequirements(armSubsystem);
@@ -25,8 +27,17 @@ public class ArmDefaultCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    armSubsystem.setShoulderPosition(StateHandler.getInstance().getArmPositions().getArmAngles().getShoulderAngle());
-    armSubsystem.setElbowPosition(StateHandler.getInstance().getArmPositions().getArmAngles().getElbowAngle());
+    double proximalSetpoint = stateHandler.getArmPositions().getArmAngles().getProximalAngle();
+    if(stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT){
+      proximalSetpoint = stateHandler.getArmPositions().getReflectedArmAngles().getProximalAngle();
+    }
+    armSubsystem.setProximalPosition(proximalSetpoint);
+
+    double distalSetpoint = stateHandler.getArmPositions().getArmAngles().getDistalAngle();
+    if(stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT){
+      distalSetpoint = stateHandler.getArmPositions().getReflectedArmAngles().getDistalAngle();
+    }
+    armSubsystem.setDistalPosition(distalSetpoint);
   }
 
   // Called once the command ends or is interrupted.

@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class ElbowToPosition extends CommandBase {
-  /** Creates a new ElbowToPosition. */
+public class ProximalToPosition extends CommandBase {
+  /** Creates a new distalToPosition. */
   private ArmSubsystem armSubsystem;
   private double position;
   
-  public ElbowToPosition(ArmSubsystem a, double position) {
+  public ProximalToPosition(ArmSubsystem a, double position) {
     armSubsystem = a;
     this.position = position;
     addRequirements(a);
@@ -28,7 +28,7 @@ public class ElbowToPosition extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    armSubsystem.setElbowPosition(position);
+    armSubsystem.setProximalPosition(position);
   }
 
   // Called once the command ends or is interrupted.

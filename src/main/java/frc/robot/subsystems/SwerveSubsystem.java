@@ -5,8 +5,7 @@
 package frc.robot.subsystems;
 
 
-import frc.robot.interfaces.BetterLimelightInterface;
-import frc.robot.interfaces.RightLimelightInterface;
+
 import frc.robot.interfaces.SwerveModule;
 import frc.robot.interfaces.BetterLimelightInterface.SpecificLimelight;
 import frc.robot.Constants;
@@ -22,9 +21,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -171,20 +167,20 @@ public class SwerveSubsystem extends SubsystemBase {
         swerveOdometry.update(getYaw(), getModulePositions());  
 
 
-        for(SwerveModule mod : mSwerveMods){
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
-        }
+        // for(SwerveModule mod : mSwerveMods){
+        //     SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
+        //     SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
+        //     SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
+        // }
 
         
-        SmartDashboard.putString("heading", getYaw().toString());
+        // SmartDashboard.putString("heading", getYaw().toString());
 
-        field2D.setRobotPose(getPose());
+        // field2D.setRobotPose(getPose());
 
-        SmartDashboard.putString("CORRECT LIMELIGHT", getCorrectLimelight().toString());
-        SmartDashboard.putNumber("YAW IEEE", getYawIEEE());
-        SmartDashboard.putNumber("left limelight botpose", BetterLimelightInterface.getInstance().getTargetArea(getCorrectLimelight()));
+        // SmartDashboard.putString("CORRECT LIMELIGHT", getCorrectLimelight().toString());
+        // SmartDashboard.putNumber("YAW IEEE", getYawIEEE());
+        // SmartDashboard.putNumber("left limelight botpose", BetterLimelightInterface.getInstance().getTargetArea(getCorrectLimelight()));
     }
 }
 

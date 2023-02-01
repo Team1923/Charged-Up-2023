@@ -5,15 +5,15 @@
 package frc.robot.commands.Scoring;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Manipulator;
+import frc.robot.subsystems.ManipulatorSubsystem;
 import frc.robot.util.StateHandler;
 
 public class ManipulatorDefaultCommand extends CommandBase {
-  private Manipulator gripper;
+  private ManipulatorSubsystem gripper;
   private boolean latch = false;
   
   /** Creates a new ManipulatorDefaultCommand. */
-  public ManipulatorDefaultCommand(Manipulator gripper) {
+  public ManipulatorDefaultCommand(ManipulatorSubsystem gripper) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.gripper = gripper;
     addRequirements(gripper);

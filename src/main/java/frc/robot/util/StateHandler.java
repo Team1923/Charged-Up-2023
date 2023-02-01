@@ -1,7 +1,8 @@
 package frc.robot.util;
 
-import frc.robot.interfaces.ColorSensorInterface.GamePiece;
+
 import frc.robot.util.StateVariables.ArmPositions;
+import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.HorizontalLocations;
 import frc.robot.util.StateVariables.ScoringLocations;
@@ -14,6 +15,7 @@ public class StateHandler {
     private boolean hasGamePiece = true;
     private boolean intakeInPosition = false, armInPosition = false;
     private GamePieceMode mode = GamePieceMode.CONE;
+    private CurrentRobotDirection currentRobotDirection = CurrentRobotDirection.LEFT;
     private boolean resetManipulator = false;
     
 
@@ -42,46 +44,46 @@ public class StateHandler {
 
     public void updateIntakePosition(boolean intakeInPosition) {
         this.intakeInPosition = intakeInPosition;
-
     }
 
     public void updateArmPosition(boolean armInPosition) {
         this.armInPosition = armInPosition;
-
     }
 
     public void updateHasGamePiece(boolean hasGamePiece) {
         this.hasGamePiece = hasGamePiece;
-
     }
 
     public void updateManipulator(boolean resetManipulator) {
         this.resetManipulator = resetManipulator;
-
     }
 
     public boolean getIntakePosition() {
         return intakeInPosition;
-
     }
 
     public boolean getArmPosition() {
         return armInPosition;
-
     }
 
     public boolean getHasGamePiece() {
         return hasGamePiece;
-
     }
 
     public boolean readyToClose() {
         return intakeInPosition && armInPosition;
-
     }
 
     public boolean getResetManipulator() {
         return resetManipulator;
+    }
+
+    public CurrentRobotDirection getRobotDirection(){
+        return currentRobotDirection;
+    }
+    
+    public void updateRobotDirection(CurrentRobotDirection c){
+        this.currentRobotDirection = c;
     }
 
 }

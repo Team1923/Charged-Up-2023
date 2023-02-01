@@ -12,7 +12,7 @@ import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.ArmPositions;
 
 public class ArmToPosition extends CommandBase {
-  /** Creates a new ElbowToPosition. */
+  /** Creates a new distalToPosition. */
   ArmPositions armPositions;
   
   public ArmToPosition(ArmPositions a) {

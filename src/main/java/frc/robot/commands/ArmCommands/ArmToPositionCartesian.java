@@ -10,7 +10,7 @@
 // import frc.robot.subsystems.ArmSubsystem;
 
 // public class ArmToPositionCartesian extends CommandBase {
-//   /** Creates a new ElbowToPosition. */
+//   /** Creates a new distalToPosition. */
 //   private ArmSubsystem armSubsystem;
 //   private double xPos;
 //   private double yPos;
@@ -42,8 +42,8 @@
 //   @Override
 //   public void end(boolean interrupted) {
 //     SmartDashboard.putBoolean("End Command", true);
-//      armSubsystem.setElbowGoal(ArmConstants.elbowHome);
-//      armSubsystem.setShoulderGoal(ArmConstants.shoulderHome);
+//      armSubsystem.setdistalGoal(ArmConstants.distalHome);
+//      armSubsystem.setproximalGoal(ArmConstants.proximalHome);
 //   }
 
 //   // Returns true when the command should end.
@@ -95,24 +95,24 @@
 //   }
 
 //   public void setAngle(){
-//     double[] intersection = calculateCircleIntersection(0, 0, ArmConstants.lengthOfShoulder, xPos, yPos, ArmConstants.lengthOfElbow);
-//     double shoulderAngle = ArmConstants.shoulderHome; //setting these as default
-//     double elbowAngle = ArmConstants.elbowHome; //setting these as default
+//     double[] intersection = calculateCircleIntersection(0, 0, ArmConstants.lengthOfproximal, xPos, yPos, ArmConstants.lengthOfdistal);
+//     double proximalAngle = ArmConstants.proximalHome; //setting these as default
+//     double distalAngle = ArmConstants.distalHome; //setting these as default
 //     if(xPos < 0){
-//       shoulderAngle = Math.PI - Math.asin(intersection[1] / ArmConstants.lengthOfShoulder);
-//       elbowAngle = Math.PI - Math.asin((yPos-intersection[1]) / ArmConstants.lengthOfElbow);
+//       proximalAngle = Math.PI - Math.asin(intersection[1] / ArmConstants.lengthOfproximal);
+//       distalAngle = Math.PI - Math.asin((yPos-intersection[1]) / ArmConstants.lengthOfdistal);
 
 //       //optimized movement for the distal
-//       elbowAngle-=(2*Math.PI);
+//       distalAngle-=(2*Math.PI);
 //     }
 //     else{
-//       shoulderAngle = Math.asin(intersection[1] / ArmConstants.lengthOfShoulder);
-//       elbowAngle = Math.asin((yPos-intersection[1]) / ArmConstants.lengthOfElbow);
+//       proximalAngle = Math.asin(intersection[1] / ArmConstants.lengthOfproximal);
+//       distalAngle = Math.asin((yPos-intersection[1]) / ArmConstants.lengthOfdistal);
 //     }
-//     System.out.println(shoulderAngle);
-//     System.out.println(elbowAngle);
-//     armSubsystem.setShoulderGoal(shoulderAngle);
-//     armSubsystem.setElbowGoal(elbowAngle); 
+//     System.out.println(proximalAngle);
+//     System.out.println(distalAngle);
+//     armSubsystem.setproximalGoal(proximalAngle);
+//     armSubsystem.setdistalGoal(distalAngle); 
     
 //   }
 
