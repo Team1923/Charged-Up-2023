@@ -210,6 +210,7 @@ public class ArmSubsystem extends SubsystemBase {
     } else {
       stateHandler.updateArmInPosition(false);
     }
+    
     if (distalError < ArmConstants.errorThreshold) {
       stateHandler.updateArmInPosition(true);
     } else {

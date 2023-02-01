@@ -1,28 +1,7 @@
 package frc.robot.util;
 
 public class StateVariables {
-    public static enum VerticalLocations {
-        LOW,
-        MID,
-        HIGH
-    }
-
-    public static enum HorizontalLocations {
-        LEFT,
-        CENTER,
-        RIGHT
-    }
-
-    public static enum GamePieceMode {
-        CUBE,
-        CONE
-    }
-
-    public static enum CurrentRobotDirection {
-        LEFT,
-        RIGHT
-    }
-
+    
     public static enum ArmPositions {
         STOW(new ArmAngles(Math.PI / 2, -Math.PI / 2)),
         COBRA(new ArmAngles(Math.toRadians(110), 0)),
@@ -40,8 +19,8 @@ public class StateVariables {
         private double triggerThresholdRadians;
 
         /**
-         * Enable the state to automatically switch to another state when a
-         * certain angle has been reached.
+         * Enable the state to automatically switch to another state once it
+         * reaches its goal.
          *
          * @param angles         Instance of ArmAngles containing arm angle data for
          *                       this waypoint
@@ -81,30 +60,52 @@ public class StateVariables {
         
     }
 
-    public static class ScoringLocations {
-        private VerticalLocations verticalLocation;
-        private HorizontalLocations horizontalLocation;
+    public static enum IntakePositions {
+        STOW(new ArmAngles(Math.PI / 2, -Math.PI / 2)),
+        INTAKE_CONE(new ArmAngles(0,0)),
+        INTAKE_CUBE(new ArmAngles(0,0)),
+        CUBE_HANDOFF(new ArmAngles(0,0)),
+        CONE_HANDOFF_1(new ArmAngles(0,0)),
+        CONE_HANDOFF_2(new ArmAngles(0,0));
 
-        public ScoringLocations(VerticalLocations v, HorizontalLocations h) {
-            verticalLocation = v;
-            horizontalLocation = h;
+        private ArmAngles armAngles;
+
+        private IntakePositions nextInSequence;
+        private double triggerThresholdRadians;
+
+        /**
+         * Enable the state to automatically switch to another state once it
+         * reaches its goal.
+         *
+         * @param angles         Instance of ArmAngles containing arm angle data for
+         *                       this waypoint
+         * @param next           The next arm state in the sequence
+         * @param triggerRadians The threshold (in radians) for the joint before moving
+         *                       to next waypoint
+         */
+        private IntakePositions(ArmAngles angles, IntakePositions next, double triggerRadians) {
+            this.armAngles = angles;
+            this.nextInSequence = next;
+            this.triggerThresholdRadians = triggerRadians;
         }
 
-        public void setVerticalLocation(VerticalLocations v) {
-            verticalLocation = v;
+        private IntakePositions(ArmAngles angles) {
+            this.armAngles = angles;
+
         }
 
-        public void setHorizontalLocation(HorizontalLocations h) {
-            horizontalLocation = h;
+        public ArmAngles getArmAngles() {
+            return armAngles;
         }
 
-        public VerticalLocations getVerticalLocation() {
-            return verticalLocation;
+        public double getThresholdRadians() {
+            return triggerThresholdRadians;
         }
 
-        public HorizontalLocations getHoriontalLocation() {
-            return horizontalLocation;
+        public IntakePositions getNextInSequence() {
+            return nextInSequence;
         }
+        
     }
 
     public static class ArmAngles {
@@ -130,6 +131,55 @@ public class StateVariables {
 
         public double getDistalAngle() {
             return distalAngle;
+        }
+    }
+
+
+    public static enum VerticalLocations {
+        LOW,
+        MID,
+        HIGH
+    }
+
+    public static enum HorizontalLocations {
+        LEFT,
+        CENTER,
+        RIGHT
+    }
+
+    public static enum GamePieceMode {
+        CUBE,
+        CONE
+    }
+
+    public static enum CurrentRobotDirection {
+        LEFT,
+        RIGHT
+    }
+
+    public static class ScoringLocations {
+        private VerticalLocations verticalLocation;
+        private HorizontalLocations horizontalLocation;
+
+        public ScoringLocations(VerticalLocations v, HorizontalLocations h) {
+            verticalLocation = v;
+            horizontalLocation = h;
+        }
+
+        public void setVerticalLocation(VerticalLocations v) {
+            verticalLocation = v;
+        }
+
+        public void setHorizontalLocation(HorizontalLocations h) {
+            horizontalLocation = h;
+        }
+
+        public VerticalLocations getVerticalLocation() {
+            return verticalLocation;
+        }
+
+        public HorizontalLocations getHoriontalLocation() {
+            return horizontalLocation;
         }
     }
 }

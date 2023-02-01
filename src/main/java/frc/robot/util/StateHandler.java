@@ -4,18 +4,26 @@ import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.HorizontalLocations;
+import frc.robot.util.StateVariables.IntakePositions;
 import frc.robot.util.StateVariables.ScoringLocations;
 import frc.robot.util.StateVariables.VerticalLocations;
 
 public class StateHandler {
     private static StateHandler stateHandler;
     private ScoringLocations scoringLocations = new ScoringLocations(VerticalLocations.LOW, HorizontalLocations.LEFT);
-    private ArmPositions armPositions = ArmPositions.STOW;
+
+    private ArmPositions desiredArmPosition = ArmPositions.STOW;
+    private ArmPositions currentArmPosition = ArmPositions.STOW;
+
+    private IntakePositions desiredIntakePosition = IntakePositions.STOW;
+
     private boolean hasGamePiece = true;
     private boolean intakeInPosition = false, armInPosition = false;
-    private GamePieceMode mode = GamePieceMode.CONE;
-    private CurrentRobotDirection currentRobotDirection = CurrentRobotDirection.LEFT;
     private boolean resetManipulator = false;
+
+    private GamePieceMode mode = GamePieceMode.CONE;
+    
+    private CurrentRobotDirection currentRobotDirection = CurrentRobotDirection.LEFT;
 
     public static synchronized StateHandler getInstance() {
         if (stateHandler == null) {
@@ -34,11 +42,11 @@ public class StateHandler {
     }
 
     public void updateArmDesiredState(ArmPositions a) {
-        armPositions = a;
+        desiredArmPosition = a;
     }
 
     public ArmPositions getArmDesiredState() {
-        return armPositions;
+        return desiredArmPosition;
     }
 
     public void updateIntakePosition(boolean intakeInPosition) {
@@ -83,6 +91,22 @@ public class StateHandler {
 
     public void updateRobotDirection(CurrentRobotDirection c) {
         this.currentRobotDirection = c;
+    }
+
+    public ArmPositions getCurrentArmPosition() {
+        return currentArmPosition;
+    }
+
+    public void setCurrentArmPosition(ArmPositions a) {
+        this.currentArmPosition = a;
+    }
+
+    public IntakePositions getDesiredIntakePosition() {
+        return desiredIntakePosition;
+    }
+
+    public void setDesiredIntakePosition(IntakePositions i) {
+        this.desiredIntakePosition = i;
     }
 
 }
