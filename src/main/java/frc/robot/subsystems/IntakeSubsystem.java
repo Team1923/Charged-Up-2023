@@ -17,9 +17,10 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   private WPI_TalonFX intakeProximalMotor = new WPI_TalonFX(IntakeConstants.intakeProximalID);
   private WPI_TalonFX intakeDistalMotor = new WPI_TalonFX(IntakeConstants.intakeDistalID);
-  private DutyCycleEncoder intakeProximalEncoder = new DutyCycleEncoder(IntakeConstants.intakeProximalAbsoluteEncoderID);
+  private DutyCycleEncoder intakeProximalEncoder = new DutyCycleEncoder(
+      IntakeConstants.intakeProximalAbsoluteEncoderID);
   private DutyCycleEncoder intakeDistalEncoder = new DutyCycleEncoder(IntakeConstants.intakeDistalAbsoluteEncoderID);
-  
+
   public IntakeSubsystem() {
     intakeProximalMotor.configFactoryDefault();
     intakeDistalMotor.configFactoryDefault();
@@ -43,7 +44,6 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeProximalMotor.setNeutralMode(NeutralMode.Brake);
     intakeDistalMotor.setNeutralMode(NeutralMode.Brake);
   }
-
 
   @Override
   public void periodic() {

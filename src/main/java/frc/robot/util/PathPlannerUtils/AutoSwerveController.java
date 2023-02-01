@@ -1,6 +1,5 @@
 package frc.robot.util.PathPlannerUtils;
 
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -82,7 +81,7 @@ public class AutoSwerveController extends CommandBase {
       Subsystem... requirements) {
     m_trajectory = trajectory;
     m_pose = pose;
-    m_kinematics =kinematics;
+    m_kinematics = kinematics;
 
     m_controller = new HolonomicDriveController(
         xController, yController, thetaController);
@@ -158,28 +157,28 @@ public class AutoSwerveController extends CommandBase {
     double curTime = m_timer.get();
     PathPlannerState desiredState = m_trajectory.sample(curTime);
 
-
     SmartDashboard.putNumber("Desired Auto Vel", desiredState.velocityMetersPerSecond);
 
     var targetChassisSpeeds = m_controller.calculate(m_pose.get(), desiredState, desiredState.holonomicRotation);
     /*
-     * 254 suggestion for drifting. 
+     * 254 suggestion for drifting.
      * REMOVE THE BELOW LINES IF CAUSING ISSUES.
      */
 
-    Pose2d robot_pose_vel = new Pose2d(targetChassisSpeeds.vxMetersPerSecond * AutoConstants.looperUpdateTime, 
-      targetChassisSpeeds.vyMetersPerSecond * AutoConstants.looperUpdateTime, 
-      Rotation2d.fromRadians(targetChassisSpeeds.omegaRadiansPerSecond * AutoConstants.looperUpdateTime));
-    Twist2d twistVel = new Twist2d(robot_pose_vel.getX(), robot_pose_vel.getY(), robot_pose_vel.getRotation().getRadians());
-    var newChassisSpeeds = new ChassisSpeeds(twistVel.dx / AutoConstants.looperUpdateTime, 
-      twistVel.dy / AutoConstants.looperUpdateTime, 
-      twistVel.dtheta / AutoConstants.looperUpdateTime);
+    Pose2d robot_pose_vel = new Pose2d(targetChassisSpeeds.vxMetersPerSecond * AutoConstants.looperUpdateTime,
+        targetChassisSpeeds.vyMetersPerSecond * AutoConstants.looperUpdateTime,
+        Rotation2d.fromRadians(targetChassisSpeeds.omegaRadiansPerSecond * AutoConstants.looperUpdateTime));
+    Twist2d twistVel = new Twist2d(robot_pose_vel.getX(), robot_pose_vel.getY(),
+        robot_pose_vel.getRotation().getRadians());
+    var newChassisSpeeds = new ChassisSpeeds(twistVel.dx / AutoConstants.looperUpdateTime,
+        twistVel.dy / AutoConstants.looperUpdateTime,
+        twistVel.dtheta / AutoConstants.looperUpdateTime);
 
-    var targetModuleStates = m_kinematics.toSwerveModuleStates(newChassisSpeeds); //CHANGE BACK TO ORIG CHASSIS SPEEDS IF FAILURE
+    var targetModuleStates = m_kinematics.toSwerveModuleStates(newChassisSpeeds); // CHANGE BACK TO ORIG CHASSIS SPEEDS
+                                                                                  // IF FAILURE
 
     SmartDashboard.putNumber("Auto Target Vx", targetChassisSpeeds.vxMetersPerSecond);
     SmartDashboard.putNumber("Auto Target Vy", targetChassisSpeeds.vyMetersPerSecond);
-
 
     m_outputModuleStates.accept(targetModuleStates);
   }

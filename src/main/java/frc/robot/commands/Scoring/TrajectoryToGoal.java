@@ -28,9 +28,9 @@ import frc.robot.subsystems.SwerveSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TrajectoryToGoal extends SequentialCommandGroup {
   TrajectoryConfig config = new TrajectoryConfig(
-    AutoConstants.kMaxSpeedMetersPerSecond,
-    AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-.setKinematics(Swerve.swerveKinematics);
+      AutoConstants.kMaxSpeedMetersPerSecond,
+      AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+      .setKinematics(Swerve.swerveKinematics);
 
   private SwerveSubsystem swerve;
 
@@ -38,31 +38,27 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
     this.swerve = swerve;
     config.setStartVelocity(0);
     config.setEndVelocity(0);
-    config.setReversed(false); //TO-DO: check if correct orientation
+    config.setReversed(false); // TO-DO: check if correct orientation
 
-    /*Generate the trajectory based on waypoints */
-    
+    /* Generate the trajectory based on waypoints */
 
-    var thetaController =
-        new ProfiledPIDController(
-            AutoConstants.kPThetaController, 0, 0.001, AutoConstants.kThetaControllerConstraints);
+    var thetaController = new ProfiledPIDController(
+        AutoConstants.kPThetaController, 0, 0.001, AutoConstants.kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
-            
 
     addCommands(
-      new SwerveControllerCommand(
-          generateTrajectory(),
-          swerve::getPose,
-          Swerve.swerveKinematics,
-          new PIDController(AutoConstants.kPXController, 0, 0),
-          new PIDController(AutoConstants.kPYController, 0, 0),
-          thetaController,
-          swerve::setModuleStates,
-          swerve)
-    );
+        new SwerveControllerCommand(
+            generateTrajectory(),
+            swerve::getPose,
+            Swerve.swerveKinematics,
+            new PIDController(AutoConstants.kPXController, 0, 0),
+            new PIDController(AutoConstants.kPYController, 0, 0),
+            thetaController,
+            swerve::setModuleStates,
+            swerve));
   }
-  
-  public Trajectory generateTrajectory(){
+
+  public Trajectory generateTrajectory() {
     Pose2d center = new Pose2d(0, 0, new Rotation2d(0));
     Pose2d left = new Pose2d(0, -0.5, new Rotation2d(0));
     Pose2d right = new Pose2d(0, 0.5, new Rotation2d(0));
@@ -72,23 +68,22 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
     double robotX = 0;
     double robotY = 0;
     /* rotation */
-    if(limelight == SpecificLimelight.LEFT_LIMELIGHT){
+    if (limelight == SpecificLimelight.LEFT_LIMELIGHT) {
       robotX = -currentRobotPose.getY();
       robotY = currentRobotPose.getX();
-    }
-    else{
+    } else {
       robotX = currentRobotPose.getY();
       robotY = -currentRobotPose.getX();
     }
 
     return TrajectoryGenerator.generateTrajectory(
-                //current bot pose
-                new Pose2d(robotX, robotY, new Rotation2d(currentRobotPose.getRotation().getX())),
-                //intersection point
-                List.of(new Translation2d(1, 1)),
-                //target point
-                new Pose2d(2, 0, new Rotation2d(0)),
-                config);
+        // current bot pose
+        new Pose2d(robotX, robotY, new Rotation2d(currentRobotPose.getRotation().getX())),
+        // intersection point
+        List.of(new Translation2d(1, 1)),
+        // target point
+        new Pose2d(2, 0, new Rotation2d(0)),
+        config);
   }
 
 }

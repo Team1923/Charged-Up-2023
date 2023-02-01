@@ -22,10 +22,9 @@ public class McDonaldsPath extends SequentialCommandGroup {
     final AutoFromPathPlanner mcd2 = new AutoFromPathPlanner(swerve, "McDonalds2", 2.5, true);
 
     addCommands(
-      new InstantCommand(() -> swerve.resetOdometry(mcd1.getInitialPose())),
-      mcd1,
-      new InstantCommand(() -> swerve.resetOdometry(mcd2.getInitialPose())),
-      mcd2
-    );
+        new InstantCommand(() -> swerve.resetOdometry(mcd1.getInitialPose())),
+        mcd1,
+        new InstantCommand(() -> swerve.resetOdometry(mcd2.getInitialPose())),
+        mcd2);
   }
 }

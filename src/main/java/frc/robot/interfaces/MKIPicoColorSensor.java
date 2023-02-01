@@ -20,7 +20,6 @@ public class MKIPicoColorSensor implements AutoCloseable {
       ir = _ir;
     }
 
-
     public RawColor() {
     }
 
@@ -30,7 +29,7 @@ public class MKIPicoColorSensor implements AutoCloseable {
     public int ir;
   }
 
-  //generate RawColor objects to use the methods that we need to detect the ball
+  // generate RawColor objects to use the methods that we need to detect the ball
   RawColor sensor0 = new RawColor();
   RawColor sensor1 = new RawColor();
 
@@ -44,7 +43,7 @@ public class MKIPicoColorSensor implements AutoCloseable {
 
     @Override
     public char charAt(int index) {
-      return (char)data[index];
+      return (char) data[index];
     }
 
     @Override
@@ -72,7 +71,7 @@ public class MKIPicoColorSensor implements AutoCloseable {
 
   private int findNextComma(byte[] data, int readLen, int lastComma) {
     while (true) {
-      if (readLen <= lastComma + 1 ) {
+      if (readLen <= lastComma + 1) {
         return readLen;
       }
       lastComma++;
@@ -97,11 +96,11 @@ public class MKIPicoColorSensor implements AutoCloseable {
 
   private void threadMain() {
     // Using JNI for a non allocating read
-    int port = SerialPortJNI.serialInitializePort((byte)1);
+    int port = SerialPortJNI.serialInitializePort((byte) 1);
     SerialPortJNI.serialSetBaudRate(port, 115200);
-    SerialPortJNI.serialSetDataBits(port, (byte)8);
-    SerialPortJNI.serialSetParity(port, (byte)0);
-    SerialPortJNI.serialSetStopBits(port, (byte)10);
+    SerialPortJNI.serialSetDataBits(port, (byte) 8);
+    SerialPortJNI.serialSetParity(port, (byte) 0);
+    SerialPortJNI.serialSetStopBits(port, (byte) 10);
 
     SerialPortJNI.serialSetTimeout(port, 1);
     SerialPortJNI.serialEnableTermination(port, '\n');
@@ -285,24 +284,23 @@ public class MKIPicoColorSensor implements AutoCloseable {
 
   void setDebugPrints(boolean debug) {
     debugPrints.set(debug);
-  }  
+  }
 
   public RawColor getRawColor(int id) {
-    if(id == 0) {
+    if (id == 0) {
       return getRawColor0();
-    } else if (id == 1){
+    } else if (id == 1) {
       return getRawColor1();
     } else {
       return new RawColor(0, 0, 0, 0);
     }
   }
 
-
   private Alliance alliance;
 
   public boolean isCorrectColor(int id) {
     RawColor current = getRawColor(id);
-    switch(alliance) {
+    switch (alliance) {
       case Blue:
         return current.blue > current.red && current.blue > current.green;
       case Red:
@@ -312,11 +310,9 @@ public class MKIPicoColorSensor implements AutoCloseable {
     }
   }
 
-
   @Override
   public void close() throws Exception {
     threadRunning.set(false);
     readThread.join();
   }
 }
-

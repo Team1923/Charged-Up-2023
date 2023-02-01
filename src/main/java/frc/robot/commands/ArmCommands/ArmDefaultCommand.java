@@ -13,6 +13,7 @@ public class ArmDefaultCommand extends CommandBase {
   /** Creates a new ArmDefaultCommand. */
   private ArmSubsystem armSubsystem;
   private StateHandler stateHandler = StateHandler.getInstance();
+
   public ArmDefaultCommand(ArmSubsystem aSubsystem) {
     armSubsystem = aSubsystem;
     addRequirements(armSubsystem);
@@ -28,13 +29,13 @@ public class ArmDefaultCommand extends CommandBase {
   @Override
   public void execute() {
     double proximalSetpoint = stateHandler.getArmPositions().getArmAngles().getProximalAngle();
-    if(stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT){
+    if (stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT) {
       proximalSetpoint = stateHandler.getArmPositions().getReflectedArmAngles().getProximalAngle();
     }
     armSubsystem.setProximalPosition(proximalSetpoint);
 
     double distalSetpoint = stateHandler.getArmPositions().getArmAngles().getDistalAngle();
-    if(stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT){
+    if (stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT) {
       distalSetpoint = stateHandler.getArmPositions().getReflectedArmAngles().getDistalAngle();
     }
     armSubsystem.setDistalPosition(distalSetpoint);

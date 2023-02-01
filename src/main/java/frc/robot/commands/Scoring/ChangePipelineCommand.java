@@ -12,6 +12,7 @@ public class ChangePipelineCommand extends CommandBase {
   /** Creates a new ChangePipelineCommand. */
   int pipeid;
   SpecificLimelight limelight;
+
   public ChangePipelineCommand(int id, SpecificLimelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.pipeid = id;
@@ -26,7 +27,8 @@ public class ChangePipelineCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   // Called once the command ends or is interrupted.
   @Override

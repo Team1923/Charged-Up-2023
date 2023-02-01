@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -26,11 +24,11 @@ public class ArmSubsystem extends SubsystemBase {
   private DutyCycleEncoder proximalEncoder = new DutyCycleEncoder(ArmConstants.proximalEncoderID); // change this
   private DutyCycleEncoder distalEncoder = new DutyCycleEncoder(ArmConstants.distalEncoderID);
   private StateHandler stateHandler = StateHandler.getInstance();
-  
+
   public ArmSubsystem() {
     proximalMotor.configFactoryDefault();
     distalMotor.configFactoryDefault();
-    
+
     proximalMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
     distalMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
 
@@ -54,73 +52,83 @@ public class ArmSubsystem extends SubsystemBase {
     resetDistalPosition();
   }
 
-  public void resetProximalPosition(){
-    proximalMotor.setSelectedSensorPosition((getProximalAbsoluteEncoderRads() - ArmConstants.proximalEncoderHardstop + ArmConstants.proximalHardstop) * ArmConstants.proximalRadsToTicks);
+  public void resetProximalPosition() {
+    proximalMotor.setSelectedSensorPosition(
+        (getProximalAbsoluteEncoderRads() - ArmConstants.proximalEncoderHardstop + ArmConstants.proximalHardstop)
+            * ArmConstants.proximalRadsToTicks);
   }
 
-  public void resetDistalPosition(){
-    distalMotor.setSelectedSensorPosition((getDistalAbsoluteEncoderRads() - ArmConstants.distalEncoderHardstop + ArmConstants.distalHardstop) * ArmConstants.distalRadsToTicks * ArmConstants.distalRadsToTicks);
+  public void resetDistalPosition() {
+    distalMotor.setSelectedSensorPosition(
+        (getDistalAbsoluteEncoderRads() - ArmConstants.distalEncoderHardstop + ArmConstants.distalHardstop)
+            * ArmConstants.distalRadsToTicks * ArmConstants.distalRadsToTicks);
   }
 
-  public void resetProximalEncoders(){
+  public void resetProximalEncoders() {
     proximalMotor.setSelectedSensorPosition(0);
   }
 
-  public void resetDistalEncoders(){
+  public void resetDistalEncoders() {
     distalMotor.setSelectedSensorPosition(0);
   }
 
   // public void setproximalPosition(double setPoint){
-  //   proximalMotor.set(ControlMode.MotionMagic, setPoint, DemandType.ArbitraryFeedForward, calculateproximalFeedforward());
+  // proximalMotor.set(ControlMode.MotionMagic, setPoint,
+  // DemandType.ArbitraryFeedForward, calculateproximalFeedforward());
   // }
 
   // public void setdistalPosition(double setPoint){
-  //   distalMotor.set(ControlMode.MotionMagic, -setPoint, DemandType.ArbitraryFeedForward, calculatedistalFeedforward());
+  // distalMotor.set(ControlMode.MotionMagic, -setPoint,
+  // DemandType.ArbitraryFeedForward, calculatedistalFeedforward());
   // }
 
-  public void setProximalPosition(double proximalAngle){
-    proximalMotor.set(ControlMode.MotionMagic, proximalAngle * ArmConstants.proximalRadsToTicks, DemandType.ArbitraryFeedForward, calculateproximalFeedforward());
+  public void setProximalPosition(double proximalAngle) {
+    proximalMotor.set(ControlMode.MotionMagic, proximalAngle * ArmConstants.proximalRadsToTicks,
+        DemandType.ArbitraryFeedForward, calculateproximalFeedforward());
   }
 
-  public void setDistalPosition(double distalAngle){
-    distalMotor.set(ControlMode.MotionMagic, distalAngle * ArmConstants.distalRadsToTicks, DemandType.ArbitraryFeedForward, calculatedistalFeedforward());
+  public void setDistalPosition(double distalAngle) {
+    distalMotor.set(ControlMode.MotionMagic, distalAngle * ArmConstants.distalRadsToTicks,
+        DemandType.ArbitraryFeedForward, calculatedistalFeedforward());
   }
 
-  public double[] calculateArmCartesian(double x, double y){
-    double distalGoal = (Math.acos(((x*x) + (y*y) - (Math.pow(ArmConstants.lengthOfProximal, 2)) - (Math.pow(ArmConstants.lengthOfDistal, 2))) 
-    / (2 * ArmConstants.lengthOfProximal * ArmConstants.lengthOfDistal)));
+  public double[] calculateArmCartesian(double x, double y) {
+    double distalGoal = (Math.acos(
+        ((x * x) + (y * y) - (Math.pow(ArmConstants.lengthOfProximal, 2)) - (Math.pow(ArmConstants.lengthOfDistal, 2)))
+            / (2 * ArmConstants.lengthOfProximal * ArmConstants.lengthOfDistal)));
 
-    double proximalGoal = (Math.atan(y/x) - 
-      Math.atan((ArmConstants.lengthOfDistal * Math.sin(distalGoal)) / (ArmConstants.lengthOfProximal + ArmConstants.lengthOfDistal * Math.cos(distalGoal))));
+    double proximalGoal = (Math.atan(y / x) -
+        Math.atan((ArmConstants.lengthOfDistal * Math.sin(distalGoal))
+            / (ArmConstants.lengthOfProximal + ArmConstants.lengthOfDistal * Math.cos(distalGoal))));
 
-    double[] conv = {proximalGoal, distalGoal};
+    double[] conv = { proximalGoal, distalGoal };
 
     return conv;
   }
 
-
-  public double getProximalPosition(){
-    return (proximalMotor.getSelectedSensorPosition() * ArmConstants.proximalTicksToRad) + ArmConstants.kProximalOffsetRads;
+  public double getProximalPosition() {
+    return (proximalMotor.getSelectedSensorPosition() * ArmConstants.proximalTicksToRad)
+        + ArmConstants.kProximalOffsetRads;
   }
 
-  public double getDistalPosition(){
+  public double getDistalPosition() {
     return (distalMotor.getSelectedSensorPosition() * ArmConstants.distalTicksToRad) + ArmConstants.kDistalOffsetRads;
   }
 
-  public void setProximalVoltage(double stpt){
+  public void setProximalVoltage(double stpt) {
     proximalMotor.setVoltage(stpt);
   }
 
-  public void setDistalVoltage(double stpt){
+  public void setDistalVoltage(double stpt) {
     distalMotor.setVoltage(stpt);
   }
 
-  public void stop(){
+  public void stop() {
     proximalMotor.stopMotor();
     distalMotor.stopMotor();
   }
 
-  public double getAngleToCG(){
+  public double getAngleToCG() {
     double proximalCGX = Math.cos(getDistalPosition()) * ArmConstants.proximalCGDistance;
     double proximalCGY = Math.sin(getDistalPosition()) * ArmConstants.proximalCGDistance;
     double proximalLengthX = Math.cos(getDistalPosition()) * ArmConstants.lengthOfProximal;
@@ -129,56 +137,58 @@ public class ArmSubsystem extends SubsystemBase {
     double distalCGX = Math.cos(getDistalPosition()) * ArmConstants.distalCGDistance + proximalLengthX;
     double distalCGY = Math.sin(getDistalPosition()) * ArmConstants.distalCGDistance + proximalLengthY;
 
-    double averageXG = ((ArmConstants.distalMass * distalCGX) + ArmConstants.proximalMass * proximalCGX) / (ArmConstants.distalMass + ArmConstants.proximalMass);
-    double averageYG = ((ArmConstants.distalMass * distalCGY) + ArmConstants.proximalMass * proximalCGY) / (ArmConstants.distalMass + ArmConstants.proximalMass);
+    double averageXG = ((ArmConstants.distalMass * distalCGX) + ArmConstants.proximalMass * proximalCGX)
+        / (ArmConstants.distalMass + ArmConstants.proximalMass);
+    double averageYG = ((ArmConstants.distalMass * distalCGY) + ArmConstants.proximalMass * proximalCGY)
+        / (ArmConstants.distalMass + ArmConstants.proximalMass);
 
     return Math.atan(averageYG / averageXG);
   }
 
-  public double calculateproximalFeedforward(){
+  public double calculateproximalFeedforward() {
     return ArmConstants.maxProximalGravityConstant * Math.cos(getAngleToCG());
   }
 
-  public double calculatedistalFeedforward(){
+  public double calculatedistalFeedforward() {
     return ArmConstants.maxDistalGravityConstant * Math.cos(getDistalPosition());
   }
 
   public double[] anglesToCartesian(double proximalTheta, double distalTheta) {
 
-    double x = ArmConstants.lengthOfProximal*Math.cos(proximalTheta) + ArmConstants.lengthOfDistal*Math.cos(proximalTheta+distalTheta);
-    double y = ArmConstants.lengthOfProximal*Math.sin(proximalTheta) + ArmConstants.lengthOfDistal*Math.sin(proximalTheta+distalTheta);
+    double x = ArmConstants.lengthOfProximal * Math.cos(proximalTheta)
+        + ArmConstants.lengthOfDistal * Math.cos(proximalTheta + distalTheta);
+    double y = ArmConstants.lengthOfProximal * Math.sin(proximalTheta)
+        + ArmConstants.lengthOfDistal * Math.sin(proximalTheta + distalTheta);
 
-    double[] conv = {x,y};
+    double[] conv = { x, y };
     return conv;
   }
 
-  public void setCoast(){
+  public void setCoast() {
     distalMotor.setNeutralMode(NeutralMode.Coast);
     proximalMotor.setNeutralMode(NeutralMode.Coast);
   }
 
-  public void setBrake(){
+  public void setBrake() {
     distalMotor.setNeutralMode(NeutralMode.Brake);
     proximalMotor.setNeutralMode(NeutralMode.Brake);
   }
 
-  public double getProximalAbsoluteEncoderRads(){
+  public double getProximalAbsoluteEncoderRads() {
     return proximalEncoder.getAbsolutePosition() * ArmConstants.proximalAbsoluteEncoderToRadians;
   }
 
-  public double getDistalAbsoluteEncoderRads(){
+  public double getDistalAbsoluteEncoderRads() {
     return distalEncoder.getAbsolutePosition() * ArmConstants.distalAbsoluteEncoderToRadians;
   }
 
-  public double getProximalAbsoluteEncoderTicks(){
+  public double getProximalAbsoluteEncoderTicks() {
     return proximalEncoder.getAbsolutePosition() * ArmConstants.proximalAbsoluteEncoderToTicks;
   }
 
-  public double getDistalAbsoluteEncoderTicks(){
+  public double getDistalAbsoluteEncoderTicks() {
     return distalEncoder.getAbsolutePosition() * ArmConstants.distalAbsoluteEncoderToTicks;
   }
-
-
 
   @Override
   public void periodic() {
@@ -189,22 +199,20 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Proximal Rads", getProximalAbsoluteEncoderRads());
     SmartDashboard.putNumber("Distal Rads", getDistalAbsoluteEncoderRads());
 
-    double proximalError = Math.abs(getProximalPosition() - stateHandler.getArmPositions().getArmAngles().getProximalAngle());
+    double proximalError = Math
+        .abs(getProximalPosition() - stateHandler.getArmPositions().getArmAngles().getProximalAngle());
     double distalError = Math.abs(getDistalPosition() - stateHandler.getArmPositions().getArmAngles().getDistalAngle());
 
-    if(proximalError < ArmConstants.errorThreshold){
+    if (proximalError < ArmConstants.errorThreshold) {
       stateHandler.updateArmPosition(true);
-    }
-    else{
+    } else {
       stateHandler.updateArmPosition(false);
     }
-    if(distalError < ArmConstants.errorThreshold){
+    if (distalError < ArmConstants.errorThreshold) {
       stateHandler.updateArmPosition(true);
-    }
-    else{
+    } else {
       stateHandler.updateArmPosition(false);
     }
-
 
   }
 }

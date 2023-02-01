@@ -31,21 +31,21 @@ public class AutoFromPathPlanner extends SequentialCommandGroup {
 
     addRequirements(drive);
 
-    if(endStationary){
-    // Run path following command, then stop at the end.
+    if (endStationary) {
+      // Run path following command, then stop at the end.
       addCommands(
           new InstantCommand(() -> thetaController.reset(m_trajectory.getInitialPose().getRotation().getRadians())),
           new InstantCommand(() -> SmartDashboard.putString("AutoPath", pathName)),
-          swerveControllerCommand, 
+          swerveControllerCommand,
           new InstantCommand(() -> drive.stop()));
-    }
-    else{
-          // Run path following command, robot will continue moving at same swerve module commanded state at the end 
-          // (NEXT COMMAND IN AUTO MUST BE MOVEMENT OR ELSE ROBOT MAY CONTINUE MOVING UNCONTROLLABLY)
-          addCommands(new InstantCommand(() -> SmartDashboard.putString("AutoPath", pathName)),
+    } else {
+      // Run path following command, robot will continue moving at same swerve module
+      // commanded state at the end
+      // (NEXT COMMAND IN AUTO MUST BE MOVEMENT OR ELSE ROBOT MAY CONTINUE MOVING
+      // UNCONTROLLABLY)
+      addCommands(new InstantCommand(() -> SmartDashboard.putString("AutoPath", pathName)),
           swerveControllerCommand);
     }
-
 
   }
 
@@ -57,10 +57,10 @@ public class AutoFromPathPlanner extends SequentialCommandGroup {
 
   public void instantiate(AutoSwerveController a, SwerveSubsystem drive, ProfiledPIDController thetaController) {
     a = new AutoSwerveController(m_trajectory, drive::getPose,
-    frc.robot.Constants.Swerve.swerveKinematics,
+        frc.robot.Constants.Swerve.swerveKinematics,
 
-    // Position controllers
-    new PIDController(AutoConstants.kPXController, 0, 0), new PIDController(AutoConstants.kPYController, 0, 0),
-    thetaController, drive::setModuleStates, drive);
+        // Position controllers
+        new PIDController(AutoConstants.kPXController, 0, 0), new PIDController(AutoConstants.kPYController, 0, 0),
+        thetaController, drive::setModuleStates, drive);
   }
 }

@@ -12,7 +12,7 @@ public class DistalToPosition extends CommandBase {
   /** Creates a new distalToPosition. */
   private ArmSubsystem armSubsystem;
   private double position;
-  
+
   public DistalToPosition(ArmSubsystem a, double position) {
     armSubsystem = a;
     this.position = position;

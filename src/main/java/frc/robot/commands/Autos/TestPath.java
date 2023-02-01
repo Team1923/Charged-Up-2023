@@ -21,9 +21,8 @@ public class TestPath extends SequentialCommandGroup {
     final AutoFromPathPlanner testPath = new AutoFromPathPlanner(swerve, "TestPath", 2.5, true);
 
     addCommands(
-      new InstantCommand(() -> swerve.resetOdometry(testPath.getInitialPose())),
-      new InstantCommand(() -> swerve.zeroGyro(testPath.getInitialPose().getRotation().getDegrees())),
-      testPath
-    );
+        new InstantCommand(() -> swerve.resetOdometry(testPath.getInitialPose())),
+        new InstantCommand(() -> swerve.zeroGyro(testPath.getInitialPose().getRotation().getDegrees())),
+        testPath);
   }
 }

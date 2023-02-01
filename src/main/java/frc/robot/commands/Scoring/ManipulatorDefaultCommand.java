@@ -11,7 +11,7 @@ import frc.robot.util.StateHandler;
 public class ManipulatorDefaultCommand extends CommandBase {
   private ManipulatorSubsystem gripper;
   private boolean latch = false;
-  
+
   /** Creates a new ManipulatorDefaultCommand. */
   public ManipulatorDefaultCommand(ManipulatorSubsystem gripper) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -21,22 +21,21 @@ public class ManipulatorDefaultCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     boolean reset = StateHandler.getInstance().getResetManipulator();
-    if(reset) {
+    if (reset) {
       latch = false;
       gripper.set(false);
-    }
-    else if(StateHandler.getInstance().readyToClose() && !latch) {
+    } else if (StateHandler.getInstance().readyToClose() && !latch) {
       latch = true;
       gripper.set(true);
 
-    }
-    else if(!latch) {
+    } else if (!latch) {
       gripper.set(false);
     }
   }

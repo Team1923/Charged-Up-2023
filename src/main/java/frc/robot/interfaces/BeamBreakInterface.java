@@ -9,28 +9,28 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class BeamBreakInterface extends SubsystemBase {
-private DigitalInput beamBreak1 = new DigitalInput(Constants.DigitalIDConstants.DigitalID);//?????
+  private DigitalInput beamBreak1 = new DigitalInput(Constants.DigitalIDConstants.DigitalID);// ?????
 
-private static BeamBreakInterface beamBreak;
+  private static BeamBreakInterface beamBreak;
 
-
-public static synchronized BeamBreakInterface getInstance() {
-  if (beamBreak == null) {
-    beamBreak = new BeamBreakInterface();
+  public static synchronized BeamBreakInterface getInstance() {
+    if (beamBreak == null) {
+      beamBreak = new BeamBreakInterface();
+    }
+    return beamBreak;
   }
-  return beamBreak;
-}
+
   /** Creates a new BeamBreakInterface. */
-  public BeamBreakInterface() {}
+  public BeamBreakInterface() {
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
 
-  public boolean isBroken(){// dont know id
+  public boolean isBroken() {// dont know id
     return !beamBreak1.get();
   }
 
 }
-

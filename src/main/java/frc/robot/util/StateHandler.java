@@ -1,6 +1,5 @@
 package frc.robot.util;
 
-
 import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
@@ -17,28 +16,28 @@ public class StateHandler {
     private GamePieceMode mode = GamePieceMode.CONE;
     private CurrentRobotDirection currentRobotDirection = CurrentRobotDirection.LEFT;
     private boolean resetManipulator = false;
-    
 
-    public static synchronized StateHandler getInstance(){
-        if(stateHandler == null){
+    public static synchronized StateHandler getInstance() {
+        if (stateHandler == null) {
             stateHandler = new StateHandler();
         }
         return stateHandler;
     }
 
-    public ScoringLocations getCurrentScoringLocation(){
+    public ScoringLocations getCurrentScoringLocation() {
         return scoringLocations;
     }
 
-    public void setScoringLocation(VerticalLocations v, HorizontalLocations h){
+    public void setScoringLocation(VerticalLocations v, HorizontalLocations h) {
         scoringLocations.setVerticalLocation(v);
         scoringLocations.setHorizontalLocation(h);
     }
 
-    public void updateArmPosition(ArmPositions a){
+    public void updateArmPosition(ArmPositions a) {
         armPositions = a;
     }
-    public ArmPositions getArmPositions(){
+
+    public ArmPositions getArmPositions() {
         return armPositions;
     }
 
@@ -78,11 +77,11 @@ public class StateHandler {
         return resetManipulator;
     }
 
-    public CurrentRobotDirection getRobotDirection(){
+    public CurrentRobotDirection getRobotDirection() {
         return currentRobotDirection;
     }
-    
-    public void updateRobotDirection(CurrentRobotDirection c){
+
+    public void updateRobotDirection(CurrentRobotDirection c) {
         this.currentRobotDirection = c;
     }
 

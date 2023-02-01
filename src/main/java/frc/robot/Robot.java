@@ -4,14 +4,12 @@
 
 package frc.robot;
 
-
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -36,8 +34,6 @@ public class Robot extends LoggedRobot {
   ColorSensorInterface c = ColorSensorInterface.getInstance();
 
   AnalogInput throughBEncoder = new AnalogInput(0);
-  
-
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -46,22 +42,22 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotInit() {
 
-
     Logger.getInstance().recordMetadata("ProjectName", "MyProject"); // Set a metadata value
 
-if (true) {//isReal()) {
-    Logger.getInstance().addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
-    Logger.getInstance().addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-    new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
-} else {
-    setUseTiming(false); // Run as fast as possible
-    String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
-    Logger.getInstance().setReplaySource(new WPILOGReader(logPath)); // Read replay log
-    Logger.getInstance().addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
-}
+    if (true) {// isReal()) {
+      Logger.getInstance().addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
+      Logger.getInstance().addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+      new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
+    } else {
+      setUseTiming(false); // Run as fast as possible
+      String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+      Logger.getInstance().setReplaySource(new WPILOGReader(logPath)); // Read replay log
+      Logger.getInstance().addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save
+                                                                                                          // outputs to
+                                                                                                          // a new log
+    }
 
     Logger.getInstance().start();
-
 
     Logger logger = Logger.getInstance();
 
@@ -107,9 +103,7 @@ if (true) {//isReal()) {
     }
 
     // Start AdvantageKit logger
-    //logger.start();
-    
-
+    // logger.start();
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
@@ -125,7 +119,6 @@ if (true) {//isReal()) {
     // This must be called from the robot's periodic block in order for anything in
     // the Command-based framework to work.
 
-
     // SmartDashboard.putNumber("RedToGreen ", 1.0*c.GetRed()/c.GetGreen());
     // SmartDashboard.putNumber("BlueToGreen ", 1.0* c.GetBlue()/c.GetGreen());
     // SmartDashboard.putNumber("RedToBlue ", 1.0*c.GetRed()/c.GetBlue());
@@ -133,11 +126,9 @@ if (true) {//isReal()) {
     // SmartDashboard.putBoolean("If Cone", c.isCone());
     // SmartDashboard.putString("Game Piece", c.getGamePiece().toString());
     // SmartDashboard.putNumber("Encoder Stuff",throughBEncoder.getVoltage());
-    //SmartDashboard.putString("GamePieceType", c.getGamePiece().toString());
+    // SmartDashboard.putString("GamePieceType", c.getGamePiece().toString());
     CommandScheduler.getInstance().run();
 
-    
-    
   }
 
   /** This function is called once when the robot is disabled. */
@@ -186,10 +177,7 @@ if (true) {//isReal()) {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    //Drive();
-  
-    
-  
+    // Drive();
 
   }
 

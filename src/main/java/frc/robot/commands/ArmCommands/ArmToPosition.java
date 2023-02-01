@@ -4,8 +4,6 @@
 
 package frc.robot.commands.ArmCommands;
 
-
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.util.StateHandler;
@@ -14,7 +12,7 @@ import frc.robot.util.StateVariables.ArmPositions;
 public class ArmToPosition extends CommandBase {
   /** Creates a new distalToPosition. */
   ArmPositions armPositions;
-  
+
   public ArmToPosition(ArmPositions a) {
     armPositions = a;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -29,7 +27,7 @@ public class ArmToPosition extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+
   }
 
   // Called once the command ends or is interrupted.

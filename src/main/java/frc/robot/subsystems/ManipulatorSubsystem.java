@@ -9,18 +9,17 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ManipulatorSubsystem extends SubsystemBase {
-  
+
   private Solenoid gripper = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
-  
+
   /** Creates a new Manipulator. */
-  public ManipulatorSubsystem() {}
+  public ManipulatorSubsystem() {
+  }
 
   public void set(boolean output) {
     gripper.set(output);
 
   }
-
-  
 
   @Override
   public void periodic() {
