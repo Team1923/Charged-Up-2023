@@ -36,8 +36,27 @@ public class StateVariables {
         private ArmAngles armAngles;
         private ArmAngles reflectedAngles;
 
-        private ArmPositions(ArmAngles a) {
-            this.armAngles = a;
+        private ArmPositions nextInSequence;
+        private double triggerThresholdRadians;
+
+        /**
+         * Enable the state to automatically switch to another state when a 
+         * certain angle has been reached.
+         *
+         * @param angles Instance of ArmAngles containing arm angle data for this waypoint
+         * @param next The next arm state in the sequence
+         * @param triggerRadians The threshold (in radians) for the joint before moving to next waypoint
+         */
+        private ArmPositions(ArmAngles angles, ArmPositions next, double triggerRadians) {
+            this.armAngles = angles;
+            this.reflectedAngles = new ArmAngles(Math.PI - armAngles.getProximalAngle(),
+                    Math.PI - armAngles.getDistalAngle());
+            this.nextInSequence = next;
+            this.triggerThresholdRadians = triggerRadians;
+        }
+
+        private ArmPositions(ArmAngles angles) {
+            this.armAngles = angles;
             this.reflectedAngles = new ArmAngles(Math.PI - armAngles.getProximalAngle(),
                     Math.PI - armAngles.getDistalAngle());
         }
