@@ -40,12 +40,14 @@ public class StateVariables {
         private double triggerThresholdRadians;
 
         /**
-         * Enable the state to automatically switch to another state when a 
+         * Enable the state to automatically switch to another state when a
          * certain angle has been reached.
          *
-         * @param angles Instance of ArmAngles containing arm angle data for this waypoint
-         * @param next The next arm state in the sequence
-         * @param triggerRadians The threshold (in radians) for the joint before moving to next waypoint
+         * @param angles         Instance of ArmAngles containing arm angle data for
+         *                       this waypoint
+         * @param next           The next arm state in the sequence
+         * @param triggerRadians The threshold (in radians) for the joint before moving
+         *                       to next waypoint
          */
         private ArmPositions(ArmAngles angles, ArmPositions next, double triggerRadians) {
             this.armAngles = angles;
@@ -68,6 +70,15 @@ public class StateVariables {
         public ArmAngles getReflectedArmAngles() {
             return reflectedAngles;
         }
+
+        public double getThresholdRadians() {
+            return triggerThresholdRadians;
+        }
+
+        public ArmPositions getNextInSequence() {
+            return nextInSequence;
+        }
+        
     }
 
     public static class ScoringLocations {

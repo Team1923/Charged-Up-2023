@@ -33,11 +33,11 @@ public class StateHandler {
         scoringLocations.setHorizontalLocation(h);
     }
 
-    public void updateArmPosition(ArmPositions a) {
+    public void updateArmDesiredState(ArmPositions a) {
         armPositions = a;
     }
 
-    public ArmPositions getArmPositions() {
+    public ArmPositions getArmDesiredState() {
         return armPositions;
     }
 
@@ -45,7 +45,7 @@ public class StateHandler {
         this.intakeInPosition = intakeInPosition;
     }
 
-    public void updateArmPosition(boolean armInPosition) {
+    public void updateArmInPosition(boolean armInPosition) {
         this.armInPosition = armInPosition;
     }
 
@@ -61,7 +61,7 @@ public class StateHandler {
         return intakeInPosition;
     }
 
-    public boolean getArmPosition() {
+    public boolean getArmInPosition() {
         return armInPosition;
     }
 

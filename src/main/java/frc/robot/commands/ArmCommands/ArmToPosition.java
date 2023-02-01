@@ -21,7 +21,7 @@ public class ArmToPosition extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    StateHandler.getInstance().updateArmPosition(armPositions);
+    StateHandler.getInstance().updateArmDesiredState(armPositions);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

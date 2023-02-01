@@ -7,6 +7,7 @@ package frc.robot.commands.ArmCommands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.StateHandler;
+import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 
 public class ArmDefaultCommand extends CommandBase {
@@ -28,17 +29,37 @@ public class ArmDefaultCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double proximalSetpoint = stateHandler.getArmPositions().getArmAngles().getProximalAngle();
+    double proximalSetpoint = stateHandler.getArmDesiredState().getArmAngles().getProximalAngle();
     if (stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT) {
-      proximalSetpoint = stateHandler.getArmPositions().getReflectedArmAngles().getProximalAngle();
+      proximalSetpoint = stateHandler.getArmDesiredState().getReflectedArmAngles().getProximalAngle();
     }
     armSubsystem.setProximalPosition(proximalSetpoint);
 
-    double distalSetpoint = stateHandler.getArmPositions().getArmAngles().getDistalAngle();
+    double distalSetpoint = stateHandler.getArmDesiredState().getArmAngles().getDistalAngle();
     if (stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT) {
-      distalSetpoint = stateHandler.getArmPositions().getReflectedArmAngles().getDistalAngle();
+      distalSetpoint = stateHandler.getArmDesiredState().getReflectedArmAngles().getDistalAngle();
     }
     armSubsystem.setDistalPosition(distalSetpoint);
+
+    // To avoid putting the rest of the code inside an if-statement, I will check if the object is null
+    // and return nothing to exit this iteration of the execute loop. Any code that I would normally
+    // put inside the if statement I can now put after it, as the loop would have exited if the if statement
+    // was true in the last check.
+    ArmPositions nextInSequence = stateHandler.getArmDesiredState().getNextInSequence();
+
+    if(nextInSequence == null) {
+      return;
+    }
+
+    double proximalError = Math.abs(armSubsystem.getProximalPosition() - proximalSetpoint);
+    double distalError = Math.abs(armSubsystem.getDistalPosition() - distalSetpoint);
+
+    double triggerThresholdRadians = stateHandler.getArmDesiredState().getThresholdRadians();
+
+    if(proximalError < triggerThresholdRadians && distalError < triggerThresholdRadians) {
+      stateHandler.updateArmDesiredState(nextInSequence);
+    }
+
   }
 
   // Called once the command ends or is interrupted.

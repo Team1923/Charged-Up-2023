@@ -200,18 +200,20 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Distal Rads", getDistalAbsoluteEncoderRads());
 
     double proximalError = Math
-        .abs(getProximalPosition() - stateHandler.getArmPositions().getArmAngles().getProximalAngle());
-    double distalError = Math.abs(getDistalPosition() - stateHandler.getArmPositions().getArmAngles().getDistalAngle());
+        .abs(getProximalPosition() - stateHandler.getArmDesiredState().getArmAngles().getProximalAngle());
+    double distalError = Math.abs(getDistalPosition() - stateHandler.getArmDesiredState().getArmAngles().getDistalAngle());
 
+
+    // USE THIS AS A TEACHING MOMENT
     if (proximalError < ArmConstants.errorThreshold) {
-      stateHandler.updateArmPosition(true);
+      stateHandler.updateArmInPosition(true);
     } else {
-      stateHandler.updateArmPosition(false);
+      stateHandler.updateArmInPosition(false);
     }
     if (distalError < ArmConstants.errorThreshold) {
-      stateHandler.updateArmPosition(true);
+      stateHandler.updateArmInPosition(true);
     } else {
-      stateHandler.updateArmPosition(false);
+      stateHandler.updateArmInPosition(false);
     }
 
   }
