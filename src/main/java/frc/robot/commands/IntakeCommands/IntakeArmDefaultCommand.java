@@ -7,6 +7,7 @@ package frc.robot.commands.IntakeCommands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeArmSubsystem;
 import frc.robot.util.StateHandler;
+import frc.robot.util.StateVariables.IntakePositions;
 
 public class IntakeArmDefaultCommand extends CommandBase {
 
@@ -27,6 +28,8 @@ public class IntakeArmDefaultCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    IntakePositions currentDesiredState = stateHandler.getDesiredIntakePosition();
 
     
     
