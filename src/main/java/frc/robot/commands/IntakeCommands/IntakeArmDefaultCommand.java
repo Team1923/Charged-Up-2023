@@ -8,7 +8,6 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
-import frc.robot.interfaces.ColorSensorInterface.GamePiece;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.ArmPositions;
@@ -60,6 +59,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
           }
         break;
       case HOLD:
+          intake.setWheelSpeed(IntakeConstants.gripSpeed);
           if(intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()){
             stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CUBE);
             break;
@@ -110,6 +110,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
         }
         break;
       case CONE_HANDOFF_1:
+        intake.setWheelSpeed(IntakeConstants.gripSpeed);
         if(intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()){
           stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CONE);
           break;

@@ -112,6 +112,8 @@ public final class Constants {
     public static final double cubeCurrentThreshold = 0;
     public static final double coneCurrentThreshold = 0;
 
+    public static final double gripSpeed = .15;
+
   }
 
   public final class ArmConstants {

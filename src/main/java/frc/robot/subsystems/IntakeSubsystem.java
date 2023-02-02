@@ -147,6 +147,14 @@ public class IntakeSubsystem extends SubsystemBase {
         .abs(getIntakeProximalPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle());
     double distalError = Math.abs(getIntakeDistalPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getDistalAngle());
 
-    stateHandler.updateIntakeInPosition(proximalError < IntakeConstants.errorThreshold && distalError < IntakeConstants.errorThreshold);
+    boolean withinThreshold = proximalError < IntakeConstants.errorThreshold && distalError < IntakeConstants.errorThreshold;
+
+    stateHandler.updateIntakeInPosition(withinThreshold);
+
+    if(withinThreshold) {
+      stateHandler.setCurrentIntakePosition(stateHandler.getDesiredIntakePosition());
+    }
+
+
   }
 }

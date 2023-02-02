@@ -16,13 +16,13 @@ public class StateHandler {
     private ArmPositions currentArmPosition = ArmPositions.STOW;
 
     private IntakePositions desiredIntakePosition = IntakePositions.STOW;
+    private IntakePositions currentIntakePosition = IntakePositions.STOW;
 
-    private boolean hasGamePiece = true;
-    private boolean intakeInPosition = false, armInPosition = false;
-    private boolean resetManipulator = false;
+    private boolean hasGamePiece = false;
+    private boolean intakeInPosition = false, armInPosition = false, resetManipulator = false;
 
     private GamePieceMode mode = GamePieceMode.CONE;
-    
+
     private CurrentRobotDirection currentRobotDirection = CurrentRobotDirection.LEFT;
 
     public static synchronized StateHandler getInstance() {
@@ -42,7 +42,7 @@ public class StateHandler {
     }
 
     public void updateArmDesiredState(ArmPositions a) {
-        if(a != desiredArmPosition){
+        if (a != desiredArmPosition) {
             armInPosition = false;
         }
         desiredArmPosition = a;
@@ -81,7 +81,9 @@ public class StateHandler {
     }
 
     public boolean readyToClose() {
-        return intakeInPosition && armInPosition;
+        return intakeInPosition && armInPosition && currentArmPosition == ArmPositions.STOW
+                && (currentIntakePosition == IntakePositions.CONE_HANDOFF_2
+                        || currentIntakePosition == IntakePositions.CUBE_HANDOFF);
     }
 
     public boolean getResetManipulator() {
@@ -104,22 +106,30 @@ public class StateHandler {
         this.currentArmPosition = a;
     }
 
+    public IntakePositions getCurrentIntakePosition() {
+        return currentIntakePosition;
+    }
+
+    public void setCurrentIntakePosition(IntakePositions i) {
+        this.currentIntakePosition = i;
+    }
+
     public IntakePositions getDesiredIntakePosition() {
         return desiredIntakePosition;
     }
 
     public void setDesiredIntakePosition(IntakePositions i) {
-        if(i!=desiredIntakePosition){
+        if (i != desiredIntakePosition) {
             intakeInPosition = false;
         }
         this.desiredIntakePosition = i;
     }
 
-    public GamePieceMode getGamePieceMode(){
+    public GamePieceMode getGamePieceMode() {
         return mode;
     }
 
-    public void setGamePieceMode(GamePieceMode g){
+    public void setGamePieceMode(GamePieceMode g) {
         mode = g;
     }
 
