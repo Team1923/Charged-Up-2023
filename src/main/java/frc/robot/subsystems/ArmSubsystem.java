@@ -64,14 +64,6 @@ public class ArmSubsystem extends SubsystemBase {
             * ArmConstants.distalRadsToTicks * ArmConstants.distalRadsToTicks);
   }
 
-  public void resetProximalEncoders() {
-    proximalMotor.setSelectedSensorPosition(0);
-  }
-
-  public void resetDistalEncoders() {
-    distalMotor.setSelectedSensorPosition(0);
-  }
-
   // public void setproximalPosition(double setPoint){
   // proximalMotor.set(ControlMode.MotionMagic, setPoint,
   // DemandType.ArbitraryFeedForward, calculateproximalFeedforward());
@@ -84,12 +76,12 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void setProximalPosition(double proximalAngle) {
     proximalMotor.set(ControlMode.MotionMagic, proximalAngle * ArmConstants.proximalRadsToTicks,
-        DemandType.ArbitraryFeedForward, calculateproximalFeedforward());
+        DemandType.ArbitraryFeedForward, calculateProximalFeedforward());
   }
 
   public void setDistalPosition(double distalAngle) {
     distalMotor.set(ControlMode.MotionMagic, distalAngle * ArmConstants.distalRadsToTicks,
-        DemandType.ArbitraryFeedForward, calculatedistalFeedforward());
+        DemandType.ArbitraryFeedForward, calculateDistalFeedforward());
   }
 
   public double[] calculateArmCartesian(double x, double y) {
@@ -145,11 +137,11 @@ public class ArmSubsystem extends SubsystemBase {
     return Math.atan(averageYG / averageXG);
   }
 
-  public double calculateproximalFeedforward() {
+  public double calculateProximalFeedforward() {
     return ArmConstants.maxProximalGravityConstant * Math.cos(getAngleToCG());
   }
 
-  public double calculatedistalFeedforward() {
+  public double calculateDistalFeedforward() {
     return ArmConstants.maxDistalGravityConstant * Math.cos(getDistalPosition());
   }
 
@@ -200,22 +192,17 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Distal Rads", getDistalAbsoluteEncoderRads());
 
     double proximalError = Math
-        .abs(getProximalPosition() - stateHandler.getArmDesiredState().getArmAngles().getProximalAngle());
-    double distalError = Math.abs(getDistalPosition() - stateHandler.getArmDesiredState().getArmAngles().getDistalAngle());
+        .abs(getProximalPosition() - stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());
+    double distalError = Math.abs(getDistalPosition() - stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
 
+    boolean withinThreshold = proximalError < ArmConstants.errorThreshold && distalError < ArmConstants.errorThreshold;
 
-    // USE THIS AS A TEACHING MOMENT
-    if (proximalError < ArmConstants.errorThreshold) {
-      stateHandler.updateArmInPosition(true);
-    } else {
-      stateHandler.updateArmInPosition(false);
+    stateHandler.updateArmInPosition(withinThreshold);
+
+    if(withinThreshold){
+      stateHandler.setCurrentArmPosition(stateHandler.getArmDesiredPosition());
     }
-    
-    if (distalError < ArmConstants.errorThreshold) {
-      stateHandler.updateArmInPosition(true);
-    } else {
-      stateHandler.updateArmInPosition(false);
-    }
+
 
   }
 }

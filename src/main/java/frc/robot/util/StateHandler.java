@@ -42,14 +42,17 @@ public class StateHandler {
     }
 
     public void updateArmDesiredState(ArmPositions a) {
+        if(a != desiredArmPosition){
+            armInPosition = false;
+        }
         desiredArmPosition = a;
     }
 
-    public ArmPositions getArmDesiredState() {
+    public ArmPositions getArmDesiredPosition() {
         return desiredArmPosition;
     }
 
-    public void updateIntakePosition(boolean intakeInPosition) {
+    public void updateIntakeInPosition(boolean intakeInPosition) {
         this.intakeInPosition = intakeInPosition;
     }
 
@@ -65,7 +68,7 @@ public class StateHandler {
         this.resetManipulator = resetManipulator;
     }
 
-    public boolean getIntakePosition() {
+    public boolean getIntakeInPosition() {
         return intakeInPosition;
     }
 
@@ -106,7 +109,18 @@ public class StateHandler {
     }
 
     public void setDesiredIntakePosition(IntakePositions i) {
+        if(i!=desiredIntakePosition){
+            intakeInPosition = false;
+        }
         this.desiredIntakePosition = i;
+    }
+
+    public GamePieceMode getGamePieceMode(){
+        return mode;
+    }
+
+    public void setGamePieceMode(GamePieceMode g){
+        mode = g;
     }
 
 }

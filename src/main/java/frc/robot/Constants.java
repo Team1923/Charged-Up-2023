@@ -53,8 +53,18 @@ public final class Constants {
   public final class IntakeConstants {
     public static final int intakeProximalID = 0;
     public static final int intakeDistalID = 0;
+    public static final int intakeWheelID = 0;
     public static final int intakeProximalAbsoluteEncoderID = 0;
     public static final int intakeDistalAbsoluteEncoderID = 0;
+
+    public static final double intakeProximalCGDistance = 0;
+    public static final double intakeDistalCGDistance = 0;
+
+    public static final double intakeProximalLength = 0;
+    public static final double intakeDistalLength = 0;
+
+    public static final double intakeProximalMass = 0;
+    public static final double intakeDistalMass = 0;
 
     public static final double intakeProximalkP = 0;
     public static final double intakeProximalkI = 0;
@@ -77,6 +87,30 @@ public final class Constants {
     public static final double intakeDistalTicksToRad = (2 * Math.PI)
         / (FalconConstants.ticksPerRev * intakeDistalGearRatio);
     public static final double intakeDistalRadsToTicks = 1 / intakeDistalTicksToRad;
+
+    public static final double intakeProximalEncoderHardstop = 0;
+    public static final double intakeDistalEncoderHardstop = 0;
+    public static final double intakeProximalHardstop = 0;
+    public static final double intakeDistalHardstop = 0;
+
+    public static final double intakeMaxProximalGravityConstant = 0;
+    public static final double intakeMaxDistalGravityConstant = 0;
+
+    public static final double intakeProximalAbsoluteEncoderToTicks = intakeProximalGearRatio * 2048;
+    public static final double intakeDistalAbsoluteEncoderToTicks = intakeDistalGearRatio * 2048;
+    public static final double intakeProximalAbsoluteEncoderToRadians = intakeProximalAbsoluteEncoderToTicks * intakeProximalTicksToRad;
+    public static final double intakeDistalAbsoluteEncoderToRadians = intakeDistalAbsoluteEncoderToTicks * intakeDistalTicksToRad;
+
+    public static final double kIntakeProximalOffsetRads = 0;
+    public static final double kIntakeDistalOffsetRads = 0;
+
+    public static final double errorThreshold = 0;
+    public static final double cubeIntakeSpeed = 0;
+    public static final double coneIntakeSpeed = 0;
+    public static final double ejectSpeed = 0;
+
+    public static final double cubeCurrentThreshold = 0;
+    public static final double coneCurrentThreshold = 0;
 
   }
 

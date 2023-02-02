@@ -29,15 +29,15 @@ public class ArmDefaultCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double proximalSetpoint = stateHandler.getArmDesiredState().getArmAngles().getProximalAngle();
+    double proximalSetpoint = stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle();
     if (stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT) {
-      proximalSetpoint = stateHandler.getArmDesiredState().getReflectedArmAngles().getProximalAngle();
+      proximalSetpoint = stateHandler.getArmDesiredPosition().getReflectedArmAngles().getProximalAngle();
     }
     armSubsystem.setProximalPosition(proximalSetpoint);
 
-    double distalSetpoint = stateHandler.getArmDesiredState().getArmAngles().getDistalAngle();
+    double distalSetpoint = stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle();
     if (stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT) {
-      distalSetpoint = stateHandler.getArmDesiredState().getReflectedArmAngles().getDistalAngle();
+      distalSetpoint = stateHandler.getArmDesiredPosition().getReflectedArmAngles().getDistalAngle();
     }
     armSubsystem.setDistalPosition(distalSetpoint);
 
@@ -45,7 +45,7 @@ public class ArmDefaultCommand extends CommandBase {
     // and return nothing to exit this iteration of the execute loop. Any code that I would normally
     // put inside the if statement I can now put after it, as the loop would have exited if the if statement
     // was true in the last check.
-    ArmPositions nextInSequence = stateHandler.getArmDesiredState().getNextInSequence();
+    ArmPositions nextInSequence = stateHandler.getArmDesiredPosition().getNextInSequence();
 
     if(nextInSequence == null) {
       return;
@@ -54,7 +54,7 @@ public class ArmDefaultCommand extends CommandBase {
     double proximalError = Math.abs(armSubsystem.getProximalPosition() - proximalSetpoint);
     double distalError = Math.abs(armSubsystem.getDistalPosition() - distalSetpoint);
 
-    double triggerThresholdRadians = stateHandler.getArmDesiredState().getThresholdRadians();
+    double triggerThresholdRadians = stateHandler.getArmDesiredPosition().getThresholdRadians();
 
     if(proximalError < triggerThresholdRadians && distalError < triggerThresholdRadians) {
       stateHandler.updateArmDesiredState(nextInSequence);

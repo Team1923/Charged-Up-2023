@@ -65,8 +65,9 @@ public class StateVariables {
         INTAKE_CONE(new ArmAngles(0,0)),
         INTAKE_CUBE(new ArmAngles(0,0)),
         CUBE_HANDOFF(new ArmAngles(0,0)),
-        CONE_HANDOFF_1(new ArmAngles(0,0)),
-        CONE_HANDOFF_2(new ArmAngles(0,0));
+        CONE_HANDOFF_2(new ArmAngles(0,0)),
+        CONE_HANDOFF_1(new ArmAngles(0,0), IntakePositions.CONE_HANDOFF_2, 0.05),
+        HOLD(new ArmAngles(0, 0));
 
         private ArmAngles armAngles;
 
