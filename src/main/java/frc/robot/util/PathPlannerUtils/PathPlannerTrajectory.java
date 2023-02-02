@@ -71,8 +71,8 @@ public class PathPlannerTrajectory extends Trajectory {
     }
 
     /**
-     * Get a state in the path based on its index.
-     * In most cases, using sample() is a better method.
+     * Get a state in the path based on its index. In most cases, using sample() is
+     * a better method.
      * 
      * @param i The index of the state to retrieve
      * @return The state at the given index

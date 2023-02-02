@@ -41,13 +41,16 @@ public class ArmDefaultCommand extends CommandBase {
     }
     armSubsystem.setDistalPosition(distalSetpoint);
 
-    // To avoid putting the rest of the code inside an if-statement, I will check if the object is null
-    // and return nothing to exit this iteration of the execute loop. Any code that I would normally
-    // put inside the if statement I can now put after it, as the loop would have exited if the if statement
+    // To avoid putting the rest of the code inside an if-statement, I will check if
+    // the object is null
+    // and return nothing to exit this iteration of the execute loop. Any code that
+    // I would normally
+    // put inside the if statement I can now put after it, as the loop would have
+    // exited if the if statement
     // was true in the last check.
     ArmPositions nextInSequence = stateHandler.getArmDesiredPosition().getNextInSequence();
 
-    if(nextInSequence == null) {
+    if (nextInSequence == null) {
       return;
     }
 
@@ -56,7 +59,7 @@ public class ArmDefaultCommand extends CommandBase {
 
     double triggerThresholdRadians = stateHandler.getArmDesiredPosition().getThresholdRadians();
 
-    if(proximalError < triggerThresholdRadians && distalError < triggerThresholdRadians) {
+    if (proximalError < triggerThresholdRadians && distalError < triggerThresholdRadians) {
       stateHandler.updateArmDesiredState(nextInSequence);
     }
 

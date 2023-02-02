@@ -27,10 +27,8 @@ import frc.robot.subsystems.SwerveSubsystem;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TrajectoryToGoal extends SequentialCommandGroup {
-  TrajectoryConfig config = new TrajectoryConfig(
-      AutoConstants.kMaxSpeedMetersPerSecond,
-      AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-      .setKinematics(Swerve.swerveKinematics);
+  TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
+      AutoConstants.kMaxAccelerationMetersPerSecondSquared).setKinematics(Swerve.swerveKinematics);
 
   private SwerveSubsystem swerve;
 
@@ -42,20 +40,13 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
 
     /* Generate the trajectory based on waypoints */
 
-    var thetaController = new ProfiledPIDController(
-        AutoConstants.kPThetaController, 0, 0.001, AutoConstants.kThetaControllerConstraints);
+    var thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0.001,
+        AutoConstants.kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    addCommands(
-        new SwerveControllerCommand(
-            generateTrajectory(),
-            swerve::getPose,
-            Swerve.swerveKinematics,
-            new PIDController(AutoConstants.kPXController, 0, 0),
-            new PIDController(AutoConstants.kPYController, 0, 0),
-            thetaController,
-            swerve::setModuleStates,
-            swerve));
+    addCommands(new SwerveControllerCommand(generateTrajectory(), swerve::getPose, Swerve.swerveKinematics,
+        new PIDController(AutoConstants.kPXController, 0, 0), new PIDController(AutoConstants.kPYController, 0, 0),
+        thetaController, swerve::setModuleStates, swerve));
   }
 
   public Trajectory generateTrajectory() {
@@ -82,8 +73,7 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
         // intersection point
         List.of(new Translation2d(1, 1)),
         // target point
-        new Pose2d(2, 0, new Rotation2d(0)),
-        config);
+        new Pose2d(2, 0, new Rotation2d(0)), config);
   }
 
 }

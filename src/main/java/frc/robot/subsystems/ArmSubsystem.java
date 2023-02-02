@@ -89,9 +89,8 @@ public class ArmSubsystem extends SubsystemBase {
         ((x * x) + (y * y) - (Math.pow(ArmConstants.lengthOfProximal, 2)) - (Math.pow(ArmConstants.lengthOfDistal, 2)))
             / (2 * ArmConstants.lengthOfProximal * ArmConstants.lengthOfDistal)));
 
-    double proximalGoal = (Math.atan(y / x) -
-        Math.atan((ArmConstants.lengthOfDistal * Math.sin(distalGoal))
-            / (ArmConstants.lengthOfProximal + ArmConstants.lengthOfDistal * Math.cos(distalGoal))));
+    double proximalGoal = (Math.atan(y / x) - Math.atan((ArmConstants.lengthOfDistal * Math.sin(distalGoal))
+        / (ArmConstants.lengthOfProximal + ArmConstants.lengthOfDistal * Math.cos(distalGoal))));
 
     double[] conv = { proximalGoal, distalGoal };
 
@@ -193,16 +192,16 @@ public class ArmSubsystem extends SubsystemBase {
 
     double proximalError = Math
         .abs(getProximalPosition() - stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());
-    double distalError = Math.abs(getDistalPosition() - stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
+    double distalError = Math
+        .abs(getDistalPosition() - stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
 
     boolean withinThreshold = proximalError < ArmConstants.errorThreshold && distalError < ArmConstants.errorThreshold;
 
     stateHandler.updateArmInPosition(withinThreshold);
 
-    if(withinThreshold){
+    if (withinThreshold) {
       stateHandler.setCurrentArmPosition(stateHandler.getArmDesiredPosition());
     }
-
 
   }
 }

@@ -40,10 +40,7 @@ public class TeleopSwerve extends CommandBase {
         double rotationVal = 0.85 * MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
 
         /* Drive */
-        s_Swerve.drive(
-                new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),
-                rotationVal * Constants.Swerve.maxAngularVelocity,
-                !robotCentricSup.getAsBoolean(),
-                true);
+        s_Swerve.drive(new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),
+                rotationVal * Constants.Swerve.maxAngularVelocity, !robotCentricSup.getAsBoolean(), true);
     }
 }

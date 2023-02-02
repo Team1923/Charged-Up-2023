@@ -20,6 +20,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
   private StateHandler stateHandler;
   private BooleanSupplier intakeSupplier;
   private BooleanSupplier ejectSupplier;
+
   /** Creates a new IntakeArmDefaultCommand. */
   public IntakeArmDefaultCommand(IntakeSubsystem i, BooleanSupplier intakeSupplier, BooleanSupplier ejectSupplier) {
     intake = i;
@@ -32,99 +33,94 @@ public class IntakeArmDefaultCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     IntakePositions currentDesiredState = stateHandler.getDesiredIntakePosition();
 
-    switch(currentDesiredState){
+    switch (currentDesiredState) {
       case INTAKE_CUBE:
-          if(stateHandler.getGamePieceMode() == GamePieceMode.CONE){
-            stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CONE);
-            break;
-          }
-          if(intakeSupplier.getAsBoolean()){
-            intake.setWheelSpeed(IntakeConstants.cubeIntakeSpeed);
-          }
-          else if (ejectSupplier.getAsBoolean()){
-            intake.setWheelSpeed(IntakeConstants.ejectSpeed);
-          }
-          else if(intake.getCurrentDraw() > IntakeConstants.cubeCurrentThreshold){
-            stateHandler.setDesiredIntakePosition(IntakePositions.HOLD);
-          }
-          else{
-            stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
-          }
+        if (stateHandler.getGamePieceMode() == GamePieceMode.CONE) {
+          stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CONE);
+          break;
+        }
+        if (intakeSupplier.getAsBoolean()) {
+          intake.setWheelSpeed(IntakeConstants.cubeIntakeSpeed);
+        } else if (ejectSupplier.getAsBoolean()) {
+          intake.setWheelSpeed(IntakeConstants.ejectSpeed);
+        } else if (intake.getCurrentDraw() > IntakeConstants.cubeCurrentThreshold) {
+          stateHandler.setDesiredIntakePosition(IntakePositions.HOLD);
+        } else {
+          stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
+        }
         break;
       case HOLD:
-          intake.setWheelSpeed(IntakeConstants.gripSpeed);
-          if(intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()){
-            stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CUBE);
-            break;
-          }
-          if(stateHandler.getCurrentArmPosition() == ArmPositions.STOW && stateHandler.getGamePieceMode() == GamePieceMode.CUBE){
-            stateHandler.setDesiredIntakePosition(IntakePositions.CUBE_HANDOFF);
-          }
-          else if(stateHandler.getCurrentArmPosition() == ArmPositions.STOW && stateHandler.getGamePieceMode() == GamePieceMode.CONE){
-            stateHandler.setDesiredIntakePosition(IntakePositions.CONE_HANDOFF_1);
-          }
-          break;
-      case CUBE_HANDOFF:
-        if(intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()){
+        intake.setWheelSpeed(IntakeConstants.gripSpeed);
+        if (intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()) {
           stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CUBE);
           break;
         }
-        if(stateHandler.getCurrentArmPosition() == ArmPositions.COBRA){
+        if (stateHandler.getCurrentArmPosition() == ArmPositions.STOW
+            && stateHandler.getGamePieceMode() == GamePieceMode.CUBE) {
+          stateHandler.setDesiredIntakePosition(IntakePositions.CUBE_HANDOFF);
+        } else if (stateHandler.getCurrentArmPosition() == ArmPositions.STOW
+            && stateHandler.getGamePieceMode() == GamePieceMode.CONE) {
+          stateHandler.setDesiredIntakePosition(IntakePositions.CONE_HANDOFF_1);
+        }
+        break;
+      case CUBE_HANDOFF:
+        if (intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()) {
+          stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CUBE);
+          break;
+        }
+        if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA) {
           stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
           break;
         }
         break;
       case STOW:
-        if(intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()){
-          if(stateHandler.getGamePieceMode() == GamePieceMode.CUBE){
+        if (intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()) {
+          if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE) {
             stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CUBE);
-          }
-          else if(stateHandler.getGamePieceMode() == GamePieceMode.CONE){
+          } else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE) {
             stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CONE);
           }
         }
         break;
       case INTAKE_CONE:
-        if(stateHandler.getGamePieceMode() == GamePieceMode.CUBE){
+        if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE) {
           stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CUBE);
           break;
         }
-        if(intakeSupplier.getAsBoolean()){
+        if (intakeSupplier.getAsBoolean()) {
           intake.setWheelSpeed(IntakeConstants.coneIntakeSpeed);
-        }
-        else if (ejectSupplier.getAsBoolean()){
+        } else if (ejectSupplier.getAsBoolean()) {
           intake.setWheelSpeed(IntakeConstants.ejectSpeed);
-        }
-        else if(intake.getCurrentDraw() > IntakeConstants.coneCurrentThreshold){
+        } else if (intake.getCurrentDraw() > IntakeConstants.coneCurrentThreshold) {
           stateHandler.setDesiredIntakePosition(IntakePositions.HOLD);
-        }
-        else{
+        } else {
           stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
         }
         break;
       case CONE_HANDOFF_1:
         intake.setWheelSpeed(IntakeConstants.gripSpeed);
-        if(intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()){
+        if (intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()) {
           stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CONE);
           break;
         }
-        if(stateHandler.getIntakeInPosition()){
+        if (stateHandler.getIntakeInPosition()) {
           stateHandler.setDesiredIntakePosition(IntakePositions.CONE_HANDOFF_2);
         }
         break;
       case CONE_HANDOFF_2:
-        if(intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()){
+        if (intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()) {
           stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CONE);
           break;
         }
-        if(stateHandler.getCurrentArmPosition() == ArmPositions.COBRA){
+        if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA) {
           stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
           break;
         }
@@ -142,7 +138,8 @@ public class IntakeArmDefaultCommand extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
