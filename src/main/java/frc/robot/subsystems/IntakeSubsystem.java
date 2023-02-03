@@ -78,6 +78,8 @@ public class IntakeSubsystem extends SubsystemBase {
       DemandType.ArbitraryFeedForward, calculateIntakeDistalFeedforward());
   }
 
+
+
   public double getIntakeProximalPosition(){
     return (intakeProximalMotor.getSelectedSensorPosition() * IntakeConstants.intakeProximalTicksToRad)
         + IntakeConstants.kIntakeProximalOffsetRads;
@@ -149,7 +151,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     boolean withinThreshold = proximalError < IntakeConstants.errorThreshold && distalError < IntakeConstants.errorThreshold;
 
-    stateHandler.updateIntakeInPosition(withinThreshold);
+    stateHandler.setIntakeInPosition(withinThreshold);
 
     if(withinThreshold) {
       stateHandler.setCurrentIntakePosition(stateHandler.getDesiredIntakePosition());

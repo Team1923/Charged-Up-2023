@@ -68,17 +68,17 @@ public class IntakeArmDefaultCommand extends CommandBase {
           stateHandler.setDesiredIntakePosition(IntakePositions.CUBE_HANDOFF);
         } else if (stateHandler.getCurrentArmPosition() == ArmPositions.STOW
             && stateHandler.getGamePieceMode() == GamePieceMode.CONE) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.CONE_HANDOFF_1);
+          stateHandler.setDesiredIntakePosition(IntakePositions.CONE_HANDOFF);
         }
         break;
       case CUBE_HANDOFF:
+        intake.setWheelSpeed(IntakeConstants.gripSpeed);
         if (intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()) {
           stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CUBE);
           break;
         }
-        if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
-          break;
+        if(stateHandler.getGripperEngaged()) {
+          stateHandler.setDesiredIntakePosition(IntakePositions.RETRACT);
         }
         break;
       case STOW:
@@ -105,24 +105,20 @@ public class IntakeArmDefaultCommand extends CommandBase {
           stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
         }
         break;
-      case CONE_HANDOFF_1:
+      case CONE_HANDOFF:
         intake.setWheelSpeed(IntakeConstants.gripSpeed);
         if (intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()) {
           stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CONE);
           break;
         }
-        if (stateHandler.getIntakeInPosition()) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.CONE_HANDOFF_2);
+        if(stateHandler.getGripperEngaged()) {
+          stateHandler.setDesiredIntakePosition(IntakePositions.RETRACT);
         }
         break;
-      case CONE_HANDOFF_2:
-        if (intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CONE);
-          break;
-        }
+      case RETRACT:
+      intake.setWheelSpeed(IntakeConstants.handoffSpeed);
         if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA) {
           stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
-          break;
         }
         break;
       default:

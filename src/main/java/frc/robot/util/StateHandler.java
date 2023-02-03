@@ -19,7 +19,7 @@ public class StateHandler {
     private IntakePositions currentIntakePosition = IntakePositions.STOW;
 
     private boolean hasGamePiece = false;
-    private boolean intakeInPosition = false, armInPosition = false, resetManipulator = false;
+    private boolean intakeInPosition = false, armInPosition = false, resetManipulator = false, gripperEngaged = false;
 
     private GamePieceMode mode = GamePieceMode.CONE;
 
@@ -41,7 +41,7 @@ public class StateHandler {
         scoringLocations.setHorizontalLocation(h);
     }
 
-    public void updateArmDesiredState(ArmPositions a) {
+    public void setArmDesiredState(ArmPositions a) {
         if (a != desiredArmPosition) {
             armInPosition = false;
         }
@@ -52,19 +52,19 @@ public class StateHandler {
         return desiredArmPosition;
     }
 
-    public void updateIntakeInPosition(boolean intakeInPosition) {
+    public void setIntakeInPosition(boolean intakeInPosition) {
         this.intakeInPosition = intakeInPosition;
     }
 
-    public void updateArmInPosition(boolean armInPosition) {
+    public void setArmInPosition(boolean armInPosition) {
         this.armInPosition = armInPosition;
     }
 
-    public void updateHasGamePiece(boolean hasGamePiece) {
+    public void setHasGamePiece(boolean hasGamePiece) {
         this.hasGamePiece = hasGamePiece;
     }
 
-    public void updateManipulator(boolean resetManipulator) {
+    public void setManipulator(boolean resetManipulator) {
         this.resetManipulator = resetManipulator;
     }
 
@@ -82,7 +82,7 @@ public class StateHandler {
 
     public boolean readyToClose() {
         return intakeInPosition && armInPosition && currentArmPosition == ArmPositions.STOW
-                && (currentIntakePosition == IntakePositions.CONE_HANDOFF_2
+                && (currentIntakePosition == IntakePositions.CONE_HANDOFF
                         || currentIntakePosition == IntakePositions.CUBE_HANDOFF);
     }
 
@@ -94,8 +94,8 @@ public class StateHandler {
         return currentRobotDirection;
     }
 
-    public void updateRobotDirection(CurrentRobotDirection c) {
-        this.currentRobotDirection = c;
+    public void setRobotDirection(CurrentRobotDirection c) {
+        currentRobotDirection = c;
     }
 
     public ArmPositions getCurrentArmPosition() {
@@ -103,7 +103,7 @@ public class StateHandler {
     }
 
     public void setCurrentArmPosition(ArmPositions a) {
-        this.currentArmPosition = a;
+        currentArmPosition = a;
     }
 
     public IntakePositions getCurrentIntakePosition() {
@@ -111,7 +111,7 @@ public class StateHandler {
     }
 
     public void setCurrentIntakePosition(IntakePositions i) {
-        this.currentIntakePosition = i;
+        currentIntakePosition = i;
     }
 
     public IntakePositions getDesiredIntakePosition() {
@@ -122,7 +122,7 @@ public class StateHandler {
         if (i != desiredIntakePosition) {
             intakeInPosition = false;
         }
-        this.desiredIntakePosition = i;
+        desiredIntakePosition = i;
     }
 
     public GamePieceMode getGamePieceMode() {
@@ -131,6 +131,14 @@ public class StateHandler {
 
     public void setGamePieceMode(GamePieceMode g) {
         mode = g;
+    }
+
+    public void setGripperEngaged(boolean g) {
+        gripperEngaged = g;
+    }
+
+    public boolean getGripperEngaged() {
+        return gripperEngaged;
     }
 
 }

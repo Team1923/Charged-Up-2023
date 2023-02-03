@@ -60,7 +60,7 @@ public class ArmDefaultCommand extends CommandBase {
     double triggerThresholdRadians = stateHandler.getArmDesiredPosition().getThresholdRadians();
 
     if (proximalError < triggerThresholdRadians && distalError < triggerThresholdRadians) {
-      stateHandler.updateArmDesiredState(nextInSequence);
+      stateHandler.setArmDesiredState(nextInSequence);
     }
 
   }

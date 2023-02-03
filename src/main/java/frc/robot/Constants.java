@@ -106,16 +106,16 @@ public final class Constants {
     public static final double kIntakeProximalOffsetRads = 0;
     public static final double kIntakeDistalOffsetRads = 0;
 
-    public static final double errorThreshold = 0;
-    public static final double cubeIntakeSpeed = 0;
-    public static final double coneIntakeSpeed = 0;
-    public static final double ejectSpeed = 0;
+    public static final double errorThreshold = 0.05;
+    public static final double cubeIntakeSpeed = .70;
+    public static final double coneIntakeSpeed = .70;
+    public static final double ejectSpeed = -1;
 
     public static final double cubeCurrentThreshold = 0;
     public static final double coneCurrentThreshold = 0;
 
     public static final double gripSpeed = .15;
-
+    public static final double handoffSpeed = -.10;
   }
 
   public final class ArmConstants {

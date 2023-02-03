@@ -9,14 +9,17 @@ import frc.robot.subsystems.ManipulatorSubsystem;
 import frc.robot.util.StateHandler;
 
 public class ManipulatorDefaultCommand extends CommandBase {
+  
   private ManipulatorSubsystem gripper;
   private boolean latch = false;
+  private StateHandler stateHandler;
 
   /** Creates a new ManipulatorDefaultCommand. */
   public ManipulatorDefaultCommand(ManipulatorSubsystem gripper) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.gripper = gripper;
     addRequirements(gripper);
+    stateHandler = StateHandler.getInstance();
   }
 
   // Called when the command is initially scheduled.
@@ -31,12 +34,14 @@ public class ManipulatorDefaultCommand extends CommandBase {
     if (reset) {
       latch = false;
       gripper.set(false);
+      stateHandler.setGripperEngaged(false);
     } else if (StateHandler.getInstance().readyToClose() && !latch) {
       latch = true;
       gripper.set(true);
-
+      stateHandler.setGripperEngaged(true);
     } else if (!latch) {
       gripper.set(false);
+      stateHandler.setGripperEngaged(false);
     }
   }
 

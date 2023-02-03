@@ -197,7 +197,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     boolean withinThreshold = proximalError < ArmConstants.errorThreshold && distalError < ArmConstants.errorThreshold;
 
-    stateHandler.updateArmInPosition(withinThreshold);
+    stateHandler.setArmInPosition(withinThreshold);
 
     if (withinThreshold) {
       stateHandler.setCurrentArmPosition(stateHandler.getArmDesiredPosition());
