@@ -51,19 +51,19 @@ public class ArmDefaultCommand extends CommandBase {
         }
         break;
       case COBRA:
-        if (joystickPOV == 0) { // up arrow
+        if (joystickPOV == 0 && stateHandler.getGripperEngaged()) { // up arrow
           if (stateHandler.getGamePieceMode() == GamePieceMode.CONE) {
             stateHandler.setArmDesiredState(ArmPositions.CONE_HIGH);
           } else {
             stateHandler.setArmDesiredState(ArmPositions.CUBE_HIGH);
           }
-        } else if (joystickPOV == 270) {
+        } else if (joystickPOV == 270 && stateHandler.getGripperEngaged()) {
           if (stateHandler.getGamePieceMode() == GamePieceMode.CONE) {
             stateHandler.setArmDesiredState(ArmPositions.CONE_MID);
           } else {
             stateHandler.setArmDesiredState(ArmPositions.CUBE_MID);
           }
-        } else if (joystickPOV == 180) {
+        } else if (joystickPOV == 180 && stateHandler.getGripperEngaged()) {
           stateHandler.setArmDesiredState(ArmPositions.LOW);
         } else if (!stateHandler.getGripperEngaged()) {
           stateHandler.setArmDesiredState(ArmPositions.STOW);
