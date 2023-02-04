@@ -39,10 +39,10 @@ public class ArmDefaultCommand extends CommandBase {
     ArmPositions currentDesiredState = stateHandler.getArmDesiredPosition();
     switch (currentDesiredState) {
       case STOW:
-        if (limelightInterface.hasScoringTarget() && stateHandler.getGripperEngaged()) {
-          stateHandler.setArmDesiredState(ArmPositions.COBRA);
-        } else if (stateHandler.getGripperEngaged() && !(stateHandler.getCurrentIntakePosition() == IntakePositions.STOW)) {
+        if (stateHandler.getGripperEngaged() && !(stateHandler.getCurrentIntakePosition() == IntakePositions.STOW)) {
           stateHandler.setArmDesiredState(ArmPositions.CLEAR);
+        } else if (limelightInterface.hasScoringTarget() && stateHandler.getGripperEngaged()) {
+          stateHandler.setArmDesiredState(ArmPositions.COBRA);
         }
         break;
       case CLEAR:
