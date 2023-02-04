@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FalconConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.util.StateHandler;
+import frc.robot.util.StateVariables.IntakePositions;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
@@ -53,20 +54,16 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeProximalMotor.setNeutralMode(NeutralMode.Brake);
     intakeDistalMotor.setNeutralMode(NeutralMode.Brake);
     
-    resetIntakeProximalPosition();
-    resetIntakeDistalPosition();
+    resetIntakeProximalPosition(IntakePositions.STOW.getArmAngles().getProximalAngle());
+    resetIntakeDistalPosition(IntakePositions.STOW.getArmAngles().getDistalAngle());
   }
 
-  public void resetIntakeProximalPosition(){
-    intakeProximalMotor.setSelectedSensorPosition((getIntakeProximalAbsoluteEncoderRads() - 
-    IntakeConstants.intakeProximalEncoderHardstop + 
-    IntakeConstants.intakeProximalHardstop) * IntakeConstants.intakeProximalRadsToTicks);
+  public void resetIntakeProximalPosition(double angle){
+    intakeProximalMotor.setSelectedSensorPosition(angle * IntakeConstants.intakeProximalRadsToTicks);
   }
 
-  public void resetIntakeDistalPosition(){
-    intakeDistalMotor.setSelectedSensorPosition((getIntakeDistalAbsoluteEncoderRads() - 
-    IntakeConstants.intakeDistalEncoderHardstop + 
-    IntakeConstants.intakeDistalHardstop) * IntakeConstants.intakeDistalRadsToTicks);
+  public void resetIntakeDistalPosition(double angle){
+    intakeDistalMotor.setSelectedSensorPosition(angle * IntakeConstants.intakeDistalRadsToTicks);
   }
 
   public void setIntakeProximalPosition(double proximalAngle){
@@ -91,21 +88,21 @@ public class IntakeSubsystem extends SubsystemBase {
         + IntakeConstants.kIntakeDistalOffsetRads;
   }
 
-  public double getIntakeProximalAbsoluteEncoderRads(){
-    return intakeProximalEncoder.getAbsolutePosition() * IntakeConstants.intakeProximalAbsoluteEncoderToRadians;
-  }
+  // public double getIntakeProximalAbsoluteEncoderRads(){
+  //   return intakeProximalEncoder.getAbsolutePosition() * IntakeConstants.intakeProximalAbsoluteEncoderToRadians;
+  // }
 
-  public double getIntakeDistalAbsoluteEncoderRads(){
-    return intakeDistalEncoder.getAbsolutePosition() * IntakeConstants.intakeDistalAbsoluteEncoderToRadians;
-  }
+  // public double getIntakeDistalAbsoluteEncoderRads(){
+  //   return intakeDistalEncoder.getAbsolutePosition() * IntakeConstants.intakeDistalAbsoluteEncoderToRadians;
+  // }
 
-  public double getIntakeProximalAbsoluteEncoderTicks(){
-    return intakeProximalEncoder.getAbsolutePosition() * IntakeConstants.intakeProximalAbsoluteEncoderToTicks;
-  }
+  // public double getIntakeProximalAbsoluteEncoderTicks(){
+  //   return intakeProximalEncoder.getAbsolutePosition() * IntakeConstants.intakeProximalAbsoluteEncoderToTicks;
+  // }
 
-  public double getIntakeDistalAbsoluteEncoderTicks(){
-    return intakeDistalEncoder.getAbsolutePosition() * IntakeConstants.intakeDistalAbsoluteEncoderToTicks;
-  }
+  // public double getIntakeDistalAbsoluteEncoderTicks(){
+  //   return intakeDistalEncoder.getAbsolutePosition() * IntakeConstants.intakeDistalAbsoluteEncoderToTicks;
+  // }
 
   public double calculateIntakeProximalFeedforward(){
     return IntakeConstants.intakeMaxProximalGravityConstant * Math.cos(getAngleToCG());
