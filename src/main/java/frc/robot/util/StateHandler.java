@@ -1,5 +1,6 @@
 package frc.robot.util;
 
+import frc.robot.interfaces.BetterLimelightInterface.SpecificLimelight;
 import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
@@ -21,9 +22,11 @@ public class StateHandler {
     private boolean hasGamePiece = false;
     private boolean intakeInPosition = false, armInPosition = false, resetManipulator = false, gripperEngaged = false;
 
-    private GamePieceMode mode = GamePieceMode.CONE;
+    private GamePieceMode mode = GamePieceMode.CUBE;
 
     private CurrentRobotDirection currentRobotDirection = CurrentRobotDirection.LEFT;
+
+    private SpecificLimelight currentLimelight = SpecificLimelight.LEFT_LIMELIGHT;
 
     public static synchronized StateHandler getInstance() {
         if (stateHandler == null) {
@@ -139,6 +142,15 @@ public class StateHandler {
 
     public boolean getGripperEngaged() {
         return gripperEngaged;
+    }
+
+    public SpecificLimelight getSpecificLimelight(){
+        if(currentRobotDirection == CurrentRobotDirection.LEFT){
+            return SpecificLimelight.LEFT_LIMELIGHT;
+        }
+        else{
+            return SpecificLimelight.RIGHT_LIMELIGHT;
+        }
     }
 
 }

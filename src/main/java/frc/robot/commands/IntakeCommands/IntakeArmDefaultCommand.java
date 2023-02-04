@@ -77,7 +77,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
           stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CUBE);
           break;
         }
-        if(stateHandler.getGripperEngaged()) {
+        if (stateHandler.getGripperEngaged()) {
           stateHandler.setDesiredIntakePosition(IntakePositions.RETRACT);
         }
         break;
@@ -111,13 +111,14 @@ public class IntakeArmDefaultCommand extends CommandBase {
           stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CONE);
           break;
         }
-        if(stateHandler.getGripperEngaged()) {
+        if (stateHandler.getGripperEngaged()) {
           stateHandler.setDesiredIntakePosition(IntakePositions.RETRACT);
         }
         break;
       case RETRACT:
-      intake.setWheelSpeed(IntakeConstants.handoffSpeed);
-        if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA) {
+        intake.setWheelSpeed(IntakeConstants.handoffSpeed);
+        if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA
+            || stateHandler.getCurrentArmPosition() == ArmPositions.CLEAR) {
           stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
         }
         break;

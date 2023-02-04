@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import frc.robot.interfaces.SwerveModule;
 import frc.robot.interfaces.BetterLimelightInterface.SpecificLimelight;
+import frc.robot.util.StateHandler;
+import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.Constants;
 import frc.robot.Constants.Swerve;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -31,6 +33,8 @@ public class SwerveSubsystem extends SubsystemBase {
     public Pigeon2 gyro = new Pigeon2(Swerve.pigeonID);
 
     private Field2d field2D = new Field2d();
+
+    private StateHandler stateHandler = StateHandler.getInstance();
 
     public SwerveSubsystem() {
         gyro.configFactoryDefault();
@@ -147,6 +151,10 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         swerveOdometry.update(getYaw(), getModulePositions());
+        if(getCorrectLimelight() == SpecificLimelight.LEFT_LIMELIGHT)
+            stateHandler.setRobotDirection(CurrentRobotDirection.LEFT);
+        else
+            stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
 
         // for(SwerveModule mod : mSwerveMods){
         // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",

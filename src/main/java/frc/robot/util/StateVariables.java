@@ -5,12 +5,12 @@ public class StateVariables {
     public static enum ArmPositions {
         STOW(new ArmAngles(Math.PI / 2, -Math.PI / 2)),
         COBRA(new ArmAngles(Math.toRadians(110), 0)),
-        CONE_LOW(new ArmAngles(1.815, 0.718)),
-        CONE_MID(new ArmAngles(1.346, 0.466)),
-        CONE_HIGH(new ArmAngles(0.986, 0.141)),
-        CUBE_LOW(new ArmAngles(1.815, 0.718)),
-        CUBE_MID(new ArmAngles(1.238, 0.669)),
-        CUBE_HIGH(new ArmAngles(0.986, 0.141));
+        CLEAR(new ArmAngles(0, -Math.PI / 4)), /*DEFINE */
+        LOW(new ArmAngles(0.773, -1.843)),
+        CONE_MID(new ArmAngles(1.760, -0.289)),
+        CONE_HIGH(new ArmAngles(2.202, 0.330)),
+        CUBE_MID(new ArmAngles(1.242, -0.688)),
+        CUBE_HIGH(new ArmAngles(0.982, -0.109));
 
         private ArmAngles armAngles;
         private ArmAngles reflectedAngles;
@@ -31,7 +31,7 @@ public class StateVariables {
         private ArmPositions(ArmAngles angles, ArmPositions next, double triggerRadians) {
             this.armAngles = angles;
             this.reflectedAngles = new ArmAngles(Math.PI - armAngles.getProximalAngle(),
-                    Math.PI - armAngles.getDistalAngle());
+                    (-Math.PI) - armAngles.getDistalAngle());
             this.nextInSequence = next;
             this.triggerThresholdRadians = triggerRadians;
         }
@@ -39,7 +39,7 @@ public class StateVariables {
         private ArmPositions(ArmAngles angles) {
             this.armAngles = angles;
             this.reflectedAngles = new ArmAngles(Math.PI - armAngles.getProximalAngle(),
-                    Math.PI - armAngles.getDistalAngle());
+                    (-Math.PI) - armAngles.getDistalAngle());
         }
 
         public ArmAngles getArmAngles() {

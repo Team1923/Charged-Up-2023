@@ -14,6 +14,9 @@ public class BetterLimelightInterface {
   private static NetworkTable leftLimelight = NetworkTableInstance.getDefault().getTable("limelight-left");
   private static NetworkTable rightLimelight = NetworkTableInstance.getDefault().getTable("limelight-right");
 
+  private double aprilTagID = 0;
+  private boolean hasValidTarget = false;
+
   public static synchronized BetterLimelightInterface getInstance() {
     if (limelightInterface == null) {
       limelightInterface = new BetterLimelightInterface();
@@ -56,7 +59,8 @@ public class BetterLimelightInterface {
   }
 
   public boolean hasValidTargets(SpecificLimelight limelight) {
-    return getDoubleEntry("tv", limelight) == 1.0;
+    hasValidTarget = getDoubleEntry("tv", limelight) == 1.0;
+    return hasValidTarget;
   }
 
   public double getTargetArea(SpecificLimelight limelight) {
@@ -71,7 +75,13 @@ public class BetterLimelightInterface {
   }
 
   public double getID(SpecificLimelight limelight) {
-    return getDoubleEntry("tid", limelight);
+    aprilTagID = getDoubleEntry("tid", limelight);
+    return aprilTagID;
+  }
+
+  public boolean hasScoringTarget(){
+    return (((aprilTagID == 1) || (aprilTagID == 2) || (aprilTagID == 3)
+      || (aprilTagID == 6) || (aprilTagID == 7) || (aprilTagID == 8)) && hasValidTarget);
   }
 
   /*

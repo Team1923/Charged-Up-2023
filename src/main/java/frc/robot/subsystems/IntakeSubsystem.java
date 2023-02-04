@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FalconConstants;
 import frc.robot.Constants.IntakeConstants;
@@ -156,6 +157,9 @@ public class IntakeSubsystem extends SubsystemBase {
     if(withinThreshold) {
       stateHandler.setCurrentIntakePosition(stateHandler.getDesiredIntakePosition());
     }
+
+    SmartDashboard.putString("DESIRED INTAKE State", stateHandler.getDesiredIntakePosition().toString());
+    SmartDashboard.putString("CURRENT INTAKE State", stateHandler.getCurrentIntakePosition().toString());
 
 
   }

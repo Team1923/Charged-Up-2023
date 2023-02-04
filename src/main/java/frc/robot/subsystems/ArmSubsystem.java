@@ -203,5 +203,8 @@ public class ArmSubsystem extends SubsystemBase {
       stateHandler.setCurrentArmPosition(stateHandler.getArmDesiredPosition());
     }
 
+    SmartDashboard.putString("DESIRED ARM State", stateHandler.getArmDesiredPosition().toString());
+    SmartDashboard.putString("CURRENT ARM State", stateHandler.getCurrentArmPosition().toString());
+
   }
 }
