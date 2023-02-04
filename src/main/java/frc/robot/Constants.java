@@ -51,39 +51,40 @@ public final class Constants {
   }
 
   public final class IntakeConstants {
-    public static final int intakeProximalID = 0;
-    public static final int intakeDistalID = 0;
-    public static final int intakeWheelID = 0;
+    public static final int intakeProximalID = 16;
+    public static final int intakeDistalID = 17;
+    public static final int leftIntakeWheelMotor = 18;
+    public static final int rightIntakeWheelMotor = 19;
     public static final int intakeProximalAbsoluteEncoderID = 0;
     public static final int intakeDistalAbsoluteEncoderID = 0;
 
-    public static final double intakeProximalCGDistance = 0;
-    public static final double intakeDistalCGDistance = 0;
+    public static final double intakeProximalCGDistance = 0.0762;
+    public static final double intakeDistalCGDistance = 0.1524;
 
-    public static final double intakeProximalLength = 0;
-    public static final double intakeDistalLength = 0;
+    public static final double intakeProximalLength = 0.1397;
+    public static final double intakeDistalLength = 0.2286;
 
-    public static final double intakeProximalMass = 0;
-    public static final double intakeDistalMass = 0;
+    public static final double intakeProximalMass = 0.453592;
+    public static final double intakeDistalMass = 3.17515;
 
-    public static final double intakeProximalkP = 0;
+    public static final double intakeProximalkP = 0.1;
     public static final double intakeProximalkI = 0;
     public static final double intakeProximalkD = 0;
-    public static final double intakeDistalkP = 0;
+    public static final double intakeDistalkP = 0.2;
     public static final double intakeDistalkI = 0;
     public static final double intakeDistalkD = 0;
 
-    public static final double maxIntakeProximalVel = 0;
-    public static final double maxIntakeProximalAccel = 0;
-    public static final double maxIntakeDistalVel = 0;
-    public static final double maxIntakeDistalAccel = 0;
+    public static final double maxIntakeProximalVel = 35000;
+    public static final double maxIntakeProximalAccel = 20000;
+    public static final double maxIntakeDistalVel = 35000*2;
+    public static final double maxIntakeDistalAccel = 20000*2;
 
-    public static final double intakeProximalGearRatio = 0;
+    public static final double intakeProximalGearRatio = 64;
     public static final double intakeProximalTicksToRad = (2 * Math.PI)
         / (FalconConstants.ticksPerRev * intakeProximalGearRatio);
     public static final double intakeProximalRadsToTicks = 1 / intakeProximalTicksToRad;
 
-    public static final double intakeDistalGearRatio = 0;
+    public static final double intakeDistalGearRatio = 64;
     public static final double intakeDistalTicksToRad = (2 * Math.PI)
         / (FalconConstants.ticksPerRev * intakeDistalGearRatio);
     public static final double intakeDistalRadsToTicks = 1 / intakeDistalTicksToRad;
@@ -93,8 +94,8 @@ public final class Constants {
     public static final double intakeProximalHardstop = 0;
     public static final double intakeDistalHardstop = 0;
 
-    public static final double intakeMaxProximalGravityConstant = 0;
-    public static final double intakeMaxDistalGravityConstant = 0;
+    public static final double intakeMaxProximalGravityConstant = 0.2;
+    public static final double intakeMaxDistalGravityConstant = 0.15;
 
     public static final double intakeProximalAbsoluteEncoderToTicks = intakeProximalGearRatio * 2048;
     public static final double intakeDistalAbsoluteEncoderToTicks = intakeDistalGearRatio * 2048;
@@ -119,8 +120,8 @@ public final class Constants {
   }
 
   public final class ArmConstants {
-    public static final int proximalMotorID = 14; // needs to be changed
-    public static final int distalMotorID = 13; // needs to be changed
+    public static final int proximalMotorID = 15; // needs to be changed
+    public static final int distalMotorID = 14; // needs to be changed
 
     public static final double proximalkP = 0.1;
     public static final double proximalkI = 0;
@@ -204,7 +205,7 @@ public final class Constants {
   public static final double stickDeadband = 0.1;
 
   public static final class Swerve {
-    public static final int pigeonID = 12;
+    public static final int pigeonID = 13;
     public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
     public static final COTSFalconSwerveConstants chosenModule = // TODO: This must be tuned to specific robot
@@ -286,9 +287,9 @@ public final class Constants {
     /* Module Specific Constants */
     /* Front Left Module - Module 0 */
     public static final class Mod0 { // TODO: This must be tuned to specific robot
-      public static final int driveMotorID = 0;
-      public static final int angleMotorID = 1;
-      public static final int canCoderID = 8;
+      public static final int driveMotorID = 1;
+      public static final int angleMotorID = 2;
+      public static final int canCoderID = 9;
       public static final Rotation2d angleOffset = Rotation2d.fromDegrees(29.8);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
           canCoderID, angleOffset);
@@ -296,9 +297,9 @@ public final class Constants {
 
     /* Front Right Module - Module 1 */
     public static final class Mod1 { // TODO: This must be tuned to specific robot
-      public static final int driveMotorID = 2;
-      public static final int angleMotorID = 3;
-      public static final int canCoderID = 9;
+      public static final int driveMotorID = 3;
+      public static final int angleMotorID = 4;
+      public static final int canCoderID = 10;
       public static final Rotation2d angleOffset = Rotation2d.fromDegrees(4.75);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
           canCoderID, angleOffset);
@@ -306,9 +307,9 @@ public final class Constants {
 
     /* Back Left Module - Module 2 */
     public static final class Mod2 { // TODO: This must be tuned to specific robot
-      public static final int driveMotorID = 4;
-      public static final int angleMotorID = 5;
-      public static final int canCoderID = 10;
+      public static final int driveMotorID = 5;
+      public static final int angleMotorID = 6;
+      public static final int canCoderID = 11;
       public static final Rotation2d angleOffset = Rotation2d.fromDegrees(350.59);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
           canCoderID, angleOffset);
@@ -316,9 +317,9 @@ public final class Constants {
 
     /* Back Right Module - Module 3 */
     public static final class Mod3 { // TODO: This must be tuned to specific robot
-      public static final int driveMotorID = 6;
-      public static final int angleMotorID = 7;
-      public static final int canCoderID = 11;
+      public static final int driveMotorID = 7;
+      public static final int angleMotorID = 8;
+      public static final int canCoderID = 12;
       public static final Rotation2d angleOffset = Rotation2d.fromDegrees(93.6);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
           canCoderID, angleOffset);
@@ -341,79 +342,6 @@ public final class Constants {
     /* Constraint for the motion profilied robot angle controller */
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
-  }
-
-  public static final class DriveConstants {
-    // ID for Pigeon2 - need to update
-    public static final int pigeonCANID = 12;
-
-    // Distance between right and left wheels
-    public static final double kTrackWidth = Units.inchesToMeters(18.75);
-    // Distance between front and back wheels
-    public static final double kWheelBase = Units.inchesToMeters(18.75);
-
-    /*
-     * the sign of the Translation2d objects were updated to match 1706 For driving
-     * purposes, we can revert the constants if needed. Keep in mind that to work
-     * with PathPlanner, however, maintaining these directions are necessary.
-     */
-
-    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-        new Translation2d(kWheelBase / 2, kTrackWidth / 2), // + -
-        new Translation2d(kWheelBase / 2, -kTrackWidth / 2), // + +
-        new Translation2d(-kWheelBase / 2, kTrackWidth / 2), // - -
-        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2)); // - +
-
-    public static final double kPhysicalMaxSpeedMetersPerSecond = 5.4864;
-    public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 54;
-    public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
-    public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
-    public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond;
-    public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = kPhysicalMaxAngularSpeedRadiansPerSecond / 4;
-
-    // Front Left Module - UPDATE
-    public static final int kFrontLeftDriveMotorPort = 0;
-    public static final int kFrontLeftTurningMotorPort = 1;
-    public static final boolean kFrontLeftDriveReversed = true;
-    public static final boolean kFrontLeftTurningReversed = true;
-    public static final int kFrontLeftDriveAbsoluteEncoderPort = 8;
-    public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 5.74; // 0.77
-    public static final boolean kFrontLeftDriveAbsoluteEncoderOffsetReversed = false;
-
-    // Front Right Module - UPDATE
-    public static final int kFrontRightDriveMotorPort = 2;
-    public static final int kFrontRightTurningMotorPort = 3;
-    public static final boolean kFrontRightDriveReversed = true;
-    public static final boolean kFrontRightTurningReversed = true;
-    public static final int kFrontRightDriveAbsoluteEncoderPort = 9;
-    public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = -0.2; // 0.56
-    public static final boolean kFrontRightDriveAbsoluteEncoderOffsetReversed = false;
-
-    // Back Right Module - UPDATE
-    public static final int kBackRightDriveMotorPort = 4;
-    public static final int kBackRightTurningMotorPort = 5;
-    public static final boolean kBackRightDriveReversed = false;
-    public static final boolean kBackRightTurningReversed = true;
-    public static final int kBackRightDriveAbsoluteEncoderPort = 10;
-    public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 1.72; // 0.4
-    public static final boolean kBackRightDriveAbsoluteEncoderOffsetReversed = false;
-
-    // Back Left Module - UPDATE
-    public static final int kBackLeftDriveMotorPort = 6;
-    public static final int kBackLeftTurningMotorPort = 7;
-    public static final boolean kBackLeftDriveReversed = true;
-    public static final boolean kBackLeftTurningReversed = true;
-    public static final int kBackLeftDriveAbsoluteEncoderPort = 11;
-    public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 0.2; // 3.71
-    public static final boolean kBackLeftDriveAbsoluteEncoderOffsetReversed = false;
-
-    public static final double kMinRotationCommand = DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond
-        * Math.pow(.1, 2);
-    // Minimum allowable tranlsation command (in m/s) assuming user input is squared
-    // using quadraticTransform, this value is always positive and should be
-    // compared agaisnt the absolute value of the drive command
-    public static final double kMinTranslationCommand = DriveConstants.kTeleDriveMaxSpeedMetersPerSecond
-        * Math.pow(.1, 2);
   }
 
 }

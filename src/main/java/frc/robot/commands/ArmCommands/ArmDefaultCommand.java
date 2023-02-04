@@ -4,7 +4,6 @@
 
 package frc.robot.commands.ArmCommands;
 
-import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.interfaces.BetterLimelightInterface;
 import frc.robot.subsystems.ArmSubsystem;

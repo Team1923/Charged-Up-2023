@@ -12,10 +12,12 @@ import frc.robot.commands.ArmCommands.ArmDefaultCommand;
 import frc.robot.commands.ArmCommands.ArmToPosition;
 import frc.robot.commands.Autos.TestPath;
 import frc.robot.commands.IntakeCommands.IntakeArmDefaultCommand;
+import frc.robot.commands.IntakeCommands.IntakeToPosition;
 import frc.robot.commands.Scoring.ManipulatorDefaultCommand;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.subsystems.*;
 import frc.robot.util.StateVariables.ArmPositions;
+import frc.robot.util.StateVariables.IntakePositions;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -75,26 +77,27 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        aButton.onTrue(new ArmToPosition(ArmPositions.CONE_HIGH));
-        bButton.onTrue(new ArmToPosition(ArmPositions.LOW));
-        xButton.onTrue(new ArmToPosition(ArmPositions.COBRA));
-        yButton.onTrue(new ArmToPosition(ArmPositions.STOW));
+        // aButton.whileTrue(new IntakeToPosition(intakeSubsystem, IntakePositions.STOW));
+        // bButton.onTrue(new IntakeToPosition(intakeSubsystem, IntakePositions.INTAKE_CUBE));
+        //xButton.whileTrue(new IntakeToPosition(intakeSubsystem, IntakePositions.CUBE_HANDOFF));
+        // yButton.onTrue(new IntakeToPosition(intakeSubsystem, IntakePositions.HOLD));
 
     }
 
     private void setDefaultCommands() {
-        s_Swerve.setDefaultCommand(
-                new TeleopSwerve(
-                        s_Swerve,
-                        () -> -driver.getRawAxis(translationAxis),
-                        () -> -driver.getRawAxis(strafeAxis),
-                        () -> -driver.getRawAxis(rotationAxis),
-                        () -> robotCentric.getAsBoolean()));
-
-        armSubsystem.setDefaultCommand(new ArmDefaultCommand(armSubsystem, operator.getPOV()));
-        intakeSubsystem.setDefaultCommand(new IntakeArmDefaultCommand(intakeSubsystem,
-                () -> operatorXButton.getAsBoolean(), () -> operatorSquareButton.getAsBoolean()));
-        gripper.setDefaultCommand(new ManipulatorDefaultCommand(gripper));
+        // s_Swerve.setDefaultCommand(
+        //         new TeleopSwerve(
+        //                 s_Swerve,
+        //                 () -> -driver.getRawAxis(translationAxis),
+        //                 () -> -driver.getRawAxis(strafeAxis),
+        //                 () -> -driver.getRawAxis(rotationAxis),
+        //                 () -> robotCentric.getAsBoolean()));
+        
+        intakeSubsystem.setDefaultCommand(new IntakeToPosition(intakeSubsystem, IntakePositions.CUBE_HANDOFF, () -> aButton.getAsBoolean(), () -> xButton.getAsBoolean()));
+        //armSubsystem.setDefaultCommand(new ArmDefaultCommand(armSubsystem, operator.getPOV()));
+        // intakeSubsystem.setDefaultCommand(new IntakeArmDefaultCommand(intakeSubsystem,
+        //         () -> operatorXButton.getAsBoolean(), () -> operatorSquareButton.getAsBoolean()));
+        // gripper.setDefaultCommand(new ManipulatorDefaultCommand(gripper));
     }
 
     /**

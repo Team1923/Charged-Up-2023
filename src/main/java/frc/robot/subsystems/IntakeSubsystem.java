@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -20,21 +21,23 @@ import frc.robot.util.StateVariables.IntakePositions;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
-  private WPI_TalonFX intakeProximalMotor = new WPI_TalonFX(IntakeConstants.intakeProximalID);
+  private WPI_TalonFX intakeProximalMotor = new WPI_TalonFX(IntakeConstants.intakeProximalID, "Default Name");
   private WPI_TalonFX intakeDistalMotor = new WPI_TalonFX(IntakeConstants.intakeDistalID);
-  private WPI_TalonFX intakeWheelMotor = new WPI_TalonFX(IntakeConstants.intakeWheelID);
+  private WPI_TalonFX leftIntakeWheelMotor = new WPI_TalonFX(IntakeConstants.leftIntakeWheelMotor);
+  private WPI_TalonFX rightIntakeWheelMotor = new WPI_TalonFX(IntakeConstants.rightIntakeWheelMotor);
 
-  private DutyCycleEncoder intakeProximalEncoder = new DutyCycleEncoder(
-      IntakeConstants.intakeProximalAbsoluteEncoderID);
-  private DutyCycleEncoder intakeDistalEncoder = new DutyCycleEncoder(IntakeConstants.intakeDistalAbsoluteEncoderID);
+  // private DutyCycleEncoder intakeProximalEncoder = new DutyCycleEncoder(
+  //     IntakeConstants.intakeProximalAbsoluteEncoderID);
+  // private DutyCycleEncoder intakeDistalEncoder = new DutyCycleEncoder(IntakeConstants.intakeDistalAbsoluteEncoderID);
 
   private StateHandler stateHandler = StateHandler.getInstance();
 
   public IntakeSubsystem() {
     intakeProximalMotor.configFactoryDefault();
     intakeDistalMotor.configFactoryDefault();
-    intakeWheelMotor.configFactoryDefault();
-
+    leftIntakeWheelMotor.configFactoryDefault();
+    rightIntakeWheelMotor.configFactoryDefault();
+    
     intakeProximalMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
     intakeDistalMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
 
@@ -43,8 +46,8 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeProximalMotor.config_kD(0, IntakeConstants.intakeProximalkD, FalconConstants.timeoutMs);
 
     intakeDistalMotor.config_kP(0, IntakeConstants.intakeDistalkP, FalconConstants.timeoutMs);
-    intakeDistalMotor.config_kP(0, IntakeConstants.intakeDistalkI, FalconConstants.timeoutMs);
-    intakeDistalMotor.config_kP(0, IntakeConstants.intakeDistalkD, FalconConstants.timeoutMs);
+    intakeDistalMotor.config_kI(0, IntakeConstants.intakeDistalkI, FalconConstants.timeoutMs);
+    intakeDistalMotor.config_kD(0, IntakeConstants.intakeDistalkD, FalconConstants.timeoutMs);
 
     intakeProximalMotor.configMotionCruiseVelocity(IntakeConstants.maxIntakeProximalVel);
     intakeProximalMotor.configMotionAcceleration(IntakeConstants.maxIntakeProximalAccel);
@@ -53,6 +56,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
     intakeProximalMotor.setNeutralMode(NeutralMode.Brake);
     intakeDistalMotor.setNeutralMode(NeutralMode.Brake);
+    leftIntakeWheelMotor.setNeutralMode(NeutralMode.Brake);
+    rightIntakeWheelMotor.setNeutralMode(NeutralMode.Brake);
+
+    rightIntakeWheelMotor.follow(leftIntakeWheelMotor);
+    rightIntakeWheelMotor.setInverted(InvertType.OpposeMaster);
     
     resetIntakeProximalPosition(IntakePositions.STOW.getArmAngles().getProximalAngle());
     resetIntakeDistalPosition(IntakePositions.STOW.getArmAngles().getDistalAngle());
@@ -130,34 +138,46 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setWheelSpeed(double stpt){
-    intakeWheelMotor.set(ControlMode.PercentOutput, stpt);
+    leftIntakeWheelMotor.set(ControlMode.PercentOutput, stpt);
   }
 
   public void stopWheels(){
-    intakeWheelMotor.stopMotor();
+    leftIntakeWheelMotor.stopMotor();
   }
 
   public double getCurrentDraw(){
-    return intakeWheelMotor.getStatorCurrent();
+    return leftIntakeWheelMotor.getStatorCurrent();
   }
 
   @Override
   public void periodic() {
-    double proximalError = Math
-        .abs(getIntakeProximalPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle());
-    double distalError = Math.abs(getIntakeDistalPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getDistalAngle());
+    // double proximalError = Math
+    //     .abs(getIntakeProximalPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle());
+    // double distalError = Math.abs(getIntakeDistalPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getDistalAngle());
 
-    boolean withinThreshold = proximalError < IntakeConstants.errorThreshold && distalError < IntakeConstants.errorThreshold;
+    // boolean withinThreshold = proximalError < IntakeConstants.errorThreshold && distalError < IntakeConstants.errorThreshold;
 
-    stateHandler.setIntakeInPosition(withinThreshold);
+    // stateHandler.setIntakeInPosition(withinThreshold);
 
-    if(withinThreshold) {
-      stateHandler.setCurrentIntakePosition(stateHandler.getDesiredIntakePosition());
-    }
+    // if(withinThreshold) {
+    //   stateHandler.setCurrentIntakePosition(stateHandler.getDesiredIntakePosition());
+    // }
 
+    SmartDashboard.putString("CURRENT GAME MODE: ", stateHandler.getGamePieceMode().toString());
     SmartDashboard.putString("DESIRED INTAKE State", stateHandler.getDesiredIntakePosition().toString());
     SmartDashboard.putString("CURRENT INTAKE State", stateHandler.getCurrentIntakePosition().toString());
 
+    SmartDashboard.putNumber("INTAKE PROXIMAL POSITION DEGREES: ", Math.toDegrees(getIntakeProximalPosition()));
+    SmartDashboard.putNumber("INTAKE DISTAL POSITION DEGREES: ", Math.toDegrees(getIntakeDistalPosition()));
 
+    SmartDashboard.putNumber("INTAKE PROXIMAL ERROR", intakeProximalMotor.getClosedLoopError());
+    SmartDashboard.putNumber("INTAKE DISTAL ERROR", intakeDistalMotor.getClosedLoopError());
+
+    SmartDashboard.putNumber("INTAKE PROXIMAL OUTPUT", intakeProximalMotor.getMotorOutputPercent());
+    SmartDashboard.putNumber("INTAKE DISTAL OUTPUT", intakeDistalMotor.getMotorOutputPercent());
+
+    SmartDashboard.putNumber("CURRENT", getCurrentDraw());
+  
+      
   }
 }

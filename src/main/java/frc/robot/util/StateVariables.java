@@ -61,16 +61,16 @@ public class StateVariables {
     }
 
     public static enum IntakePositions {
-        STOW(new ArmAngles(Math.PI / 2, -Math.PI / 2)),
+        STOW(new ArmAngles(0, 0)),
         INTAKE_CONE(new ArmAngles(0,0)),
         INTAKE_CUBE(new ArmAngles(0,0)),
-        CUBE_HANDOFF(new ArmAngles(0,0)),
-        CONE_HANDOFF(new ArmAngles(0,0)),
+        CUBE_HANDOFF(new ArmAngles(Math.toRadians(45.7),Math.toRadians(124.2))),
+        CONE_HANDOFF(new ArmAngles(Math.toRadians(156), Math.toRadians(84))),
+        TEST_1(new ArmAngles(Math.toRadians(78), Math.toRadians(18))),
         RETRACT(new ArmAngles(0,0)),
         HOLD(new ArmAngles(0, 0));
 
         private ArmAngles armAngles;
-
         private IntakePositions nextInSequence;
         private double triggerThresholdRadians;
 

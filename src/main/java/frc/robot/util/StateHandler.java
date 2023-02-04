@@ -20,7 +20,9 @@ public class StateHandler {
     private IntakePositions currentIntakePosition = IntakePositions.STOW;
 
     private boolean hasGamePiece = false;
-    private boolean intakeInPosition = false, armInPosition = false, resetManipulator = false, gripperEngaged = false;
+    private boolean intakeInPosition = false, armInPosition = false,
+            resetManipulator = false,
+            gripperEngaged = false;
 
     private GamePieceMode mode = GamePieceMode.CUBE;
 
@@ -144,11 +146,10 @@ public class StateHandler {
         return gripperEngaged;
     }
 
-    public SpecificLimelight getSpecificLimelight(){
-        if(currentRobotDirection == CurrentRobotDirection.LEFT){
+    public SpecificLimelight getSpecificLimelight() {
+        if (currentRobotDirection == CurrentRobotDirection.LEFT) {
             return SpecificLimelight.LEFT_LIMELIGHT;
-        }
-        else{
+        } else {
             return SpecificLimelight.RIGHT_LIMELIGHT;
         }
     }
