@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FalconConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.util.StateHandler;
+import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.IntakePositions;
 
 public class IntakeSubsystem extends SubsystemBase {
@@ -58,9 +59,6 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeDistalMotor.setNeutralMode(NeutralMode.Brake);
     leftIntakeWheelMotor.setNeutralMode(NeutralMode.Brake);
     rightIntakeWheelMotor.setNeutralMode(NeutralMode.Brake);
-
-    rightIntakeWheelMotor.follow(leftIntakeWheelMotor);
-    rightIntakeWheelMotor.setInverted(InvertType.OpposeMaster);
     
     resetIntakeProximalPosition(IntakePositions.STOW.getArmAngles().getProximalAngle());
     resetIntakeDistalPosition(IntakePositions.STOW.getArmAngles().getDistalAngle());
@@ -137,8 +135,24 @@ public class IntakeSubsystem extends SubsystemBase {
     return Math.atan(averageYG / averageXG);
   }
 
+  public void setWheelSpeed(){
+    if(stateHandler.getGamePieceMode() == GamePieceMode.CUBE){
+      leftIntakeWheelMotor.set(ControlMode.PercentOutput, IntakeConstants.cubeIntakeSpeed);
+      rightIntakeWheelMotor.set(ControlMode.PercentOutput, -IntakeConstants.cubeIntakeSpeed);
+    } else{
+      leftIntakeWheelMotor.set(ControlMode.PercentOutput, IntakeConstants.cubeIntakeSpeed);
+      rightIntakeWheelMotor.set(ControlMode.PercentOutput, IntakeConstants.cubeIntakeSpeed);
+    }
+  }
+
   public void setWheelSpeed(double stpt){
-    leftIntakeWheelMotor.set(ControlMode.PercentOutput, stpt);
+    if(stateHandler.getGamePieceMode() == GamePieceMode.CUBE){
+      leftIntakeWheelMotor.set(ControlMode.PercentOutput, stpt);
+      rightIntakeWheelMotor.set(ControlMode.PercentOutput, -stpt);
+    } else{
+      leftIntakeWheelMotor.set(ControlMode.PercentOutput, stpt);
+      rightIntakeWheelMotor.set(ControlMode.PercentOutput, stpt);
+    }
   }
 
   public void stopWheels(){
