@@ -220,28 +220,48 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putString("DESIRED ARM State", stateHandler.getArmDesiredPosition().toString());
     SmartDashboard.putString("CURRENT ARM State", stateHandler.getCurrentArmPosition().toString());
 
-    double currentArmPosition = SmartDashboard.getNumber("INPUT ARM POSITION", 0);
-    SmartDashboard.putNumber("INPUT ARM POSITION", currentArmPosition);
-    if(currentArmPosition == 0){
+    double desiredArmPosition = SmartDashboard.getNumber("INPUT DESIRED ARM POSITION", 0);
+    SmartDashboard.putNumber("INPUT DESIRED ARM POSITION", desiredArmPosition);
+    if(desiredArmPosition == 0){
       stateHandler.setArmDesiredState(ArmPositions.STOW);
-    } else if (currentArmPosition == 1){
+    } else if (desiredArmPosition == 1){
       stateHandler.setArmDesiredState(ArmPositions.COBRA);
-    } else if (currentArmPosition == 2){
+    } else if (desiredArmPosition == 2){
       stateHandler.setArmDesiredState(ArmPositions.CLEAR);
-    } else if(currentArmPosition == 3){
+    } else if(desiredArmPosition == 3){
       stateHandler.setArmDesiredState(ArmPositions.CONE_HIGH);
-    } else if(currentArmPosition == 4){
+    } else if(desiredArmPosition == 4){
       stateHandler.setArmDesiredState(ArmPositions.CONE_MID);
-    } else if(currentArmPosition == 5){
+    } else if(desiredArmPosition == 5){
       stateHandler.setArmDesiredState(ArmPositions.CUBE_HIGH);
-    } else if(currentArmPosition == 6){
+    } else if(desiredArmPosition == 6){
       stateHandler.setArmDesiredState(ArmPositions.CUBE_MID);
-    } else if(currentArmPosition == 7){
+    } else if(desiredArmPosition == 7){
       stateHandler.setArmDesiredState(ArmPositions.LOW);
     }
 
+    double currentArmPosition = SmartDashboard.getNumber("INPUT CURRENT ARM POSITION", 0);
+    SmartDashboard.putNumber("INPUT CURRENT ARM POSITION", currentArmPosition);
+    if(currentArmPosition == 0){
+      stateHandler.setCurrentArmPosition(ArmPositions.STOW);
+    } else if (currentArmPosition == 1){
+      stateHandler.setCurrentArmPosition(ArmPositions.COBRA);
+    } else if (currentArmPosition == 2){
+      stateHandler.setCurrentArmPosition(ArmPositions.CLEAR);
+    } else if(currentArmPosition == 3){
+      stateHandler.setCurrentArmPosition(ArmPositions.CONE_HIGH);
+    } else if(currentArmPosition == 4){
+      stateHandler.setCurrentArmPosition(ArmPositions.CONE_MID);
+    } else if(currentArmPosition == 5){
+      stateHandler.setCurrentArmPosition(ArmPositions.CUBE_HIGH);
+    } else if(currentArmPosition == 6){
+      stateHandler.setCurrentArmPosition(ArmPositions.CUBE_MID);
+    } else if(currentArmPosition == 7){
+      stateHandler.setCurrentArmPosition(ArmPositions.LOW);
+    }
+
     double currentGamePiece = SmartDashboard.getNumber("INPUT GAME PIECE", 0);
-    SmartDashboard.putNumber("INPUT GAME PIECE", currentArmPosition);
+    SmartDashboard.putNumber("INPUT GAME PIECE", currentGamePiece);
     if(currentGamePiece == 0){
       stateHandler.setGamePieceMode(GamePieceMode.CONE);
     } else{

@@ -192,18 +192,32 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("CURRENT", getCurrentDraw());
 
-    double currentIntakePosition = SmartDashboard.getNumber("INPUT INTAKE POSITION", 0);
-    SmartDashboard.putNumber("INPUT INTAKE POSITION", currentIntakePosition);
-    if(currentIntakePosition == 0){
+    double desiredIntakePosition = SmartDashboard.getNumber("INPUT DESIRED INTAKE POSITION", 0);
+    SmartDashboard.putNumber("INPUT DESIRED INTAKE POSITION", desiredIntakePosition);
+    if(desiredIntakePosition == 0){
       stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
-    } else if (currentIntakePosition == 1){
+    } else if (desiredIntakePosition == 1){
       stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CONE);
-    } else if (currentIntakePosition == 2){
+    } else if (desiredIntakePosition == 2){
       stateHandler.setDesiredIntakePosition(IntakePositions.CUBE_HANDOFF);
-    } else if(currentIntakePosition == 3){
+    } else if(desiredIntakePosition == 3){
       stateHandler.setDesiredIntakePosition(IntakePositions.CONE_HANDOFF);
-    } else if(currentIntakePosition == 4){
+    } else if(desiredIntakePosition == 4){
       stateHandler.setDesiredIntakePosition(IntakePositions.HOLD);
+    } 
+
+    double currentIntakePosition = SmartDashboard.getNumber("INPUT CURRENT INTAKE POSITION", 0);
+    SmartDashboard.putNumber("INPUT CURRENT INTAKE POSITION", currentIntakePosition);
+    if(currentIntakePosition == 0){
+      stateHandler.setCurrentIntakePosition(IntakePositions.STOW);
+    } else if (currentIntakePosition == 1){
+      stateHandler.setCurrentIntakePosition(IntakePositions.INTAKE_CONE);
+    } else if (currentIntakePosition == 2){
+      stateHandler.setCurrentIntakePosition(IntakePositions.CUBE_HANDOFF);
+    } else if(currentIntakePosition == 3){
+      stateHandler.setCurrentIntakePosition(IntakePositions.CONE_HANDOFF);
+    } else if(currentIntakePosition == 4){
+      stateHandler.setCurrentIntakePosition(IntakePositions.HOLD);
     } 
       
   }
