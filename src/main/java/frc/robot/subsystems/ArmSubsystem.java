@@ -10,12 +10,21 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.FalconConstants;
 import frc.robot.util.StateHandler;
+import frc.robot.util.StateVariables.ArmPositions;
+import frc.robot.util.StateVariables.CurrentRobotDirection;
+import frc.robot.util.StateVariables.GamePieceMode;
 
 public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
@@ -24,6 +33,9 @@ public class ArmSubsystem extends SubsystemBase {
   private DutyCycleEncoder proximalEncoder = new DutyCycleEncoder(ArmConstants.proximalEncoderID); // change this
   private DutyCycleEncoder distalEncoder = new DutyCycleEncoder(ArmConstants.distalEncoderID);
   private StateHandler stateHandler = StateHandler.getInstance();
+
+  
+  
 
   public ArmSubsystem() {
     proximalMotor.configFactoryDefault();
@@ -50,6 +62,8 @@ public class ArmSubsystem extends SubsystemBase {
 
     resetDistalPosition();
     resetDistalPosition();
+
+    
   }
 
   public void resetProximalPosition() {
@@ -205,6 +219,45 @@ public class ArmSubsystem extends SubsystemBase {
 
     SmartDashboard.putString("DESIRED ARM State", stateHandler.getArmDesiredPosition().toString());
     SmartDashboard.putString("CURRENT ARM State", stateHandler.getCurrentArmPosition().toString());
+
+    double currentArmPosition = SmartDashboard.getNumber("INPUT ARM POSITION", 0);
+    SmartDashboard.putNumber("INPUT ARM POSITION", currentArmPosition);
+    if(currentArmPosition == 0){
+      stateHandler.setArmDesiredState(ArmPositions.STOW);
+    } else if (currentArmPosition == 1){
+      stateHandler.setArmDesiredState(ArmPositions.COBRA);
+    } else if (currentArmPosition == 2){
+      stateHandler.setArmDesiredState(ArmPositions.CLEAR);
+    } else if(currentArmPosition == 3){
+      stateHandler.setArmDesiredState(ArmPositions.CONE_HIGH);
+    } else if(currentArmPosition == 4){
+      stateHandler.setArmDesiredState(ArmPositions.CONE_MID);
+    } else if(currentArmPosition == 5){
+      stateHandler.setArmDesiredState(ArmPositions.CUBE_HIGH);
+    } else if(currentArmPosition == 6){
+      stateHandler.setArmDesiredState(ArmPositions.CUBE_MID);
+    } else if(currentArmPosition == 7){
+      stateHandler.setArmDesiredState(ArmPositions.LOW);
+    }
+
+    double currentGamePiece = SmartDashboard.getNumber("INPUT GAME PIECE", 0);
+    SmartDashboard.putNumber("INPUT GAME PIECE", currentArmPosition);
+    if(currentGamePiece == 0){
+      stateHandler.setGamePieceMode(GamePieceMode.CONE);
+    } else{
+      stateHandler.setGamePieceMode(GamePieceMode.CUBE);
+    }
+
+    double currentDirection = SmartDashboard.getNumber("INPUT CURRENT DIRECTION", 0);
+    SmartDashboard.putNumber("INPUT CURRENT DIRECTION", currentDirection);
+    if(currentDirection == 0) {
+      stateHandler.setRobotDirection(CurrentRobotDirection.LEFT);
+    } else{
+      stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
+    }
+    
+    
+    
 
   }
 }

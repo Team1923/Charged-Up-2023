@@ -191,7 +191,20 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("INTAKE DISTAL OUTPUT", intakeDistalMotor.getMotorOutputPercent());
 
     SmartDashboard.putNumber("CURRENT", getCurrentDraw());
-  
+
+    double currentIntakePosition = SmartDashboard.getNumber("INPUT INTAKE POSITION", 0);
+    SmartDashboard.putNumber("INPUT INTAKE POSITION", currentIntakePosition);
+    if(currentIntakePosition == 0){
+      stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
+    } else if (currentIntakePosition == 1){
+      stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CONE);
+    } else if (currentIntakePosition == 2){
+      stateHandler.setDesiredIntakePosition(IntakePositions.CUBE_HANDOFF);
+    } else if(currentIntakePosition == 3){
+      stateHandler.setDesiredIntakePosition(IntakePositions.CONE_HANDOFF);
+    } else if(currentIntakePosition == 4){
+      stateHandler.setDesiredIntakePosition(IntakePositions.HOLD);
+    } 
       
   }
 }
