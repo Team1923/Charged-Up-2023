@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import frc.robot.commands.ArmDefaultCommand;
-import frc.robot.subsystems.ArmSubsystem;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.TestGripCommand;
+import frc.robot.commands.TestIntakeCommand;
+import frc.robot.subsystems.IntakeTestSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -25,35 +27,18 @@ import frc.robot.subsystems.ArmSubsystem;
  */
 public class RobotContainer {
   // Subsystems
-  private ArmSubsystem armSubsystem = new ArmSubsystem();
+  IntakeTestSubsystem intakeSubsystem = new IntakeTestSubsystem();
 
   // Controller
   private final XboxController controller = new XboxController(0);
+  private final JoystickButton aButton = new JoystickButton(controller, XboxController.Button.kA.value);
+  private final JoystickButton bButton = new JoystickButton(controller, XboxController.Button.kB.value);
 
-  // Dashboard inputs
-  private final LoggedDashboardChooser<Command> autoChooser = new LoggedDashboardChooser<>("Auto Choices");
-  private final LoggedDashboardNumber flywheelSpeedInput = new LoggedDashboardNumber("Flywheel Speed", 1500.0);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    switch (Constants.currentMode) {
-      // Real robot, instantiate hardware IO implementations
-      case REAL:
-        
-        break;
-
-      // Sim robot, instantiate physics sim IO implementations
-      case SIM:
-        
-        break;
-
-      // Replayed robot, disable IO implementations
-      default:
-        
-        break;
-    }
 
     // Set up auto routines
    
@@ -71,11 +56,14 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    aButton.whileTrue(new TestIntakeCommand(intakeSubsystem, 0.7));
+    bButton.whileTrue(new TestGripCommand(intakeSubsystem, 0.15));
+
 
   }
 
   private void setDefaultCommands(){
-    armSubsystem.setDefaultCommand(new ArmDefaultCommand(armSubsystem));
+    
   }
 
   /**
@@ -84,6 +72,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.get();
+    return null;
   }
 }
