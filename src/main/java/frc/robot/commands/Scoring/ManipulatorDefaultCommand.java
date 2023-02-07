@@ -4,6 +4,9 @@
 
 package frc.robot.commands.Scoring;
 
+import java.util.function.BooleanSupplier;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ManipulatorSubsystem;
 import frc.robot.util.StateHandler;
@@ -15,10 +18,18 @@ public class ManipulatorDefaultCommand extends CommandBase {
   private StateHandler stateHandler;
   private boolean lastGripperValue;
 
+  private BooleanSupplier engageGripper;
+
+  private BooleanSupplier breakOut;
+
+
   /** Creates a new ManipulatorDefaultCommand. */
-  public ManipulatorDefaultCommand(ManipulatorSubsystem gripper) {
+  public ManipulatorDefaultCommand(ManipulatorSubsystem gripper, BooleanSupplier e, BooleanSupplier b) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.gripper = gripper;
+    this.engageGripper = e;
+    this.breakOut = b;
+
     addRequirements(gripper);
     stateHandler = StateHandler.getInstance();
   }
@@ -32,13 +43,19 @@ public class ManipulatorDefaultCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean reset = StateHandler.getInstance().getResetManipulator();
+
+    // boolean reset = StateHandler.getInstance().getResetManipulator();
+    // boolean engage = StateHandler.getInstance().readyToClose();
+
+    boolean reset = breakOut.getAsBoolean();
+    boolean engage = engageGripper.getAsBoolean();
+
 
     if (reset) {
       latch = false;
       gripper.set(false);
       stateHandler.setGripperEngaged(false);
-    } else if (StateHandler.getInstance().readyToClose() && !latch) {
+    } else if (engage && !latch) {
       latch = true;
       gripper.set(true);
       stateHandler.setGripperEngaged(true);
@@ -49,10 +66,10 @@ public class ManipulatorDefaultCommand extends CommandBase {
 
     boolean currentGripperValue = gripper.get();
 
-    if(lastGripperValue != currentGripperValue) {
+    if (lastGripperValue != currentGripperValue) {
       stateHandler.setTimeSinceLastGripChange();
     }
-    
+
     lastGripperValue = currentGripperValue;
   }
 

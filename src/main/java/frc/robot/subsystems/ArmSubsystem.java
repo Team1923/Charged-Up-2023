@@ -203,8 +203,6 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("distal motor Position:", Math.toDegrees(getDistalPosition()));
     SmartDashboard.putNumber("proximal motor Position:", Math.toDegrees(getProximalPosition()));
 
-    SmartDashboard.putNumber("Proximal Abs Rads", getProximalAbsoluteEncoderRads());
-    SmartDashboard.putNumber("Distal Abs Rads", getDistalAbsoluteEncoderRads());
 
     double proximalError = Math
         .abs(getProximalPosition() - stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());

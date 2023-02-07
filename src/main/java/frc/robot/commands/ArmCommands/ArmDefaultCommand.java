@@ -4,6 +4,7 @@
 
 package frc.robot.commands.ArmCommands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.interfaces.BetterLimelightInterface;
 import frc.robot.subsystems.ArmSubsystem;
@@ -18,11 +19,9 @@ public class ArmDefaultCommand extends CommandBase {
   private ArmSubsystem armSubsystem;
   private StateHandler stateHandler = StateHandler.getInstance();
   private BetterLimelightInterface limelightInterface = BetterLimelightInterface.getInstance();
-  private double joystickPOV;
 
-  public ArmDefaultCommand(ArmSubsystem aSubsystem, double joystickPOV) {
+  public ArmDefaultCommand(ArmSubsystem aSubsystem) {
     armSubsystem = aSubsystem;
-    this.joystickPOV = joystickPOV;
     addRequirements(armSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -46,6 +45,9 @@ public class ArmDefaultCommand extends CommandBase {
       case COBRA_FORWARD:
         if(!stateHandler.getHoldInCobra() && stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_FORWARD) {
           stateHandler.setArmDesiredState(stateHandler.getArmPositionFromScoringLocation());
+        }
+        if(!stateHandler.getWantToScore()) {
+          stateHandler.setArmDesiredState(ArmPositions.STOW);
         }
         break;
       case COBRA_REVERSE:
@@ -78,6 +80,10 @@ public class ArmDefaultCommand extends CommandBase {
       }
       
     }
+
+    SmartDashboard.putBoolean("GRIP?", stateHandler.getGripperEngaged());
+    SmartDashboard.putBoolean("WANT TO SCORE?", stateHandler.getWantToScore());
+    SmartDashboard.putNumber("TIME SINCE LAST SWAP", stateHandler.getTimeSinceLastGripChange());
 
   }
 

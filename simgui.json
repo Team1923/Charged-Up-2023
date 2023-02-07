@@ -1,4 +1,13 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "Talon FX[18]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
@@ -12,9 +21,6 @@
       "open": false
     },
     "transitory": {
-      "AdvantageKit": {
-        "open": true
-      },
       "SmartDashboard": {
         "open": true
       }

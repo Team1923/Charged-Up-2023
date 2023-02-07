@@ -8,8 +8,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmCommands.OldArmDefaultCommand;
+import frc.robot.commands.ArmCommands.ArmDefaultCommand;
 import frc.robot.commands.ArmCommands.ArmToPosition;
 import frc.robot.commands.IntakeCommands.IntakeAndLiftCommand;
+import frc.robot.commands.Scoring.ManipulatorDefaultCommand;
+import frc.robot.commands.Scoring.ManualScore;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.subsystems.*;
 import frc.robot.util.StateVariables.ArmPositions;
@@ -28,6 +31,7 @@ public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
     private final Joystick operator = new Joystick(1);
+    private final Joystick test = new Joystick(2);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -46,6 +50,11 @@ public class RobotContainer {
     private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
     private final JoystickButton xButton = new JoystickButton(driver, XboxController.Button.kX.value);
     private final JoystickButton yButton = new JoystickButton(driver, XboxController.Button.kY.value);
+
+    private final JoystickButton testAButton = new JoystickButton(test, 2);
+    private final JoystickButton testBButton = new JoystickButton(test, 1);
+    private final JoystickButton testXButton = new JoystickButton(test, XboxController.Button.kX.value);
+    private final JoystickButton testYButton = new JoystickButton(test, 3);
 
     /* Operator Buttons */
     private final JoystickButton operatorXButton = new JoystickButton(operator, PS4Controller.Button.kCross.value);
@@ -83,6 +92,8 @@ public class RobotContainer {
         xButton.onTrue(new ArmToPosition(ArmPositions.CONE_HIGH));
         yButton.onTrue(new ArmToPosition(ArmPositions.CUBE_MID));
 
+        testYButton.toggleOnTrue(new ManualScore());
+
     }
 
     private void setDefaultCommands() {
@@ -100,11 +111,9 @@ public class RobotContainer {
         () -> crossButton.getAsBoolean()));
 
         
-        //intakeSubsystem.setDefaultCommand(new IntakeToPosition(intakeSubsystem, IntakePositions.CUBE_HANDOFF, () -> aButton.getAsBoolean(), () -> xButton.getAsBoolean()));
-        armSubsystem.setDefaultCommand(new OldArmDefaultCommand(armSubsystem));
-        // intakeSubsystem.setDefaultCommand(new IntakeArmDefaultCommand(intakeSubsystem,
-        //         () -> operatorXButton.getAsBoolean(), () -> operatorSquareButton.getAsBoolean()));
-        // gripper.setDefaultCommand(new ManipulatorDefaultCommand(gripper));
+        armSubsystem.setDefaultCommand(new ArmDefaultCommand(armSubsystem));
+
+        gripper.setDefaultCommand(new ManipulatorDefaultCommand(gripper, () -> testAButton.getAsBoolean(), () -> testBButton.getAsBoolean()));
     }
 
     /**
