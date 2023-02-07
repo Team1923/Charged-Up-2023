@@ -4,8 +4,8 @@ public class StateVariables {
     
     public static enum ArmPositions {
         STOW(new ArmAngles(Math.PI / 2, -Math.PI / 2)),
-        COBRA(new ArmAngles(Math.toRadians(110), 0)),
-        CLEAR(new ArmAngles(0, -Math.PI / 4)), /*DEFINE */
+        COBRA_FORWARD(new ArmAngles(Math.toRadians(110), 0)),
+        COBRA_REVERSE(new ArmAngles(Math.toRadians(110), 0)),
         LOW(new ArmAngles(0.773, -1.843)),
         CONE_MID(new ArmAngles(1.760, -0.289)),
         CONE_HIGH(new ArmAngles(2.202, 0.330)),

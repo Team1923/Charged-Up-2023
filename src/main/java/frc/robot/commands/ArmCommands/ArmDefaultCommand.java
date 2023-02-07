@@ -36,35 +36,20 @@ public class ArmDefaultCommand extends CommandBase {
   @Override
   public void execute() {
     ArmPositions currentDesiredState = stateHandler.getArmDesiredPosition();
+
     switch (currentDesiredState) {
       case STOW:
-        if (stateHandler.getGripperEngaged() && !(stateHandler.getCurrentIntakePosition() == IntakePositions.STOW)) {
-          stateHandler.setArmDesiredState(ArmPositions.CLEAR);
-        } else if (limelightInterface.hasScoringTarget() && stateHandler.getGripperEngaged()) {
-          stateHandler.setArmDesiredState(ArmPositions.COBRA);
+        if(stateHandler.getWantToScore() && stateHandler.getTimeSinceLastGripChange() > .3 && stateHandler.getGripperEngaged()) {
+          stateHandler.setArmDesiredState(ArmPositions.COBRA_FORWARD);
         }
         break;
-      case CLEAR:
-        if (stateHandler.getCurrentIntakePosition() == IntakePositions.STOW) {
-          stateHandler.setArmDesiredState(ArmPositions.STOW);
+      case COBRA_FORWARD:
+        if(!stateHandler.getHoldInCobra() && stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_FORWARD) {
+          stateHandler.setArmDesiredState(stateHandler.getArmPositionFromScoringLocation());
         }
         break;
-      case COBRA:
-        if (joystickPOV == 0 && stateHandler.getGripperEngaged()) { // up arrow
-          if (stateHandler.getGamePieceMode() == GamePieceMode.CONE) {
-            stateHandler.setArmDesiredState(ArmPositions.CONE_HIGH);
-          } else {
-            stateHandler.setArmDesiredState(ArmPositions.CUBE_HIGH);
-          }
-        } else if (joystickPOV == 270 && stateHandler.getGripperEngaged()) {
-          if (stateHandler.getGamePieceMode() == GamePieceMode.CONE) {
-            stateHandler.setArmDesiredState(ArmPositions.CONE_MID);
-          } else {
-            stateHandler.setArmDesiredState(ArmPositions.CUBE_MID);
-          }
-        } else if (joystickPOV == 180 && stateHandler.getGripperEngaged()) {
-          stateHandler.setArmDesiredState(ArmPositions.LOW);
-        } else if (!stateHandler.getGripperEngaged()) {
+      case COBRA_REVERSE:
+        if(stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_FORWARD) {
           stateHandler.setArmDesiredState(ArmPositions.STOW);
         }
         break;
@@ -73,10 +58,9 @@ public class ArmDefaultCommand extends CommandBase {
       case CUBE_HIGH:
       case CUBE_MID:
       case LOW:
-        if (!stateHandler.getGripperEngaged()) {
-          stateHandler.setArmDesiredState(ArmPositions.COBRA);
+        if(!stateHandler.getWantToScore() || (!stateHandler.getGripperEngaged() && stateHandler.getTimeSinceLastGripChange() > .3)) {
+          stateHandler.setArmDesiredState(ArmPositions.COBRA_REVERSE);
         }
-        break;
       default:
         break;
     }

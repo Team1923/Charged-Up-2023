@@ -6,10 +6,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.StateHandler;
 
 public class ManipulatorSubsystem extends SubsystemBase {
 
@@ -20,15 +18,15 @@ public class ManipulatorSubsystem extends SubsystemBase {
   }
 
   public void set(boolean output) {
-    //gripper.set(true, false);
+    gripper.set(output ? Value.kForward : Value.kReverse);
+  }
 
+  public boolean get() {
+    return gripper.get() == Value.kForward ? true : false;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    boolean isManipulatorEngaged = SmartDashboard.getBoolean("INPUT MANIPULATOR ENGAGED", false);
-    SmartDashboard.putBoolean("INPUT MANIPULATOR ENGAGED", isManipulatorEngaged);
-    StateHandler.getInstance().setGripperEngaged(isManipulatorEngaged);
   }
 }

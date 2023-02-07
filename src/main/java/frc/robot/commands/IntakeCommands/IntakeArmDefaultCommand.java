@@ -43,84 +43,18 @@ public class IntakeArmDefaultCommand extends CommandBase {
 
     switch (currentDesiredState) {
       case INTAKE_CUBE:
-        if (stateHandler.getGamePieceMode() == GamePieceMode.CONE) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CONE);
-          break;
-        }
-        if (intakeSupplier.getAsBoolean()) {
-          intake.setWheelSpeed(IntakeConstants.cubeIntakeSpeed);
-        } else if (ejectSupplier.getAsBoolean()) {
-          intake.setWheelSpeed(IntakeConstants.ejectSpeed);
-        } else if (intake.getCurrentDraw() > IntakeConstants.cubeCurrentThreshold) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.HOLD);
-        } else {
-          stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
-        }
         break;
       case HOLD:
-        intake.setWheelSpeed(IntakeConstants.gripSpeed);
-        if (intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CUBE);
-          break;
-        }
-        if (stateHandler.getCurrentArmPosition() == ArmPositions.STOW
-            && stateHandler.getGamePieceMode() == GamePieceMode.CUBE) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.CUBE_HANDOFF);
-        } else if (stateHandler.getCurrentArmPosition() == ArmPositions.STOW
-            && stateHandler.getGamePieceMode() == GamePieceMode.CONE) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.CONE_HANDOFF);
-        }
         break;
       case CUBE_HANDOFF:
-        intake.setWheelSpeed(IntakeConstants.gripSpeed);
-        if (intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CUBE);
-          break;
-        }
-        if (stateHandler.getGripperEngaged()) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.RETRACT);
-        }
         break;
       case STOW:
-        if (intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()) {
-          if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE) {
-            stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CUBE);
-          } else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE) {
-            stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CONE);
-          }
-        }
         break;
       case INTAKE_CONE:
-        if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CUBE);
-          break;
-        }
-        if (intakeSupplier.getAsBoolean()) {
-          intake.setWheelSpeed(IntakeConstants.coneIntakeSpeed);
-        } else if (ejectSupplier.getAsBoolean()) {
-          intake.setWheelSpeed(IntakeConstants.ejectSpeed);
-        } else if (intake.getCurrentDraw() > IntakeConstants.coneCurrentThreshold) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.HOLD);
-        } else {
-          stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
-        }
         break;
       case CONE_HANDOFF:
-        intake.setWheelSpeed(IntakeConstants.gripSpeed);
-        if (intakeSupplier.getAsBoolean() || ejectSupplier.getAsBoolean()) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CONE);
-          break;
-        }
-        if (stateHandler.getGripperEngaged()) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.RETRACT);
-        }
         break;
       case RETRACT:
-        intake.setWheelSpeed(IntakeConstants.handoffSpeed);
-        if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA
-            || stateHandler.getCurrentArmPosition() == ArmPositions.CLEAR) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
-        }
         break;
       default:
         break;

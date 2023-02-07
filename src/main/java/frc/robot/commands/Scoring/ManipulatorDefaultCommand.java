@@ -9,10 +9,11 @@ import frc.robot.subsystems.ManipulatorSubsystem;
 import frc.robot.util.StateHandler;
 
 public class ManipulatorDefaultCommand extends CommandBase {
-  
+
   private ManipulatorSubsystem gripper;
   private boolean latch = false;
   private StateHandler stateHandler;
+  private boolean lastGripperValue;
 
   /** Creates a new ManipulatorDefaultCommand. */
   public ManipulatorDefaultCommand(ManipulatorSubsystem gripper) {
@@ -25,12 +26,14 @@ public class ManipulatorDefaultCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    lastGripperValue = gripper.get();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     boolean reset = StateHandler.getInstance().getResetManipulator();
+
     if (reset) {
       latch = false;
       gripper.set(false);
@@ -43,6 +46,14 @@ public class ManipulatorDefaultCommand extends CommandBase {
       gripper.set(false);
       stateHandler.setGripperEngaged(false);
     }
+
+    boolean currentGripperValue = gripper.get();
+
+    if(lastGripperValue != currentGripperValue) {
+      stateHandler.setTimeSinceLastGripChange();
+    }
+    
+    lastGripperValue = currentGripperValue;
   }
 
   // Called once the command ends or is interrupted.

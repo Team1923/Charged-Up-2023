@@ -8,17 +8,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmCommands.OldArmDefaultCommand;
-import frc.robot.commands.ArmCommands.ArmDefaultCommand;
 import frc.robot.commands.ArmCommands.ArmToPosition;
-import frc.robot.commands.Autos.TestPath;
 import frc.robot.commands.IntakeCommands.IntakeAndLiftCommand;
-import frc.robot.commands.IntakeCommands.IntakeArmDefaultCommand;
-import frc.robot.commands.IntakeCommands.IntakeToPosition;
-import frc.robot.commands.Scoring.ManipulatorDefaultCommand;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.subsystems.*;
 import frc.robot.util.StateVariables.ArmPositions;
-import frc.robot.util.StateVariables.IntakePositions;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -85,7 +79,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         aButton.onTrue(new ArmToPosition(ArmPositions.STOW));
-        bButton.onTrue(new ArmToPosition(ArmPositions.COBRA));
+        bButton.onTrue(new ArmToPosition(ArmPositions.COBRA_FORWARD));
         xButton.onTrue(new ArmToPosition(ArmPositions.CONE_HIGH));
         yButton.onTrue(new ArmToPosition(ArmPositions.CUBE_MID));
 

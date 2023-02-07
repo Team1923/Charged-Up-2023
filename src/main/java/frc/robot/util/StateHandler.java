@@ -1,5 +1,6 @@
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.interfaces.BetterLimelightInterface.SpecificLimelight;
 import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
@@ -11,7 +12,7 @@ import frc.robot.util.StateVariables.VerticalLocations;
 
 public class StateHandler {
     private static StateHandler stateHandler;
-    private ScoringLocations scoringLocations = new ScoringLocations(VerticalLocations.LOW, HorizontalLocations.LEFT);
+    private ScoringLocations scoringLocations = new ScoringLocations(VerticalLocations.HIGH, HorizontalLocations.LEFT);
 
     private ArmPositions desiredArmPosition = ArmPositions.STOW;
     private ArmPositions currentArmPosition = ArmPositions.STOW;
@@ -19,16 +20,22 @@ public class StateHandler {
     private IntakePositions desiredIntakePosition = IntakePositions.STOW;
     private IntakePositions currentIntakePosition = IntakePositions.STOW;
 
-    private boolean hasGamePiece = false;
-    private boolean intakeInPosition = false, armInPosition = false,
+    private boolean intakeInPosition = false,
+            hasGamePiece = false,
+            armInPosition = false,
             resetManipulator = false,
-            gripperEngaged = false;
+            gripperEngaged = false,
+            wantToScore = false,
+            holdInCobra = false;
+
 
     private GamePieceMode mode = GamePieceMode.CUBE;
 
     private CurrentRobotDirection currentRobotDirection = CurrentRobotDirection.RIGHT;
 
     private SpecificLimelight currentLimelight = SpecificLimelight.LEFT_LIMELIGHT;
+
+    private double timeSinceLastGripChange = System.currentTimeMillis();
 
     public static synchronized StateHandler getInstance() {
         if (stateHandler == null) {
@@ -154,4 +161,32 @@ public class StateHandler {
         }
     }
 
+    public void setTimeSinceLastGripChange() {
+        timeSinceLastGripChange = System.currentTimeMillis();
+    }
+
+    // Time in seconds since the gripper was changed
+    public double getTimeSinceLastGripChange() {
+        return (System.currentTimeMillis() - timeSinceLastGripChange)/1000;
+    }
+
+    public void setHoldInCobra(boolean set) {
+        holdInCobra = set;
+    }
+
+    public boolean getHoldInCobra() {
+        return holdInCobra;
+    }
+
+    public void setWantToScore(boolean set) {
+        wantToScore = set;
+    }
+
+    public boolean getWantToScore() {
+        return wantToScore;
+    }
+
+    public ArmPositions getArmPositionFromScoringLocation() {
+        return ArmPositions.CONE_HIGH;
+    }
 }
