@@ -61,6 +61,7 @@ public class ArmSubsystem extends SubsystemBase {
     proximalMotor.setNeutralMode(NeutralMode.Brake);
     distalMotor.setNeutralMode(NeutralMode.Brake);
 
+    // distalMotor.setSelectedSensorPosition(0);
     resetDistalPosition();
     resetProximalPosition();
 
@@ -69,14 +70,14 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void resetProximalPosition() {
     proximalMotor.setSelectedSensorPosition(
-        (getProximalAbsoluteEncoderRads() - ArmConstants.proximalEncoderHardstop + ArmConstants.proximalHardstop)
+        (getProximalAbsoluteEncoderRads() - ArmConstants.proximalEncoderZero + ArmConstants.proximalHardstop)
             * ArmConstants.proximalRadsToTicks);
   }
 
   public void resetDistalPosition() {
     distalMotor.setSelectedSensorPosition(
-        (getDistalAbsoluteEncoderRads() - ArmConstants.distalEncoderHardstop + ArmConstants.distalHardstop)
-            * ArmConstants.distalRadsToTicks * ArmConstants.distalRadsToTicks);
+        (getDistalAbsoluteEncoderRads() - ArmConstants.distalEncoderZero + ArmConstants.distalHardstop)
+            * ArmConstants.distalRadsToTicks);
   }
 
   // public void setproximalPosition(double setPoint){
@@ -199,11 +200,11 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("distal motor Position:", getDistalPosition());
+    SmartDashboard.putNumber("distal motor Position:", Math.toDegrees(getDistalPosition()));
     SmartDashboard.putNumber("proximal motor Position:", Math.toDegrees(getProximalPosition()));
 
-    SmartDashboard.putNumber("Proximal Abs Rads", Math.toDegrees(getProximalAbsoluteEncoderRads()));
-    SmartDashboard.putNumber("Distal Abs Rads", Math.toDegrees(getDistalAbsoluteEncoderRads()));
+    SmartDashboard.putNumber("Proximal Abs Rads", getProximalAbsoluteEncoderRads());
+    SmartDashboard.putNumber("Distal Abs Rads", getDistalAbsoluteEncoderRads());
 
     double proximalError = Math
         .abs(getProximalPosition() - stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());

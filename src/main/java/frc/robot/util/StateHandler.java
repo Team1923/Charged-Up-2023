@@ -26,7 +26,7 @@ public class StateHandler {
 
     private GamePieceMode mode = GamePieceMode.CUBE;
 
-    private CurrentRobotDirection currentRobotDirection = CurrentRobotDirection.LEFT;
+    private CurrentRobotDirection currentRobotDirection = CurrentRobotDirection.RIGHT;
 
     private SpecificLimelight currentLimelight = SpecificLimelight.LEFT_LIMELIGHT;
 

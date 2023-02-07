@@ -24,8 +24,8 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   private WPI_TalonFX intakeProximalMotor = new WPI_TalonFX(IntakeConstants.intakeProximalID, "rio");
   private WPI_TalonFX intakeDistalMotor = new WPI_TalonFX(IntakeConstants.intakeDistalID);
-  private WPI_TalonFX leftIntakeWheelMotor = new WPI_TalonFX(IntakeConstants.leftIntakeWheelMotor);
-  private WPI_TalonFX rightIntakeWheelMotor = new WPI_TalonFX(IntakeConstants.rightIntakeWheelMotor);
+  private WPI_TalonFX leftIntakeWheelMotor = new WPI_TalonFX(IntakeConstants.leftIntakeWheelMotor, "rio");
+  private WPI_TalonFX rightIntakeWheelMotor = new WPI_TalonFX(IntakeConstants.rightIntakeWheelMotor, "rio");
 
   // private DutyCycleEncoder intakeProximalEncoder = new DutyCycleEncoder(
   //     IntakeConstants.intakeProximalAbsoluteEncoderID);
@@ -55,8 +55,8 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeDistalMotor.configMotionCruiseVelocity(IntakeConstants.maxIntakeDistalVel);
     intakeDistalMotor.configMotionAcceleration(IntakeConstants.maxIntakeDistalAccel);
 
-    intakeProximalMotor.setNeutralMode(NeutralMode.Brake);
-    intakeDistalMotor.setNeutralMode(NeutralMode.Brake);
+    intakeProximalMotor.setNeutralMode(NeutralMode.Coast);
+    intakeDistalMotor.setNeutralMode(NeutralMode.Coast);
     leftIntakeWheelMotor.setNeutralMode(NeutralMode.Brake);
     rightIntakeWheelMotor.setNeutralMode(NeutralMode.Brake);
     
@@ -155,6 +155,12 @@ public class IntakeSubsystem extends SubsystemBase {
     }
   }
 
+  public void setRawWheelSpeed(double stpt){
+    leftIntakeWheelMotor.set(stpt);
+    rightIntakeWheelMotor.set(-stpt);
+  }
+
+
   public void stopWheels(){
     leftIntakeWheelMotor.stopMotor();
   }
@@ -180,6 +186,8 @@ public class IntakeSubsystem extends SubsystemBase {
     // SmartDashboard.putString("CURRENT GAME MODE: ", stateHandler.getGamePieceMode().toString());
     SmartDashboard.putString("DESIRED INTAKE State", stateHandler.getDesiredIntakePosition().toString());
     SmartDashboard.putString("CURRENT INTAKE State", stateHandler.getCurrentIntakePosition().toString());
+
+    
 
     // SmartDashboard.putNumber("INTAKE PROXIMAL POSITION DEGREES: ", Math.toDegrees(getIntakeProximalPosition()));
     // SmartDashboard.putNumber("INTAKE DISTAL POSITION DEGREES: ", Math.toDegrees(getIntakeDistalPosition()));

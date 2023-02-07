@@ -175,10 +175,10 @@ public final class Constants {
     public static final double distalAbsoluteEncoderToRadians = ArmConstants.distalAbsoluteEncoderToTicks
         * ArmConstants.distalTicksToRad;
 
-    public static final double proximalHardstop = 21 * Math.PI / 180;
-    public static final double distalHardstop = 0;
-    public static final double proximalEncoderHardstop = 0;
-    public static final double distalEncoderHardstop = 0;
+    public static final double proximalHardstop = Math.PI/2;
+    public static final double distalHardstop = -Math.PI/2;
+    public static final double proximalEncoderZero = 0.44;
+    public static final double distalEncoderZero = -3.56;
 
     public static final double errorThreshold = 0.05;
 
@@ -206,7 +206,7 @@ public final class Constants {
 
   public static final class Swerve {
     public static final int pigeonID = 13;
-    public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-
+    public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
     public static final COTSFalconSwerveConstants chosenModule = // TODO: This must be tuned to specific robot
         COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L3);
