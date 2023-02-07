@@ -85,15 +85,15 @@ public class RobotContainer {
     }
 
     private void setDefaultCommands() {
-        // s_Swerve.setDefaultCommand(
-        //         new TeleopSwerve(
-        //                 s_Swerve,
-        //                 () -> -driver.getRawAxis(translationAxis),
-        //                 () -> -driver.getRawAxis(strafeAxis),
-        //                 () -> -driver.getRawAxis(rotationAxis),
-        //                 () -> robotCentric.getAsBoolean()));
+        s_Swerve.setDefaultCommand(
+                new TeleopSwerve(
+                        s_Swerve,
+                        () -> -driver.getRawAxis(translationAxis),
+                        () -> -driver.getRawAxis(strafeAxis),
+                        () -> -driver.getRawAxis(rotationAxis),
+                        () -> robotCentric.getAsBoolean()));
         
-        intakeSubsystem.setDefaultCommand(new IntakeToPosition(intakeSubsystem, IntakePositions.CUBE_HANDOFF, () -> aButton.getAsBoolean(), () -> xButton.getAsBoolean()));
+        //intakeSubsystem.setDefaultCommand(new IntakeToPosition(intakeSubsystem, IntakePositions.CUBE_HANDOFF, () -> aButton.getAsBoolean(), () -> xButton.getAsBoolean()));
         //armSubsystem.setDefaultCommand(new ArmDefaultCommand(armSubsystem, operator.getPOV()));
         // intakeSubsystem.setDefaultCommand(new IntakeArmDefaultCommand(intakeSubsystem,
         //         () -> operatorXButton.getAsBoolean(), () -> operatorSquareButton.getAsBoolean()));

@@ -30,7 +30,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
 
-    public Pigeon2 gyro = new Pigeon2(Swerve.pigeonID);
+    public Pigeon2 gyro = new Pigeon2(Swerve.pigeonID, "rio");
 
     private Field2d field2D = new Field2d();
 

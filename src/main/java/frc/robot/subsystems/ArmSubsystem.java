@@ -28,8 +28,8 @@ import frc.robot.util.StateVariables.GamePieceMode;
 
 public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
-  private WPI_TalonFX proximalMotor = new WPI_TalonFX(ArmConstants.proximalMotorID);
-  private WPI_TalonFX distalMotor = new WPI_TalonFX(ArmConstants.distalMotorID);
+  private WPI_TalonFX proximalMotor = new WPI_TalonFX(ArmConstants.proximalMotorID, "Default Name");
+  private WPI_TalonFX distalMotor = new WPI_TalonFX(ArmConstants.distalMotorID, "Default Name");
   private DutyCycleEncoder proximalEncoder = new DutyCycleEncoder(ArmConstants.proximalEncoderID); // change this
   private DutyCycleEncoder distalEncoder = new DutyCycleEncoder(ArmConstants.distalEncoderID);
   private StateHandler stateHandler = StateHandler.getInstance();
@@ -56,12 +56,13 @@ public class ArmSubsystem extends SubsystemBase {
     proximalMotor.configMotionAcceleration(ArmConstants.maxProximalAccel);
     distalMotor.configMotionCruiseVelocity(ArmConstants.maxDistalVel);
     distalMotor.configMotionAcceleration(ArmConstants.maxDistalAccel);
+    
 
     proximalMotor.setNeutralMode(NeutralMode.Brake);
     distalMotor.setNeutralMode(NeutralMode.Brake);
 
     resetDistalPosition();
-    resetDistalPosition();
+    resetProximalPosition();
 
     
   }
@@ -184,7 +185,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getDistalAbsoluteEncoderRads() {
-    return distalEncoder.getAbsolutePosition() * ArmConstants.distalAbsoluteEncoderToRadians;
+    return -distalEncoder.getAbsolutePosition() * ArmConstants.distalAbsoluteEncoderToRadians;
   }
 
   public double getProximalAbsoluteEncoderTicks() {
@@ -198,11 +199,11 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("distal Position:", Math.toDegrees(getDistalPosition()));
-    SmartDashboard.putNumber("proximal Position:", Math.toDegrees(getDistalPosition()));
+    SmartDashboard.putNumber("distal motor Position:", getDistalPosition());
+    SmartDashboard.putNumber("proximal motor Position:", Math.toDegrees(getProximalPosition()));
 
-    SmartDashboard.putNumber("Proximal Rads", getProximalAbsoluteEncoderRads());
-    SmartDashboard.putNumber("Distal Rads", getDistalAbsoluteEncoderRads());
+    SmartDashboard.putNumber("Proximal Abs Rads", Math.toDegrees(getProximalAbsoluteEncoderRads()));
+    SmartDashboard.putNumber("Distal Abs Rads", Math.toDegrees(getDistalAbsoluteEncoderRads()));
 
     double proximalError = Math
         .abs(getProximalPosition() - stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());
