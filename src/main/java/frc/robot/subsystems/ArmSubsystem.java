@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.FalconConstants;
 import frc.robot.util.StateHandler;
+import frc.robot.util.StateVariables.ArmAngles;
 import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
@@ -34,8 +35,6 @@ public class ArmSubsystem extends SubsystemBase {
   private DutyCycleEncoder distalEncoder = new DutyCycleEncoder(ArmConstants.distalEncoderID);
   private StateHandler stateHandler = StateHandler.getInstance();
 
-  
-  
 
   public ArmSubsystem() {
     proximalMotor.configFactoryDefault();
@@ -197,17 +196,32 @@ public class ArmSubsystem extends SubsystemBase {
     return distalEncoder.getAbsolutePosition() * ArmConstants.distalAbsoluteEncoderToTicks;
   }
 
+  public boolean isReflected(){
+    /* reflection of angles is based on robot direction
+     */
+    return stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("distal motor Position:", Math.toDegrees(getDistalPosition()));
     SmartDashboard.putNumber("proximal motor Position:", Math.toDegrees(getProximalPosition()));
 
+    /*doing this to avoid calling the state handler too much */
+    ArmPositions desiredArmPosition = stateHandler.getArmDesiredPosition();
+
+    double proximalDesiredPosition = desiredArmPosition.getArmAngles().getProximalAngle();
+    double distalDesiredPosition = desiredArmPosition.getArmAngles().getDistalAngle();
+    if(isReflected()){
+      proximalDesiredPosition = desiredArmPosition.getReflectedArmAngles().getProximalAngle();
+      distalDesiredPosition = desiredArmPosition.getReflectedArmAngles().getDistalAngle();
+    }
 
     double proximalError = Math
-        .abs(getProximalPosition() - stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());
+        .abs(getProximalPosition() - proximalDesiredPosition);
     double distalError = Math
-        .abs(getDistalPosition() - stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
+        .abs(getDistalPosition() - distalDesiredPosition);
 
     boolean withinThreshold = proximalError < ArmConstants.errorThreshold && distalError < ArmConstants.errorThreshold;
 

@@ -103,7 +103,8 @@ public class RobotContainer {
                         () -> -driver.getRawAxis(translationAxis),
                         () -> -driver.getRawAxis(strafeAxis),
                         () -> -driver.getRawAxis(rotationAxis),
-                        () -> robotCentric.getAsBoolean()));
+                        () -> robotCentric.getAsBoolean(),
+                        () -> driver.getRawAxis(XboxController.Axis.kLeftTrigger.value)));
 
         intakeSubsystem.setDefaultCommand(new IntakeAndLiftCommand(intakeSubsystem, () -> triangleButton.getAsBoolean(),
         () -> driver.getRawAxis(3),
