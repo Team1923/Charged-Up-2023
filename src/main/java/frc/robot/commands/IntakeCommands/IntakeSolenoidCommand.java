@@ -2,38 +2,34 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Scoring;
+package frc.robot.commands.IntakeCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.util.StateHandler;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class ManualScore extends CommandBase {
-  private StateHandler stateHandler;
-  /** Creates a new ManualScore. */
-  public ManualScore() {
-    stateHandler = StateHandler.getInstance();
+public class IntakeSolenoidCommand extends CommandBase {
+  /** Creates a new IntakeSolenoidCommand. */
+  private IntakeSubsystem intake;
+  public IntakeSolenoidCommand(IntakeSubsystem intake) {
+    this.intake = intake;
+    addRequirements(intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //System.out.println("test1");
-    stateHandler.setWantToScore(true);
+    intake.setSolenoid(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    //System.out.println("test2");
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //System.out.println("test3");
-
-    stateHandler.setWantToScore(false);
+    intake.setSolenoid(false);
   }
 
   // Returns true when the command should end.

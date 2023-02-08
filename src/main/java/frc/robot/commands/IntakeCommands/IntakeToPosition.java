@@ -36,15 +36,15 @@ public class IntakeToPosition extends CommandBase {
   public void execute() {
     if(test.getAsBoolean()){
       if(otherTest.getAsBoolean()){
-        intakeSubsystem.setIntakeProximalPosition(IntakePositions.CONE_HANDOFF.getArmAngles().getProximalAngle());
-        intakeSubsystem.setIntakeDistalPosition(IntakePositions.CONE_HANDOFF.getArmAngles().getDistalAngle());
-      } else{
-        intakeSubsystem.setIntakeProximalPosition(IntakePositions.TEST_1.getArmAngles().getProximalAngle());
-        intakeSubsystem.setIntakeDistalPosition(IntakePositions.TEST_1.getArmAngles().getDistalAngle());
+      //   intakeSubsystem.setIntakeProximalPosition(IntakePositions.CONE_HANDOFF.getArmAngles().getProximalAngle());
+      //   intakeSubsystem.setIntakeDistalPosition(IntakePositions.CONE_HANDOFF.getArmAngles().getDistalAngle());
+      // } else{
+      //   intakeSubsystem.setIntakeProximalPosition(IntakePositions.TEST_1.getArmAngles().getProximalAngle());
+      //   intakeSubsystem.setIntakeDistalPosition(IntakePositions.TEST_1.getArmAngles().getDistalAngle());
       }
     } else{
-      intakeSubsystem.setIntakeProximalPosition(IntakePositions.STOW.getArmAngles().getProximalAngle());
-        intakeSubsystem.setIntakeDistalPosition(IntakePositions.STOW.getArmAngles().getDistalAngle());
+      intakeSubsystem.setIntakeProximalPosition(IntakePositions.INTAKE.getArmAngles().getProximalAngle());
+        intakeSubsystem.setIntakeDistalPosition(IntakePositions.INTAKE.getArmAngles().getDistalAngle());
     }
 
     
@@ -53,8 +53,8 @@ public class IntakeToPosition extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakeSubsystem.setIntakeProximalPosition(IntakePositions.STOW.getArmAngles().getProximalAngle());
-    intakeSubsystem.setIntakeDistalPosition(IntakePositions.STOW.getArmAngles().getDistalAngle());
+    intakeSubsystem.setIntakeProximalPosition(IntakePositions.INTAKE.getArmAngles().getProximalAngle());
+    intakeSubsystem.setIntakeDistalPosition(IntakePositions.INTAKE.getArmAngles().getDistalAngle());
   }
 
   // Returns true when the command should end.

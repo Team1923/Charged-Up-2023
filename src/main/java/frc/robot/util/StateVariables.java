@@ -10,7 +10,7 @@ public class StateVariables {
         CONE_MID(new ArmAngles(1.760, -0.289)),
         CONE_HIGH(new ArmAngles(2.202, 0.330)),
         CUBE_MID(new ArmAngles(1.242, -0.688)),
-        CUBE_HIGH(new ArmAngles(0.982, -0.109));
+        CUBE_HIGH(new ArmAngles(Math.toRadians(60.864), Math.toRadians(-30.51)));
 
         private ArmAngles armAngles;
         private ArmAngles reflectedAngles;
@@ -61,14 +61,12 @@ public class StateVariables {
     }
 
     public static enum IntakePositions {
-        STOW(new ArmAngles(0, 0)),
-        INTAKE_CONE(new ArmAngles(0,0)),
-        INTAKE_CUBE(new ArmAngles(0,0)),
-        CUBE_HANDOFF(new ArmAngles(Math.toRadians(45.7),Math.toRadians(124.2))),
-        CONE_HANDOFF(new ArmAngles(Math.toRadians(156), Math.toRadians(84))),
-        TEST_1(new ArmAngles(Math.toRadians(78), Math.toRadians(18))),
-        RETRACT(new ArmAngles(0,0)),
-        HOLD(new ArmAngles(0, 0));
+        INTAKE(new ArmAngles(0, 0)),
+        HANDOFF_1(new ArmAngles(1.249, Math.toRadians(40))),
+        HANDOFF_2(new ArmAngles(2.541, 0.225)),
+        FINAL_HANDOFF(new ArmAngles(2.871, 1.347 + Math.toRadians(15))),
+        REVERSE_HANDOFF_1(new ArmAngles(1.249, Math.toRadians(40))),
+        REVERSE_HANDOFF_2(new ArmAngles(2.541, 0.225));
 
         private ArmAngles armAngles;
         private IntakePositions nextInSequence;

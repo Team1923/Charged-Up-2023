@@ -51,7 +51,7 @@ public class ArmDefaultCommand extends CommandBase {
         }
         break;
       case COBRA_REVERSE:
-        if(stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_FORWARD) {
+        if(stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_REVERSE) {
           stateHandler.setArmDesiredState(ArmPositions.STOW);
         }
         break;
@@ -73,17 +73,11 @@ public class ArmDefaultCommand extends CommandBase {
     } else {
       /* The proximal angle for cone HIGH is positive. slightly different conversion math required. */
       armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getReflectedArmAngles().getProximalAngle());
-      if (stateHandler.getArmDesiredPosition() == ArmPositions.CONE_HIGH) {
-        armSubsystem.setDistalPosition((2 * Math.PI) - stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
-      } else {
-        armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getReflectedArmAngles().getDistalAngle());
-      }
+      armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getReflectedArmAngles().getDistalAngle());
       
     }
 
-    SmartDashboard.putBoolean("GRIP?", stateHandler.getGripperEngaged());
-    SmartDashboard.putBoolean("WANT TO SCORE?", stateHandler.getWantToScore());
-    SmartDashboard.putNumber("TIME SINCE LAST SWAP", stateHandler.getTimeSinceLastGripChange());
+
 
   }
 

@@ -17,8 +17,8 @@ public class StateHandler {
     private ArmPositions desiredArmPosition = ArmPositions.STOW;
     private ArmPositions currentArmPosition = ArmPositions.STOW;
 
-    private IntakePositions desiredIntakePosition = IntakePositions.STOW;
-    private IntakePositions currentIntakePosition = IntakePositions.STOW;
+    private IntakePositions desiredIntakePosition = IntakePositions.INTAKE;
+    private IntakePositions currentIntakePosition = IntakePositions.INTAKE;
 
     private boolean intakeInPosition = false,
             hasGamePiece = false,
@@ -27,7 +27,6 @@ public class StateHandler {
             gripperEngaged = false,
             wantToScore = false,
             holdInCobra = false;
-
 
     private GamePieceMode mode = GamePieceMode.CUBE;
 
@@ -93,9 +92,8 @@ public class StateHandler {
     }
 
     public boolean readyToClose() {
-        return intakeInPosition && armInPosition && currentArmPosition == ArmPositions.STOW
-                && (currentIntakePosition == IntakePositions.CONE_HANDOFF
-                        || currentIntakePosition == IntakePositions.CUBE_HANDOFF);
+        return (currentIntakePosition == IntakePositions.FINAL_HANDOFF) &&
+                (currentArmPosition == ArmPositions.STOW);
     }
 
     public boolean getResetManipulator() {
@@ -167,7 +165,7 @@ public class StateHandler {
 
     // Time in seconds since the gripper was changed
     public double getTimeSinceLastGripChange() {
-        return (System.currentTimeMillis() - timeSinceLastGripChange)/1000;
+        return (System.currentTimeMillis() - timeSinceLastGripChange) / 1000;
     }
 
     public void setHoldInCobra(boolean set) {
@@ -187,6 +185,6 @@ public class StateHandler {
     }
 
     public ArmPositions getArmPositionFromScoringLocation() {
-        return ArmPositions.CONE_HIGH;
+        return ArmPositions.CUBE_HIGH;
     }
 }

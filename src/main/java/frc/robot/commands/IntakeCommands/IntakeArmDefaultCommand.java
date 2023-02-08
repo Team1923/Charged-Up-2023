@@ -18,14 +18,12 @@ public class IntakeArmDefaultCommand extends CommandBase {
 
   private IntakeSubsystem intake;
   private StateHandler stateHandler;
-  private BooleanSupplier intakeSupplier;
-  private BooleanSupplier ejectSupplier;
+  private BooleanSupplier toPosition;
 
   /** Creates a new IntakeArmDefaultCommand. */
-  public IntakeArmDefaultCommand(IntakeSubsystem i, BooleanSupplier intakeSupplier, BooleanSupplier ejectSupplier) {
+  public IntakeArmDefaultCommand(IntakeSubsystem i, BooleanSupplier toPosition) {
     intake = i;
-    this.intakeSupplier = intakeSupplier;
-    this.ejectSupplier = ejectSupplier;
+    this.toPosition = toPosition;
     addRequirements(intake);
 
     this.stateHandler = StateHandler.getInstance();
@@ -34,28 +32,51 @@ public class IntakeArmDefaultCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    intake.setSolenoid(true);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    intake.setRawWheelSpeed(.1);
     IntakePositions currentDesiredState = stateHandler.getDesiredIntakePosition();
 
     switch (currentDesiredState) {
-      case INTAKE_CUBE:
+      case INTAKE:
+        if(toPosition.getAsBoolean()){
+          stateHandler.setDesiredIntakePosition(IntakePositions.HANDOFF_1);
+        }
         break;
-      case HOLD:
+      case HANDOFF_1:
+        if(stateHandler.getCurrentIntakePosition() == IntakePositions.HANDOFF_1){
+          stateHandler.setDesiredIntakePosition(IntakePositions.HANDOFF_2);
+        }
         break;
-      case CUBE_HANDOFF:
+      case HANDOFF_2:
+        if(stateHandler.getCurrentIntakePosition() == IntakePositions.HANDOFF_2){
+          stateHandler.setDesiredIntakePosition(IntakePositions.FINAL_HANDOFF);
+        }
         break;
-      case STOW:
+      case FINAL_HANDOFF:
+        if(stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF){
+          intake.setSolenoid(false);
+        }
+        if(stateHandler.getCurrentArmPosition() ==  ArmPositions.COBRA_FORWARD){
+          //stateHandler.setDesiredIntakePosition(IntakePositions.REVERSE_HANDOFF_2);
+        }
         break;
-      case INTAKE_CONE:
-        break;
-      case CONE_HANDOFF:
-        break;
-      case RETRACT:
-        break;
+      // case REVERSE_HANDOFF_2:
+      //   if(stateHandler.getCurrentIntakePosition() == IntakePositions.REVERSE_HANDOFF_2){
+      //     stateHandler.setDesiredIntakePosition(IntakePositions.REVERSE_HANDOFF_1);
+      //     intake.setSolenoid(true);
+      //   }
+      //   break;
+      // case REVERSE_HANDOFF_1:
+      //   if(stateHandler.getCurrentIntakePosition() == IntakePositions.REVERSE_HANDOFF_1){
+      //     stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE);
+      //   }
+      //   break;
       default:
         break;
     }

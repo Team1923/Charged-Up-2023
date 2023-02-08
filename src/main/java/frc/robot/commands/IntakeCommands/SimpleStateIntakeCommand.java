@@ -33,8 +33,8 @@ public class SimpleStateIntakeCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.setIntakeProximalPosition(IntakePositions.STOW.getArmAngles().getProximalAngle());
-    intake.setIntakeDistalPosition(IntakePositions.STOW.getArmAngles().getDistalAngle());
+    intake.setIntakeProximalPosition(IntakePositions.INTAKE.getArmAngles().getProximalAngle());
+    intake.setIntakeDistalPosition(IntakePositions.INTAKE.getArmAngles().getDistalAngle());
   }
 
   // Returns true when the command should end.

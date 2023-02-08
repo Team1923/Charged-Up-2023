@@ -74,10 +74,10 @@ public final class Constants {
     public static final double intakeDistalkI = 0;
     public static final double intakeDistalkD = 0;
 
-    public static final double maxIntakeProximalVel = 35000;
+    public static final double maxIntakeProximalVel = 20000;
     public static final double maxIntakeProximalAccel = 20000;
-    public static final double maxIntakeDistalVel = 35000*2;
-    public static final double maxIntakeDistalAccel = 20000*2;
+    public static final double maxIntakeDistalVel = 20000;
+    public static final double maxIntakeDistalAccel = 20000;
 
     public static final double intakeProximalGearRatio = 64;
     public static final double intakeProximalTicksToRad = (2 * Math.PI)
@@ -153,10 +153,10 @@ public final class Constants {
     public static final double lengthOfDistal = 0.83185;
 
     public static final double maxProximalVel = (5 / 4) * 35000;
-    public static final double maxProximalAccel = 2 * 20000;
+    public static final double maxProximalAccel = 20000;
 
     public static final double maxDistalVel = (5 / 4) * 2 * 35000;
-    public static final double maxDistalAccel = 2 * 20000;
+    public static final double maxDistalAccel = 20000;
 
     public static final double maxDistalGravityConstant = 0;
     // THE NUMERICAL GRAVITY CONSTANT IS DIVIDED BY COS(21 degrees)
@@ -177,8 +177,8 @@ public final class Constants {
 
     public static final double proximalHardstop = Math.PI/2;
     public static final double distalHardstop = -Math.PI/2;
-    public static final double proximalEncoderZero = 0.44;
-    public static final double distalEncoderZero = -3.56;
+    public static final double proximalEncoderZero = 0.447;
+    public static final double distalEncoderZero = -3.47;
 
     public static final double errorThreshold = 0.05;
 

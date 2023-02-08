@@ -11,7 +11,10 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FalconConstants;
@@ -26,6 +29,8 @@ public class IntakeSubsystem extends SubsystemBase {
   private WPI_TalonFX intakeDistalMotor = new WPI_TalonFX(IntakeConstants.intakeDistalID);
   private WPI_TalonFX leftIntakeWheelMotor = new WPI_TalonFX(IntakeConstants.leftIntakeWheelMotor, "rio");
   private WPI_TalonFX rightIntakeWheelMotor = new WPI_TalonFX(IntakeConstants.rightIntakeWheelMotor, "rio");
+
+  private DoubleSolenoid intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
 
   // private DutyCycleEncoder intakeProximalEncoder = new DutyCycleEncoder(
   //     IntakeConstants.intakeProximalAbsoluteEncoderID);
@@ -60,8 +65,8 @@ public class IntakeSubsystem extends SubsystemBase {
     leftIntakeWheelMotor.setNeutralMode(NeutralMode.Brake);
     rightIntakeWheelMotor.setNeutralMode(NeutralMode.Brake);
     
-    resetIntakeProximalPosition(IntakePositions.STOW.getArmAngles().getProximalAngle());
-    resetIntakeDistalPosition(IntakePositions.STOW.getArmAngles().getDistalAngle());
+    resetIntakeProximalPosition(IntakePositions.INTAKE.getArmAngles().getProximalAngle());
+    resetIntakeDistalPosition(IntakePositions.INTAKE.getArmAngles().getDistalAngle());
   }
 
   public void resetIntakeProximalPosition(double angle){
@@ -169,28 +174,38 @@ public class IntakeSubsystem extends SubsystemBase {
     return leftIntakeWheelMotor.getStatorCurrent();
   }
 
+  public void setSolenoid(boolean output) {
+    intakeSolenoid.set(output ? Value.kForward : Value.kReverse);
+  }
+
+  public boolean getSolenoid() {
+    return intakeSolenoid.get() == Value.kForward ? true : false;
+  }
+
   @Override
   public void periodic() {
-    // double proximalError = Math
-    //     .abs(getIntakeProximalPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle());
-    // double distalError = Math.abs(getIntakeDistalPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getDistalAngle());
+    double proximalError = Math
+        .abs(getIntakeProximalPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle());
+    double distalError = Math.abs(getIntakeDistalPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getDistalAngle());
 
-    // boolean withinThreshold = proximalError < IntakeConstants.errorThreshold && distalError < IntakeConstants.errorThreshold;
+    boolean withinThreshold = proximalError < IntakeConstants.errorThreshold && distalError < IntakeConstants.errorThreshold;
 
-    // stateHandler.setIntakeInPosition(withinThreshold);
+    stateHandler.setIntakeInPosition(withinThreshold);
 
-    // if(withinThreshold) {
-    //   stateHandler.setCurrentIntakePosition(stateHandler.getDesiredIntakePosition());
-    // }
+    if(withinThreshold) {
+      stateHandler.setCurrentIntakePosition(stateHandler.getDesiredIntakePosition());
+    }
 
     // SmartDashboard.putString("CURRENT GAME MODE: ", stateHandler.getGamePieceMode().toString());
     SmartDashboard.putString("DESIRED INTAKE State", stateHandler.getDesiredIntakePosition().toString());
     SmartDashboard.putString("CURRENT INTAKE State", stateHandler.getCurrentIntakePosition().toString());
 
+    SmartDashboard.putBoolean("get solenoid", getSolenoid());
+
     
 
-    // SmartDashboard.putNumber("INTAKE PROXIMAL POSITION DEGREES: ", Math.toDegrees(getIntakeProximalPosition()));
-    // SmartDashboard.putNumber("INTAKE DISTAL POSITION DEGREES: ", Math.toDegrees(getIntakeDistalPosition()));
+    SmartDashboard.putNumber("INTAKE PROXIMAL POSITION RADS: ", getIntakeProximalPosition());
+    SmartDashboard.putNumber("INTAKE DISTAL POSITION RADS: ", getIntakeDistalPosition());
 
     // SmartDashboard.putNumber("INTAKE PROXIMAL ERROR", intakeProximalMotor.getClosedLoopError());
     // SmartDashboard.putNumber("INTAKE DISTAL ERROR", intakeDistalMotor.getClosedLoopError());
@@ -200,33 +215,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
     // SmartDashboard.putNumber("CURRENT", getCurrentDraw());
 
-    double desiredIntakePosition = SmartDashboard.getNumber("INPUT DESIRED INTAKE POSITION", 0);
-    SmartDashboard.putNumber("INPUT DESIRED INTAKE POSITION", desiredIntakePosition);
-    if(desiredIntakePosition == 0){
-      stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
-    } else if (desiredIntakePosition == 1){
-      stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_CONE);
-    } else if (desiredIntakePosition == 2){
-      stateHandler.setDesiredIntakePosition(IntakePositions.CUBE_HANDOFF);
-    } else if(desiredIntakePosition == 3){
-      stateHandler.setDesiredIntakePosition(IntakePositions.CONE_HANDOFF);
-    } else if(desiredIntakePosition == 4){
-      stateHandler.setDesiredIntakePosition(IntakePositions.HOLD);
-    } 
-
-    double currentIntakePosition = SmartDashboard.getNumber("INPUT CURRENT INTAKE POSITION", 0);
-    SmartDashboard.putNumber("INPUT CURRENT INTAKE POSITION", currentIntakePosition);
-    if(currentIntakePosition == 0){
-      stateHandler.setCurrentIntakePosition(IntakePositions.STOW);
-    } else if (currentIntakePosition == 1){
-      stateHandler.setCurrentIntakePosition(IntakePositions.INTAKE_CONE);
-    } else if (currentIntakePosition == 2){
-      stateHandler.setCurrentIntakePosition(IntakePositions.CUBE_HANDOFF);
-    } else if(currentIntakePosition == 3){
-      stateHandler.setCurrentIntakePosition(IntakePositions.CONE_HANDOFF);
-    } else if(currentIntakePosition == 4){
-      stateHandler.setCurrentIntakePosition(IntakePositions.HOLD);
-    } 
       
   }
 }

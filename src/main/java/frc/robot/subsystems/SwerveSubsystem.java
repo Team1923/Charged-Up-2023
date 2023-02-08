@@ -151,10 +151,11 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         swerveOdometry.update(getYaw(), getModulePositions());
-        if(getCorrectLimelight() == SpecificLimelight.LEFT_LIMELIGHT)
-            stateHandler.setRobotDirection(CurrentRobotDirection.LEFT);
-        else
-            stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
+        SmartDashboard.putString("CURRENT ROBOT DIRECTION", stateHandler.getRobotDirection().toString());
+        // if(getCorrectLimelight() == SpecificLimelight.LEFT_LIMELIGHT)
+        //     stateHandler.setRobotDirection(CurrentRobotDirection.LEFT);
+        // else
+        //     stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
 
         // for(SwerveModule mod : mSwerveMods){
         // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",

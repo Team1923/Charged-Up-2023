@@ -11,6 +11,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -41,6 +42,8 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
+
+    CameraServer.startAutomaticCapture(0);
 
     Logger.getInstance().recordMetadata("ProjectName", "MyProject"); // Set a metadata value
 

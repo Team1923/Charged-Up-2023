@@ -64,19 +64,21 @@ public class ArmSubsystem extends SubsystemBase {
     resetDistalPosition();
     resetProximalPosition();
 
-    
   }
 
   public void resetProximalPosition() {
     proximalMotor.setSelectedSensorPosition(
         (getProximalAbsoluteEncoderRads() - ArmConstants.proximalEncoderZero + ArmConstants.proximalHardstop)
             * ArmConstants.proximalRadsToTicks);
+    //proximalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getProximalAngle());
   }
 
   public void resetDistalPosition() {
     distalMotor.setSelectedSensorPosition(
         (getDistalAbsoluteEncoderRads() - ArmConstants.distalEncoderZero + ArmConstants.distalHardstop)
             * ArmConstants.distalRadsToTicks);
+    //distalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getDistalAngle());
+
   }
 
   // public void setproximalPosition(double setPoint){
@@ -207,6 +209,16 @@ public class ArmSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("distal motor Position:", Math.toDegrees(getDistalPosition()));
     SmartDashboard.putNumber("proximal motor Position:", Math.toDegrees(getProximalPosition()));
+
+    SmartDashboard.putNumber("DESIRED DISTAL ANGLE DEGREES", Math.toDegrees(ArmPositions.CUBE_HIGH.getArmAngles().getDistalAngle()));
+    SmartDashboard.putNumber("DESIRED PROXIMAL ANGLE DEGREES", Math.toDegrees(ArmPositions.CUBE_HIGH.getArmAngles().getProximalAngle()));
+
+    SmartDashboard.putNumber("ABS ENCODER DISTAL", getDistalAbsoluteEncoderRads());
+    SmartDashboard.putNumber("ABS ENCODER PROXIMAL", getProximalAbsoluteEncoderRads());
+
+    SmartDashboard.putNumber("ABS ENCODER DISTAL DEGREES", Math.toDegrees(getDistalAbsoluteEncoderRads()));
+    SmartDashboard.putNumber("ABS ENCODER PROXIMAL DEGREES", Math.toDegrees(getProximalAbsoluteEncoderRads()));
+
 
     /*doing this to avoid calling the state handler too much */
     ArmPositions desiredArmPosition = stateHandler.getArmDesiredPosition();

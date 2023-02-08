@@ -45,10 +45,10 @@ public class ManipulatorDefaultCommand extends CommandBase {
   public void execute() {
 
     // boolean reset = StateHandler.getInstance().getResetManipulator();
-    // boolean engage = StateHandler.getInstance().readyToClose();
+    boolean engage = StateHandler.getInstance().readyToClose();
 
     boolean reset = breakOut.getAsBoolean();
-    boolean engage = engageGripper.getAsBoolean();
+    //boolean engage = engageGripper.getAsBoolean();
 
 
     if (reset) {
