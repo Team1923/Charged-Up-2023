@@ -62,11 +62,8 @@ public class IntakeArmDefaultCommand extends CommandBase {
         }
         break;
       case HANDOFF_2:
-        if (intake.intakeHasGamePiece() && stateHandler.getCurrentIntakePosition() == IntakePositions.HANDOFF_2) {
+        if (stateHandler.getCurrentIntakePosition() == IntakePositions.HANDOFF_2) {
           stateHandler.setDesiredIntakePosition(IntakePositions.FINAL_HANDOFF);
-        }
-        if (!intake.intakeHasGamePiece() && stateHandler.getCurrentIntakePosition() == IntakePositions.HANDOFF_2) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
         }
         break;
       case FINAL_HANDOFF:
