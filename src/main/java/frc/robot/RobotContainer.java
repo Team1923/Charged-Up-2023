@@ -7,14 +7,21 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ArmCommands.OldArmDefaultCommand;
 import frc.robot.commands.ArmCommands.ArmDefaultCommand;
 import frc.robot.commands.ArmCommands.ArmToPosition;
+import frc.robot.commands.IntakeCommands.DeployIntakeCommand;
 import frc.robot.commands.IntakeCommands.IntakeAndLiftCommand;
 import frc.robot.commands.IntakeCommands.IntakeArmDefaultCommand;
 import frc.robot.commands.IntakeCommands.IntakeSolenoidCommand;
+import frc.robot.commands.IntakeCommands.StowIntakeCommand;
 import frc.robot.commands.Scoring.ManipulatorDefaultCommand;
 import frc.robot.commands.Scoring.ManualScore;
+import frc.robot.commands.StateCommands.SetArmLocation;
+import frc.robot.commands.StateCommands.SetGamePiece;
+import frc.robot.commands.StateCommands.SetRobotLocation;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.subsystems.*;
 import frc.robot.util.StateVariables.ArmPositions;
@@ -43,20 +50,24 @@ public class RobotContainer {
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-    private final JoystickButton squareButton = new JoystickButton(operator, 3);
-    private final JoystickButton triangleButton = new JoystickButton(operator, PS4Controller.Button.kTriangle.value);
-    private final JoystickButton circleButton = new JoystickButton(operator, 2);
-    private final JoystickButton crossButton = new JoystickButton(operator,1);
-
     private final JoystickButton aButton = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
     private final JoystickButton xButton = new JoystickButton(driver, XboxController.Button.kX.value);
     private final JoystickButton yButton = new JoystickButton(driver, XboxController.Button.kY.value);
 
     /* Operator Buttons */
-    private final JoystickButton operatorXButton = new JoystickButton(operator, PS4Controller.Button.kCross.value);
-    private final JoystickButton operatorSquareButton = new JoystickButton(operator,
-            PS4Controller.Button.kSquare.value);
+    private final JoystickButton operatorSquareButton = new JoystickButton(operator, 3);
+    private final JoystickButton operatorTriangleButton = new JoystickButton(operator, 49); //find
+    private final JoystickButton operatorCircleButton = new JoystickButton(operator, 2);
+    private final JoystickButton operatorCrossButton = new JoystickButton(operator,1);
+    private final JoystickButton operatorLeftBumper = new JoystickButton(operator, 55); //find
+    private final JoystickButton operatorRightBumper = new JoystickButton(operator, 56); //find
+    private final POVButton operatorUpDPad = new POVButton(operator, 0);
+    private final POVButton operatorRightDPad = new POVButton(operator, 90);
+    private final POVButton operatorDownDPad = new POVButton(operator, 180);
+    private final POVButton operatorLeftDPad = new POVButton(operator, 270);
+    private final JoystickButton centerButton = new JoystickButton(operator, 57);
+
 
     /* Subsystems */
     private final SwerveSubsystem s_Swerve = new SwerveSubsystem();
@@ -83,15 +94,26 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        //zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        // aButton.onTrue(new ArmToPosition(ArmPositions.STOW));
-        // bButton.onTrue(new ArmToPosition(ArmPositions.COBRA_FORWARD));
-        // xButton.onTrue(new ArmToPosition(ArmPositions.CONE_HIGH));
-        // yButton.onTrue(new ArmToPosition(ArmPositions.CUBE_MID));
+        zeroGyro.toggleOnTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
-        yButton.toggleOnTrue(new ManualScore());
+        operatorUpDPad.onTrue(new SetArmLocation(0));
+        operatorRightDPad.onTrue(new SetArmLocation(90));
+        operatorDownDPad.onTrue(new SetArmLocation(180));
+        operatorLeftDPad.onTrue(new SetArmLocation(270));
 
-        zeroGyro.toggleOnTrue(new IntakeSolenoidCommand(intakeSubsystem));
+        centerButton.toggleOnTrue(new SetGamePiece());
+
+        operatorTriangleButton.onTrue(new SetRobotLocation(() -> true, () -> false, () -> false, () -> false));
+        operatorCircleButton.onTrue(new SetRobotLocation(() -> false, () -> true, () -> false, () -> false));
+        operatorCrossButton.onTrue(new SetRobotLocation(() -> false, () -> false, () -> true, () -> false));
+        operatorSquareButton.onTrue(new SetRobotLocation(() -> false, () -> false, () -> false, () -> true));
+
+        //find axis for left trigger
+        new Trigger(() -> operator.getRawAxis(58) > 0.2).onTrue(new ManualScore());
+
+        operatorLeftBumper.onTrue(new DeployIntakeCommand());
+        operatorRightBumper.onTrue(new StowIntakeCommand());
+
         
     }
 
@@ -105,16 +127,10 @@ public class RobotContainer {
                         () -> robotCentric.getAsBoolean(),
                         () -> driver.getRawAxis(2)));
 
-        // intakeSubsystem.setDefaultCommand(new IntakeAndLiftCommand(intakeSubsystem, () -> triangleButton.getAsBoolean(),
-        // () -> driver.getRawAxis(3),
-        // () -> squareButton.getAsBoolean(),
-        // () -> crossButton.getAsBoolean()));
-        intakeSubsystem.setDefaultCommand(new IntakeArmDefaultCommand(intakeSubsystem, () -> xButton.getAsBoolean()));
-
-        
+        intakeSubsystem.setDefaultCommand(new IntakeArmDefaultCommand(intakeSubsystem, () -> driver.getRawAxis(3)));
         armSubsystem.setDefaultCommand(new ArmDefaultCommand(armSubsystem));
-
-        gripper.setDefaultCommand(new ManipulatorDefaultCommand(gripper, () -> aButton.getAsBoolean(), () -> bButton.getAsBoolean()));
+        //find the operator axis for right trigger
+        gripper.setDefaultCommand(new ManipulatorDefaultCommand(gripper, () -> operator.getRawAxis(59)));
     }
 
     /**

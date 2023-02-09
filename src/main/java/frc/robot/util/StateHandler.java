@@ -12,7 +12,8 @@ import frc.robot.util.StateVariables.VerticalLocations;
 
 public class StateHandler {
     private static StateHandler stateHandler;
-    private ScoringLocations scoringLocations = new ScoringLocations(VerticalLocations.HIGH, HorizontalLocations.LEFT);
+    private VerticalLocations verticalLocations = VerticalLocations.LOW;
+    private HorizontalLocations horizontalLocations = HorizontalLocations.LEFT;
 
     private ArmPositions desiredArmPosition = ArmPositions.STOW;
     private ArmPositions currentArmPosition = ArmPositions.STOW;
@@ -43,13 +44,20 @@ public class StateHandler {
         return stateHandler;
     }
 
-    public ScoringLocations getCurrentScoringLocation() {
-        return scoringLocations;
+    public VerticalLocations getCurrentVerticalLocation() {
+        return verticalLocations;
     }
 
-    public void setScoringLocation(VerticalLocations v, HorizontalLocations h) {
-        scoringLocations.setVerticalLocation(v);
-        scoringLocations.setHorizontalLocation(h);
+    public void setVerticalLocation(VerticalLocations v) {
+        verticalLocations = v;
+    }
+
+    public HorizontalLocations getCurrentHorizontalLocation() {
+        return horizontalLocations;
+    }
+
+    public void setHorizontalLocation(HorizontalLocations h) {
+        horizontalLocations = h;
     }
 
     public void setArmDesiredState(ArmPositions a) {
@@ -185,6 +193,31 @@ public class StateHandler {
     }
 
     public ArmPositions getArmPositionFromScoringLocation() {
-        return ArmPositions.CUBE_HIGH;
+        VerticalLocations currentVerticalLocation = getCurrentVerticalLocation();
+        ArmPositions armPositionFromScoringLocation = ArmPositions.STOW;
+        switch (currentVerticalLocation) {
+            case LOW:
+                armPositionFromScoringLocation = ArmPositions.LOW;
+                break;
+            case MID:
+                if (getGamePieceMode() == GamePieceMode.CUBE) {
+                    armPositionFromScoringLocation = ArmPositions.CUBE_MID;
+                } else {
+                    armPositionFromScoringLocation = ArmPositions.CONE_MID;
+                }
+                break;
+            case HIGH:
+                if (getGamePieceMode() == GamePieceMode.CUBE) {
+                    armPositionFromScoringLocation = ArmPositions.CUBE_HIGH;
+                } else {
+                    armPositionFromScoringLocation = ArmPositions.CONE_HIGH;
+                }
+                break;
+            case RESET:
+                armPositionFromScoringLocation = getCurrentArmPosition();
+            default:
+                break;
+        }
+        return armPositionFromScoringLocation;
     }
 }

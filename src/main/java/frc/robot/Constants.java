@@ -55,8 +55,8 @@ public final class Constants {
     public static final int intakeDistalID = 17;
     public static final int leftIntakeWheelMotor = 18;
     public static final int rightIntakeWheelMotor = 19;
-    public static final int intakeProximalAbsoluteEncoderID = 0;
-    public static final int intakeDistalAbsoluteEncoderID = 0;
+    public static final int intakeProximalAbsoluteEncoderID = 99; //find
+    public static final int intakeDistalAbsoluteEncoderID = 98; //find
 
     public static final double intakeProximalCGDistance = 0.0762;
     public static final double intakeDistalCGDistance = 0.1524;
@@ -89,10 +89,10 @@ public final class Constants {
         / (FalconConstants.ticksPerRev * intakeDistalGearRatio);
     public static final double intakeDistalRadsToTicks = 1 / intakeDistalTicksToRad;
 
-    public static final double intakeProximalEncoderHardstop = 0;
-    public static final double intakeDistalEncoderHardstop = 0;
     public static final double intakeProximalHardstop = 0;
     public static final double intakeDistalHardstop = 0;
+    public static final double proximalEncoderZero = 0;
+    public static final double distalEncoderZero = 0;
 
     public static final double intakeMaxProximalGravityConstant = 0.2;
     public static final double intakeMaxDistalGravityConstant = 0.15;

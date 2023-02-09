@@ -31,23 +31,17 @@ public class OldArmDefaultCommand extends CommandBase {
   public void execute() {
     double proximalSetpoint = stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle();
     if (stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT) {
-      proximalSetpoint = stateHandler.getArmDesiredPosition().getReflectedArmAngles().getProximalAngle();
+      proximalSetpoint = stateHandler.getArmDesiredPosition().getLeftArmAngles().getProximalAngle();
     }
     armSubsystem.setProximalPosition(proximalSetpoint);
 
     double distalSetpoint = stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle();
     if (stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT) {
-      distalSetpoint = stateHandler.getArmDesiredPosition().getReflectedArmAngles().getDistalAngle();
+      distalSetpoint = stateHandler.getArmDesiredPosition().getLeftArmAngles().getDistalAngle();
     }
     armSubsystem.setDistalPosition(distalSetpoint);
 
-    // To avoid putting the rest of the code inside an if-statement, I will check if
-    // the object is null
-    // and return nothing to exit this iteration of the execute loop. Any code that
-    // I would normally
-    // put inside the if statement I can now put after it, as the loop would have
-    // exited if the if statement
-    // was true in the last check.
+    
     ArmPositions nextInSequence = stateHandler.getArmDesiredPosition().getNextInSequence();
 
     if (nextInSequence == null) {

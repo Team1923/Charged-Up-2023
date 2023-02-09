@@ -3,17 +3,26 @@ package frc.robot.util;
 public class StateVariables {
     
     public static enum ArmPositions {
-        STOW(new ArmAngles(Math.PI / 2, -Math.PI / 2)),
-        COBRA_FORWARD(new ArmAngles(Math.toRadians(110), 0)),
-        COBRA_REVERSE(new ArmAngles(Math.toRadians(110), 0)),
-        LOW(new ArmAngles(0.773, -1.843)),
-        CONE_MID(new ArmAngles(1.760, -0.289)),
-        CONE_HIGH(new ArmAngles(2.202, 0.330)),
-        CUBE_MID(new ArmAngles(1.242, -0.688)),
-        CUBE_HIGH(new ArmAngles(Math.toRadians(60.864), Math.toRadians(-30.51)));
+        /**
+         * New constructor for scoring locations.
+         * All major scoring locations will take in 
+         * 2 ArmAngle objects for sake of consistency
+         * when scoring. 
+         * 
+         * NOTE: DUPLICATE VALUE IF ONLY ONE LOCATION
+         */
+        STOW(new ArmAngles(Math.PI / 2, -Math.PI / 2), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
+        COBRA_FORWARD(new ArmAngles(Math.toRadians(110), 0), new ArmAngles(Math.toRadians(110), 0)),
+        COBRA_REVERSE(new ArmAngles(Math.toRadians(110), 0), new ArmAngles(Math.toRadians(110), 0)),
+        //DEFINE SCORING LOCATIONS: right is the first object, left is second
+        LOW(new ArmAngles(0, 0), new ArmAngles(0, 0)),
+        CONE_MID(new ArmAngles(0, 0), new ArmAngles(0, 0)),
+        CONE_HIGH(new ArmAngles(0, 0), new ArmAngles(0, 0)),
+        CUBE_MID(new ArmAngles(0, 0), new ArmAngles(0, 0)),
+        CUBE_HIGH(new ArmAngles(Math.toRadians(60.864), Math.toRadians(-30.51)), new ArmAngles(0,0));
 
         private ArmAngles armAngles;
-        private ArmAngles reflectedAngles;
+        private ArmAngles leftArmAngles;
 
         private ArmPositions nextInSequence;
         private double triggerThresholdRadians;
@@ -30,7 +39,7 @@ public class StateVariables {
          */
         private ArmPositions(ArmAngles angles, ArmPositions next, double triggerRadians) {
             this.armAngles = angles;
-            this.reflectedAngles = new ArmAngles(Math.PI - armAngles.getProximalAngle(),
+            this.leftArmAngles = new ArmAngles(Math.PI - armAngles.getProximalAngle(),
                     (-Math.PI) - armAngles.getDistalAngle());
             this.nextInSequence = next;
             this.triggerThresholdRadians = triggerRadians;
@@ -38,16 +47,18 @@ public class StateVariables {
 
         private ArmPositions(ArmAngles angles) {
             this.armAngles = angles;
-            this.reflectedAngles = new ArmAngles(Math.PI - armAngles.getProximalAngle(),
-                    (-Math.PI) - armAngles.getDistalAngle());
+        }
+        private ArmPositions(ArmAngles angles, ArmAngles leftArmAngles){
+            this.armAngles = angles;
+            this.leftArmAngles = leftArmAngles;
         }
 
         public ArmAngles getArmAngles() {
             return armAngles;
         }
 
-        public ArmAngles getReflectedArmAngles() {
-            return reflectedAngles;
+        public ArmAngles getLeftArmAngles() {
+            return leftArmAngles;
         }
 
         public double getThresholdRadians() {
@@ -62,9 +73,11 @@ public class StateVariables {
 
     public static enum IntakePositions {
         INTAKE(new ArmAngles(0, 0)),
+        STOW(new ArmAngles(2.871, 1.347 + Math.toRadians(15))),
         HANDOFF_1(new ArmAngles(1.249, Math.toRadians(40))),
         HANDOFF_2(new ArmAngles(2.541, 0.225)),
         FINAL_HANDOFF(new ArmAngles(2.871, 1.347 + Math.toRadians(15))),
+        /*TO DO: determine the reverse waypoints necessary to go to STOW */
         REVERSE_HANDOFF_1(new ArmAngles(1.249, Math.toRadians(40))),
         REVERSE_HANDOFF_2(new ArmAngles(2.541, 0.225));
 
@@ -137,13 +150,15 @@ public class StateVariables {
     public static enum VerticalLocations {
         LOW,
         MID,
-        HIGH
+        HIGH,
+        RESET
     }
 
     public static enum HorizontalLocations {
         LEFT,
         CENTER,
-        RIGHT
+        RIGHT,
+        RESET
     }
 
     public static enum GamePieceMode {

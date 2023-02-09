@@ -5,6 +5,7 @@
 package frc.robot.commands.Scoring;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -18,16 +19,13 @@ public class ManipulatorDefaultCommand extends CommandBase {
   private StateHandler stateHandler;
   private boolean lastGripperValue;
 
-  private BooleanSupplier engageGripper;
-
-  private BooleanSupplier breakOut;
+  private DoubleSupplier breakOut;
 
 
   /** Creates a new ManipulatorDefaultCommand. */
-  public ManipulatorDefaultCommand(ManipulatorSubsystem gripper, BooleanSupplier e, BooleanSupplier b) {
+  public ManipulatorDefaultCommand(ManipulatorSubsystem gripper, DoubleSupplier b) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.gripper = gripper;
-    this.engageGripper = e;
     this.breakOut = b;
 
     addRequirements(gripper);
@@ -47,7 +45,7 @@ public class ManipulatorDefaultCommand extends CommandBase {
     // boolean reset = StateHandler.getInstance().getResetManipulator();
     boolean engage = StateHandler.getInstance().readyToClose();
 
-    boolean reset = breakOut.getAsBoolean();
+    boolean reset = breakOut.getAsDouble() > 0.2;
     //boolean engage = engageGripper.getAsBoolean();
 
 

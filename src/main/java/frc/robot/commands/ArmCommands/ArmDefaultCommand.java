@@ -4,6 +4,7 @@
 
 package frc.robot.commands.ArmCommands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.interfaces.BetterLimelightInterface;
@@ -13,6 +14,7 @@ import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.IntakePositions;
+import frc.robot.util.StateVariables.VerticalLocations;
 
 public class ArmDefaultCommand extends CommandBase {
   /** Creates a new ArmDefaultCommand. */
@@ -38,20 +40,21 @@ public class ArmDefaultCommand extends CommandBase {
 
     switch (currentDesiredState) {
       case STOW:
-        if(stateHandler.getWantToScore() && stateHandler.getTimeSinceLastGripChange() > .3 && stateHandler.getGripperEngaged()) {
+        if (stateHandler.getWantToScore() && stateHandler.getTimeSinceLastGripChange() > .3
+            && stateHandler.getGripperEngaged()) {
           stateHandler.setArmDesiredState(ArmPositions.COBRA_FORWARD);
         }
         break;
       case COBRA_FORWARD:
-        if(!stateHandler.getHoldInCobra() && stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_FORWARD) {
+        if (!stateHandler.getHoldInCobra() && stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_FORWARD) {
           stateHandler.setArmDesiredState(stateHandler.getArmPositionFromScoringLocation());
         }
-        if(!stateHandler.getWantToScore()) {
+        if (!stateHandler.getWantToScore()) {
           stateHandler.setArmDesiredState(ArmPositions.STOW);
         }
         break;
       case COBRA_REVERSE:
-        if(stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_REVERSE) {
+        if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_REVERSE) {
           stateHandler.setArmDesiredState(ArmPositions.STOW);
         }
         break;
@@ -60,24 +63,26 @@ public class ArmDefaultCommand extends CommandBase {
       case CUBE_HIGH:
       case CUBE_MID:
       case LOW:
-        if(!stateHandler.getWantToScore() || (!stateHandler.getGripperEngaged() && stateHandler.getTimeSinceLastGripChange() > .3)) {
+        if (!stateHandler.getWantToScore()
+            || (!stateHandler.getGripperEngaged() && stateHandler.getTimeSinceLastGripChange() > .3)) {
+          Timer.delay(0.3);
           stateHandler.setArmDesiredState(ArmPositions.COBRA_REVERSE);
         }
       default:
         break;
     }
 
-    if (stateHandler.getRobotDirection() == CurrentRobotDirection.RIGHT) {
+    if (stateHandler.getRobotDirection() == CurrentRobotDirection.RIGHT
+        && stateHandler.getCurrentVerticalLocation() != VerticalLocations.RESET) {
       armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());
       armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
-    } else {
-      /* The proximal angle for cone HIGH is positive. slightly different conversion math required. */
-      armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getReflectedArmAngles().getProximalAngle());
-      armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getReflectedArmAngles().getDistalAngle());
-      
+    } else if (stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT
+        && stateHandler.getCurrentVerticalLocation() != VerticalLocations.RESET) { // redundant but leaving for
+                                                                                   // readability
+      armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getProximalAngle());
+      armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getDistalAngle());
+
     }
-
-
 
   }
 

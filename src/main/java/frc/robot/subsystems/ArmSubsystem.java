@@ -226,8 +226,8 @@ public class ArmSubsystem extends SubsystemBase {
     double proximalDesiredPosition = desiredArmPosition.getArmAngles().getProximalAngle();
     double distalDesiredPosition = desiredArmPosition.getArmAngles().getDistalAngle();
     if(isReflected()){
-      proximalDesiredPosition = desiredArmPosition.getReflectedArmAngles().getProximalAngle();
-      distalDesiredPosition = desiredArmPosition.getReflectedArmAngles().getDistalAngle();
+      proximalDesiredPosition = desiredArmPosition.getLeftArmAngles().getProximalAngle();
+      distalDesiredPosition = desiredArmPosition.getLeftArmAngles().getDistalAngle();
     }
 
     double proximalError = Math
