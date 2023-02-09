@@ -215,6 +215,7 @@ public class StateHandler {
                 break;
             case RESET:
                 armPositionFromScoringLocation = getCurrentArmPosition();
+                break;
             default:
                 break;
         }
