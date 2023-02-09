@@ -51,8 +51,9 @@ public class IntakeArmDefaultCommand extends CommandBase {
       case STOW:
         intake.setSolenoid(false);
       case INTAKE:
-        if (intake.intakeHasGamePiece()) {
+        if (intake.intakeHasGamePiece()) { //this is the intake CURRENT
           intake.setSolenoid(true);
+          intake.setRawWheelSpeed(.1);
           stateHandler.setDesiredIntakePosition(IntakePositions.HANDOFF_1);
         }
         break;

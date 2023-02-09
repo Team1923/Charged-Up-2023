@@ -17,28 +17,15 @@ public class StowIntakeCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    if(stateHandler.getCurrentIntakePosition() == IntakePositions.INTAKE){
+      stateHandler.setDesiredIntakePosition(IntakePositions.HANDOFF_1);
+    }
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    IntakePositions currentIntakePosition = stateHandler.getCurrentIntakePosition();
-    switch(currentIntakePosition){
-      case STOW:
-        stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
-        break;
-      case INTAKE:
-        stateHandler.setDesiredIntakePosition(IntakePositions.HANDOFF_1);
-        break;
-      case HANDOFF_1:
-        stateHandler.setDesiredIntakePosition(IntakePositions.HANDOFF_2);
-        break;
-      case FINAL_HANDOFF:
-        stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
-        break;
-      default:
-        break;
-    }
   }
 
   // Called once the command ends or is interrupted.
@@ -48,6 +35,6 @@ public class StowIntakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
