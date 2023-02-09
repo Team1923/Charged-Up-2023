@@ -12,31 +12,23 @@ import frc.robot.util.StateVariables.VerticalLocations;
 
 public class SetArmLocation extends CommandBase {
   /** Creates a new SetArmLocation. */
-  double joystickPOV;
+  VerticalLocations desiredVerticalLocation;
   StateHandler stateHandler = StateHandler.getInstance();
 
-  public SetArmLocation(double joystickPOV) {
-    this.joystickPOV = joystickPOV;
+  public SetArmLocation(VerticalLocations desiredLocation) {
+    this.desiredVerticalLocation = desiredLocation;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    stateHandler.setVerticalLocation(desiredVerticalLocation);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (joystickPOV == 0) {
-      stateHandler.setVerticalLocation(VerticalLocations.HIGH);
-    } else if (joystickPOV == 270) {
-      stateHandler.setVerticalLocation(VerticalLocations.MID);
-    } else if (joystickPOV == 180) {
-      stateHandler.setVerticalLocation(VerticalLocations.LOW);
-    } else if (joystickPOV == 90) {
-      stateHandler.setVerticalLocation(VerticalLocations.RESET);
-    }
   }
 
   // Called once the command ends or is interrupted.
@@ -47,6 +39,6 @@ public class SetArmLocation extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

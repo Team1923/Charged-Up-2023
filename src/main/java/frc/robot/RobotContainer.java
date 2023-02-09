@@ -25,6 +25,8 @@ import frc.robot.commands.StateCommands.SetRobotLocation;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.subsystems.*;
 import frc.robot.util.StateVariables.ArmPositions;
+import frc.robot.util.StateVariables.HorizontalLocations;
+import frc.robot.util.StateVariables.VerticalLocations;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -96,17 +98,17 @@ public class RobotContainer {
     private void configureButtonBindings() {
         zeroGyro.toggleOnTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
-        operatorUpDPad.onTrue(new SetArmLocation(0));
-        operatorRightDPad.onTrue(new SetArmLocation(90));
-        operatorDownDPad.onTrue(new SetArmLocation(180));
-        operatorLeftDPad.onTrue(new SetArmLocation(270));
+        operatorUpDPad.onTrue(new SetArmLocation(VerticalLocations.HIGH));
+        operatorRightDPad.onTrue(new SetArmLocation(VerticalLocations.RESET));
+        operatorDownDPad.onTrue(new SetArmLocation(VerticalLocations.LOW));
+        operatorLeftDPad.onTrue(new SetArmLocation(VerticalLocations.MID));
 
         centerButton.toggleOnTrue(new SetGamePiece());
 
-        operatorTriangleButton.onTrue(new SetRobotLocation(() -> true, () -> false, () -> false, () -> false));
-        operatorCircleButton.onTrue(new SetRobotLocation(() -> false, () -> true, () -> false, () -> false));
-        operatorCrossButton.onTrue(new SetRobotLocation(() -> false, () -> false, () -> true, () -> false));
-        operatorSquareButton.onTrue(new SetRobotLocation(() -> false, () -> false, () -> false, () -> true));
+        operatorTriangleButton.onTrue(new SetRobotLocation(HorizontalLocations.LEFT));
+        operatorCircleButton.onTrue(new SetRobotLocation(HorizontalLocations.CENTER));
+        operatorCrossButton.onTrue(new SetRobotLocation(HorizontalLocations.RIGHT));
+        operatorSquareButton.onTrue(new SetRobotLocation(HorizontalLocations.RESET));
 
         //find axis for left trigger
         new Trigger(() -> operator.getRawAxis(58) > 0.2).onTrue(new ManualScore());

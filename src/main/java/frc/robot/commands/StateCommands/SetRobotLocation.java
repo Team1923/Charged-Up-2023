@@ -12,44 +12,33 @@ import frc.robot.util.StateVariables.HorizontalLocations;
 
 public class SetRobotLocation extends CommandBase {
   /** Creates a new SetArmLocation. */
-  BooleanSupplier triangle;
-  BooleanSupplier circle;
-  BooleanSupplier cross;
-  BooleanSupplier square;
+  HorizontalLocations desiredHorizontalLocation;
   StateHandler stateHandler = StateHandler.getInstance();
-  public SetRobotLocation(BooleanSupplier t, BooleanSupplier circle, BooleanSupplier cross, BooleanSupplier square) {
-    this.triangle = t;
-    this.circle = circle;
-    this.cross = cross;
-    this.square = square;
+  public SetRobotLocation(HorizontalLocations desiredHorizontalLocation) {
+    this.desiredHorizontalLocation = desiredHorizontalLocation;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    stateHandler.setHorizontalLocation(desiredHorizontalLocation);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (triangle.getAsBoolean()) {
-      stateHandler.setHorizontalLocation(HorizontalLocations.LEFT);
-    } else if (circle.getAsBoolean()) {
-      stateHandler.setHorizontalLocation(HorizontalLocations.CENTER);
-    } else if (cross.getAsBoolean()) {
-      stateHandler.setHorizontalLocation(HorizontalLocations.RIGHT);
-    } else if(square.getAsBoolean()) {
-      stateHandler.setHorizontalLocation(HorizontalLocations.RESET);
-    }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
