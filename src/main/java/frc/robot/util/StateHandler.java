@@ -18,8 +18,8 @@ public class StateHandler {
     private ArmPositions desiredArmPosition = ArmPositions.STOW;
     private ArmPositions currentArmPosition = ArmPositions.STOW;
 
-    private IntakePositions desiredIntakePosition = IntakePositions.INTAKE;
-    private IntakePositions currentIntakePosition = IntakePositions.INTAKE;
+    private IntakePositions desiredIntakePosition = IntakePositions.STOW;
+    private IntakePositions currentIntakePosition = IntakePositions.STOW;
 
     private boolean intakeInPosition = false,
             hasGamePiece = false,

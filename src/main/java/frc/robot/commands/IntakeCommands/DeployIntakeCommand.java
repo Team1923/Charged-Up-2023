@@ -21,7 +21,7 @@ public class DeployIntakeCommand extends CommandBase {
   public void initialize() {
     IntakePositions currentIntakePosition = stateHandler.getCurrentIntakePosition();
     if(currentIntakePosition == IntakePositions.STOW || currentIntakePosition == IntakePositions.FINAL_HANDOFF){
-      stateHandler.setDesiredIntakePosition(IntakePositions.REVERSE_HANDOFF_2);
+      stateHandler.setDesiredIntakePosition(IntakePositions.REVERSE_HANDOFF_1);
     }
   }
 

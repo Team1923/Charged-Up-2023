@@ -55,8 +55,8 @@ public final class Constants {
     public static final int intakeDistalID = 17;
     public static final int leftIntakeWheelMotor = 18;
     public static final int rightIntakeWheelMotor = 19;
-    public static final int intakeProximalAbsoluteEncoderID = 99; //find
-    public static final int intakeDistalAbsoluteEncoderID = 98; //find
+    public static final int intakeProximalAbsoluteEncoderID = 2; //2
+    public static final int intakeDistalAbsoluteEncoderID = 3; //3
 
     public static final double intakeProximalCGDistance = 0.0762;
     public static final double intakeDistalCGDistance = 0.1524;
@@ -74,10 +74,10 @@ public final class Constants {
     public static final double intakeDistalkI = 0;
     public static final double intakeDistalkD = 0;
 
-    public static final double maxIntakeProximalVel = 20000;
-    public static final double maxIntakeProximalAccel = 20000;
-    public static final double maxIntakeDistalVel = 20000;
-    public static final double maxIntakeDistalAccel = 20000;
+    public static final double maxIntakeProximalVel = 10000;
+    public static final double maxIntakeProximalAccel = 10000;
+    public static final double maxIntakeDistalVel = 10000;
+    public static final double maxIntakeDistalAccel = 10000;
 
     public static final double intakeProximalGearRatio = 64;
     public static final double intakeProximalTicksToRad = (2 * Math.PI)
@@ -89,10 +89,10 @@ public final class Constants {
         / (FalconConstants.ticksPerRev * intakeDistalGearRatio);
     public static final double intakeDistalRadsToTicks = 1 / intakeDistalTicksToRad;
 
-    public static final double intakeProximalHardstop = 0;
-    public static final double intakeDistalHardstop = 0;
-    public static final double proximalEncoderZero = 0;
-    public static final double distalEncoderZero = 0;
+    public static final double intakeProximalHardstop = 2.971;
+    public static final double intakeDistalHardstop = 1.307;
+    public static final double proximalEncoderZero =2.513;
+    public static final double distalEncoderZero = 1.214;
 
     public static final double intakeMaxProximalGravityConstant = 0.2;
     public static final double intakeMaxDistalGravityConstant = 0.15;
@@ -107,13 +107,12 @@ public final class Constants {
     public static final double kIntakeProximalOffsetRads = 0;
     public static final double kIntakeDistalOffsetRads = 0;
 
-    public static final double errorThreshold = 0.05;
+    public static final double errorThreshold = 0.1;
     public static final double cubeIntakeSpeed = .70;
     public static final double coneIntakeSpeed = .70;
     public static final double ejectSpeed = -1;
-
-    public static final double cubeCurrentThreshold = 0;
-    public static final double coneCurrentThreshold = 0;
+    public static final double cubeCurrentThreshold = 80;
+    public static final double coneCurrentThreshold = 80;
 
     public static final double gripSpeed = .15;
     public static final double handoffSpeed = -.10;
@@ -156,7 +155,7 @@ public final class Constants {
     public static final double maxProximalAccel = 20000;
 
     public static final double maxDistalVel = (5 / 4) * 2 * 35000;
-    public static final double maxDistalAccel = 20000;
+    public static final double maxDistalAccel = 10000;
 
     public static final double maxDistalGravityConstant = 0;
     // THE NUMERICAL GRAVITY CONSTANT IS DIVIDED BY COS(21 degrees)
@@ -177,8 +176,8 @@ public final class Constants {
 
     public static final double proximalHardstop = Math.PI/2;
     public static final double distalHardstop = -Math.PI/2;
-    public static final double proximalEncoderZero = 0.447;
-    public static final double distalEncoderZero = -3.47;
+    public static final double proximalEncoderZero = 0.454;
+    public static final double distalEncoderZero = -3.034;
 
     public static final double errorThreshold = 0.05;
 

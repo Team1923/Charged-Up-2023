@@ -35,12 +35,12 @@ public class ManualScore extends CommandBase {
   public void end(boolean interrupted) {
     //System.out.println("test3");
 
-    stateHandler.setWantToScore(false);
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

@@ -32,9 +32,7 @@ public class Robot extends LoggedRobot {
 
   public static CTREConfigs ctreConfigs = new CTREConfigs();
 
-  ColorSensorInterface c = ColorSensorInterface.getInstance();
 
-  AnalogInput throughBEncoder = new AnalogInput(0);
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -110,6 +108,7 @@ public class Robot extends LoggedRobot {
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
+
     robotContainer = new RobotContainer();
   }
 

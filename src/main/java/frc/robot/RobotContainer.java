@@ -59,16 +59,16 @@ public class RobotContainer {
 
     /* Operator Buttons */
     private final JoystickButton operatorSquareButton = new JoystickButton(operator, 3);
-    private final JoystickButton operatorTriangleButton = new JoystickButton(operator, 49); //find
+    private final JoystickButton operatorTriangleButton = new JoystickButton(operator, 4); //4
     private final JoystickButton operatorCircleButton = new JoystickButton(operator, 2);
     private final JoystickButton operatorCrossButton = new JoystickButton(operator,1);
-    private final JoystickButton operatorLeftBumper = new JoystickButton(operator, 55); //find
-    private final JoystickButton operatorRightBumper = new JoystickButton(operator, 56); //find
+    private final JoystickButton operatorLeftBumper = new JoystickButton(operator, 5); //5
+    private final JoystickButton operatorRightBumper = new JoystickButton(operator, 6); //6
     private final POVButton operatorUpDPad = new POVButton(operator, 0);
     private final POVButton operatorRightDPad = new POVButton(operator, 90);
     private final POVButton operatorDownDPad = new POVButton(operator, 180);
     private final POVButton operatorLeftDPad = new POVButton(operator, 270);
-    private final JoystickButton centerButton = new JoystickButton(operator, 57);
+    private final JoystickButton centerButton = new JoystickButton(operator, 8);// not a button
 
 
     /* Subsystems */
@@ -111,10 +111,11 @@ public class RobotContainer {
         operatorSquareButton.onTrue(new SetRobotLocation(HorizontalLocations.RESET));
 
         //find axis for left trigger
-        new Trigger(() -> operator.getRawAxis(58) > 0.2).onTrue(new ManualScore());
+        new Trigger(() -> operator.getRawAxis(2) > 0.2).toggleOnTrue(new ManualScore());
+        
 
         operatorLeftBumper.onTrue(new DeployIntakeCommand());
-        operatorRightBumper.onTrue(new StowIntakeCommand());
+        //operatorRightBumper. onTrue(new StowIntakeCommand());
 
         
     }
@@ -129,10 +130,10 @@ public class RobotContainer {
                         () -> robotCentric.getAsBoolean(),
                         () -> driver.getRawAxis(2)));
 
-        intakeSubsystem.setDefaultCommand(new IntakeArmDefaultCommand(intakeSubsystem, () -> driver.getRawAxis(3)));
+        intakeSubsystem.setDefaultCommand(new IntakeArmDefaultCommand(intakeSubsystem, () -> driver.getRawAxis(3), () -> operatorRightBumper.getAsBoolean()));
         armSubsystem.setDefaultCommand(new ArmDefaultCommand(armSubsystem));
         //find the operator axis for right trigger
-        gripper.setDefaultCommand(new ManipulatorDefaultCommand(gripper, () -> operator.getRawAxis(59)));
+        gripper.setDefaultCommand(new ManipulatorDefaultCommand(gripper, () -> operator.getRawAxis(3)));
     }
 
     /**

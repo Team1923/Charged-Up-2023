@@ -68,14 +68,14 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void resetProximalPosition() {
     proximalMotor.setSelectedSensorPosition(
-        (getProximalAbsoluteEncoderRads() - ArmConstants.proximalEncoderZero + ArmConstants.proximalHardstop)
+        (getProximalAbsoluteEncoderRads() - ArmConstants.proximalEncoderZero + ArmConstants.proximalHardstop  )
             * ArmConstants.proximalRadsToTicks);
     //proximalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getProximalAngle());
   }
 
   public void resetDistalPosition() {
     distalMotor.setSelectedSensorPosition(
-        (getDistalAbsoluteEncoderRads() - ArmConstants.distalEncoderZero + ArmConstants.distalHardstop)
+        (getDistalAbsoluteEncoderRads() - ArmConstants.distalEncoderZero + ArmConstants.distalHardstop + Math.toRadians(2))
             * ArmConstants.distalRadsToTicks);
     //distalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getDistalAngle());
 
@@ -246,6 +246,6 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putString("DESIRED ARM State", stateHandler.getArmDesiredPosition().toString());
     SmartDashboard.putString("CURRENT ARM State", stateHandler.getCurrentArmPosition().toString());
     
-
+    SmartDashboard.putBoolean("GRIP ENGAGED", stateHandler.getGripperEngaged());
   }
 }

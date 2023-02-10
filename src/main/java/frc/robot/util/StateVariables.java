@@ -11,15 +11,15 @@ public class StateVariables {
          * 
          * NOTE: DUPLICATE VALUE IF ONLY ONE LOCATION
          */
-        STOW(new ArmAngles(Math.PI / 2, -Math.PI / 2), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
-        COBRA_FORWARD(new ArmAngles(Math.toRadians(110), 0), new ArmAngles(Math.toRadians(110), 0)),
-        COBRA_REVERSE(new ArmAngles(Math.toRadians(110), 0), new ArmAngles(Math.toRadians(110), 0)),
+        STOW(new ArmAngles(Math.PI / 2, -Math.PI / 2 ), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
+        COBRA_FORWARD(new ArmAngles(Math.toRadians(110), -Math.PI/4), new ArmAngles(Math.toRadians(110), -Math.PI/4)),
+        COBRA_REVERSE(new ArmAngles(Math.toRadians(110), -Math.PI/4), new ArmAngles(Math.toRadians(110), -Math.PI/4)),
         //DEFINE SCORING LOCATIONS: right is the first object, left is second
-        LOW(new ArmAngles(0, 0), new ArmAngles(0, 0)),
-        CONE_MID(new ArmAngles(0, 0), new ArmAngles(0, 0)),
-        CONE_HIGH(new ArmAngles(0, 0), new ArmAngles(0, 0)),
-        CUBE_MID(new ArmAngles(0, 0), new ArmAngles(0, 0)),
-        CUBE_HIGH(new ArmAngles(Math.toRadians(60.864), Math.toRadians(-30.51)), new ArmAngles(0,0));
+        LOW(new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4)), new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4))),
+        CONE_MID(new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4)), new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4))),
+        CONE_HIGH(new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4)), new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4))),
+        CUBE_MID(new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4)), new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4))),
+        CUBE_HIGH(new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4)), new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4)));
 
         private ArmAngles armAngles;
         private ArmAngles leftArmAngles;
@@ -73,13 +73,13 @@ public class StateVariables {
 
     public static enum IntakePositions {
         INTAKE(new ArmAngles(0, 0)),
-        STOW(new ArmAngles(2.871, 1.347 + Math.toRadians(15))),
+        STOW(new ArmAngles(2.971, 1.307)),
         HANDOFF_1(new ArmAngles(1.249, Math.toRadians(40))),
         HANDOFF_2(new ArmAngles(2.541, 0.225)),
         FINAL_HANDOFF(new ArmAngles(2.871, 1.347 + Math.toRadians(15))),
         /*TO DO: determine the reverse waypoints necessary to go to STOW */
         REVERSE_HANDOFF_1(new ArmAngles(1.249, Math.toRadians(40))),
-        REVERSE_HANDOFF_2(new ArmAngles(2.541, 0.225));
+        REVERSE_HANDOFF_2(new ArmAngles(0.246, 0.661));
 
         private ArmAngles armAngles;
         private IntakePositions nextInSequence;

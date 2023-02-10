@@ -67,6 +67,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
     resetIntakeProximalPosition();
     resetIntakeDistalPosition();
+
+    //intakeProximalMotor.setSelectedSensorPosition(0);
+    //intakeDistalMotor.setSelectedSensorPosition(0);
   }
 
   // public void resetIntakeProximalPosition(double angle) {
@@ -112,8 +115,8 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public double getIntakeProximalAbsoluteEncoderRads() {
-    return intakeProximalEncoder.getAbsolutePosition() *
-        IntakeConstants.intakeProximalAbsoluteEncoderToRadians;
+    return 2*Math.PI -  (intakeProximalEncoder.getAbsolutePosition() *
+        IntakeConstants.intakeProximalAbsoluteEncoderToRadians);
   }
 
   public double getIntakeDistalAbsoluteEncoderRads() {
@@ -122,8 +125,8 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public double getIntakeProximalAbsoluteEncoderTicks() {
-    return intakeProximalEncoder.getAbsolutePosition() *
-        IntakeConstants.intakeProximalAbsoluteEncoderToTicks;
+    return (intakeProximalEncoder.getAbsolutePosition() *
+        IntakeConstants.intakeProximalAbsoluteEncoderToTicks);
   }
 
   public double getIntakeDistalAbsoluteEncoderTicks() {
@@ -217,7 +220,7 @@ public class IntakeSubsystem extends SubsystemBase {
         && distalError < IntakeConstants.errorThreshold;
 
     stateHandler.setIntakeInPosition(withinThreshold);
-
+   
     if (withinThreshold) {
       stateHandler.setCurrentIntakePosition(stateHandler.getDesiredIntakePosition());
     }
@@ -231,6 +234,21 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("INTAKE PROXIMAL POSITION RADS: ", getIntakeProximalPosition());
     SmartDashboard.putNumber("INTAKE DISTAL POSITION RADS: ", getIntakeDistalPosition());
+
+    SmartDashboard.putNumber("Proximal Encoder Rads", getIntakeProximalAbsoluteEncoderRads());
+    SmartDashboard.putNumber("Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());
+
+    SmartDashboard.putString("Robot Direction", stateHandler.getRobotDirection().toString());
+
+    SmartDashboard.putString("Scoring Location Vertical", stateHandler.getCurrentVerticalLocation().toString());
+    SmartDashboard.putString("Scoring Location Horizontal", stateHandler.getCurrentHorizontalLocation().toString());
+
+    SmartDashboard.putBoolean("Threshold Boolean", withinThreshold);
+    SmartDashboard.putNumber("Distal Error", distalError);
+    SmartDashboard.putNumber("Proximal Error", proximalError);
+
+
+    
 
     SmartDashboard.putString("Arm Scoring Location", stateHandler.getCurrentVerticalLocation().toString());
 

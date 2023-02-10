@@ -67,6 +67,7 @@ public class ArmDefaultCommand extends CommandBase {
             || (!stateHandler.getGripperEngaged() && stateHandler.getTimeSinceLastGripChange() > .3)) {
           Timer.delay(0.3);
           stateHandler.setArmDesiredState(ArmPositions.COBRA_REVERSE);
+          stateHandler.setWantToScore(false);
         }
       default:
         break;
