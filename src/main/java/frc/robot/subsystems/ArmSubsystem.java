@@ -10,22 +10,14 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.FalconConstants;
 import frc.robot.util.StateHandler;
-import frc.robot.util.StateVariables.ArmAngles;
 import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
-import frc.robot.util.StateVariables.GamePieceMode;
 
 public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
@@ -210,14 +202,8 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("distal motor Position:", Math.toDegrees(getDistalPosition()));
     SmartDashboard.putNumber("proximal motor Position:", Math.toDegrees(getProximalPosition()));
 
-    SmartDashboard.putNumber("DESIRED DISTAL ANGLE DEGREES", Math.toDegrees(ArmPositions.CUBE_HIGH.getArmAngles().getDistalAngle()));
-    SmartDashboard.putNumber("DESIRED PROXIMAL ANGLE DEGREES", Math.toDegrees(ArmPositions.CUBE_HIGH.getArmAngles().getProximalAngle()));
-
     SmartDashboard.putNumber("ABS ENCODER DISTAL", getDistalAbsoluteEncoderRads());
     SmartDashboard.putNumber("ABS ENCODER PROXIMAL", getProximalAbsoluteEncoderRads());
-
-    SmartDashboard.putNumber("ABS ENCODER DISTAL DEGREES", Math.toDegrees(getDistalAbsoluteEncoderRads()));
-    SmartDashboard.putNumber("ABS ENCODER PROXIMAL DEGREES", Math.toDegrees(getProximalAbsoluteEncoderRads()));
 
 
     /*doing this to avoid calling the state handler too much */

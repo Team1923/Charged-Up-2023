@@ -5,15 +5,12 @@
 package frc.robot.commands.ArmCommands;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.interfaces.BetterLimelightInterface;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
-import frc.robot.util.StateVariables.GamePieceMode;
-import frc.robot.util.StateVariables.IntakePositions;
 import frc.robot.util.StateVariables.VerticalLocations;
 
 public class ArmDefaultCommand extends CommandBase {
@@ -21,11 +18,14 @@ public class ArmDefaultCommand extends CommandBase {
   private ArmSubsystem armSubsystem;
   private StateHandler stateHandler = StateHandler.getInstance();
   private BetterLimelightInterface limelightInterface = BetterLimelightInterface.getInstance();
+  private boolean wantToScore = false;
+  private Timer timer;
 
   public ArmDefaultCommand(ArmSubsystem aSubsystem) {
     armSubsystem = aSubsystem;
     addRequirements(armSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
+    timer = new Timer();
   }
 
   // Called when the command is initially scheduled.
@@ -38,11 +38,17 @@ public class ArmDefaultCommand extends CommandBase {
   public void execute() {
     ArmPositions currentDesiredState = stateHandler.getArmDesiredPosition();
 
+    stateHandler.setTimeSinceReadyToScore(timer.get());
+    
     switch (currentDesiredState) {
       case STOW:
-        if (stateHandler.getWantToScore() && stateHandler.getTimeSinceLastGripChange() > .3
-            && stateHandler.getGripperEngaged()) {
-          stateHandler.setArmDesiredState(ArmPositions.COBRA_FORWARD);
+        if (stateHandler.getWantToScore() && stateHandler.getTimeSinceLastGripChange() > .3 && stateHandler.getGripperEngaged()) {
+          timer.start();
+
+          if(timer.get() > 1) {
+            stateHandler.setArmDesiredState(ArmPositions.COBRA_FORWARD);
+          }
+        
         }
         break;
       case COBRA_FORWARD:
@@ -52,11 +58,13 @@ public class ArmDefaultCommand extends CommandBase {
         if (!stateHandler.getWantToScore()) {
           stateHandler.setArmDesiredState(ArmPositions.STOW);
         }
+        timer.reset();
         break;
       case COBRA_REVERSE:
         if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_REVERSE) {
           stateHandler.setArmDesiredState(ArmPositions.STOW);
         }
+        timer.reset();
         break;
       case CONE_HIGH:
       case CONE_MID:
@@ -69,6 +77,7 @@ public class ArmDefaultCommand extends CommandBase {
           stateHandler.setArmDesiredState(ArmPositions.COBRA_REVERSE);
           stateHandler.setWantToScore(false);
         }
+        timer.reset();
       default:
         break;
     }
@@ -84,6 +93,7 @@ public class ArmDefaultCommand extends CommandBase {
       armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getDistalAngle());
 
     }
+
 
   }
 

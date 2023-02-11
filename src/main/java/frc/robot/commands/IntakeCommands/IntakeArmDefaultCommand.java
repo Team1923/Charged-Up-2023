@@ -7,13 +7,10 @@ package frc.robot.commands.IntakeCommands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.ArmPositions;
-import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.IntakePositions;
 
 public class IntakeArmDefaultCommand extends CommandBase {
@@ -22,7 +19,6 @@ public class IntakeArmDefaultCommand extends CommandBase {
   private StateHandler stateHandler;
   private DoubleSupplier driverRightJoystick;
   private BooleanSupplier liftintake;
-  private Timer finalHandofftimer;
 
   /** Creates a new IntakeArmDefaultCommand. */
   public IntakeArmDefaultCommand(IntakeSubsystem i, DoubleSupplier driverRightJoystick, BooleanSupplier b) {
@@ -32,7 +28,6 @@ public class IntakeArmDefaultCommand extends CommandBase {
     addRequirements(intake);
 
     this.stateHandler = StateHandler.getInstance();
-    finalHandofftimer = new Timer();
   }
 
   // Called when the command is initially scheduled.
@@ -52,21 +47,19 @@ public class IntakeArmDefaultCommand extends CommandBase {
     }
     IntakePositions currentDesiredState = stateHandler.getDesiredIntakePosition();
 
-    if(stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF) {
-      finalHandofftimer.start();
-    } else {
-      finalHandofftimer.reset();
-    }
+
 
     switch (currentDesiredState) {
       case STOW:
         intake.setSolenoid(false);
         break;
       case INTAKE:
+        intake.updateCurrentRollingAvg();
         intake.setSolenoid(true);
-        if (liftintake.getAsBoolean()) { //this is the intake CURRENT
+        // if (liftintake.getAsBoolean()) {
+        if (intake.getAverageCurrentAboveThreshold(25)) {
           stateHandler.setDesiredIntakePosition(IntakePositions.HANDOFF_1);
-  
+          stateHandler.setManualLift(false);
         }
         break;
       case HANDOFF_1:
@@ -76,11 +69,15 @@ public class IntakeArmDefaultCommand extends CommandBase {
         break;
       case HANDOFF_2:
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.HANDOFF_2) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.FINAL_HANDOFF);
+          if(stateHandler.getManualLift()) {
+            stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
+          } else {
+            stateHandler.setDesiredIntakePosition(IntakePositions.FINAL_HANDOFF);
+          }
         }
         break;
       case FINAL_HANDOFF:
-        if (stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF && finalHandofftimer.get() > 1) {
+        if (stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF && stateHandler.getTimeSinceReadyToSore() > .5) {
           System.out.println(stateHandler.getTimeSinceLastGripChange());
           intake.setSolenoid(false);
         }

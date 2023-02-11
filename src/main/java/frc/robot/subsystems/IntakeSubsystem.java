@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -21,7 +20,7 @@ import frc.robot.Constants.FalconConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.GamePieceMode;
-import frc.robot.util.StateVariables.IntakePositions;
+import frc.robot.util.math.RollingAvgDouble;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
@@ -37,6 +36,8 @@ public class IntakeSubsystem extends SubsystemBase {
   private DutyCycleEncoder intakeDistalEncoder = new DutyCycleEncoder(IntakeConstants.intakeDistalAbsoluteEncoderID);
 
   private StateHandler stateHandler = StateHandler.getInstance();
+
+  private RollingAvgDouble averageCurrentDraw = new RollingAvgDouble(50);
 
   public IntakeSubsystem() {
     intakeProximalMotor.configFactoryDefault();
@@ -192,6 +193,14 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public double getCurrentDraw() {
     return leftIntakeWheelMotor.getStatorCurrent();
+  }
+
+  public void updateCurrentRollingAvg() {
+    averageCurrentDraw.add(getCurrentDraw());
+  }
+  
+  public boolean getAverageCurrentAboveThreshold(double goal) {
+    return averageCurrentDraw.withinTolerance(10, goal);
   }
 
   public void setSolenoid(boolean output) {

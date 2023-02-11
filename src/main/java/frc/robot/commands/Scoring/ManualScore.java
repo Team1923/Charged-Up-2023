@@ -4,8 +4,6 @@
 
 package frc.robot.commands.Scoring;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.util.StateHandler;
 

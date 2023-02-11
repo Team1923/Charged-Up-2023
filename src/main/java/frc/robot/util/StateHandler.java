@@ -1,13 +1,11 @@
 package frc.robot.util;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.interfaces.BetterLimelightInterface.SpecificLimelight;
 import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.HorizontalLocations;
 import frc.robot.util.StateVariables.IntakePositions;
-import frc.robot.util.StateVariables.ScoringLocations;
 import frc.robot.util.StateVariables.VerticalLocations;
 
 public class StateHandler {
@@ -27,7 +25,8 @@ public class StateHandler {
             resetManipulator = false,
             gripperEngaged = false,
             wantToScore = false,
-            holdInCobra = false;
+            holdInCobra = false,
+            manualLift = false;
 
     private GamePieceMode mode = GamePieceMode.CUBE;
 
@@ -37,11 +36,21 @@ public class StateHandler {
 
     private double timeSinceLastGripChange = System.currentTimeMillis();
 
+    private double timeSinceReadyToScore = 0;
+
     public static synchronized StateHandler getInstance() {
         if (stateHandler == null) {
             stateHandler = new StateHandler();
         }
         return stateHandler;
+    }
+
+    public double getTimeSinceReadyToSore() {
+        return timeSinceReadyToScore;
+    }
+
+    public void setTimeSinceReadyToScore(double time) {
+        timeSinceReadyToScore = time;
     }
 
     public VerticalLocations getCurrentVerticalLocation() {
@@ -190,6 +199,14 @@ public class StateHandler {
 
     public boolean getWantToScore() {
         return wantToScore;
+    }
+
+    public boolean getManualLift() {
+        return manualLift;
+    }
+
+    public void setManualLift(boolean m) {
+        manualLift = m;
     }
 
     public ArmPositions getArmPositionFromScoringLocation() {

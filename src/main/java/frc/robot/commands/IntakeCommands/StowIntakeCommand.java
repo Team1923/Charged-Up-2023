@@ -20,8 +20,8 @@ public class StowIntakeCommand extends CommandBase {
   @Override
   public void initialize() {
     if(stateHandler.getCurrentIntakePosition() == IntakePositions.INTAKE){
-      SmartDashboard.putBoolean("BAD SHIT", true);
       stateHandler.setDesiredIntakePosition(IntakePositions.HANDOFF_1);
+      stateHandler.setManualLift(true);
     }
   }
 
