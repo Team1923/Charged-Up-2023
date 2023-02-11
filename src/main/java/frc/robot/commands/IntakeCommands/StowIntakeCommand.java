@@ -21,7 +21,6 @@ public class StowIntakeCommand extends CommandBase {
   public void initialize() {
     if(stateHandler.getCurrentIntakePosition() == IntakePositions.INTAKE){
       stateHandler.setDesiredIntakePosition(IntakePositions.HANDOFF_1);
-      stateHandler.setManualLift(true);
     }
   }
 

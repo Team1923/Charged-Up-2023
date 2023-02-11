@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.FalconConstants;
@@ -60,7 +61,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void resetProximalPosition() {
     proximalMotor.setSelectedSensorPosition(
-        (getProximalAbsoluteEncoderRads() - ArmConstants.proximalEncoderZero + ArmConstants.proximalHardstop  )
+        (getProximalAbsoluteEncoderRads() - ArmConstants.proximalEncoderZero + ArmConstants.proximalHardstop)
             * ArmConstants.proximalRadsToTicks);
     //proximalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getProximalAngle());
   }
@@ -196,8 +197,26 @@ public class ArmSubsystem extends SubsystemBase {
     return stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT;
   }
 
+  public double getDistalCurrent(){
+    return distalMotor.getStatorCurrent();
+  }
+
+  public double getProximalCurrent(){
+    return proximalMotor.getStatorCurrent();
+  }
+
   @Override
   public void periodic() {
+    if(getDistalCurrent() > 20 || getProximalCurrent() > 20){
+      proximalMotor.stopMotor();
+      distalMotor.stopMotor();
+      CommandScheduler.getInstance().disable();
+    }
+
+    double currentProximalPosition = getProximalPosition();
+    double currentDistalPosition = getDistalPosition();
+    
+
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("distal motor Position:", Math.toDegrees(getDistalPosition()));
     SmartDashboard.putNumber("proximal motor Position:", Math.toDegrees(getProximalPosition()));
@@ -233,5 +252,7 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putString("CURRENT ARM State", stateHandler.getCurrentArmPosition().toString());
     
     SmartDashboard.putBoolean("GRIP ENGAGED", stateHandler.getGripperEngaged());
+
+    SmartDashboard.putString("Game Piece", stateHandler.getGamePieceMode().toString());
   }
 }

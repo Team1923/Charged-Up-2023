@@ -8,9 +8,11 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.ArmPositions;
+import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.IntakePositions;
 
 public class IntakeArmDefaultCommand extends CommandBase {
@@ -18,13 +20,13 @@ public class IntakeArmDefaultCommand extends CommandBase {
   private IntakeSubsystem intake;
   private StateHandler stateHandler;
   private DoubleSupplier driverRightJoystick;
-  private BooleanSupplier liftintake;
+  private BooleanSupplier eject;
 
   /** Creates a new IntakeArmDefaultCommand. */
   public IntakeArmDefaultCommand(IntakeSubsystem i, DoubleSupplier driverRightJoystick, BooleanSupplier b) {
     intake = i;
     this.driverRightJoystick = driverRightJoystick;
-    this.liftintake = b;
+    this.eject = b;
     addRequirements(intake);
 
     this.stateHandler = StateHandler.getInstance();
@@ -40,27 +42,18 @@ public class IntakeArmDefaultCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (driverRightJoystick.getAsDouble() > 0.2) {
-      intake.setRawWheelSpeed(0.5);
-    } else {
-      intake.setRawWheelSpeed(.1);
-    }
+    setWheelSpeeds();
+    intake.updateCurrentRollingAvg();
     IntakePositions currentDesiredState = stateHandler.getDesiredIntakePosition();
-
-
 
     switch (currentDesiredState) {
       case STOW:
-        intake.setSolenoid(false);
+        if (stateHandler.getCurrentIntakePosition() == IntakePositions.STOW) {
+          intake.setSolenoid(false);
+        }
         break;
       case INTAKE:
-        intake.updateCurrentRollingAvg();
         intake.setSolenoid(true);
-        // if (liftintake.getAsBoolean()) {
-        if (intake.getAverageCurrentAboveThreshold(25)) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.HANDOFF_1);
-          stateHandler.setManualLift(false);
-        }
         break;
       case HANDOFF_1:
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.HANDOFF_1) {
@@ -69,7 +62,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
         break;
       case HANDOFF_2:
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.HANDOFF_2) {
-          if(stateHandler.getManualLift()) {
+          if (!intake.getAverageCurrentAboveThreshold(7)) {
             stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
           } else {
             stateHandler.setDesiredIntakePosition(IntakePositions.FINAL_HANDOFF);
@@ -77,18 +70,19 @@ public class IntakeArmDefaultCommand extends CommandBase {
         }
         break;
       case FINAL_HANDOFF:
-        if (stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF && stateHandler.getTimeSinceReadyToSore() > .5) {
-          System.out.println(stateHandler.getTimeSinceLastGripChange());
+        if (stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF
+            && stateHandler.getTimeSinceReadyToSore() > .5) {
           intake.setSolenoid(false);
         }
-        if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_FORWARD) {
+        if (stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF
+            && stateHandler.getTimeSinceReadyToSore() > .75) {
           stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
         }
         break;
       case REVERSE_HANDOFF_2:
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.REVERSE_HANDOFF_2) {
           stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE);
-          
+
         }
         intake.setSolenoid(true);
         break;
@@ -105,6 +99,23 @@ public class IntakeArmDefaultCommand extends CommandBase {
 
     intake.setIntakeProximalPosition(currentDesiredState.getArmAngles().getProximalAngle());
     intake.setIntakeDistalPosition(currentDesiredState.getArmAngles().getDistalAngle());
+
+  }
+
+  public void setWheelSpeeds() {
+    if (stateHandler.getIsArmMoving()) {
+      intake.setRawWheelSpeed(-0.1);
+    } else if (eject.getAsBoolean()) {
+      intake.setRawWheelSpeed(-0.2);
+    } else if (intake.getAverageCurrentAboveThreshold(20)) {
+      intake.setRawWheelSpeed(0.1);
+    } else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE && driverRightJoystick.getAsDouble() > 0.2) {
+      intake.setRawWheelSpeed(IntakeConstants.coneIntakeSpeed);
+    } else if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE && driverRightJoystick.getAsDouble() > 0.2) {
+      intake.setRawWheelSpeed(IntakeConstants.cubeIntakeSpeed);
+    } else {
+      intake.setRawWheelSpeed(0.1);
+    }
 
   }
 

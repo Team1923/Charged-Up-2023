@@ -11,10 +11,12 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FalconConstants;
 import frc.robot.Constants.IntakeConstants;
@@ -200,7 +202,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
   
   public boolean getAverageCurrentAboveThreshold(double goal) {
-    return averageCurrentDraw.withinTolerance(10, goal);
+    return averageCurrentDraw.getAvg() > goal;
   }
 
   public void setSolenoid(boolean output) {
@@ -218,8 +220,22 @@ public class IntakeSubsystem extends SubsystemBase {
             && (getCurrentDraw() > IntakeConstants.cubeCurrentThreshold));
   }
 
+  public double getIntakeProximalCurrent(){
+    return intakeProximalMotor.getStatorCurrent();
+  }
+
+  public double getIntakeDistalCurrent(){
+    return intakeDistalMotor.getStatorCurrent();
+  }
+
   @Override
   public void periodic() {
+    if(getIntakeProximalCurrent() > 50 || getIntakeDistalCurrent() > 50){
+      intakeProximalMotor.stopMotor();
+      intakeDistalMotor.stopMotor();
+      CommandScheduler.getInstance().disable();
+    }
+
     double proximalError = Math
         .abs(getIntakeProximalPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle());
     double distalError = Math
@@ -244,22 +260,26 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("INTAKE PROXIMAL POSITION RADS: ", getIntakeProximalPosition());
     SmartDashboard.putNumber("INTAKE DISTAL POSITION RADS: ", getIntakeDistalPosition());
 
-    SmartDashboard.putNumber("Proximal Encoder Rads", getIntakeProximalAbsoluteEncoderRads());
-    SmartDashboard.putNumber("Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());
+    SmartDashboard.putNumber("ABSOLUTE Proximal Encoder Rads", getIntakeProximalAbsoluteEncoderRads());
+    SmartDashboard.putNumber("ABSOLUTE Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());
 
     SmartDashboard.putString("Robot Direction", stateHandler.getRobotDirection().toString());
 
     SmartDashboard.putString("Scoring Location Vertical", stateHandler.getCurrentVerticalLocation().toString());
     SmartDashboard.putString("Scoring Location Horizontal", stateHandler.getCurrentHorizontalLocation().toString());
 
-    SmartDashboard.putBoolean("Threshold Boolean", withinThreshold);
-    SmartDashboard.putNumber("Distal Error", distalError);
-    SmartDashboard.putNumber("Proximal Error", proximalError);
+    SmartDashboard.putNumber("Rolling Average Current: ", averageCurrentDraw.getAvg());
 
-
+    SmartDashboard.putNumber("Time since ready to score", stateHandler.getTimeSinceReadyToSore());
     
 
     SmartDashboard.putString("Arm Scoring Location", stateHandler.getCurrentVerticalLocation().toString());
+
+    SmartDashboard.putBoolean("Is a game piece detected?", getAverageCurrentAboveThreshold(7));
+
+    SmartDashboard.putString("Arm position based on input", stateHandler.getArmPositionFromScoringLocation().toString());
+
+    SmartDashboard.putNumber("get time since ready to score", stateHandler.getTimeSinceReadyToSore());
 
     // SmartDashboard.putNumber("INTAKE PROXIMAL ERROR",
     // intakeProximalMotor.getClosedLoopError());

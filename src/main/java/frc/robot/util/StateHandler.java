@@ -34,6 +34,8 @@ public class StateHandler {
 
     private SpecificLimelight currentLimelight = SpecificLimelight.LEFT_LIMELIGHT;
 
+    private boolean isArmMoving = false;
+
     private double timeSinceLastGripChange = System.currentTimeMillis();
 
     private double timeSinceReadyToScore = 0;
@@ -43,6 +45,14 @@ public class StateHandler {
             stateHandler = new StateHandler();
         }
         return stateHandler;
+    }
+
+    public boolean getIsArmMoving(){
+        return isArmMoving;
+    }
+
+    public void setIsArmMoving(boolean isArmMoving){
+        this.isArmMoving = isArmMoving;
     }
 
     public double getTimeSinceReadyToSore() {

@@ -12,14 +12,14 @@ public class StateVariables {
          * NOTE: DUPLICATE VALUE IF ONLY ONE LOCATION
          */
         STOW(new ArmAngles(Math.PI / 2, -Math.PI / 2 ), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
-        COBRA_FORWARD(new ArmAngles(Math.toRadians(110), -Math.PI/4), new ArmAngles(Math.toRadians(110), -Math.PI/4)),
-        COBRA_REVERSE(new ArmAngles(Math.toRadians(110), -Math.PI/4), new ArmAngles(Math.toRadians(110), -Math.PI/4)),
+        COBRA_FORWARD(new ArmAngles(Math.PI / 2, -Math.PI/4), new ArmAngles(Math.PI / 2, -Math.PI/4)),
+        COBRA_REVERSE(new ArmAngles(Math.PI / 2, -Math.PI/4), new ArmAngles(Math.PI / 2, -Math.PI/4)),
         //DEFINE SCORING LOCATIONS: right is the first object, left is second
-        LOW(new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4)), new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4))),
-        CONE_MID(new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4)), new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4))),
-        CONE_HIGH(new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4)), new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4))),
-        CUBE_MID(new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4)), new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4))),
-        CUBE_HIGH(new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4)), new ArmAngles(Math.toRadians(48.11),Math.toRadians(-14.4)));
+        LOW(new ArmAngles(Math.toRadians(71.671),Math.toRadians(-69.885)), new ArmAngles(0,0)),
+        CONE_MID(new ArmAngles(Math.toRadians(81.701),Math.toRadians(-22.409)), new ArmAngles(0,0)),
+        CONE_HIGH(new ArmAngles(Math.toRadians(65.091), Math.toRadians(3.072)), new ArmAngles(0,0)),
+        CUBE_MID(new ArmAngles(0,0), new ArmAngles(0,0)),
+        CUBE_HIGH(new ArmAngles(0,0), new ArmAngles(0,0));
 
         private ArmAngles armAngles;
         private ArmAngles leftArmAngles;
@@ -72,7 +72,7 @@ public class StateVariables {
     }
 
     public static enum IntakePositions {
-        INTAKE(new ArmAngles(0, 0)),
+        INTAKE(new ArmAngles(0, Math.toRadians(-2))),
         STOW(new ArmAngles(2.971, 1.307)),
         HANDOFF_1(new ArmAngles(1.249, Math.toRadians(40))),
         HANDOFF_2(new ArmAngles(2.541, 0.225)),

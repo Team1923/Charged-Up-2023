@@ -74,10 +74,10 @@ public final class Constants {
     public static final double intakeDistalkI = 0;
     public static final double intakeDistalkD = 0;
 
-    public static final double maxIntakeProximalVel = 10000;
-    public static final double maxIntakeProximalAccel = 10000;
-    public static final double maxIntakeDistalVel = 10000;
-    public static final double maxIntakeDistalAccel = 10000;
+    public static final double maxIntakeProximalVel = 30000;
+    public static final double maxIntakeProximalAccel = 30000;
+    public static final double maxIntakeDistalVel = 30000;
+    public static final double maxIntakeDistalAccel = 30000;
 
     public static final double intakeProximalGearRatio = 64;
     public static final double intakeProximalTicksToRad = (2 * Math.PI)
@@ -91,8 +91,8 @@ public final class Constants {
 
     public static final double intakeProximalHardstop = 2.971;
     public static final double intakeDistalHardstop = 1.307;
-    public static final double proximalEncoderZero =2.513;
-    public static final double distalEncoderZero = 1.214;
+    public static final double proximalEncoderZero = 0.510;
+    public static final double distalEncoderZero = 0.858;
 
     public static final double intakeMaxProximalGravityConstant = 0.2;
     public static final double intakeMaxDistalGravityConstant = 0.15;
@@ -108,8 +108,8 @@ public final class Constants {
     public static final double kIntakeDistalOffsetRads = 0;
 
     public static final double errorThreshold = 0.1;
-    public static final double cubeIntakeSpeed = .70;
-    public static final double coneIntakeSpeed = .70;
+    public static final double cubeIntakeSpeed = .1;
+    public static final double coneIntakeSpeed = .25;
     public static final double ejectSpeed = -1;
     public static final double cubeCurrentThreshold = 80;
     public static final double coneCurrentThreshold = 80;
@@ -176,8 +176,8 @@ public final class Constants {
 
     public static final double proximalHardstop = Math.PI/2;
     public static final double distalHardstop = -Math.PI/2;
-    public static final double proximalEncoderZero = 0.454;
-    public static final double distalEncoderZero = -3.034;
+    public static final double proximalEncoderZero = 0.472;
+    public static final double distalEncoderZero = -0.460;
 
     public static final double errorThreshold = 0.05;
 
