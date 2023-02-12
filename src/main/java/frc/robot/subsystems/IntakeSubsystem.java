@@ -263,7 +263,7 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putString("DESIRED INTAKE State", stateHandler.getDesiredIntakePosition().toString());
     SmartDashboard.putString("CURRENT INTAKE State", stateHandler.getCurrentIntakePosition().toString());
 
-    SmartDashboard.putBoolean("get solenoid", getSolenoid());
+    // SmartDashboard.putBoolean("get solenoid", getSolenoid());
 
     SmartDashboard.putNumber("INTAKE PROXIMAL POSITION RADS: ", getIntakeProximalPosition());
     SmartDashboard.putNumber("INTAKE DISTAL POSITION RADS: ", getIntakeDistalPosition());
@@ -276,18 +276,18 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putString("Scoring Location Vertical", stateHandler.getCurrentVerticalLocation().toString());
     SmartDashboard.putString("Scoring Location Horizontal", stateHandler.getCurrentHorizontalLocation().toString());
 
-    SmartDashboard.putNumber("Rolling Average Current: ", averageCurrentDraw.getAvg());
+    // SmartDashboard.putNumber("Rolling Average Current: ", averageCurrentDraw.getAvg());
 
-    SmartDashboard.putNumber("Time since ready to score", stateHandler.getTimeSinceReadyToSore());
+    // SmartDashboard.putNumber("Time since ready to score", stateHandler.getTimeSinceReadyToSore());
     
 
-    SmartDashboard.putString("Arm Scoring Location", stateHandler.getCurrentVerticalLocation().toString());
+    // SmartDashboard.putString("Arm Scoring Location", stateHandler.getCurrentVerticalLocation().toString());
 
-    SmartDashboard.putBoolean("Is a game piece detected?", getAverageCurrentAboveThreshold(7));
+    // SmartDashboard.putBoolean("Is a game piece detected?", getAverageCurrentAboveThreshold(7));
 
-    SmartDashboard.putString("Arm position based on input", stateHandler.getArmPositionFromScoringLocation().toString());
+    // SmartDashboard.putString("Arm position based on input", stateHandler.getArmPositionFromScoringLocation().toString());
 
-    SmartDashboard.putNumber("get time since ready to score", stateHandler.getTimeSinceReadyToSore());
+    // SmartDashboard.putNumber("get time since ready to score", stateHandler.getTimeSinceReadyToSore());
 
     // SmartDashboard.putNumber("INTAKE PROXIMAL ERROR",
     // intakeProximalMotor.getClosedLoopError());

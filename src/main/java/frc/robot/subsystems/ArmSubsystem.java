@@ -257,7 +257,7 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putString("DESIRED ARM State", stateHandler.getArmDesiredPosition().toString());
     SmartDashboard.putString("CURRENT ARM State", stateHandler.getCurrentArmPosition().toString());
 
-    SmartDashboard.putBoolean("GRIP ENGAGED", stateHandler.getGripperEngaged());
+    // SmartDashboard.putBoolean("GRIP ENGAGED", stateHandler.getGripperEngaged());
 
     SmartDashboard.putString("Game Piece", stateHandler.getGamePieceMode().toString());
   }
