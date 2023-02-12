@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FalconConstants;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.math.RollingAvgDouble;
@@ -228,13 +229,20 @@ public class IntakeSubsystem extends SubsystemBase {
     return intakeDistalMotor.getStatorCurrent();
   }
 
+  public void stopIntake(){
+    intakeProximalMotor.stopMotor();
+    intakeDistalMotor.stopMotor();
+  }
+
   @Override
   public void periodic() {
     if(getIntakeProximalCurrent() > 50 || getIntakeDistalCurrent() > 50){
       intakeProximalMotor.stopMotor();
       intakeDistalMotor.stopMotor();
-      CommandScheduler.getInstance().disable();
+      CommandScheduler.getInstance().schedule(new EStopIntakeCommand(this));
     }
+
+
 
     double proximalError = Math
         .abs(getIntakeProximalPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle());

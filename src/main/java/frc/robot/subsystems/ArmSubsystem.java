@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.FalconConstants;
+import frc.robot.commands.EmergencyCommands.EStopArmCommand;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
@@ -27,7 +28,6 @@ public class ArmSubsystem extends SubsystemBase {
   private DutyCycleEncoder proximalEncoder = new DutyCycleEncoder(ArmConstants.proximalEncoderID); // change this
   private DutyCycleEncoder distalEncoder = new DutyCycleEncoder(ArmConstants.distalEncoderID);
   private StateHandler stateHandler = StateHandler.getInstance();
-
 
   public ArmSubsystem() {
     proximalMotor.configFactoryDefault();
@@ -48,7 +48,6 @@ public class ArmSubsystem extends SubsystemBase {
     proximalMotor.configMotionAcceleration(ArmConstants.maxProximalAccel);
     distalMotor.configMotionCruiseVelocity(ArmConstants.maxDistalVel);
     distalMotor.configMotionAcceleration(ArmConstants.maxDistalAccel);
-    
 
     proximalMotor.setNeutralMode(NeutralMode.Brake);
     distalMotor.setNeutralMode(NeutralMode.Brake);
@@ -63,14 +62,15 @@ public class ArmSubsystem extends SubsystemBase {
     proximalMotor.setSelectedSensorPosition(
         (getProximalAbsoluteEncoderRads() - ArmConstants.proximalEncoderZero + ArmConstants.proximalHardstop)
             * ArmConstants.proximalRadsToTicks);
-    //proximalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getProximalAngle());
+    // proximalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getProximalAngle());
   }
 
   public void resetDistalPosition() {
     distalMotor.setSelectedSensorPosition(
-        (getDistalAbsoluteEncoderRads() - ArmConstants.distalEncoderZero + ArmConstants.distalHardstop + Math.toRadians(2))
+        (getDistalAbsoluteEncoderRads() - ArmConstants.distalEncoderZero + ArmConstants.distalHardstop
+            + Math.toRadians(2))
             * ArmConstants.distalRadsToTicks);
-    //distalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getDistalAngle());
+    // distalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getDistalAngle());
 
   }
 
@@ -191,31 +191,38 @@ public class ArmSubsystem extends SubsystemBase {
     return distalEncoder.getAbsolutePosition() * ArmConstants.distalAbsoluteEncoderToTicks;
   }
 
-  public boolean isReflected(){
-    /* reflection of angles is based on robot direction
+  public boolean isReflected() {
+    /*
+     * reflection of angles is based on robot direction
      */
     return stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT;
   }
 
-  public double getDistalCurrent(){
+  public double getDistalCurrent() {
     return distalMotor.getStatorCurrent();
   }
 
-  public double getProximalCurrent(){
+  public double getProximalCurrent() {
     return proximalMotor.getStatorCurrent();
   }
 
   @Override
   public void periodic() {
-    if(getDistalCurrent() > 20 || getProximalCurrent() > 20){
+    if (getDistalCurrent() > 20 || getProximalCurrent() > 20) { // FIND CURRENT VALUES THAT WORK
       proximalMotor.stopMotor();
       distalMotor.stopMotor();
-      CommandScheduler.getInstance().disable();
+      CommandScheduler.getInstance().schedule(new EStopArmCommand(this));
     }
+
+    // measure how many away we are from the desired state
+    double threshold = 0.1; // radians, adjust as necessary
+    SmartDashboard.putBoolean("ARM GOOD TO GO", Math
+        .abs(getProximalPosition() - stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle()) < threshold
+        && Math.abs(
+            getDistalPosition() - stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle()) < threshold);
 
     double currentProximalPosition = getProximalPosition();
     double currentDistalPosition = getDistalPosition();
-    
 
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("distal motor Position:", Math.toDegrees(getDistalPosition()));
@@ -224,13 +231,12 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ABS ENCODER DISTAL", getDistalAbsoluteEncoderRads());
     SmartDashboard.putNumber("ABS ENCODER PROXIMAL", getProximalAbsoluteEncoderRads());
 
-
-    /*doing this to avoid calling the state handler too much */
+    /* doing this to avoid calling the state handler too much */
     ArmPositions desiredArmPosition = stateHandler.getArmDesiredPosition();
 
     double proximalDesiredPosition = desiredArmPosition.getArmAngles().getProximalAngle();
     double distalDesiredPosition = desiredArmPosition.getArmAngles().getDistalAngle();
-    if(isReflected()){
+    if (isReflected()) {
       proximalDesiredPosition = desiredArmPosition.getLeftArmAngles().getProximalAngle();
       distalDesiredPosition = desiredArmPosition.getLeftArmAngles().getDistalAngle();
     }
@@ -250,7 +256,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     SmartDashboard.putString("DESIRED ARM State", stateHandler.getArmDesiredPosition().toString());
     SmartDashboard.putString("CURRENT ARM State", stateHandler.getCurrentArmPosition().toString());
-    
+
     SmartDashboard.putBoolean("GRIP ENGAGED", stateHandler.getGripperEngaged());
 
     SmartDashboard.putString("Game Piece", stateHandler.getGamePieceMode().toString());

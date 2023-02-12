@@ -219,6 +219,36 @@ public class StateHandler {
         manualLift = m;
     }
 
+    public void resetStates(){
+        desiredArmPosition = ArmPositions.STOW;
+        currentArmPosition = ArmPositions.STOW;
+    
+        desiredIntakePosition = IntakePositions.STOW;
+        currentIntakePosition = IntakePositions.STOW;
+
+        intakeInPosition = false;
+        hasGamePiece = false;
+        armInPosition = false;
+        resetManipulator = false;
+        gripperEngaged = false;
+        wantToScore = false;
+        holdInCobra = false;
+        manualLift = false;
+
+        mode = GamePieceMode.CUBE;
+        
+        currentRobotDirection = CurrentRobotDirection.RIGHT;
+    
+        currentLimelight = SpecificLimelight.LEFT_LIMELIGHT;
+    
+        isArmMoving = false;
+    
+        timeSinceLastGripChange = System.currentTimeMillis();
+    
+        timeSinceReadyToScore = 0;
+        
+    }
+
     public ArmPositions getArmPositionFromScoringLocation() {
         VerticalLocations currentVerticalLocation = getCurrentVerticalLocation();
         ArmPositions armPositionFromScoringLocation = ArmPositions.STOW;

@@ -181,6 +181,12 @@ public final class Constants {
 
     public static final double errorThreshold = 0.05;
 
+    public static final double minProximalPosition = Math.PI/4;
+    public static final double maxProximalPosition = 3*Math.PI/4;
+
+    public static final double maxDistalPosition = Math.PI/6;
+    public static final double minDistalPosition = -7*Math.PI/6;
+
   }
 
   public final class GamePieceColorConstants {

@@ -14,8 +14,10 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.util.StateHandler;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -29,8 +31,6 @@ public class Robot extends LoggedRobot {
   private RobotContainer robotContainer;
 
   public static CTREConfigs ctreConfigs = new CTREConfigs();
-
-
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -134,12 +134,26 @@ public class Robot extends LoggedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
+    StateHandler.getInstance().resetStates();
   }
 
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
     robotContainer.armSubsystem.setCoast();
+    SmartDashboard.putBoolean("INTAKE GOOD TO GO", Math
+        .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
+            - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.1
+        && Math.abs(
+            robotContainer.intakeSubsystem.getIntakeDistalPosition()
+                - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()) < 0.1);
+
+    SmartDashboard.putBoolean("ARM GOOD TO GO", Math
+        .abs(robotContainer.armSubsystem.getProximalPosition()
+            - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getProximalAngle()) < 0.1
+        && Math.abs(
+            robotContainer.armSubsystem.getDistalPosition()
+                - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getDistalAngle()) < 0.1);
   }
 
   /**

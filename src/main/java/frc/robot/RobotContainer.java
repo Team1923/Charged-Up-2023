@@ -66,14 +66,14 @@ public class RobotContainer {
     private final POVButton operatorRightDPad = new POVButton(operator, 90);
     private final POVButton operatorDownDPad = new POVButton(operator, 180);
     private final POVButton operatorLeftDPad = new POVButton(operator, 270);
-    private final JoystickButton centerRightButton = new JoystickButton(operator, 8);// not a button
+    private final JoystickButton centerRightButton = new JoystickButton(operator, 8);
     private final JoystickButton centerLeftButton = new JoystickButton(operator, 7);
 
 
     /* Subsystems */
     private final SwerveSubsystem s_Swerve = new SwerveSubsystem();
     public final ArmSubsystem armSubsystem = new ArmSubsystem();
-    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final ManipulatorSubsystem gripper = new ManipulatorSubsystem();
 
     /**

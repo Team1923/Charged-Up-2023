@@ -6,6 +6,7 @@ package frc.robot.commands.ArmCommands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.interfaces.BetterLimelightInterface;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.StateHandler;
@@ -88,6 +89,16 @@ public class ArmDefaultCommand extends CommandBase {
         timer.stop();
       default:
         break;
+    }
+
+    if (stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle() < ArmConstants.minProximalPosition
+        || stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle() > ArmConstants.maxProximalPosition) {
+      armSubsystem.setProximalPosition(ArmPositions.STOW.getArmAngles().getProximalAngle());
+    }
+
+    if (stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle() < ArmConstants.minDistalPosition
+        || stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle() > ArmConstants.maxDistalPosition) {
+      armSubsystem.setDistalPosition(ArmPositions.STOW.getArmAngles().getDistalAngle());
     }
 
     if (stateHandler.getRobotDirection() == CurrentRobotDirection.RIGHT
