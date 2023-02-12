@@ -140,6 +140,7 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
+    StateHandler.getInstance().resetStates();
     robotContainer.armSubsystem.setCoast();
     SmartDashboard.putBoolean("INTAKE GOOD TO GO", Math
         .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
