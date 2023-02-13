@@ -12,6 +12,7 @@ public class EStopArmCommand extends CommandBase {
   ArmSubsystem arm;
   public EStopArmCommand(ArmSubsystem arm) {
     this.arm = arm;
+    addRequirements(arm);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

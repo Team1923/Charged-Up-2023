@@ -12,6 +12,7 @@ public class EStopIntakeCommand extends CommandBase {
   IntakeSubsystem intake;
   public EStopIntakeCommand(IntakeSubsystem intake) {
     this.intake = intake;
+    addRequirements(intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
