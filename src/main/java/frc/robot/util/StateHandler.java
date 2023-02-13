@@ -218,7 +218,7 @@ public class StateHandler {
     public void setManualLift(boolean m) {
         manualLift = m;
     }
-
+    // When the robot is disbaled, it resets the states of the Arm and Intake, preventing them from continuing their command after the robot is disabled
     public void resetStates(){
         desiredArmPosition = ArmPositions.STOW;
         currentArmPosition = ArmPositions.STOW;
@@ -248,7 +248,7 @@ public class StateHandler {
         timeSinceReadyToScore = 0;
         
     }
-
+    // Returns the current arm position from scoring location depending on where the current Vertical Location Is
     public ArmPositions getArmPositionFromScoringLocation() {
         VerticalLocations currentVerticalLocation = getCurrentVerticalLocation();
         ArmPositions armPositionFromScoringLocation = ArmPositions.STOW;

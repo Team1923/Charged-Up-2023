@@ -72,6 +72,7 @@ public class StateVariables {
     }
 
     public static enum IntakePositions {
+        // Similar to Arm Positions, diferent Intake Arm States take in Arm Angle Object
         INTAKE(new ArmAngles(0, Math.toRadians(-2))),
         STOW(new ArmAngles(2.971, 1.307)),
         HANDOFF_1(new ArmAngles(1.249, Math.toRadians(40))),
@@ -119,7 +120,7 @@ public class StateVariables {
         }
         
     }
-
+    //Sets the Postions in Radians of the proximal and the distal arm for both the intake and the arm
     public static class ArmAngles {
         private double proximalAngle;
         private double distalAngle;
@@ -171,6 +172,7 @@ public class StateVariables {
         RIGHT
     }
 
+    //Sets the Scoring Location based on its positon in the 3 by 3 grid, i.e Middle + Left
     public static class ScoringLocations {
         private VerticalLocations verticalLocation;
         private HorizontalLocations horizontalLocation;

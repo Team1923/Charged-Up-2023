@@ -84,6 +84,7 @@ public class IntakeSubsystem extends SubsystemBase {
   //   intakeDistalMotor.setSelectedSensorPosition(angle * IntakeConstants.intakeDistalRadsToTicks);
   // }
 
+  //For both the Proximal and Distal, using the Encoders and physical hardstops, we can reset their position
   public void resetIntakeProximalPosition() {
     intakeProximalMotor.setSelectedSensorPosition(
         (getIntakeProximalAbsoluteEncoderRads() - IntakeConstants.proximalEncoderZero + IntakeConstants.intakeProximalHardstop)
@@ -146,6 +147,7 @@ public class IntakeSubsystem extends SubsystemBase {
     return IntakeConstants.intakeMaxDistalGravityConstant * Math.cos(getIntakeDistalPosition());
   }
 
+  //Using measured constants, we are able to find the angle from the C.O.M, with respect to the horizontal
   public double getAngleToCG() {
     double proximalCGX = Math.cos(getIntakeDistalPosition()) * IntakeConstants.intakeProximalCGDistance;
     double proximalCGY = Math.sin(getIntakeDistalPosition()) * IntakeConstants.intakeProximalCGDistance;
@@ -170,8 +172,8 @@ public class IntakeSubsystem extends SubsystemBase {
       leftIntakeWheelMotor.set(ControlMode.PercentOutput, IntakeConstants.cubeIntakeSpeed);
       rightIntakeWheelMotor.set(ControlMode.PercentOutput, -IntakeConstants.cubeIntakeSpeed);
     } else {
-      leftIntakeWheelMotor.set(ControlMode.PercentOutput, IntakeConstants.cubeIntakeSpeed);
-      rightIntakeWheelMotor.set(ControlMode.PercentOutput, IntakeConstants.cubeIntakeSpeed);
+      leftIntakeWheelMotor.set(ControlMode.PercentOutput, IntakeConstants.coneIntakeSpeed);
+      rightIntakeWheelMotor.set(ControlMode.PercentOutput, IntakeConstants.coneIntakeSpeed);
     }
   }
 
@@ -197,7 +199,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public double getCurrentDraw() {
     return leftIntakeWheelMotor.getStatorCurrent();
   }
-
+//Gets the rolling average, or current over period of time, and can be used to monitor current spikes
   public void updateCurrentRollingAvg() {
     averageCurrentDraw.add(getCurrentDraw());
   }
@@ -213,7 +215,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public boolean getSolenoid() {
     return intakeSolenoid.get() == Value.kForward ? true : false;
   }
-
+//By checking the raw current, we know that we have a game piece if it spikes above a threshold value
   public boolean intakeHasGamePiece() {
     return ((stateHandler.getGamePieceMode() == GamePieceMode.CONE)
         && (getCurrentDraw() > IntakeConstants.coneCurrentThreshold))
@@ -236,6 +238,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    //If the current for either the proximal or distal is above 50, we stop the motors and stop running the intake subsystem
     if(getIntakeProximalCurrent() > 50 || getIntakeDistalCurrent() > 50){
       intakeProximalMotor.stopMotor();
       intakeDistalMotor.stopMotor();
