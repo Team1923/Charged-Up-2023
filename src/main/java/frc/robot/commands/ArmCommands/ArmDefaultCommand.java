@@ -41,13 +41,21 @@ public class ArmDefaultCommand extends CommandBase {
 
     stateHandler.setTimeSinceReadyToScore(timer.get());
 
+    // takes each case of the arm's position in order to determine where it should go next, and preps the arm to actually move there
     switch (currentDesiredState) {
       case STOW:
         stateHandler.setIsArmMoving(false);
+        /* if:
+         * we want to score,
+         * the time since we last closed our gripper is greater than .3 seconds, and
+         * the gripper is engaged
+         * we can start the timer */
         if (stateHandler.getWantToScore() && stateHandler.getTimeSinceLastGripChange() > .3
             && stateHandler.getGripperEngaged()) {
           timer.start();
 
+          // if the timer has been running for more than a second and the current intake position is stow,
+          // we can set the desired arm state to cobra forward
           if (timer.get() > 1 && stateHandler.getCurrentIntakePosition() == IntakePositions.STOW) {
             stateHandler.setArmDesiredState(ArmPositions.COBRA_FORWARD);
           }
@@ -56,6 +64,11 @@ public class ArmDefaultCommand extends CommandBase {
         break;
       case COBRA_FORWARD:
         stateHandler.setIsArmMoving(true);
+          /* if:
+           * the arm is not being held in the cobra position, and
+           * we are in the cobra forward position,
+           * then we can set the desired state of the arm based on where we want to score
+           */
         if (!stateHandler.getHoldInCobra() && stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_FORWARD) {
           stateHandler.setArmDesiredState(stateHandler.getArmPositionFromScoringLocation());
         }
@@ -67,6 +80,7 @@ public class ArmDefaultCommand extends CommandBase {
         break;
       case COBRA_REVERSE:
         stateHandler.setIsArmMoving(false);
+        // if we are currently in the cobra reverse position, then set the desired arm state to stow
         if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_REVERSE) {
           stateHandler.setArmDesiredState(ArmPositions.STOW);
         }
@@ -91,6 +105,7 @@ public class ArmDefaultCommand extends CommandBase {
         break;
     }
 
+    // resets arm position to stow based on its current state
     if (stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle() < ArmConstants.minProximalPosition
         || stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle() > ArmConstants.maxProximalPosition) {
       armSubsystem.setProximalPosition(ArmPositions.STOW.getArmAngles().getProximalAngle());
