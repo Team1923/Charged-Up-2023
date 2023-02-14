@@ -18,6 +18,7 @@ public class SetGamePiece extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
+  //The robot intial's game mode is cone, thus it will use the cone intake speed and scoring postions unless switched to cube
   public void initialize() {
     stateHandler.setGamePieceMode(GamePieceMode.CONE);
   }

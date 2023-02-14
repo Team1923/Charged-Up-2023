@@ -17,6 +17,9 @@ public class BetterLimelightInterface {
   private double aprilTagID = 0;
   private boolean hasValidTarget = false;
 
+  /* A singleton that creates the sole instance of BetterLimelightInterface, 
+  this is also used in other classes as well, so we don't have to pass in
+  new instances all the time */
   public static synchronized BetterLimelightInterface getInstance() {
     if (limelightInterface == null) {
       limelightInterface = new BetterLimelightInterface();
@@ -70,6 +73,10 @@ public class BetterLimelightInterface {
   /*
    * Specific AprilTag methods we will need
    */
+
+   /* This method returns the pose of the robot, a combination of translational
+   and rotational offset relative to the april tag
+    */
   public double[] botPose(SpecificLimelight limelight) {
     return getArrayEntry("botpose", limelight);
   }

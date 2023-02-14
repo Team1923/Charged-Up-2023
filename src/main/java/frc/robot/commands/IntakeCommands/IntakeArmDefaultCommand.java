@@ -46,6 +46,11 @@ public class IntakeArmDefaultCommand extends CommandBase {
     intake.updateCurrentRollingAvg();
     IntakePositions currentDesiredState = stateHandler.getDesiredIntakePosition();
 
+    /*
+     * This switch staement takes in the currentDesired state of the intake, and for each case,
+     * sets the disered intake to the next in position. This works for going from stow to intake
+     * as well as intake to stow. A delay was added from Final Handoff to Stow
+     */
     switch (currentDesiredState) {
       case STOW:
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.STOW) {
