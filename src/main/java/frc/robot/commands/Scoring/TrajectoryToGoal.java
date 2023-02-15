@@ -50,9 +50,9 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
   }
 
   public Trajectory generateTrajectory() {
-    Pose2d center = new Pose2d(0, 0, new Rotation2d(0));
-    Pose2d left = new Pose2d(0, -0.5, new Rotation2d(0));
-    Pose2d right = new Pose2d(0, 0.5, new Rotation2d(0));
+    Pose2d center = new Pose2d(0.2, 0, new Rotation2d(0));
+    Pose2d left = new Pose2d(0.2, -0.5, new Rotation2d(0));
+    Pose2d right = new Pose2d(0.2, 0.5, new Rotation2d(0));
 
     SpecificLimelight limelight = swerve.getCorrectLimelight();
     Pose3d currentRobotPose = BetterLimelightInterface.getInstance().robotPose3d(limelight);
@@ -73,7 +73,7 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
         // intersection point
         List.of(new Translation2d(1, 1)),
         // target point
-        new Pose2d(2, 0, new Rotation2d(0)), config);
+        center, config);
   }
 
 }
