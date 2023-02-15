@@ -24,6 +24,7 @@ public class EStopIntakeCommand extends CommandBase {
   @Override
   public void execute() {
     intake.stopIntake();
+    System.out.println("ESTOP INTAKE ACTIVATED...");
   }
 
   // Called once the command ends or is interrupted.

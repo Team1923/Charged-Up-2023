@@ -24,6 +24,7 @@ public class EStopArmCommand extends CommandBase {
   @Override
   public void execute() {
     arm.stop();
+    System.out.println("ESTOP ARM ACTIVATED...");
   }
 
   // Called once the command ends or is interrupted.

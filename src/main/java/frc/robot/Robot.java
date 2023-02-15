@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.EmergencyCommands.EStopArmCommand;
+import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;
 import frc.robot.util.StateHandler;
 
 /**
@@ -31,6 +33,10 @@ public class Robot extends LoggedRobot {
   private RobotContainer robotContainer;
 
   public static CTREConfigs ctreConfigs = new CTREConfigs();
+
+  private boolean armGood = false;
+  private boolean intakeGood = false;
+
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -113,22 +119,7 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during all modes. */
   @Override
   public void robotPeriodic() {
-    // Runs the Scheduler. This is responsible for polling buttons, adding
-    // newly-scheduled commands, running already-scheduled commands, removing
-    // finished or interrupted commands, and running subsystem periodic() methods.
-    // This must be called from the robot's periodic block in order for anything in
-    // the Command-based framework to work.
-
-    // SmartDashboard.putNumber("RedToGreen ", 1.0*c.GetRed()/c.GetGreen());
-    // SmartDashboard.putNumber("BlueToGreen ", 1.0* c.GetBlue()/c.GetGreen());
-    // SmartDashboard.putNumber("RedToBlue ", 1.0*c.GetRed()/c.GetBlue());
-    // SmartDashboard.putBoolean("If Cube", c.isCube());
-    // SmartDashboard.putBoolean("If Cone", c.isCone());
-    // SmartDashboard.putString("Game Piece", c.getGamePiece().toString());
-    // SmartDashboard.putNumber("Encoder Stuff",throughBEncoder.getVoltage());
-    // SmartDashboard.putString("GamePieceType", c.getGamePiece().toString());
     CommandScheduler.getInstance().run();
-
   }
 
   /** This function is called once when the robot is disabled. */
@@ -140,20 +131,26 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
-    robotContainer.armSubsystem.setCoast();
-    SmartDashboard.putBoolean("INTAKE GOOD TO GO", Math
-        .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
-            - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.1
-        && Math.abs(
-            robotContainer.intakeSubsystem.getIntakeDistalPosition()
-                - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()) < 0.1);
 
-    SmartDashboard.putBoolean("ARM GOOD TO GO", Math
-        .abs(robotContainer.armSubsystem.getProximalPosition()
-            - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getProximalAngle()) < 0.1
-        && Math.abs(
-            robotContainer.armSubsystem.getDistalPosition()
-                - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getDistalAngle()) < 0.1);
+    armGood = Math
+    .abs(robotContainer.armSubsystem.getProximalPosition()
+        - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getProximalAngle()) < 0.1
+    && Math.abs(
+        robotContainer.armSubsystem.getDistalPosition()
+            - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getDistalAngle()) < 0.1;
+
+    intakeGood = Math
+    .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
+        - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.1
+    && Math.abs(
+        robotContainer.intakeSubsystem.getIntakeDistalPosition()
+            - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()) < 0.1;
+
+    robotContainer.armSubsystem.setCoast();
+
+    SmartDashboard.putBoolean("INTAKE GOOD TO GO", intakeGood);
+
+    SmartDashboard.putBoolean("ARM GOOD TO GO", armGood);
   }
 
   /**
@@ -163,6 +160,14 @@ public class Robot extends LoggedRobot {
   @Override
   public void autonomousInit() {
     autonomousCommand = robotContainer.getAutonomousCommand();
+
+    if(!armGood) {
+      CommandScheduler.getInstance().schedule(new EStopArmCommand(robotContainer.armSubsystem));
+    }
+
+    if(!intakeGood) {
+      CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
+    }
 
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
@@ -182,6 +187,15 @@ public class Robot extends LoggedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
+    if(!armGood) {
+      CommandScheduler.getInstance().schedule(new EStopArmCommand(robotContainer.armSubsystem));
+    }
+
+    if(!intakeGood) {
+      CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
+    }
+
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
