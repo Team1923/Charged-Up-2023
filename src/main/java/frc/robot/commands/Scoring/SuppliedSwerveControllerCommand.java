@@ -17,6 +17,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -51,6 +52,7 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 	private Consumer<SwerveModuleState[]> m_outputModuleStates;
 	private Supplier<Rotation2d> m_desiredRotation;
 	private Supplier<Trajectory> trajectorySupplier;
+	private SwerveSubsystem swerve;
 
 	// Trajectory Supplier Version
 	public SuppliedSwerveControllerCommand(
@@ -61,7 +63,7 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 			PIDController yController,
 			ProfiledPIDController thetaController,
 			Consumer<SwerveModuleState[]> outputModuleStates,
-			Subsystem... requirements) {
+			SwerveSubsystem requirements) {
 
 		this(
 				new Trajectory(),
@@ -118,7 +120,7 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 			ProfiledPIDController thetaController,
 			Supplier<Rotation2d> desiredRotation,
 			Consumer<SwerveModuleState[]> outputModuleStates,
-			Subsystem... requirements) {
+			SwerveSubsystem requirements) {
 		this(
 				trajectory,
 				pose,
@@ -177,7 +179,7 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 			PIDController yController,
 			ProfiledPIDController thetaController,
 			Consumer<SwerveModuleState[]> outputModuleStates,
-			Subsystem... requirements) {
+			SwerveSubsystem requirements) {
 		this(
 				trajectory,
 				pose,
@@ -228,7 +230,7 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 			SwerveDriveKinematics kinematics,
 			HolonomicDriveController controller,
 			Consumer<SwerveModuleState[]> outputModuleStates,
-			Subsystem... requirements) {
+			SwerveSubsystem requirements) {
 		this(
 				trajectory,
 				pose,
@@ -272,7 +274,7 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 			HolonomicDriveController controller,
 			Supplier<Rotation2d> desiredRotation,
 			Consumer<SwerveModuleState[]> outputModuleStates,
-			Subsystem... requirements) {
+			SwerveSubsystem requirements) {
 		m_trajectory = requireNonNullParam(trajectory, "trajectory", "SwerveControllerCommand");
 		m_pose = requireNonNullParam(pose, "pose", "SwerveControllerCommand");
 		m_kinematics = requireNonNullParam(kinematics, "kinematics", "SwerveControllerCommand");
@@ -283,12 +285,16 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 		m_outputModuleStates = requireNonNullParam(outputModuleStates, "outputModuleStates", "SwerveControllerCommand");
 
 		addRequirements(requirements);
+
+		this.swerve = requirements;
 	}
 
 	@Override
 	public void initialize() {
 		m_trajectory = trajectorySupplier.get();
 		m_desiredRotation = () -> m_trajectory.getStates().get(m_trajectory.getStates().size() - 1).poseMeters.getRotation();
+
+		swerve.resetOdometry(m_trajectory.getInitialPose());
 
 		m_timer.reset();
 		m_timer.start();

@@ -68,7 +68,7 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
 
     return TrajectoryGenerator.generateTrajectory(
         // current bot pose
-        new Pose2d(0, 0, new Rotation2d(currentRobotPose.getRotation().getX())),
+        new Pose2d(0, 0, new Rotation2d(swerve.getYawIEEE())),
         // intersection point
         List.of(new Translation2d(0, 0)),
         // target point
