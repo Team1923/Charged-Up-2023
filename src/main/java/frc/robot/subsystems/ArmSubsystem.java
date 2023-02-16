@@ -214,22 +214,10 @@ public class ArmSubsystem extends SubsystemBase {
       CommandScheduler.getInstance().schedule(new EStopArmCommand(this));
     }
 
-    // measure how many away we are from the desired state
-    double threshold = 0.1; // radians, adjust as necessary
-    SmartDashboard.putBoolean("ARM GOOD TO GO", Math
-        .abs(getProximalPosition() - stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle()) < threshold
-        && Math.abs(
-            getDistalPosition() - stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle()) < threshold);
-
     double currentProximalPosition = getProximalPosition();
     double currentDistalPosition = getDistalPosition();
 
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("distal motor Position:", Math.toDegrees(getDistalPosition()));
-    SmartDashboard.putNumber("proximal motor Position:", Math.toDegrees(getProximalPosition()));
-
-    SmartDashboard.putNumber("ABS ENCODER DISTAL", getDistalAbsoluteEncoderRads());
-    SmartDashboard.putNumber("ABS ENCODER PROXIMAL", getProximalAbsoluteEncoderRads());
 
     /* doing this to avoid calling the state handler too much */
     ArmPositions desiredArmPosition = stateHandler.getArmDesiredPosition();
@@ -253,12 +241,7 @@ public class ArmSubsystem extends SubsystemBase {
     if (withinThreshold) {
       stateHandler.setCurrentArmPosition(stateHandler.getArmDesiredPosition());
     }
-
-    SmartDashboard.putString("DESIRED ARM State", stateHandler.getArmDesiredPosition().toString());
-    SmartDashboard.putString("CURRENT ARM State", stateHandler.getCurrentArmPosition().toString());
-
+    
     // SmartDashboard.putBoolean("GRIP ENGAGED", stateHandler.getGripperEngaged());
-
-    SmartDashboard.putString("Game Piece", stateHandler.getGamePieceMode().toString());
   }
 }

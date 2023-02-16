@@ -167,6 +167,8 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 		m_trajectory = trajectorySupplier.get();
 		m_desiredRotation = () -> m_trajectory.getStates().get(m_trajectory.getStates().size() - 1).poseMeters.getRotation();
 
+		System.out.println(m_trajectory);
+
 		swerve.resetOdometry(m_trajectory.getInitialPose());
 
 		m_timer.reset();

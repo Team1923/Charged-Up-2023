@@ -17,6 +17,7 @@ import frc.robot.commands.IntakeCommands.IntakeArmDefaultCommand;
 import frc.robot.commands.IntakeCommands.StowIntakeCommand;
 import frc.robot.commands.Scoring.ManipulatorDefaultCommand;
 import frc.robot.commands.Scoring.ManualScore;
+import frc.robot.commands.Scoring.TrajectoryToGoal;
 import frc.robot.commands.StateCommands.SetArmLocation;
 import frc.robot.commands.StateCommands.SetGamePiece;
 import frc.robot.commands.StateCommands.SetRobotLocation;
@@ -116,7 +117,7 @@ public class RobotContainer {
         operatorLeftBumper.onTrue(new DeployIntakeCommand());
         operatorRightBumper.onTrue(new StowIntakeCommand());
 
-        
+        aButton.toggleOnTrue(new TrajectoryToGoal(s_Swerve));
     }
 
     private void setDefaultCommands() {

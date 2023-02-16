@@ -245,8 +245,6 @@ public class IntakeSubsystem extends SubsystemBase {
       CommandScheduler.getInstance().schedule(new EStopIntakeCommand(this));
     }
 
-
-
     double proximalError = Math
         .abs(getIntakeProximalPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle());
     double distalError = Math
@@ -260,20 +258,6 @@ public class IntakeSubsystem extends SubsystemBase {
     if (withinThreshold) {
       stateHandler.setCurrentIntakePosition(stateHandler.getDesiredIntakePosition());
     }
-
-    SmartDashboard.putString("DESIRED INTAKE State", stateHandler.getDesiredIntakePosition().toString());
-    SmartDashboard.putString("CURRENT INTAKE State", stateHandler.getCurrentIntakePosition().toString());
-
-    SmartDashboard.putNumber("INTAKE PROXIMAL POSITION RADS: ", getIntakeProximalPosition());
-    SmartDashboard.putNumber("INTAKE DISTAL POSITION RADS: ", getIntakeDistalPosition());
-
-    SmartDashboard.putNumber("ABSOLUTE Proximal Encoder Rads", getIntakeProximalAbsoluteEncoderRads());
-    SmartDashboard.putNumber("ABSOLUTE Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());
-
-    SmartDashboard.putString("Robot Direction", stateHandler.getRobotDirection().toString());
-
-    SmartDashboard.putString("Scoring Location Vertical", stateHandler.getCurrentVerticalLocation().toString());
-    SmartDashboard.putString("Scoring Location Horizontal", stateHandler.getCurrentHorizontalLocation().toString());
 
   }
 }

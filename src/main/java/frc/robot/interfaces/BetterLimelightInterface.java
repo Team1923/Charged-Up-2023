@@ -78,7 +78,7 @@ public class BetterLimelightInterface {
    and rotational offset relative to the april tag
     */
   public double[] getBotPose(SpecificLimelight limelight) {
-    return getArrayEntry("botpose", limelight);
+    return getArrayEntry("botpose_targetspace", limelight);
   }
 
   public double getID(SpecificLimelight limelight) {
