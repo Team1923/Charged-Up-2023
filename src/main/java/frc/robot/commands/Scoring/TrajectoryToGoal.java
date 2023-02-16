@@ -41,7 +41,8 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     addCommands(
-        new SuppliedSwerveControllerCommand(() -> generateTrajectory(),
+        new SuppliedSwerveControllerCommand(
+            () -> generateTrajectory(),
             swerve::getPose,
             Swerve.swerveKinematics,
             new PIDController(AutoConstants.kPXController, 0, 0),
@@ -63,7 +64,7 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
 
     config.setStartVelocity(swerve.getRobotVelocity());
     config.setEndVelocity(0);
-    config.setReversed(false); 
+    config.setReversed(false);
 
     return TrajectoryGenerator.generateTrajectory(
         // current bot pose
