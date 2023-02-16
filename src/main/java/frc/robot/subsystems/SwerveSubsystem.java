@@ -111,6 +111,14 @@ public class SwerveSubsystem extends SubsystemBase {
         return positions;
     }
 
+    // Return the speed of the robot using the sum of the X and Y chassis speeds taken from
+    // a forward kinematics calculation from the swerve drive kinematics object
+    public double getRobotVelocity() {
+        ChassisSpeeds currentChassisSpeeds = Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
+
+        return Math.sqrt(Math.pow(currentChassisSpeeds.vxMetersPerSecond, 2) + Math.pow(currentChassisSpeeds.vyMetersPerSecond, 2));
+    }
+
     public void zeroGyro() {
         gyro.setYaw(0);
     }
@@ -152,14 +160,13 @@ public class SwerveSubsystem extends SubsystemBase {
     public void periodic() {
         swerveOdometry.update(getYaw(), getModulePositions());
         SmartDashboard.putString("CURRENT ROBOT DIRECTION", stateHandler.getRobotDirection().toString());
-        if(getCorrectLimelight() == SpecificLimelight.LEFT_LIMELIGHT) {
+        if (getCorrectLimelight() == SpecificLimelight.LEFT_LIMELIGHT) {
             // stateHandler.setRobotDirection(CurrentRobotDirection.LEFT);
             stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
         } else {
             stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
         }
 
-        
         // for(SwerveModule mod : mSwerveMods){
         // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",
         // mod.getCanCoder().getDegrees());
