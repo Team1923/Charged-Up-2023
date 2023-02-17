@@ -41,6 +41,12 @@ public class TeleopSwerve extends CommandBase {
         double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband);
         double rotationVal = 0.6 * MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
 
+        if(Math.abs(translationVal) < .02 && Math.abs(strafeVal) < .02 && Math.abs(rotationVal) < .02) {
+            //s_Swerve.stop();
+            return;
+        }
+
+
         if(leftTrigger.getAsDouble() > 0.2){
             translationVal *= 0.3;
             strafeVal *= 0.4;

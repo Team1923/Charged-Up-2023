@@ -157,7 +157,6 @@ public class AutoSwerveController extends CommandBase {
     double curTime = m_timer.get();
     PathPlannerState desiredState = m_trajectory.sample(curTime);
 
-    SmartDashboard.putNumber("Desired Auto Vel", desiredState.velocityMetersPerSecond);
 
     var targetChassisSpeeds = m_controller.calculate(m_pose.get(), desiredState, desiredState.holonomicRotation);
     /*
@@ -176,9 +175,6 @@ public class AutoSwerveController extends CommandBase {
 
     var targetModuleStates = m_kinematics.toSwerveModuleStates(newChassisSpeeds); // CHANGE BACK TO ORIG CHASSIS SPEEDS
                                                                                   // IF FAILURE
-
-    SmartDashboard.putNumber("Auto Target Vx", targetChassisSpeeds.vxMetersPerSecond);
-    SmartDashboard.putNumber("Auto Target Vy", targetChassisSpeeds.vyMetersPerSecond);
 
     m_outputModuleStates.accept(targetModuleStates);
   }

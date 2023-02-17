@@ -77,8 +77,8 @@ public class BetterLimelightInterface {
    /* This method returns the pose of the robot, a combination of translational
    and rotational offset relative to the april tag
     */
-  public double[] botPose(SpecificLimelight limelight) {
-    return getArrayEntry("botpose", limelight);
+  public double[] getBotPose(SpecificLimelight limelight) {
+    return getArrayEntry("botpose_targetspace", limelight);
   }
 
   public double getID(SpecificLimelight limelight) {
@@ -94,8 +94,8 @@ public class BetterLimelightInterface {
   /*
    * create a Pose3D object for trajectory generation
    */
-  public Pose3d robotPose3d(SpecificLimelight limelight) {
-    double[] result = botPose(limelight);
+  public Pose3d getRobotPose3d(SpecificLimelight limelight) {
+    double[] result = getBotPose(limelight);
     Translation3d tran3d = new Translation3d(result[0], result[1], result[2]);
     Rotation3d r3d = new Rotation3d(result[3], result[4], result[5]);
     Pose3d p3d = new Pose3d(tran3d, r3d);

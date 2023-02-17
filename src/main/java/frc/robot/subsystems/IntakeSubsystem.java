@@ -245,8 +245,6 @@ public class IntakeSubsystem extends SubsystemBase {
       CommandScheduler.getInstance().schedule(new EStopIntakeCommand(this));
     }
 
-
-
     double proximalError = Math
         .abs(getIntakeProximalPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle());
     double distalError = Math

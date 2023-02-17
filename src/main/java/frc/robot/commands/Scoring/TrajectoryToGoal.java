@@ -34,44 +34,47 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
 
   public TrajectoryToGoal(SwerveSubsystem swerve) {
     this.swerve = swerve;
-    config.setStartVelocity(0);
-    config.setEndVelocity(0);
-    config.setReversed(false); // TO-DO: check if correct orientation
-
-    /* Generate the trajectory based on waypoints */
 
     var thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0.001,
         AutoConstants.kThetaControllerConstraints);
+
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    addCommands(new SwerveControllerCommand(generateTrajectory(), swerve::getPose, Swerve.swerveKinematics,
-        new PIDController(AutoConstants.kPXController, 0, 0), new PIDController(AutoConstants.kPYController, 0, 0),
-        thetaController, swerve::setModuleStates, swerve));
+    addCommands(
+        new SuppliedSwerveControllerCommand(
+            () -> generateTrajectory(),
+            swerve::getPose,
+            Swerve.swerveKinematics,
+            new PIDController(AutoConstants.kPXController, 0, 0),
+            new PIDController(AutoConstants.kPYController, 0, 0),
+            thetaController,
+            swerve::setModuleStates,
+            swerve));
   }
 
   public Trajectory generateTrajectory() {
-    Pose2d center = new Pose2d(0.2, 0, new Rotation2d(0));
-    Pose2d left = new Pose2d(0.2, -0.5, new Rotation2d(0));
-    Pose2d right = new Pose2d(0.2, 0.5, new Rotation2d(0));
+
+    double robotAngle = swerve.getYawIEEE();
+
+    double goalAngle = robotAngle > 0 ? 90 : -90;
+
+    Pose2d center = new Pose2d(0.2, 0, new Rotation2d(goalAngle));
+    Pose2d left = new Pose2d(0.2, -0.55, new Rotation2d(goalAngle));
+    Pose2d right = new Pose2d(0.2, 0.55, new Rotation2d(goalAngle));
 
     SpecificLimelight limelight = swerve.getCorrectLimelight();
-    Pose3d currentRobotPose = BetterLimelightInterface.getInstance().robotPose3d(limelight);
-    double robotX = 0;
-    double robotY = 0;
-    /* rotation */
-    if (limelight == SpecificLimelight.LEFT_LIMELIGHT) {
-      robotX = -currentRobotPose.getY();
-      robotY = currentRobotPose.getX();
-    } else {
-      robotX = currentRobotPose.getY();
-      robotY = -currentRobotPose.getX();
-    }
+
+    Pose3d currentRobotPose = BetterLimelightInterface.getInstance().getRobotPose3d(limelight);
+
+    config.setStartVelocity(swerve.getRobotVelocity());
+    config.setEndVelocity(0);
+    config.setReversed(false);
 
     return TrajectoryGenerator.generateTrajectory(
         // current bot pose
-        new Pose2d(robotX, robotY, new Rotation2d(currentRobotPose.getRotation().getX())),
+        new Pose2d(-currentRobotPose.getZ(), currentRobotPose.getX(), new Rotation2d(robotAngle)),
         // intersection point
-        List.of(new Translation2d(1, 1)),
+        List.of(new Translation2d(-currentRobotPose.getZ(), center.getY())),
         // target point
         center, config);
   }
