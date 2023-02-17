@@ -12,12 +12,15 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
 import java.util.function.Consumer;
@@ -73,7 +76,8 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 				xController,
 				yController,
 				thetaController,
-				() -> new Trajectory().getStates().get(new Trajectory().getStates().size() - 1).poseMeters.getRotation(),
+				() -> new Trajectory().getStates().get(new Trajectory().getStates().size() - 1).poseMeters
+						.getRotation(),
 				outputModuleStates,
 				requirements);
 
@@ -170,8 +174,9 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 
 		swerve.resetOdometry(m_trajectory.getInitialPose());
 
-		m_controller.setTolerance(new Pose2d(new Translation2d(.1,.1), new Rotation2d(.1)));
-		m_desiredRotation = () -> m_trajectory.getStates().get(m_trajectory.getStates().size() - 1).poseMeters.getRotation();
+		m_controller.setTolerance(new Pose2d(new Translation2d(.1, .1), new Rotation2d(.1)));
+		m_desiredRotation = () -> m_trajectory.getStates().get(m_trajectory.getStates().size() - 1).poseMeters
+				.getRotation();
 
 		m_timer.reset();
 		m_timer.start();
@@ -183,7 +188,18 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 		var desiredState = m_trajectory.sample(curTime);
 
 		var targetChassisSpeeds = m_controller.calculate(m_pose.get(), desiredState, m_desiredRotation.get());
-		var targetModuleStates = m_kinematics.toSwerveModuleStates(targetChassisSpeeds);
+		Pose2d robot_pose_vel = new Pose2d(targetChassisSpeeds.vxMetersPerSecond * AutoConstants.looperUpdateTime,
+				targetChassisSpeeds.vyMetersPerSecond * AutoConstants.looperUpdateTime,
+				Rotation2d.fromRadians(targetChassisSpeeds.omegaRadiansPerSecond * AutoConstants.looperUpdateTime));
+		Twist2d twistVel = new Twist2d(robot_pose_vel.getX(), robot_pose_vel.getY(),
+				robot_pose_vel.getRotation().getRadians());
+		var newChassisSpeeds = new ChassisSpeeds(twistVel.dx / AutoConstants.looperUpdateTime,
+				twistVel.dy / AutoConstants.looperUpdateTime,
+				twistVel.dtheta / AutoConstants.looperUpdateTime);
+
+		var targetModuleStates = m_kinematics.toSwerveModuleStates(newChassisSpeeds); // CHANGE BACK TO ORIG CHASSIS
+																						// SPEEDS
+																						// IF FAILURE
 
 		m_outputModuleStates.accept(targetModuleStates);
 	}

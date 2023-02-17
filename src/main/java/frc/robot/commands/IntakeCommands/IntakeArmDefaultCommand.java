@@ -47,8 +47,10 @@ public class IntakeArmDefaultCommand extends CommandBase {
     IntakePositions currentDesiredState = stateHandler.getDesiredIntakePosition();
 
     /*
-     * This switch staement takes in the currentDesired state of the intake, and for each case,
-     * sets the disered intake to the next in position. This works for going from stow to intake
+     * This switch staement takes in the currentDesired state of the intake, and for
+     * each case,
+     * sets the disered intake to the next in position. This works for going from
+     * stow to intake
      * as well as intake to stow. A delay was added from Final Handoff to Stow
      */
     switch (currentDesiredState) {
@@ -108,10 +110,11 @@ public class IntakeArmDefaultCommand extends CommandBase {
   }
 
   public void setWheelSpeeds() {
+    if (eject.getAsBoolean()) {
+      intake.setRawWheelSpeed(-0.2);
+    }
     if (stateHandler.getIsArmMoving()) {
       intake.setRawWheelSpeed(-0.1);
-    } else if (eject.getAsBoolean()) {
-      intake.setRawWheelSpeed(-0.2);
     } else if (intake.getAverageCurrentAboveThreshold(20)) {
       intake.setRawWheelSpeed(0.1);
     } else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE && driverRightJoystick.getAsDouble() > 0.2) {

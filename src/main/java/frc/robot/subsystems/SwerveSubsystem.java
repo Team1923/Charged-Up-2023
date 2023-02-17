@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+
 public class SwerveSubsystem extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
@@ -120,6 +121,12 @@ public class SwerveSubsystem extends SubsystemBase {
         return Math.sqrt(Math.pow(currentChassisSpeeds.vxMetersPerSecond, 2) + Math.pow(currentChassisSpeeds.vyMetersPerSecond, 2));
     }
 
+    public double getHeadingFromChassisSpeed(){
+        ChassisSpeeds currentChassisSpeeds = Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
+
+        return currentChassisSpeeds.vyMetersPerSecond / getRobotVelocity();
+    }
+
     public void zeroGyro() {
         gyro.setYaw(0);
     }
@@ -160,32 +167,32 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         swerveOdometry.update(getYaw(), getModulePositions());
-        // SmartDashboard.putString("CURRENT ROBOT DIRECTION", stateHandler.getRobotDirection().toString());
-        // if (getCorrectLimelight() == SpecificLimelight.LEFT_LIMELIGHT) {
-        //     // stateHandler.setRobotDirection(CurrentRobotDirection.LEFT);
-        //     stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
-        // } else {
-        //     stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
+        SmartDashboard.putString("CURRENT ROBOT DIRECTION", stateHandler.getRobotDirection().toString());
+        if (getCorrectLimelight() == SpecificLimelight.LEFT_LIMELIGHT) {
+            // stateHandler.setRobotDirection(CurrentRobotDirection.LEFT);
+            stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
+        } else {
+            stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
+        }
+
+        
+        // for(SwerveModule mod : mSwerveMods){
+        // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",
+        // mod.getCanCoder().getDegrees());
+        // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated",
+        // mod.getPosition().angle.getDegrees());
+        // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity",
+        // mod.getState().speedMetersPerSecond);
         // }
 
-        // // for(SwerveModule mod : mSwerveMods){
-        // // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",
-        // // mod.getCanCoder().getDegrees());
-        // // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated",
-        // // mod.getPosition().angle.getDegrees());
-        // // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity",
-        // // mod.getState().speedMetersPerSecond);
-        // // }
+        // SmartDashboard.putString("heading", getYaw().toString());
 
-        field2D.setRobotPose(getPose());
+        // field2D.setRobotPose(getPose());
 
-        SmartDashboard.putData("field", field2D);
-
-        SmartDashboard.putString("CORRECT LIMELIGHT", getCorrectLimelight().toString());
-
-        SmartDashboard.putNumber("YAW IEEE", getYawIEEE());
-
-        SmartDashboard.putString("Bot Pose", BetterLimelightInterface.getInstance().getRobotPose3d(SpecificLimelight.LEFT_LIMELIGHT).toString());
-
+        // SmartDashboard.putString("CORRECT LIMELIGHT",
+        // getCorrectLimelight().toString());
+        // SmartDashboard.putNumber("YAW IEEE", getYawIEEE());
+        // SmartDashboard.putNumber("left limelight botpose",
+        // BetterLimelightInterface.getInstance().getTargetArea(getCorrectLimelight()));
     }
 }
