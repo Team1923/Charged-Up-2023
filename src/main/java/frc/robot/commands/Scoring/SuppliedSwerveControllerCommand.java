@@ -11,6 +11,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -164,12 +165,13 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 
 	@Override
 	public void initialize() {
-		m_trajectory = trajectorySupplier.get();
-		m_desiredRotation = () -> m_trajectory.getStates().get(m_trajectory.getStates().size() - 1).poseMeters.getRotation();
 
-		System.out.println(m_trajectory);
+		m_trajectory = trajectorySupplier.get();
 
 		swerve.resetOdometry(m_trajectory.getInitialPose());
+
+		m_controller.setTolerance(new Pose2d(new Translation2d(.1,.1), new Rotation2d(.1)));
+		m_desiredRotation = () -> m_trajectory.getStates().get(m_trajectory.getStates().size() - 1).poseMeters.getRotation();
 
 		m_timer.reset();
 		m_timer.start();
@@ -193,6 +195,6 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 
 	@Override
 	public boolean isFinished() {
-		return m_timer.hasElapsed(m_trajectory.getTotalTimeSeconds());
+		return m_timer.hasElapsed(m_trajectory.getTotalTimeSeconds()) && m_controller.atReference();
 	}
 }

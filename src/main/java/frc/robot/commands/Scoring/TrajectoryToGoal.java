@@ -58,9 +58,9 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
 
     double goalAngle = robotAngle > 0 ? 90 : -90;
 
-    Pose2d center = new Pose2d(0.2, 0, new Rotation2d(goalAngle));
-    Pose2d left = new Pose2d(0.2, -0.55, new Rotation2d(goalAngle));
-    Pose2d right = new Pose2d(0.2, 0.55, new Rotation2d(goalAngle));
+    Pose2d center = new Pose2d(0.5, 0, new Rotation2d(Math.toRadians(goalAngle)));
+    Pose2d left = new Pose2d(0.5, -0.55, new Rotation2d((Math.toRadians(goalAngle))));
+    Pose2d right = new Pose2d(0.2, 0.55, new Rotation2d((Math.toRadians(goalAngle))));
 
     SpecificLimelight limelight = swerve.getCorrectLimelight();
 
@@ -72,11 +72,11 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
 
     return TrajectoryGenerator.generateTrajectory(
         // current bot pose
-        new Pose2d(-currentRobotPose.getZ(), currentRobotPose.getX(), new Rotation2d(robotAngle)),
+        new Pose2d(-currentRobotPose.getZ(), currentRobotPose.getX(), new Rotation2d(Math.toRadians(robotAngle))),
         // intersection point
         List.of(new Translation2d(-currentRobotPose.getZ(), center.getY())),
         // target point
-        center, config);
+        left, config);
   }
 
 }

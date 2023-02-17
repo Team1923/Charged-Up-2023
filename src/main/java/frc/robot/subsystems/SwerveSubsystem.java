@@ -177,13 +177,15 @@ public class SwerveSubsystem extends SubsystemBase {
         // // mod.getState().speedMetersPerSecond);
         // // }
 
-        // // field2D.setRobotPose(getPose());
+        field2D.setRobotPose(getPose());
 
-        // SmartDashboard.putString("CORRECT LIMELIGHT", getCorrectLimelight().toString());
+        SmartDashboard.putData("field", field2D);
 
-        // SmartDashboard.putNumber("YAW IEEE", getYawIEEE());
+        SmartDashboard.putString("CORRECT LIMELIGHT", getCorrectLimelight().toString());
 
-        // /SmartDashboard.putString("Bot Pose", BetterLimelightInterface.getInstance().getRobotPose3d(SpecificLimelight.LEFT_LIMELIGHT).toString());
+        SmartDashboard.putNumber("YAW IEEE", getYawIEEE());
+
+        SmartDashboard.putString("Bot Pose", BetterLimelightInterface.getInstance().getRobotPose3d(SpecificLimelight.LEFT_LIMELIGHT).toString());
 
     }
 }
