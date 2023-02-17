@@ -110,11 +110,11 @@ public class IntakeArmDefaultCommand extends CommandBase {
   }
 
   public void setWheelSpeeds() {
-    if (eject.getAsBoolean()) {
-      intake.setRawWheelSpeed(-0.2);
-    }
+
     if (stateHandler.getIsArmMoving()) {
       intake.setRawWheelSpeed(-0.1);
+    } else if (eject.getAsBoolean()) {
+      intake.setRawWheelSpeed(-0.2);
     } else if (intake.getAverageCurrentAboveThreshold(20)) {
       intake.setRawWheelSpeed(0.1);
     } else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE && driverRightJoystick.getAsDouble() > 0.2) {
