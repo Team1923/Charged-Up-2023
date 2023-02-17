@@ -121,10 +121,10 @@ public class SwerveSubsystem extends SubsystemBase {
         return Math.sqrt(Math.pow(currentChassisSpeeds.vxMetersPerSecond, 2) + Math.pow(currentChassisSpeeds.vyMetersPerSecond, 2));
     }
 
-    public double getHeadingFromChassisSpeed(){
+    public Rotation2d getHeadingFromChassisSpeed(){
         ChassisSpeeds currentChassisSpeeds = Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
-
-        return currentChassisSpeeds.vyMetersPerSecond / getRobotVelocity();
+        
+        return new Rotation2d(Math.atan2(currentChassisSpeeds.vyMetersPerSecond, currentChassisSpeeds.vxMetersPerSecond));
     }
 
     public void zeroGyro() {

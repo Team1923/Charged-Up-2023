@@ -62,7 +62,7 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
     // holonomic rotation = actual robot heading
     Rotation2d robotHeading = new Rotation2d(Math.toRadians(swerve.getYawIEEE()));
     Rotation2d goalHeading = new Rotation2d(Math.toRadians(swerve.getYawIEEE() > 0 ? 90 : -90));
-    Rotation2d wheelHeading = new Rotation2d(Math.toRadians(swerve.getHeadingFromChassisSpeed()));
+    Rotation2d wheelHeading = swerve.getHeadingFromChassisSpeed(); //this is already given in radians
 
     Pose2d center = new Pose2d(0.5, 0, goalHeading);
     Pose2d left = new Pose2d(0.5, -0.55, goalHeading);
@@ -75,8 +75,8 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
         new PathConstraints(3, 3), // stole the values from our WPILib generator
         new PathPoint(new Translation2d(-currentRobotPose.getZ(), currentRobotPose.getX()), wheelHeading, robotHeading,
             swerve.getRobotVelocity()), // initial
-        new PathPoint(new Translation2d(-currentRobotPose.getZ(), center.getY()), new Rotation2d(180)), // intermediary
-        new PathPoint(new Translation2d(center.getX(), center.getY()), new Rotation2d(180), goalHeading)); // final
+        new PathPoint(new Translation2d(-currentRobotPose.getZ(), center.getY()), new Rotation2d(Math.PI)), // intermediary
+        new PathPoint(new Translation2d(center.getX(), center.getY()), new Rotation2d(Math.PI), goalHeading)); // final
 
   }
 
