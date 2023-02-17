@@ -28,7 +28,7 @@ import frc.robot.util.math.RollingAvgDouble;
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   private WPI_TalonFX intakeProximalMotor = new WPI_TalonFX(IntakeConstants.intakeProximalID, "rio");
-  private WPI_TalonFX intakeDistalMotor = new WPI_TalonFX(IntakeConstants.intakeDistalID);
+  private WPI_TalonFX intakeDistalMotor = new WPI_TalonFX(IntakeConstants.intakeDistalID, "rio");
   private WPI_TalonFX leftIntakeWheelMotor = new WPI_TalonFX(IntakeConstants.leftIntakeWheelMotor, "rio");
   private WPI_TalonFX rightIntakeWheelMotor = new WPI_TalonFX(IntakeConstants.rightIntakeWheelMotor, "rio");
 
@@ -267,8 +267,8 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("INTAKE PROXIMAL POSITION RADS: ", getIntakeProximalPosition());
     SmartDashboard.putNumber("INTAKE DISTAL POSITION RADS: ", getIntakeDistalPosition());
 
-    SmartDashboard.putNumber("ABSOLUTE Proximal Encoder Rads", getIntakeProximalAbsoluteEncoderRads());
-    SmartDashboard.putNumber("ABSOLUTE Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());
+    SmartDashboard.putNumber("INTAKE ABSOLUTE Proximal Encoder Rads", getIntakeProximalAbsoluteEncoderRads());
+    SmartDashboard.putNumber("INTAKE ABSOLUTE Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());
 
     SmartDashboard.putString("Robot Direction", stateHandler.getRobotDirection().toString());
 

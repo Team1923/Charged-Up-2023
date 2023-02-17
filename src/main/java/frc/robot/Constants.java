@@ -91,8 +91,8 @@ public final class Constants {
 
     public static final double intakeProximalHardstop = 2.971;
     public static final double intakeDistalHardstop = 1.307;
-    public static final double proximalEncoderZero = 0.510;
-    public static final double distalEncoderZero = 0.858;
+    public static final double proximalEncoderZero = 0.540;
+    public static final double distalEncoderZero = 4.464;
 
     public static final double intakeMaxProximalGravityConstant = 0.2;
     public static final double intakeMaxDistalGravityConstant = 0.15;

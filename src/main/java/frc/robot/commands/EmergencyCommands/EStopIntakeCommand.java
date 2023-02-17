@@ -13,6 +13,7 @@ public class EStopIntakeCommand extends CommandBase {
   public EStopIntakeCommand(IntakeSubsystem intake) {
     this.intake = intake;
     addRequirements(intake);
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -36,4 +37,11 @@ public class EStopIntakeCommand extends CommandBase {
   public boolean isFinished() {
     return false;
   }
+
+  @Override
+  public InterruptionBehavior getInterruptionBehavior(){
+    return InterruptionBehavior.kCancelIncoming;
+  }
+
+  
 }

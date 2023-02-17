@@ -144,7 +144,15 @@ public class Robot extends LoggedRobot {
         - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.1
     && Math.abs(
         robotContainer.intakeSubsystem.getIntakeDistalPosition()
-            - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()) < 0.1;
+            - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()) < 0.3;
+
+    SmartDashboard.putNumber("INTAKE PROXIMAL ERROR", Math
+    .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
+        - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()));
+    
+    SmartDashboard.putNumber("INTAKE DISTAL ERROR", Math.abs(
+      robotContainer.intakeSubsystem.getIntakeDistalPosition()
+          - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()));
 
     robotContainer.armSubsystem.setCoast();
 

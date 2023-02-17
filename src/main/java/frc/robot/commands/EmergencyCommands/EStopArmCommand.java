@@ -36,4 +36,9 @@ public class EStopArmCommand extends CommandBase {
   public boolean isFinished() {
     return false;
   }
+
+  @Override
+  public InterruptionBehavior getInterruptionBehavior(){
+    return InterruptionBehavior.kCancelIncoming;
+  }
 }
