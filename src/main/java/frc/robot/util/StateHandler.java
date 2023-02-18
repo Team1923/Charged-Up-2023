@@ -234,12 +234,9 @@ public class StateHandler {
         wantToScore = false;
         holdInCobra = false;
         manualLift = false;
-
-        mode = GamePieceMode.CUBE;
         
         currentRobotDirection = CurrentRobotDirection.RIGHT;
-    
-        currentLimelight = SpecificLimelight.LEFT_LIMELIGHT;
+
     
         isArmMoving = false;
     

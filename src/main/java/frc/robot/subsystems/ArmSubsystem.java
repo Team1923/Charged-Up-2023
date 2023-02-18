@@ -208,14 +208,11 @@ public class ArmSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (getDistalCurrent() > 20 || getProximalCurrent() > 20) { // FIND CURRENT VALUES THAT WORK
+    if (getDistalCurrent() > 50 || getProximalCurrent() > 50) { // FIND CURRENT VALUES THAT WORK
       proximalMotor.stopMotor();
       distalMotor.stopMotor();
       CommandScheduler.getInstance().schedule(new EStopArmCommand(this));
     }
-
-    double currentProximalPosition = getProximalPosition();
-    double currentDistalPosition = getDistalPosition();
 
     // This method will be called once per scheduler run
 
@@ -242,6 +239,18 @@ public class ArmSubsystem extends SubsystemBase {
       stateHandler.setCurrentArmPosition(stateHandler.getArmDesiredPosition());
     }
     
-    // SmartDashboard.putBoolean("GRIP ENGAGED", stateHandler.getGripperEngaged());
+    SmartDashboard.putBoolean("GRIP ENGAGED", stateHandler.getGripperEngaged());
+
+    SmartDashboard.putNumber("ABS ENCODER PROXIMAL ARM", getProximalAbsoluteEncoderRads());
+    SmartDashboard.putNumber("ABS ENCODER DISTAL ARM", getDistalAbsoluteEncoderRads());
+
+    SmartDashboard.putNumber("MOTOR ENCODER PROXIMAL ARM", getProximalPosition());
+    SmartDashboard.putNumber("MOTOR ENCODER DISTAL ARM", getDistalPosition());
+
+    SmartDashboard.putString("CURRENT GAME MODE", stateHandler.getGamePieceMode().toString());
+
+    SmartDashboard.putNumber("DISTAL CLOSED LOOP ERROR", distalMotor.getClosedLoopError());
+
+
   }
 }

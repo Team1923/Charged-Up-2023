@@ -122,12 +122,12 @@ public final class Constants {
     public static final int proximalMotorID = 15; // needs to be changed
     public static final int distalMotorID = 14; // needs to be changed
 
-    public static final double proximalkP = 0.1;
-    public static final double proximalkI = 0;
+    public static final double proximalkP = 0.2;
+    public static final double proximalkI = 0.0001;
     public static final double proximalkD = 0;
 
-    public static final double distalkP = 0.1;
-    public static final double distalkI = 0;
+    public static final double distalkP = 0.2;
+    public static final double distalkI = 0.0001;
     public static final double distalkD = 0;
 
     // CCW positive
@@ -151,11 +151,11 @@ public final class Constants {
     public static final double lengthOfProximal = 1.0922;
     public static final double lengthOfDistal = 0.83185;
 
-    public static final double maxProximalVel = (5 / 4) * 35000;
-    public static final double maxProximalAccel = 20000;
+    public static final double maxProximalVel = 10000;
+    public static final double maxProximalAccel = 10000;
 
-    public static final double maxDistalVel = (5 / 4) * 2 * 35000;
-    public static final double maxDistalAccel = 10000;
+    public static final double maxDistalVel = 20000;
+    public static final double maxDistalAccel = 20000;
 
     public static final double maxDistalGravityConstant = 0;
     // THE NUMERICAL GRAVITY CONSTANT IS DIVIDED BY COS(21 degrees)
@@ -176,8 +176,8 @@ public final class Constants {
 
     public static final double proximalHardstop = Math.PI/2;
     public static final double distalHardstop = -Math.PI/2;
-    public static final double proximalEncoderZero = 0.472;
-    public static final double distalEncoderZero = -0.460;
+    public static final double proximalEncoderZero = 0.460;
+    public static final double distalEncoderZero = -0.821;
 
     public static final double errorThreshold = 0.05;
 

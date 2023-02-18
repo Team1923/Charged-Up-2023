@@ -20,10 +20,10 @@ public class TeleopSwerve extends CommandBase {
     private DoubleSupplier strafeSup;
     private DoubleSupplier rotationSup;
     private BooleanSupplier robotCentricSup;
-    private DoubleSupplier leftTrigger;
+    private BooleanSupplier leftTrigger;
 
     public TeleopSwerve(SwerveSubsystem s_Swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup,
-            DoubleSupplier rotationSup, BooleanSupplier robotCentricSup, DoubleSupplier leftTrigger) {
+            DoubleSupplier rotationSup, BooleanSupplier robotCentricSup, BooleanSupplier leftTrigger) {
         this.s_Swerve = s_Swerve;
         addRequirements(s_Swerve);
 
@@ -41,16 +41,21 @@ public class TeleopSwerve extends CommandBase {
         double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband);
         double rotationVal = 0.6 * MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
 
-        // if(Math.abs(translationVal) < .02 && Math.abs(strafeVal) < .02 && Math.abs(rotationVal) < .02) {
-        //     //s_Swerve.stop();
-        //     return;
+        // if(Math.abs(translationVal) < .02 && Math.abs(strafeVal) < .02 &&
+        // Math.abs(rotationVal) < .02) {
+        // //s_Swerve.stop();
+        // return;
         // }
 
-
-        if(leftTrigger.getAsDouble() > 0.2){
+        if (robotCentricSup.getAsBoolean()) {
             translationVal *= 0.3;
             strafeVal *= 0.4;
-            rotationVal *= 0.4;
+            rotationVal *= 0.2;
+        }
+        if (leftTrigger.getAsBoolean()) {
+            translationVal *= 0.3;
+            strafeVal *= 0.4;
+            rotationVal *= 0.2;
         }
 
         /* Drive */

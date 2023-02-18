@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -118,6 +119,7 @@ public class RobotContainer {
         operatorRightBumper.onTrue(new StowIntakeCommand());
 
         aButton.toggleOnTrue(new TrajectoryToGoal(s_Swerve));
+        bButton.onTrue(new InstantCommand(() -> SmartDashboard.putNumber("Calculated Wheel Heading: ", s_Swerve.getWheelHeading().getDegrees())));
     }
 
     private void setDefaultCommands() {
@@ -127,8 +129,8 @@ public class RobotContainer {
                         () -> -driver.getRawAxis(translationAxis),
                         () -> -driver.getRawAxis(strafeAxis),
                         () -> -driver.getRawAxis(rotationAxis),
-                        () -> robotCentric.getAsBoolean(),
-                        () -> driver.getRawAxis(2)));
+                        () -> driver.getRawAxis(2) > 0.2,
+                        () -> robotCentric.getAsBoolean()));
 
         intakeSubsystem.setDefaultCommand(new IntakeArmDefaultCommand(intakeSubsystem, () -> driver.getRawAxis(3), () -> centerLeftButton.getAsBoolean()));
         armSubsystem.setDefaultCommand(new ArmDefaultCommand(armSubsystem));

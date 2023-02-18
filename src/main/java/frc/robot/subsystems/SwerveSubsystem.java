@@ -180,14 +180,15 @@ public class SwerveSubsystem extends SubsystemBase {
     public void periodic() {
         swerveOdometry.update(getYaw(), getModulePositions());
         SmartDashboard.putString("CURRENT ROBOT DIRECTION", stateHandler.getRobotDirection().toString());
-        if (getCorrectLimelight() == SpecificLimelight.LEFT_LIMELIGHT) {
-            // stateHandler.setRobotDirection(CurrentRobotDirection.LEFT);
-            stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
-        } else {
-            stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
-        }
+        // if (getCorrectLimelight() == SpecificLimelight.LEFT_LIMELIGHT) {
+        //     stateHandler.setRobotDirection(CurrentRobotDirection.LEFT);
+        //     //stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
+        // } else {
+        //     stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
+        // }
 
-        System.out.println(getWheelHeading().toString());
+        SmartDashboard.putNumber("OPTIMIZED ANGLE", mSwerveMods[0].getOptimizedAngle());
+        SmartDashboard.putNumber("RAW MODULE ANGLE", mSwerveMods[0].getStateAngle());
 
         // for(SwerveModule mod : mSwerveMods){
         // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",

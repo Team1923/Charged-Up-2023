@@ -4,6 +4,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.Constants.Swerve;
 import frc.robot.util.CTREModuleState;
@@ -25,6 +26,7 @@ public class SwerveModule {
     private CANCoder angleEncoder;
 
     private double currentOptimizedAngle = 0;
+    private double stateAngle = 0;
 
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Swerve.driveKS, Swerve.driveKV, Swerve.driveKA);
 
@@ -53,7 +55,9 @@ public class SwerveModule {
          * continuous controller which CTRE and Rev onboard is not
          */
         desiredState = CTREModuleState.optimize(desiredState, getState().angle);
-        updateCurrentOptimizedAngle(desiredState.angle.getRadians());
+
+        updateCurrentOptimizedAngle(desiredState.angle.getDegrees());
+        stateAngle = getState().angle.getDegrees();
         setAngle(desiredState);
         setSpeed(desiredState, isOpenLoop);
     }
@@ -139,5 +143,9 @@ public class SwerveModule {
 
     public double getOptimizedAngle(){
         return currentOptimizedAngle;
+    }
+
+    public double getStateAngle(){
+        return stateAngle;
     }
 }
