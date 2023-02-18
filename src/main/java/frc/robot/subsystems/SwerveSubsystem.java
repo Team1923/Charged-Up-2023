@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
 public class SwerveSubsystem extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
@@ -113,23 +112,24 @@ public class SwerveSubsystem extends SubsystemBase {
         return positions;
     }
 
-    // Return the speed of the robot using the sum of the X and Y chassis speeds taken from
+    // Return the speed of the robot using the sum of the X and Y chassis speeds
+    // taken from
     // a forward kinematics calculation from the swerve drive kinematics object
     public double getRobotVelocity() {
         ChassisSpeeds currentChassisSpeeds = Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
 
-        return Math.sqrt(Math.pow(currentChassisSpeeds.vxMetersPerSecond, 2) + Math.pow(currentChassisSpeeds.vyMetersPerSecond, 2));
+        return Math.sqrt(Math.pow(currentChassisSpeeds.vxMetersPerSecond, 2)
+                + Math.pow(currentChassisSpeeds.vyMetersPerSecond, 2));
     }
 
-
-    public Rotation2d getWheelHeading(){
+    public Rotation2d getWheelHeading() {
         double angle = 0;
-        for(SwerveModule m : mSwerveMods){
-            if(m.getState().speedMetersPerSecond < 0){
+        for (SwerveModule m : mSwerveMods) {
+            if (m.getState().speedMetersPerSecond < 0) {
                 double wheelAngle = m.getOptimizedAngle();
-                if(wheelAngle < 0){
+                if (wheelAngle < 0) {
                     angle += (wheelAngle + 180);
-                } else if(m.getOptimizedAngle() > 0){
+                } else if (wheelAngle > 0) {
                     angle += (wheelAngle - 180);
                 }
             } else {
@@ -187,7 +187,8 @@ public class SwerveSubsystem extends SubsystemBase {
             stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
         }
 
-        
+        System.out.println(getWheelHeading().toString());
+
         // for(SwerveModule mod : mSwerveMods){
         // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",
         // mod.getCanCoder().getDegrees());
