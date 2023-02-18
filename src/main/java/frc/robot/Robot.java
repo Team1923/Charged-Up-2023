@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.EmergencyCommands.EStopArmCommand;
 import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;
+import frc.robot.interfaces.ArmLedInterface;
+import frc.robot.interfaces.IntakeLedInterface;
 import frc.robot.util.StateHandler;
 
 /**
@@ -120,12 +122,15 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+
   }
 
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
     StateHandler.getInstance().resetStates();
+
+  
   }
 
   /** This function is called periodically when disabled. */
@@ -159,6 +164,21 @@ public class Robot extends LoggedRobot {
     SmartDashboard.putBoolean("INTAKE GOOD TO GO", intakeGood);
 
     SmartDashboard.putBoolean("ARM GOOD TO GO", armGood);
+
+   
+    if(!armGood){
+      ArmLedInterface.getInstance().redOsciliating();
+    }
+    else{
+      ArmLedInterface.getInstance().setGreen();
+    }
+    
+    if(!intakeGood){
+      // IntakeLedInterface.getInstance().redOsciliating();
+    }
+    else{
+      // IntakeLedInterface.getInstance().setGreen();
+    }
   }
 
   /**
@@ -208,7 +228,14 @@ public class Robot extends LoggedRobot {
       autonomousCommand.cancel();
     }
     robotContainer.armSubsystem.setBrake();
+
+
+    ArmLedInterface.getInstance().setPurple();
+    // IntakeLedInterface.getInstance().setPurple();
   }
+
+
+
 
   /** This function is called periodically during operator control. */
   @Override
