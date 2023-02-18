@@ -62,7 +62,7 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
     // holonomic rotation = actual robot heading
     Rotation2d robotHeading = new Rotation2d(Math.toRadians(swerve.getYawIEEE()));
     Rotation2d goalHeading = new Rotation2d(Math.toRadians(swerve.getYawIEEE() > 0 ? 90 : -90));
-    Rotation2d wheelHeading = swerve.getHeadingFromChassisSpeed(); //this is already given in radians
+    Rotation2d wheelHeading = swerve.getWheelHeading(); //this is already given in radians
 
     Pose2d center = new Pose2d(0.5, 0, goalHeading);
     Pose2d left = new Pose2d(0.5, -0.55, goalHeading);

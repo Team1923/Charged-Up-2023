@@ -24,6 +24,8 @@ public class SwerveModule {
     private TalonFX mDriveMotor;
     private CANCoder angleEncoder;
 
+    private double currentOptimizedAngle = 0;
+
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Swerve.driveKS, Swerve.driveKV, Swerve.driveKA);
 
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants) {
@@ -51,6 +53,7 @@ public class SwerveModule {
          * continuous controller which CTRE and Rev onboard is not
          */
         desiredState = CTREModuleState.optimize(desiredState, getState().angle);
+        updateCurrentOptimizedAngle(desiredState.angle.getRadians());
         setAngle(desiredState);
         setSpeed(desiredState, isOpenLoop);
     }
@@ -128,5 +131,13 @@ public class SwerveModule {
     public void stop() {
         mDriveMotor.set(ControlMode.PercentOutput, 0);
         mAngleMotor.set(ControlMode.PercentOutput, 0);
+    }
+
+    public void updateCurrentOptimizedAngle(double angle){
+        currentOptimizedAngle = angle;
+    }
+
+    public double getOptimizedAngle(){
+        return currentOptimizedAngle;
     }
 }

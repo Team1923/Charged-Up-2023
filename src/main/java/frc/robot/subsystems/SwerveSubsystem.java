@@ -121,10 +121,22 @@ public class SwerveSubsystem extends SubsystemBase {
         return Math.sqrt(Math.pow(currentChassisSpeeds.vxMetersPerSecond, 2) + Math.pow(currentChassisSpeeds.vyMetersPerSecond, 2));
     }
 
-    public Rotation2d getHeadingFromChassisSpeed(){
-        ChassisSpeeds currentChassisSpeeds = Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
-        
-        return new Rotation2d(Math.atan2(currentChassisSpeeds.vyMetersPerSecond, currentChassisSpeeds.vxMetersPerSecond));
+
+    public Rotation2d getWheelHeading(){
+        double angle = 0;
+        for(SwerveModule m : mSwerveMods){
+            if(m.getState().speedMetersPerSecond < 0){
+                double wheelAngle = m.getOptimizedAngle();
+                if(wheelAngle < 0){
+                    angle += (wheelAngle + 180);
+                } else if(m.getOptimizedAngle() > 0){
+                    angle += (wheelAngle - 180);
+                }
+            } else {
+                angle += m.getOptimizedAngle();
+            }
+        }
+        return new Rotation2d(angle / 4);
     }
 
     public void zeroGyro() {
