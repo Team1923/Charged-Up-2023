@@ -6,6 +6,8 @@ package frc.robot.commands.StateCommands;
 
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.interfaces.ArmLedInterface;
+import frc.robot.interfaces.IntakeLedInterface;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.GamePieceMode;
 
@@ -21,6 +23,8 @@ public class SetGamePiece extends CommandBase {
   //The robot intial's game mode is cone, thus it will use the cone intake speed and scoring postions unless switched to cube
   public void initialize() {
     stateHandler.setGamePieceMode(GamePieceMode.CONE);
+    // IntakeLedInterface.getInstance().setYellow();
+    ArmLedInterface.getInstance().setYellow();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -31,6 +35,8 @@ public class SetGamePiece extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     stateHandler.setGamePieceMode(GamePieceMode.CUBE);
+    // IntakeLedInterface.getInstance().setPurple();
+    ArmLedInterface.getInstance().setPurple();
   }
 
   // Returns true when the command should end.
