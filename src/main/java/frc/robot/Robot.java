@@ -30,11 +30,8 @@ public class Robot extends LoggedRobot {
 
   public static CTREConfigs ctreConfigs = new CTREConfigs();
 
-  private boolean armGood = false;
-  private boolean intakeGood = false;
 
   private AutoChooser selector;
-
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -64,52 +61,51 @@ public class Robot extends LoggedRobot {
   public void disabledInit() {
     StateHandler.getInstance().resetStates();
 
-  
   }
 
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
 
-    armGood = Math
-    .abs(robotContainer.armSubsystem.getProximalPosition()
-        - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getProximalAngle()) < 0.1
-    && Math.abs(
-        robotContainer.armSubsystem.getDistalPosition()
-            - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getDistalAngle()) < 0.1;
+    boolean armGood = StateHandler.getInstance().getIsArmGood();
+    boolean intakeGood = StateHandler.getInstance().getIsIntakeGood();
 
-    intakeGood = Math
-    .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
-        - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.1
-    && Math.abs(
-        robotContainer.intakeSubsystem.getIntakeDistalPosition()
-            - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()) < 0.3;
+    StateHandler.getInstance().setArmGood(Math
+        .abs(robotContainer.armSubsystem.getProximalPosition()
+            - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getProximalAngle()) < 0.1
+        && Math.abs(
+            robotContainer.armSubsystem.getDistalPosition()
+                - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getDistalAngle()) < 0.1);
+
+    StateHandler.getInstance().setIntakeGood(Math
+        .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
+            - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.1
+        && Math.abs(
+            robotContainer.intakeSubsystem.getIntakeDistalPosition()
+                - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()) < 0.3);
 
     SmartDashboard.putNumber("INTAKE PROXIMAL ERROR", Math
-    .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
-        - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()));
-    
+        .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
+            - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()));
+
     SmartDashboard.putNumber("INTAKE DISTAL ERROR", Math.abs(
-      robotContainer.intakeSubsystem.getIntakeDistalPosition()
-          - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()));
+        robotContainer.intakeSubsystem.getIntakeDistalPosition()
+            - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()));
 
     robotContainer.armSubsystem.setCoast();
 
-    SmartDashboard.putBoolean("INTAKE GOOD TO GO", intakeGood);
+    SmartDashboard.putBoolean("INTAKE GOOD TO GO", armGood);
 
-    SmartDashboard.putBoolean("ARM GOOD TO GO", armGood);
+    SmartDashboard.putBoolean("ARM GOOD TO GO", intakeGood);
 
-   
-    if(!armGood){
+    if (!armGood) {
       ArmLedInterface.getInstance().redOsciliating();
-    }
-    else{
+    } else {
       ArmLedInterface.getInstance().setGreen();
     }
-    
-    if(!intakeGood){
-    }
-    else{
+
+    if (!intakeGood) {
+    } else {
     }
   }
 
@@ -119,13 +115,16 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void autonomousInit() {
+
+    boolean armGood = StateHandler.getInstance().getIsArmGood();
+    boolean intakeGood = StateHandler.getInstance().getIsIntakeGood();
     autonomousCommand = robotContainer.initializeAuto(selector);
 
-    if(!armGood) {
+    if (!armGood) {
       CommandScheduler.getInstance().schedule(new EStopArmCommand(robotContainer.armSubsystem));
     }
 
-    if(!intakeGood) {
+    if (!intakeGood) {
       CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
     }
 
@@ -148,11 +147,14 @@ public class Robot extends LoggedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
 
-    if(!armGood) {
+    boolean armGood = StateHandler.getInstance().getIsArmGood();
+    boolean intakeGood = StateHandler.getInstance().getIsIntakeGood();
+
+    if (!armGood) {
       CommandScheduler.getInstance().schedule(new EStopArmCommand(robotContainer.armSubsystem));
     }
 
-    if(!intakeGood) {
+    if (!intakeGood) {
       CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
     }
 
@@ -161,12 +163,8 @@ public class Robot extends LoggedRobot {
     }
     robotContainer.armSubsystem.setBrake();
 
-
     ArmLedInterface.getInstance().setPurple();
   }
-
-
-
 
   /** This function is called periodically during operator control. */
   @Override

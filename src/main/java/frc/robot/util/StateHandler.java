@@ -26,7 +26,9 @@ public class StateHandler {
             gripperEngaged = false,
             wantToScore = false,
             holdInCobra = false,
-            manualLift = false;
+            manualLift = false,
+            armGood = false,
+            intakeGood = false;
 
     private GamePieceMode mode = GamePieceMode.CUBE;
 
@@ -245,6 +247,23 @@ public class StateHandler {
         timeSinceReadyToScore = 0;
         
     }
+
+    public void setArmGood(boolean isArmGood){
+        armGood = isArmGood;
+    }
+
+    public boolean getIsArmGood(){
+        return armGood;
+    }
+
+    public void setIntakeGood(boolean isIntakeGood){
+        intakeGood = isIntakeGood;
+    }
+
+    public boolean getIsIntakeGood(){
+        return intakeGood;
+    }
+
     // Returns the current arm position from scoring location depending on where the current Vertical Location Is
     public ArmPositions getArmPositionFromScoringLocation() {
         VerticalLocations currentVerticalLocation = getCurrentVerticalLocation();
