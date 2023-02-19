@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.EmergencyCommands.EStopArmCommand;
 import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;
 import frc.robot.interfaces.AutoChooser;
+import frc.robot.interfaces.LEDInterface;
 import frc.robot.util.StateHandler;
 
 /**
@@ -53,6 +54,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    LEDInterface.getInstance().updateLed();
 
   }
 
@@ -98,15 +100,7 @@ public class Robot extends LoggedRobot {
 
     SmartDashboard.putBoolean("ARM GOOD TO GO", intakeGood);
 
-    if (!armGood) {
-      ArmLedInterface.getInstance().redOsciliating();
-    } else {
-      ArmLedInterface.getInstance().setGreen();
-    }
-
-    if (!intakeGood) {
-    } else {
-    }
+    
   }
 
   /**
@@ -163,7 +157,6 @@ public class Robot extends LoggedRobot {
     }
     robotContainer.armSubsystem.setBrake();
 
-    ArmLedInterface.getInstance().setPurple();
   }
 
   /** This function is called periodically during operator control. */
