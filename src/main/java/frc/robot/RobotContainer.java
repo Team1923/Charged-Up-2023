@@ -23,6 +23,7 @@ import frc.robot.commands.StateCommands.SetArmLocation;
 import frc.robot.commands.StateCommands.SetGamePiece;
 import frc.robot.commands.StateCommands.SetRobotLocation;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
+import frc.robot.interfaces.AutoChooser;
 import frc.robot.subsystems.*;
 import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.HorizontalLocations;
@@ -77,6 +78,7 @@ public class RobotContainer {
     public final ArmSubsystem armSubsystem = new ArmSubsystem();
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final ManipulatorSubsystem gripper = new ManipulatorSubsystem();
+    private final ShuffleboardSubsystem shuffleboard = new ShuffleboardSubsystem();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -138,13 +140,7 @@ public class RobotContainer {
         gripper.setDefaultCommand(new ManipulatorDefaultCommand(gripper, () -> operator.getRawAxis(2)));
     }
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
-        return null;
+    public Command initializeAuto(AutoChooser selector){
+        return selector.startMode(s_Swerve);
     }
 }
