@@ -14,9 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.EmergencyCommands.EStopArmCommand;
 import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;
-import frc.robot.interfaces.ArmLedInterface;
 import frc.robot.interfaces.AutoChooser;
-import frc.robot.interfaces.IntakeLedInterface;
 import frc.robot.util.StateHandler;
 
 /**
@@ -110,10 +108,8 @@ public class Robot extends LoggedRobot {
     }
     
     if(!intakeGood){
-      // IntakeLedInterface.getInstance().redOsciliating();
     }
     else{
-      // IntakeLedInterface.getInstance().setGreen();
     }
   }
 
@@ -167,7 +163,6 @@ public class Robot extends LoggedRobot {
 
 
     ArmLedInterface.getInstance().setPurple();
-    // IntakeLedInterface.getInstance().setPurple();
   }
 
 
