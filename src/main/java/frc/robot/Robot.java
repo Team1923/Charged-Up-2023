@@ -112,6 +112,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
+    robotContainer.armSubsystem.setBrake();
+
     boolean armGood = StateHandler.getInstance().getIsArmGood();
     boolean intakeGood = StateHandler.getInstance().getIsIntakeGood();
     autonomousCommand = robotContainer.initializeAuto(selector);
