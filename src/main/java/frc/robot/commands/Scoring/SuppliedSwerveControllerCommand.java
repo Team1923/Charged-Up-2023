@@ -26,6 +26,11 @@ import frc.robot.subsystems.SwerveSubsystem;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.opencv.video.TrackerMIL_Params;
+
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+import com.pathplanner.lib.server.PathPlannerServer;
+
 /**
  * A command that uses two PID controllers ({@link PIDController}) and a
  * ProfiledPIDController
@@ -172,6 +177,14 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 
 		m_trajectory = trajectorySupplier.get();
 
+		PathPlannerServer.sendActivePath(m_trajectory.getStates());
+
+		// Pose2d newInitialPose = new Pose2d(
+		// 	new Translation2d(
+		// 		m_trajectory.getInitialPose().getX(), 
+		// 		m_trajectory.getInitialPose().getY()),
+		// 	new Rotation2d(-m_trajectory.getInitialPose().getRotation().getRadians()));
+
 		swerve.resetOdometry(m_trajectory.getInitialPose());
 
 		m_controller.setTolerance(new Pose2d(new Translation2d(.1, .1), new Rotation2d(.1)));
@@ -185,7 +198,11 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 	@Override
 	public void execute() {
 		double curTime = m_timer.get();
-		var desiredState = m_trajectory.sample(curTime);
+		PathPlannerState desiredState = (PathPlannerState) m_trajectory.sample(curTime);
+
+		PathPlannerServer.sendPathFollowingData(
+				new Pose2d(desiredState.poseMeters.getTranslation(), desiredState.holonomicRotation),
+				m_pose.get());
 
 		var targetChassisSpeeds = m_controller.calculate(m_pose.get(), desiredState, m_desiredRotation.get());
 		Pose2d robot_pose_vel = new Pose2d(targetChassisSpeeds.vxMetersPerSecond * AutoConstants.looperUpdateTime,

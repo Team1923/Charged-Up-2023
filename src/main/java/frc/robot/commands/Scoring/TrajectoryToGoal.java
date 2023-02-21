@@ -10,13 +10,16 @@ import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPoint;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -43,11 +46,10 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
     var thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0.001,
         AutoConstants.kThetaControllerConstraints);
 
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     addCommands(
         new SuppliedSwerveControllerCommand(
-            () -> generateTrajectory(),
+            ()->getPathPlannerTrajectory(),
             swerve::getPose,
             Swerve.swerveKinematics,
             new PIDController(AutoConstants.kPXController, 0, 0),
@@ -60,16 +62,17 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
   public PathPlannerTrajectory getPathPlannerTrajectory() {
     // heading argument = wheel direction
     // holonomic rotation = actual robot heading
-    Rotation2d robotHeading = new Rotation2d(Math.toRadians(swerve.getYawIEEE()));
-    Rotation2d goalHeading = new Rotation2d(Math.toRadians(swerve.getYawIEEE() > 0 ? 90 : -90));
-    //Rotation2d wheelHeading = swerve.getWheelHeading(); // this is already given in radians
+    Rotation2d robotHeading = new Rotation2d(Math.toRadians(-100));
+    //Rotation2d robotHeading = new Rotation2d(Math.toRadians(swerve.getYawIEEE()));
+    Rotation2d goalHeading = new Rotation2d(Math.toRadians(robotHeading.getDegrees() > 0 ? 90 : -90));
 
     Pose2d center = new Pose2d(0.5, 0, goalHeading);
     Pose2d left = new Pose2d(0.5, -0.55, goalHeading);
     Pose2d right = new Pose2d(0.2, 0.55, goalHeading);
 
     SpecificLimelight limelight = swerve.getCorrectLimelight();
-    Pose3d currentRobotPose = BetterLimelightInterface.getInstance().getRobotPose3d(limelight);
+    Pose3d currentRobotPose = new Pose3d(new Translation3d(-0.5,0,-1.5), new Rotation3d(0,0,0));
+    //Pose3d currentRobotPose = BetterLimelightInterface.getInstance().getRobotPose3d(limelight);
     double desiredWheelHeading = 0;
 
     if (currentRobotPose.getX() >= 0) {
@@ -83,8 +86,8 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
         new PathConstraints(3, 3), // stole the values from our WPILib generator
         new PathPoint(new Translation2d(-currentRobotPose.getZ(), currentRobotPose.getX()), new Rotation2d(desiredWheelHeading), robotHeading,
             swerve.getRobotVelocity()), // initial
-        new PathPoint(new Translation2d(-currentRobotPose.getZ(), center.getY()), new Rotation2d(Math.PI)), // intermediary
-        new PathPoint(new Translation2d(center.getX(), center.getY()), new Rotation2d(Math.PI), goalHeading)); // final
+        //new PathPoint(new Translation2d(-currentRobotPose.getZ(), right.getY()), new Rotation2d(Math.PI), goalHeading), // intermediary
+        new PathPoint(new Translation2d(right.getX(), right.getY()), new Rotation2d(Math.PI), goalHeading)); // final
 
   }
 
