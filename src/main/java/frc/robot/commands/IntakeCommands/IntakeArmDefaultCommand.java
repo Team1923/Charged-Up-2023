@@ -69,7 +69,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
         break;
       case HANDOFF_2:
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.HANDOFF_2) {
-          if (!intake.getAverageCurrentAboveThreshold(7)) {
+          if (!intake.getAverageCurrentAboveThreshold(20)) {
             stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
           } else {
             stateHandler.setDesiredIntakePosition(IntakePositions.FINAL_HANDOFF);
@@ -91,9 +91,9 @@ public class IntakeArmDefaultCommand extends CommandBase {
           stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE);
 
         }
-        intake.setSolenoid(true);
         break;
       case REVERSE_HANDOFF_1:
+      intake.setSolenoid(true);
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.REVERSE_HANDOFF_1) {
           stateHandler.setDesiredIntakePosition(IntakePositions.REVERSE_HANDOFF_2);
         }
@@ -115,7 +115,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
       intake.setRawWheelSpeed(-0.1);
     } else if (eject.getAsBoolean()) {
       intake.setRawWheelSpeed(-0.2);
-    } else if (intake.getAverageCurrentAboveThreshold(20)) {
+    } else if (intake.getAverageCurrentAboveThreshold(40)) {
       intake.setRawWheelSpeed(0.1);
     } else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE && driverRightJoystick.getAsDouble() > 0.2) {
       intake.setRawWheelSpeed(IntakeConstants.coneIntakeSpeed);

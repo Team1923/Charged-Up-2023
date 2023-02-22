@@ -4,12 +4,10 @@
 
 package frc.robot;
 
-
-import com.pathplanner.lib.server.PathPlannerServer;
+import org.littletonrobotics.junction.LoggedRobot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.EmergencyCommands.EStopArmCommand;
 import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;
 import frc.robot.interfaces.AutoChooser;
-import frc.robot.interfaces.LEDInterface;
 import frc.robot.util.StateHandler;
 
 /**
@@ -27,14 +24,17 @@ import frc.robot.util.StateHandler;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
 
   public static CTREConfigs ctreConfigs = new CTREConfigs();
 
+  private boolean armGood = false;
+  private boolean intakeGood = false;
 
   private AutoChooser selector;
+
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    PathPlannerServer.startServer(5811);
+
     CameraServer.startAutomaticCapture(0);
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
@@ -56,7 +56,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    LEDInterface.getInstance().updateLed();
 
   }
 
@@ -64,45 +63,54 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     StateHandler.getInstance().resetStates();
-
   }
 
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
 
-    boolean armGood = StateHandler.getInstance().getIsArmGood();
-    boolean intakeGood = StateHandler.getInstance().getIsIntakeGood();
+    armGood = Math
+    .abs(robotContainer.armSubsystem.getProximalPosition()
+        - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getProximalAngle()) < 0.1
+    && Math.abs(
+        robotContainer.armSubsystem.getDistalPosition()
+            - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getDistalAngle()) < 0.1;
 
-    StateHandler.getInstance().setArmGood(Math
-        .abs(robotContainer.armSubsystem.getProximalPosition()
-            - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getProximalAngle()) < 0.1
-        && Math.abs(
-            robotContainer.armSubsystem.getDistalPosition()
-                - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getDistalAngle()) < 0.1);
-
-    StateHandler.getInstance().setIntakeGood(Math
-        .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
-            - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.1
-        && Math.abs(
-            robotContainer.intakeSubsystem.getIntakeDistalPosition()
-                - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()) < 0.3);
+    intakeGood = Math
+    .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
+        - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.1
+    && Math.abs(
+        robotContainer.intakeSubsystem.getIntakeDistalPosition()
+            - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()) < 0.3;
 
     SmartDashboard.putNumber("INTAKE PROXIMAL ERROR", Math
-        .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
-            - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()));
-
+    .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
+        - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()));
+    
     SmartDashboard.putNumber("INTAKE DISTAL ERROR", Math.abs(
-        robotContainer.intakeSubsystem.getIntakeDistalPosition()
-            - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()));
+      robotContainer.intakeSubsystem.getIntakeDistalPosition()
+          - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()));
 
     robotContainer.armSubsystem.setCoast();
 
-    SmartDashboard.putBoolean("INTAKE GOOD TO GO", armGood);
+    SmartDashboard.putBoolean("INTAKE GOOD TO GO", intakeGood);
 
-    SmartDashboard.putBoolean("ARM GOOD TO GO", intakeGood);
+    SmartDashboard.putBoolean("ARM GOOD TO GO", armGood);
 
+   
+    // if(!armGood){
+    //   ArmLedInterface.getInstance().redOsciliating();
+    // }
+    // else{
+    //   ArmLedInterface.getInstance().setGreen();
+    // }
     
+    if(!intakeGood){
+      // IntakeLedInterface.getInstance().redOsciliating();
+    }
+    else{
+      // IntakeLedInterface.getInstance().setGreen();
+    }
   }
 
   /**
@@ -111,18 +119,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-
-    robotContainer.armSubsystem.setBrake();
-
-    boolean armGood = StateHandler.getInstance().getIsArmGood();
-    boolean intakeGood = StateHandler.getInstance().getIsIntakeGood();
     autonomousCommand = robotContainer.initializeAuto(selector);
 
-    if (!armGood) {
+    if(!armGood) {
       CommandScheduler.getInstance().schedule(new EStopArmCommand(robotContainer.armSubsystem));
     }
 
-    if (!intakeGood) {
+    if(!intakeGood) {
       CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
     }
 
@@ -145,14 +148,11 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
 
-    boolean armGood = StateHandler.getInstance().getIsArmGood();
-    boolean intakeGood = StateHandler.getInstance().getIsIntakeGood();
-
-    if (!armGood) {
+    if(!armGood) {
       CommandScheduler.getInstance().schedule(new EStopArmCommand(robotContainer.armSubsystem));
     }
 
-    if (!intakeGood) {
+    if(!intakeGood) {
       CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
     }
 
@@ -162,6 +162,9 @@ public class Robot extends TimedRobot {
     robotContainer.armSubsystem.setBrake();
 
   }
+
+
+
 
   /** This function is called periodically during operator control. */
   @Override

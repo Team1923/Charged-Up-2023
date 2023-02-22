@@ -91,8 +91,8 @@ public final class Constants {
 
     public static final double intakeProximalHardstop = 2.971;
     public static final double intakeDistalHardstop = 1.307;
-    public static final double proximalEncoderZero = 0.540;
-    public static final double distalEncoderZero = 4.464;
+    public static final double proximalEncoderZero = 0.515;
+    public static final double distalEncoderZero = 4.463;
 
     public static final double intakeMaxProximalGravityConstant = 0.2;
     public static final double intakeMaxDistalGravityConstant = 0.15;
@@ -108,8 +108,8 @@ public final class Constants {
     public static final double kIntakeDistalOffsetRads = 0;
 
     public static final double errorThreshold = 0.1;
-    public static final double cubeIntakeSpeed = .1;
-    public static final double coneIntakeSpeed = .25;
+    public static final double cubeIntakeSpeed = .2;
+    public static final double coneIntakeSpeed = .75;
     public static final double ejectSpeed = -1;
     public static final double cubeCurrentThreshold = 80;
     public static final double coneCurrentThreshold = 80;
@@ -134,11 +134,11 @@ public final class Constants {
     public static final double kProximalOffsetRads = 0;
     public static final double kDistalOffsetRads = 0;
 
-    public static final double proximalGearRatio = 27 * 5;
+    public static final double proximalGearRatio = 180;
     public static final double proximalTicksToRad = (2 * Math.PI) / (FalconConstants.ticksPerRev * proximalGearRatio);
     public static final double proximalRadsToTicks = 1 / proximalTicksToRad;
 
-    public static final double distalGearRatio = 27 * 5;
+    public static final double distalGearRatio = 180;
     public static final double distalTicksToRad = (2 * Math.PI) / (FalconConstants.ticksPerRev * distalGearRatio);
     public static final double distalRadsToTicks = 1 / proximalTicksToRad;
 
