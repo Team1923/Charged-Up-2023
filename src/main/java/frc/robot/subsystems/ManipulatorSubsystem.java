@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.StateHandler;
 
@@ -31,9 +30,5 @@ public class ManipulatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
-    SmartDashboard.putBoolean("GRIP?", stateHandler.getGripperEngaged());
-    SmartDashboard.putBoolean("WANT TO SCORE?", stateHandler.getWantToScore());
-    SmartDashboard.putNumber("TIME SINCE LAST SWAP", stateHandler.getTimeSinceLastGripChange());
   }
 }

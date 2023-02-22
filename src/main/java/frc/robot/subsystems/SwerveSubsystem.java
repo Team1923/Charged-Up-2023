@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.interfaces.BetterLimelightInterface;
 import frc.robot.interfaces.SwerveModule;
 import frc.robot.interfaces.BetterLimelightInterface.SpecificLimelight;
 import frc.robot.util.StateHandler;
@@ -188,8 +187,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
         SmartDashboard.putString("CURRENT ROBOT DIRECTION", stateHandler.getRobotDirection().toString());
 
-        SmartDashboard.putNumber("OPTIMIZED ANGLE", mSwerveMods[0].getOptimizedAngle());
-        SmartDashboard.putNumber("RAW MODULE ANGLE", mSwerveMods[0].getStateAngle());
 
         // for(SwerveModule mod : mSwerveMods){
         // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",

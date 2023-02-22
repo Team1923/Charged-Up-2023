@@ -13,12 +13,10 @@ import frc.robot.util.StateVariables.IntakePositions;
 public class IntakeToPosition extends CommandBase {
   /** Creates a new IntakeToPosition. */
   private IntakeSubsystem intakeSubsystem;
-  private IntakePositions desiredIntakePosition;
   private BooleanSupplier test;
   private BooleanSupplier otherTest;
-  public IntakeToPosition(IntakeSubsystem i, IntakePositions d, BooleanSupplier test, BooleanSupplier otherTest) {
+  public IntakeToPosition(IntakeSubsystem i, BooleanSupplier test, BooleanSupplier otherTest) {
     this.intakeSubsystem = i;
-    this.desiredIntakePosition = d;
     this.test = test;
     this.otherTest = otherTest;
     addRequirements(intakeSubsystem);

@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.util.StateHandler;
-import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.IntakePositions;
 
@@ -93,7 +92,10 @@ public class IntakeArmDefaultCommand extends CommandBase {
         }
         break;
       case REVERSE_HANDOFF_1:
-      intake.setSolenoid(true);
+        intake.setSolenoid(true);
+        if(stateHandler.getGripperEngaged()){
+          stateHandler.setResetManipulator(true);
+        }
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.REVERSE_HANDOFF_1) {
           stateHandler.setDesiredIntakePosition(IntakePositions.REVERSE_HANDOFF_2);
         }

@@ -239,8 +239,6 @@ public class ArmSubsystem extends SubsystemBase {
       stateHandler.setCurrentArmPosition(stateHandler.getArmDesiredPosition());
     }
     
-    SmartDashboard.putBoolean("GRIP ENGAGED", stateHandler.getGripperEngaged());
-
     SmartDashboard.putNumber("ABS ENCODER PROXIMAL ARM", getProximalAbsoluteEncoderRads());
     SmartDashboard.putNumber("ABS ENCODER DISTAL ARM", getDistalAbsoluteEncoderRads());
 
@@ -248,8 +246,6 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("MOTOR ENCODER DISTAL ARM", getDistalPosition());
 
     SmartDashboard.putString("CURRENT GAME MODE", stateHandler.getGamePieceMode().toString());
-
-    SmartDashboard.putNumber("DISTAL CLOSED LOOP ERROR", distalMotor.getClosedLoopError());
 
 
   }

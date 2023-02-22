@@ -11,7 +11,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -215,13 +214,6 @@ public class IntakeSubsystem extends SubsystemBase {
   public boolean getSolenoid() {
     return intakeSolenoid.get() == Value.kForward ? true : false;
   }
-//By checking the raw current, we know that we have a game piece if it spikes above a threshold value
-  public boolean intakeHasGamePiece() {
-    return ((stateHandler.getGamePieceMode() == GamePieceMode.CONE)
-        && (getCurrentDraw() > IntakeConstants.coneCurrentThreshold))
-        || ((stateHandler.getGamePieceMode() == GamePieceMode.CUBE)
-            && (getCurrentDraw() > IntakeConstants.cubeCurrentThreshold));
-  }
 
   public double getIntakeProximalCurrent(){
     return intakeProximalMotor.getStatorCurrent();
@@ -267,8 +259,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("INTAKE ABSOLUTE Proximal Encoder Rads", getIntakeProximalAbsoluteEncoderRads());
     SmartDashboard.putNumber("INTAKE ABSOLUTE Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());
-
-    SmartDashboard.putString("Robot Direction", stateHandler.getRobotDirection().toString());
 
     SmartDashboard.putString("Scoring Location Vertical", stateHandler.getCurrentVerticalLocation().toString());
     SmartDashboard.putString("Scoring Location Horizontal", stateHandler.getCurrentHorizontalLocation().toString());

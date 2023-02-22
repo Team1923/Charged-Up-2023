@@ -33,14 +33,13 @@ public class StateHandler {
     private GamePieceMode mode = GamePieceMode.CUBE;
 
     private CurrentRobotDirection currentRobotDirection = CurrentRobotDirection.RIGHT;
-
-    private SpecificLimelight currentLimelight = SpecificLimelight.LEFT_LIMELIGHT;
-
     private boolean isArmMoving = false;
 
     private double timeSinceLastGripChange = System.currentTimeMillis();
 
     private double timeSinceReadyToScore = 0;
+
+    //private boolean resetManipulator = false;
 
     public static synchronized StateHandler getInstance() {
         if (stateHandler == null) {
@@ -104,10 +103,6 @@ public class StateHandler {
         this.hasGamePiece = hasGamePiece;
     }
 
-    public void setManipulator(boolean resetManipulator) {
-        this.resetManipulator = resetManipulator;
-    }
-
     public boolean getIntakeInPosition() {
         return intakeInPosition;
     }
@@ -123,6 +118,10 @@ public class StateHandler {
     public boolean readyToClose() {
         return (currentIntakePosition == IntakePositions.FINAL_HANDOFF) &&
                 (currentArmPosition == ArmPositions.STOW);
+    }
+
+    public void setResetManipulator(boolean resetManipulator) {
+        this.resetManipulator = resetManipulator;
     }
 
     public boolean getResetManipulator() {

@@ -2,7 +2,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -10,9 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.ArmCommands.OldArmDefaultCommand;
 import frc.robot.commands.ArmCommands.ArmDefaultCommand;
-import frc.robot.commands.ArmCommands.ArmToPosition;
 import frc.robot.commands.IntakeCommands.DeployIntakeCommand;
 import frc.robot.commands.IntakeCommands.IntakeArmDefaultCommand;
 import frc.robot.commands.IntakeCommands.StowIntakeCommand;
@@ -25,7 +22,6 @@ import frc.robot.commands.StateCommands.SetRobotLocation;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.interfaces.AutoChooser;
 import frc.robot.subsystems.*;
-import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.HorizontalLocations;
 import frc.robot.util.StateVariables.VerticalLocations;
 
@@ -74,11 +70,11 @@ public class RobotContainer {
 
 
     /* Subsystems */
-    private final SwerveSubsystem s_Swerve = new SwerveSubsystem();
+    public final SwerveSubsystem s_Swerve = new SwerveSubsystem();
     public final ArmSubsystem armSubsystem = new ArmSubsystem();
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-    private final ManipulatorSubsystem gripper = new ManipulatorSubsystem();
-    private final ShuffleboardSubsystem shuffleboard = new ShuffleboardSubsystem();
+    public final ManipulatorSubsystem gripper = new ManipulatorSubsystem();
+    public final ShuffleboardSubsystem shuffleboard = new ShuffleboardSubsystem();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.

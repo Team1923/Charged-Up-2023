@@ -40,14 +40,12 @@ public class ManipulatorDefaultCommand extends CommandBase {
   @Override
   public void execute() {
 
-    // boolean reset = StateHandler.getInstance().getResetManipulator();
     boolean engage = StateHandler.getInstance().readyToClose();
 
-    boolean reset = breakOut.getAsDouble() > 0.2;
-    //boolean engage = engageGripper.getAsBoolean();
+    stateHandler.setResetManipulator(breakOut.getAsDouble() > 0.2);
 
 
-    if (reset) {
+    if (stateHandler.getResetManipulator()) {
       latch = false;
       gripper.set(false);
       stateHandler.setGripperEngaged(false);

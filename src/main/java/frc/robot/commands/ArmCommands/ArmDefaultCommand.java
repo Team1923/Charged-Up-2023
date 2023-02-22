@@ -7,7 +7,6 @@ package frc.robot.commands.ArmCommands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.interfaces.BetterLimelightInterface;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.ArmPositions;
@@ -19,7 +18,6 @@ public class ArmDefaultCommand extends CommandBase {
   /** Creates a new ArmDefaultCommand. */
   private ArmSubsystem armSubsystem;
   private StateHandler stateHandler = StateHandler.getInstance();
-  private BetterLimelightInterface limelightInterface = BetterLimelightInterface.getInstance();
   private Timer timer;
 
   public ArmDefaultCommand(ArmSubsystem aSubsystem) {
@@ -116,7 +114,7 @@ public class ArmDefaultCommand extends CommandBase {
         break;
     }
 
-    // resets arm position to stow based on its current state
+    
     if (stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle() < ArmConstants.minProximalPosition
         || stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle() > ArmConstants.maxProximalPosition) {
       armSubsystem.setProximalPosition(ArmPositions.STOW.getArmAngles().getProximalAngle());
