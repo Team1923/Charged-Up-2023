@@ -179,12 +179,12 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         swerveOdometry.update(Rotation2d.fromDegrees(getYawIEEE()), getModulePositions());
-        if (getCorrectLimelight() == SpecificLimelight.LEFT_LIMELIGHT) {
-            stateHandler.setRobotDirection(CurrentRobotDirection.LEFT);
-            //stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
-        } else {
-            stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
-        }
+        // if (getCorrectLimelight() == SpecificLimelight.LEFT_LIMELIGHT) {
+        //     stateHandler.setRobotDirection(CurrentRobotDirection.LEFT);
+        //     //stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
+        // } else {
+        //     stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
+        // }
 
         SmartDashboard.putString("CURRENT ROBOT DIRECTION", stateHandler.getRobotDirection().toString());
 

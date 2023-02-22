@@ -91,9 +91,9 @@ public class IntakeArmDefaultCommand extends CommandBase {
           stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE);
 
         }
-        intake.setSolenoid(true);
         break;
       case REVERSE_HANDOFF_1:
+      intake.setSolenoid(true);
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.REVERSE_HANDOFF_1) {
           stateHandler.setDesiredIntakePosition(IntakePositions.REVERSE_HANDOFF_2);
         }
