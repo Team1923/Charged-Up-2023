@@ -4,13 +4,11 @@
 
 package frc.robot;
 
+import org.littletonrobotics.junction.LoggedRobot;
 
 import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -27,12 +25,14 @@ import frc.robot.util.StateHandler;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
 
   public static CTREConfigs ctreConfigs = new CTREConfigs();
 
+  private StateHandler stateHandler = StateHandler.getInstance();
+  private LEDInterface ledInterface = LEDInterface.getInstance();
 
   private AutoChooser selector;
 
@@ -42,8 +42,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    PathPlannerServer.startServer(5811);
+
     CameraServer.startAutomaticCapture(0);
+    PathPlannerServer.startServer(5811);
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
@@ -56,32 +57,29 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    LEDInterface.getInstance().updateLed();
+    ledInterface.updateLed();
 
   }
 
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    StateHandler.getInstance().resetStates();
-
+    stateHandler.resetStates();
+    stateHandler.setResetManipulator(true);
   }
 
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
 
-    boolean armGood = StateHandler.getInstance().getIsArmGood();
-    boolean intakeGood = StateHandler.getInstance().getIsIntakeGood();
-
-    StateHandler.getInstance().setArmGood(Math
+    stateHandler.setArmGood(Math
         .abs(robotContainer.armSubsystem.getProximalPosition()
             - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getProximalAngle()) < 0.1
         && Math.abs(
             robotContainer.armSubsystem.getDistalPosition()
                 - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getDistalAngle()) < 0.1);
 
-    StateHandler.getInstance().setIntakeGood(Math
+    stateHandler.setIntakeGood(Math
         .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
             - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.1
         && Math.abs(
@@ -98,11 +96,10 @@ public class Robot extends TimedRobot {
 
     robotContainer.armSubsystem.setCoast();
 
-    SmartDashboard.putBoolean("INTAKE GOOD TO GO", armGood);
+    SmartDashboard.putBoolean("INTAKE GOOD TO GO", stateHandler.getIsArmGood());
 
-    SmartDashboard.putBoolean("ARM GOOD TO GO", intakeGood);
+    SmartDashboard.putBoolean("ARM GOOD TO GO", stateHandler.getIsIntakeGood());
 
-    
   }
 
   /**
@@ -111,18 +108,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-
+    autonomousCommand = robotContainer.initializeAuto(selector);
     robotContainer.armSubsystem.setBrake();
 
-    boolean armGood = StateHandler.getInstance().getIsArmGood();
-    boolean intakeGood = StateHandler.getInstance().getIsIntakeGood();
-    autonomousCommand = robotContainer.initializeAuto(selector);
-
-    if (!armGood) {
+    if (!stateHandler.getIsArmGood()) {
       CommandScheduler.getInstance().schedule(new EStopArmCommand(robotContainer.armSubsystem));
     }
 
-    if (!intakeGood) {
+    if (!stateHandler.getIsIntakeGood()) {
       CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
     }
 
@@ -145,14 +138,11 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
 
-    boolean armGood = StateHandler.getInstance().getIsArmGood();
-    boolean intakeGood = StateHandler.getInstance().getIsIntakeGood();
-
-    if (!armGood) {
+    if (!stateHandler.getIsArmGood()) {
       CommandScheduler.getInstance().schedule(new EStopArmCommand(robotContainer.armSubsystem));
     }
 
-    if (!intakeGood) {
+    if (!stateHandler.getIsIntakeGood()) {
       CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
     }
 
@@ -166,7 +156,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    // Drive();
 
   }
 

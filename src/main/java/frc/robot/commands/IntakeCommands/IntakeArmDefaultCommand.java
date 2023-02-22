@@ -7,11 +7,12 @@ package frc.robot.commands.IntakeCommands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.util.StateHandler;
-import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.IntakePositions;
 
@@ -19,17 +20,27 @@ public class IntakeArmDefaultCommand extends CommandBase {
 
   private IntakeSubsystem intake;
   private StateHandler stateHandler;
-  private DoubleSupplier driverRightJoystick;
+  //private DoubleSupplier driverRightJoystick;
+
+  private DoubleSupplier operatorHorizontal, operatorVertical;
+
   private BooleanSupplier eject;
 
   /** Creates a new IntakeArmDefaultCommand. */
-  public IntakeArmDefaultCommand(IntakeSubsystem i, DoubleSupplier driverRightJoystick, BooleanSupplier b) {
+  public IntakeArmDefaultCommand(
+    IntakeSubsystem i,
+    //DoubleSupplier driverRightJoystick, 
+    BooleanSupplier b,
+    DoubleSupplier opHorizontal,
+    DoubleSupplier opVertical) {
     intake = i;
-    this.driverRightJoystick = driverRightJoystick;
+    //this.driverRightJoystick = driverRightJoystick;
     this.eject = b;
     addRequirements(intake);
 
     this.stateHandler = StateHandler.getInstance();
+    this.operatorHorizontal = opHorizontal;
+    this.operatorVertical = opVertical;
   }
 
   // Called when the command is initially scheduled.
@@ -69,7 +80,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
         break;
       case HANDOFF_2:
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.HANDOFF_2) {
-          if (!intake.getAverageCurrentAboveThreshold(7)) {
+          if (!intake.getAverageCurrentAboveThreshold(20)) {
             stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
           } else {
             stateHandler.setDesiredIntakePosition(IntakePositions.FINAL_HANDOFF);
@@ -93,7 +104,10 @@ public class IntakeArmDefaultCommand extends CommandBase {
         }
         break;
       case REVERSE_HANDOFF_1:
-      intake.setSolenoid(true);
+        intake.setSolenoid(true);
+        if (stateHandler.getGripperEngaged()) {
+          stateHandler.setResetManipulator(true);
+        }
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.REVERSE_HANDOFF_1) {
           stateHandler.setDesiredIntakePosition(IntakePositions.REVERSE_HANDOFF_2);
         }
@@ -111,17 +125,43 @@ public class IntakeArmDefaultCommand extends CommandBase {
 
   public void setWheelSpeeds() {
 
+    
+
+    // if (stateHandler.getIsArmMoving()) {
+    //   intake.setRawWheelSpeed(-0.1);
+    // } else if (eject.getAsBoolean()) {
+    //   intake.setRawWheelSpeed(-0.2);
+    // } else if (intake.getAverageCurrentAboveThreshold(40)) {
+    //   intake.setRawWheelSpeed(0.1);
+    // } else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE && driverRightJoystick.getAsDouble() > 0.2) {
+    //   intake.setRawWheelSpeed(IntakeConstants.coneIntakeSpeed);
+    // } else if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE && driverRightJoystick.getAsDouble() > 0.2) {
+    //   intake.setRawWheelSpeed(IntakeConstants.cubeIntakeSpeed);
+    // } else {
+    //   intake.setRawWheelSpeed(0.1);
+    // }
+
+    double operatorHorizontalValue = operatorHorizontal.getAsDouble();
+    double operatorVerticalValue = operatorVertical.getAsDouble();
+
+
     if (stateHandler.getIsArmMoving()) {
+      SmartDashboard.putNumber("INTAKE DEBUG NUM: ", 1);
       intake.setRawWheelSpeed(-0.1);
     } else if (eject.getAsBoolean()) {
-      intake.setRawWheelSpeed(-0.2);
-    } else if (intake.getAverageCurrentAboveThreshold(20)) {
+      SmartDashboard.putNumber("INTAKE DEBUG NUM: ", 2);
+      intake.setRawWheelSpeed(-0.4);
+    } else if (intake.getAverageCurrentAboveThreshold(40)) {
+      SmartDashboard.putNumber("INTAKE DEBUG NUM: ", 3);
       intake.setRawWheelSpeed(0.1);
-    } else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE && driverRightJoystick.getAsDouble() > 0.2) {
-      intake.setRawWheelSpeed(IntakeConstants.coneIntakeSpeed);
-    } else if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE && driverRightJoystick.getAsDouble() > 0.2) {
-      intake.setRawWheelSpeed(IntakeConstants.cubeIntakeSpeed);
-    } else {
+    } else if(operatorVerticalValue > .2) {
+      SmartDashboard.putNumber("INTAKE DEBUG NUM: ", 4);
+      intake.setRawWheelSpeed(operatorVerticalValue);
+    } else if(Math.abs(operatorHorizontalValue) > .2) {
+      SmartDashboard.putNumber("INTAKE DEBUG NUM: ", 5);
+      intake.setRawWheelSpeed(operatorHorizontalValue, operatorHorizontalValue);
+    }  else {
+      SmartDashboard.putNumber("INTAKE DEBUG NUM: ", 6);
       intake.setRawWheelSpeed(0.1);
     }
 

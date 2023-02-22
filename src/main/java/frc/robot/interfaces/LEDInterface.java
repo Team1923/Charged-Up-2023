@@ -1,9 +1,7 @@
 package frc.robot.interfaces;
 
-import edu.wpi.first.hal.simulation.DIODataJNI;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.interfaces.ColorSensorInterface.GamePiece;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.GamePieceMode;
 
@@ -51,7 +49,7 @@ public class LEDInterface {
 				bit1.set(false);
 				bit2.set(false);
 				bit3.set(true);
-			} else {
+			} else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE){
 				bit1.set(true);
 				bit2.set(false);
 				bit3.set(true);

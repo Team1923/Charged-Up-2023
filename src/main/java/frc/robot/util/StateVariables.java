@@ -15,11 +15,11 @@ public class StateVariables {
         COBRA_FORWARD(new ArmAngles(Math.PI / 2, -Math.PI/4), new ArmAngles(Math.PI / 2, -Math.PI/4)),
         COBRA_REVERSE(new ArmAngles(Math.PI / 2, -Math.PI/4), new ArmAngles(Math.PI / 2, -Math.PI/4)),
         //DEFINE SCORING LOCATIONS: right is the first object, left is second
-        LOW(new ArmAngles(0.911, -1.626), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
-        CONE_MID(new ArmAngles(1.414, -0.350), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
-        CONE_HIGH(new ArmAngles(0.897, 0.126), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
-        CUBE_MID(new ArmAngles(1.286, -0.399), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
-        CUBE_HIGH(new ArmAngles(0.8, 0.126), new ArmAngles(Math.PI / 2, -Math.PI / 2));
+        LOW(new ArmAngles(Math.PI / 2, -Math.PI / 2), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
+        CONE_MID(new ArmAngles(Math.PI / 2, -Math.PI / 2), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
+        CONE_HIGH(new ArmAngles(Math.PI / 2, -Math.PI / 2), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
+        CUBE_MID(new ArmAngles(Math.PI / 2, -Math.PI / 2), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
+        CUBE_HIGH(new ArmAngles(Math.PI / 2, -Math.PI / 2), new ArmAngles(Math.PI / 2, -Math.PI / 2));
 
         private ArmAngles armAngles;
         private ArmAngles leftArmAngles;

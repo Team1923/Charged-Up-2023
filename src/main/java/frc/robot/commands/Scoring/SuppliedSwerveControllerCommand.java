@@ -19,14 +19,12 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import org.opencv.video.TrackerMIL_Params;
 
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.server.PathPlannerServer;
