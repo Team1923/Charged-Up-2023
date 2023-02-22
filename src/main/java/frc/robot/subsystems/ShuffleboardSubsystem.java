@@ -7,14 +7,11 @@ package frc.robot.subsystems;
 import java.util.Map;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.ArmPositions;
-import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.HorizontalLocations;
 import frc.robot.util.StateVariables.IntakePositions;
@@ -80,38 +77,32 @@ public class ShuffleboardSubsystem extends SubsystemBase {
       .getEntry();
 
   private GenericEntry desiredGamePiece = driverDashboard.add("Game Piece", false)
-      .withSize(2, 1)
+      .withSize(1, 1)
       .withPosition(3, 0)
       .withProperties(Map.of("Color when false", "#7842f5", "Color when true", "#f5ef42"))
       .getEntry();
 
-  private GenericEntry desiredArmPosition = driverDashboard.add("DESIRED ARM Position", ArmPositions.STOW.toString())
-      .withSize(2, 1)
+  private GenericEntry desiredArmPosition = driverDashboard.add("DESIRED ARM", ArmPositions.STOW.toString())
+      .withSize(1, 1)
       .withPosition(3, 1)
       .getEntry();
 
   private GenericEntry currentArmPosition = driverDashboard
-      .add("CURRENT ARM Position", ArmPositions.STOW.toString())
-      .withSize(2, 1)
+      .add("CURRENT ARM", ArmPositions.STOW.toString())
+      .withSize(1, 1)
       .withPosition(3, 2)
       .getEntry();
 
   private GenericEntry desiredIntakePosition = driverDashboard
-      .add("DESIRED INTAKE Position", IntakePositions.STOW.toString())
-      .withSize(2, 1)
-      .withPosition(5, 0)
+      .add("DESIRED INTAKE", IntakePositions.STOW.toString())
+      .withSize(1, 1)
+      .withPosition(4, 0)
       .getEntry();
 
   private GenericEntry currentIntakePosition = driverDashboard
-      .add("CURRENT INTAKE Position", IntakePositions.STOW.toString())
-      .withSize(2, 1)
-      .withPosition(5, 1)
-      .getEntry();
-
-  private GenericEntry currentRobotDirection = driverDashboard
-      .add("ROBOT DIRECTION", CurrentRobotDirection.LEFT.toString())
-      .withSize(2, 1)
-      .withPosition(5, 2)
+      .add("CURRENT INTAKE", IntakePositions.STOW.toString())
+      .withSize(1, 1)
+      .withPosition(4, 1)
       .getEntry();
 
   public ShuffleboardSubsystem() {

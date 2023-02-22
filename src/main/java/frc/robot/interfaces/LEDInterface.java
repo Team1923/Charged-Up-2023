@@ -7,7 +7,7 @@ import frc.robot.interfaces.ColorSensorInterface.GamePiece;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.GamePieceMode;
 
-public class LEDInterface{
+public class LEDInterface {
 
 	private static LEDInterface ledInterface;
 
@@ -15,52 +15,49 @@ public class LEDInterface{
 	private DigitalOutput bit2 = new DigitalOutput(5);
 	private DigitalOutput bit3 = new DigitalOutput(6);
 
-
 	StateHandler stateHandler = StateHandler.getInstance();
 
 	public static synchronized LEDInterface getInstance() {
 		if (ledInterface == null) {
-		  ledInterface= new LEDInterface();
+			ledInterface = new LEDInterface();
 		}
 		return ledInterface;
-	  }
+	}
 
-	  public LEDInterface(){
-	  }
+	public LEDInterface() {
+	}
 
-	  public void updateLed(){
-		if(DriverStation.isDisabled()){
-			if(!stateHandler.getIsArmGood() && !stateHandler.getIsIntakeGood()){
+	public void updateLed() {
+		if (DriverStation.isDisabled()) {
+			if (!stateHandler.getIsArmGood() && !stateHandler.getIsIntakeGood()) {
 				bit1.set(false);
 				bit2.set(false);
 				bit3.set(false);
-			}
-			else if(stateHandler.getIsArmGood() && !stateHandler.getIsIntakeGood()){
+			} else if (stateHandler.getIsArmGood() && !stateHandler.getIsIntakeGood()) {
 				bit1.set(true);
 				bit2.set(false);
 				bit3.set(false);
-			}
-			else if(!stateHandler.getIsArmGood() && stateHandler.getIsIntakeGood()){
+			} else if (!stateHandler.getIsArmGood() && stateHandler.getIsIntakeGood()) {
 				bit1.set(false);
 				bit2.set(true);
 				bit3.set(false);
-			}
-			else{
+			} else {
 				bit1.set(true);
 				bit2.set(true);
 				bit3.set(false);
 			}
+		} else {
+			if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE) {
+				bit1.set(false);
+				bit2.set(false);
+				bit3.set(true);
+			} else {
+				bit1.set(true);
+				bit2.set(false);
+				bit3.set(true);
+			}
 		}
-		if(stateHandler.getGamePieceMode() == GamePieceMode.CUBE){
-			bit1.set(false);
-			bit2.set(false);
-			bit3.set(true);
-		}
-		else{
-			bit1.set(true);
-			bit2.set(false);
-			bit3.set(true);
-		}
-	  }
+
+	}
 
 }

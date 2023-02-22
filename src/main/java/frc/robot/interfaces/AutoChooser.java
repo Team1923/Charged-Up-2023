@@ -16,7 +16,7 @@ public class AutoChooser {
 	private SendableChooser<AutoMode> chooser;
 	ShuffleboardTab driverDashboard = Shuffleboard.getTab("Driver Dashboard");
 	ShuffleboardLayout auto = driverDashboard.getLayout("Auto Mode", "List Layout")
-			.withPosition(5, 2)
+			.withPosition(0, 3)
 			.withSize(2, 1);
 	
 	public AutoChooser(){
