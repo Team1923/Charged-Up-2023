@@ -249,6 +249,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     SmartDashboard.putString("Desired Arm State", stateHandler.getArmDesiredPosition().toString());
     SmartDashboard.putString("Current Arm State", stateHandler.getCurrentArmPosition().toString());
+    SmartDashboard.putBoolean("HAS GAME PIECE", stateHandler.getHasGamePiece());
 
 
 
