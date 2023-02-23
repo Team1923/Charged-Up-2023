@@ -74,7 +74,7 @@ public class RobotContainer {
     public final ArmSubsystem armSubsystem = new ArmSubsystem();
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     public final ManipulatorSubsystem gripper = new ManipulatorSubsystem();
-    public final ShuffleboardSubsystem shuffleboard = new ShuffleboardSubsystem();
+    //public final ShuffleboardSubsystem shuffleboard = new ShuffleboardSubsystem();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
