@@ -85,8 +85,8 @@ public class ArmSubsystem extends SubsystemBase {
   // }
 
   public void setProximalPosition(double proximalAngle) {
-    proximalMotor.set(ControlMode.MotionMagic, proximalAngle * ArmConstants.proximalRadsToTicks,
-        DemandType.ArbitraryFeedForward, calculateProximalFeedforward());
+    proximalMotor.set(ControlMode.MotionMagic, proximalAngle * ArmConstants.proximalRadsToTicks, 
+      DemandType.ArbitraryFeedForward, calculateProximalFeedforward());
   }
 
   public void setDistalPosition(double distalAngle) {
@@ -238,7 +238,10 @@ public class ArmSubsystem extends SubsystemBase {
     if (withinThreshold) {
       stateHandler.setCurrentArmPosition(stateHandler.getArmDesiredPosition());
     }
-    
+
+    SmartDashboard.putNumber("Proximal Output", proximalMotor.getMotorOutputPercent());
+    SmartDashboard.putNumber("Proximal Error", proximalMotor.getClosedLoopError());
+
     SmartDashboard.putNumber("ABS ENCODER PROXIMAL ARM", getProximalAbsoluteEncoderRads());
     SmartDashboard.putNumber("ABS ENCODER DISTAL ARM", getDistalAbsoluteEncoderRads());
 
@@ -246,6 +249,10 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("MOTOR ENCODER DISTAL ARM", getDistalPosition());
 
     SmartDashboard.putString("CURRENT GAME MODE", stateHandler.getGamePieceMode().toString());
+
+    SmartDashboard.putString("Desired Arm State", stateHandler.getArmDesiredPosition().toString());
+    SmartDashboard.putString("Current Arm State", stateHandler.getCurrentArmPosition().toString());
+
 
 
   }

@@ -114,7 +114,7 @@ public class RobotContainer {
         
 
         operatorLeftBumper.onTrue(new DeployIntakeCommand());
-        operatorRightBumper.onTrue(new StowIntakeCommand());
+        operatorRightBumper.onTrue(new StowIntakeCommand(intakeSubsystem));
 
         aButton.toggleOnTrue(new TrajectoryToGoal(s_Swerve));
         bButton.onTrue(new InstantCommand(() -> SmartDashboard.putNumber("Calculated Wheel Heading: ", s_Swerve.getWheelHeading().getDegrees())));
@@ -130,13 +130,8 @@ public class RobotContainer {
                         () -> driver.getRawAxis(2) > 0.2,
                         () -> robotCentric.getAsBoolean()));
 
-        //intakeSubsystem.setDefaultCommand(new IntakeArmDefaultCommand(intakeSubsystem, () -> driver.getRawAxis(3), () -> centerLeftButton.getAsBoolean()));
+        intakeSubsystem.setDefaultCommand(new IntakeArmDefaultCommand(intakeSubsystem, () -> driver.getRawAxis(3), () -> centerLeftButton.getAsBoolean()));
        
-        intakeSubsystem.setDefaultCommand(new IntakeArmDefaultCommand(
-            intakeSubsystem,
-            () -> centerLeftButton.getAsBoolean(),
-            () -> operator.getRawAxis(0), 
-            () -> operator.getRawAxis(1))); 
         armSubsystem.setDefaultCommand(new ArmDefaultCommand(armSubsystem));
         //find the operator axis for right trigger
         gripper.setDefaultCommand(new ManipulatorDefaultCommand(gripper, () -> operator.getRawAxis(2)));

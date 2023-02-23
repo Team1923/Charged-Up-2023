@@ -91,8 +91,8 @@ public final class Constants {
 
     public static final double intakeProximalHardstop = 2.971;
     public static final double intakeDistalHardstop = 1.307;
-    public static final double proximalEncoderZero = 0.522;
-    public static final double distalEncoderZero = 4.455;
+    public static final double proximalEncoderZero = 1.539;
+    public static final double distalEncoderZero = 4.48;
 
     public static final double intakeMaxProximalGravityConstant = 0.2;
     public static final double intakeMaxDistalGravityConstant = 0.15;
@@ -123,7 +123,7 @@ public final class Constants {
     public static final int distalMotorID = 14; // needs to be changed
 
     public static final double proximalkP = 0.2;
-    public static final double proximalkI = 0.0001;
+    public static final double proximalkI = 0;
     public static final double proximalkD = 0;
 
     public static final double distalkP = 0.2;
@@ -143,10 +143,10 @@ public final class Constants {
     public static final double distalRadsToTicks = 1 / proximalTicksToRad;
 
     public static final double proximalMass = 1.81437;
-    public static final double distalMass = 0.907185;
+    public static final double distalMass = 0.907185*1.15;
 
     public static final double proximalCGDistance = 0.7112;
-    public static final double distalCGDistance = 0.5715;
+    public static final double distalCGDistance = 0.432;
 
     public static final double lengthOfProximal = 1.0922;
     public static final double lengthOfDistal = 0.83185;

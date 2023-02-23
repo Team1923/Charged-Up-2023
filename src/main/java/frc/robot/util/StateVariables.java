@@ -16,8 +16,8 @@ public class StateVariables {
         COBRA_REVERSE(new ArmAngles(Math.PI / 2, -Math.PI/4), new ArmAngles(Math.PI / 2, -Math.PI/4)),
         //DEFINE SCORING LOCATIONS: right is the first object, left is second
         LOW(new ArmAngles(Math.PI / 2, -Math.PI / 2), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
-        CONE_MID(new ArmAngles(Math.PI / 2, -Math.PI / 2), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
-        CONE_HIGH(new ArmAngles(Math.PI / 2, -Math.PI / 2), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
+        CONE_MID(new ArmAngles(1.429, -.392), new ArmAngles(1.429, -.392)),
+        CONE_HIGH(new ArmAngles(0.983, 0.236), new ArmAngles(0.983, 0.236)),
         CUBE_MID(new ArmAngles(Math.PI / 2, -Math.PI / 2), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
         CUBE_HIGH(new ArmAngles(Math.PI / 2, -Math.PI / 2), new ArmAngles(Math.PI / 2, -Math.PI / 2));
 

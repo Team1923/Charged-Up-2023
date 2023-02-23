@@ -66,6 +66,7 @@ public class ArmDefaultCommand extends CommandBase {
         break;
       case COBRA_FORWARD:
         stateHandler.setIsArmMoving(true);
+        stateHandler.setHasGamePiece(false);
         /*
          * if:
          * the arm is not being held in the cobra position, and
@@ -106,36 +107,26 @@ public class ArmDefaultCommand extends CommandBase {
           }
           timer.reset();
           timer.stop();
-        } else {
-          stateHandler.setArmDesiredState(ArmPositions.COBRA_FORWARD);
-        }
-
+        }// } else {
+        //   stateHandler.setArmDesiredState(ArmPositions.COBRA_FORWARD);
+        // }
       default:
         break;
     }
 
-    
-    if (stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle() < ArmConstants.minProximalPosition
-        || stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle() > ArmConstants.maxProximalPosition) {
-      armSubsystem.setProximalPosition(ArmPositions.STOW.getArmAngles().getProximalAngle());
-    }
+    armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());
+    armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
 
-    if (stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle() < ArmConstants.minDistalPosition
-        || stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle() > ArmConstants.maxDistalPosition) {
-      armSubsystem.setDistalPosition(ArmPositions.STOW.getArmAngles().getDistalAngle());
-    }
-
-    if (stateHandler.getRobotDirection() == CurrentRobotDirection.RIGHT
-        && stateHandler.getCurrentVerticalLocation() != VerticalLocations.RESET) {
-      armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());
-      armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
-    } else if (stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT
-        && stateHandler.getCurrentVerticalLocation() != VerticalLocations.RESET) { // redundant but leaving for
-                                                                                   // readability
-      armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getProximalAngle());
-      armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getDistalAngle());
-
-    }
+    // if (stateHandler.getRobotDirection() == CurrentRobotDirection.RIGHT
+    //     && stateHandler.getCurrentVerticalLocation() != VerticalLocations.RESET) {
+    //   armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());
+    //   armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
+    // } else if (stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT
+    //     && stateHandler.getCurrentVerticalLocation() != VerticalLocations.RESET) { // redundant but leaving for
+    //                                                                                // readability
+    //   armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getProximalAngle());
+    //   armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getDistalAngle());
+    // }
 
   }
 
