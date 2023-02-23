@@ -239,9 +239,6 @@ public class ArmSubsystem extends SubsystemBase {
       stateHandler.setCurrentArmPosition(stateHandler.getArmDesiredPosition());
     }
 
-    SmartDashboard.putNumber("Proximal Output", proximalMotor.getMotorOutputPercent());
-    SmartDashboard.putNumber("Proximal Error", proximalMotor.getClosedLoopError());
-
     SmartDashboard.putNumber("ABS ENCODER PROXIMAL ARM", getProximalAbsoluteEncoderRads());
     SmartDashboard.putNumber("ABS ENCODER DISTAL ARM", getDistalAbsoluteEncoderRads());
 

@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.EmergencyCommands.EStopArmCommand;
 import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;
 import frc.robot.interfaces.AutoChooser;
+import frc.robot.interfaces.LEDInterface;
 import frc.robot.util.StateHandler;
 
 /**
@@ -34,6 +35,9 @@ public class Robot extends LoggedRobot {
   private boolean intakeGood = false;
 
   private AutoChooser selector;
+
+  StateHandler stateHandler = StateHandler.getInstance();
+  LEDInterface ledInterface = LEDInterface.getInstance();
 
 
   /**
@@ -56,13 +60,14 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    ledInterface.updateLed();
 
   }
 
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    StateHandler.getInstance().resetStates();
+    stateHandler.resetStates();
 
   
   }
@@ -73,25 +78,28 @@ public class Robot extends LoggedRobot {
 
     armGood = Math
     .abs(robotContainer.armSubsystem.getProximalPosition()
-        - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getProximalAngle()) < 0.1
+        - stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle()) < 0.1
     && Math.abs(
         robotContainer.armSubsystem.getDistalPosition()
-            - StateHandler.getInstance().getArmDesiredPosition().getArmAngles().getDistalAngle()) < 0.1;
+            - stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle()) < 0.1;
 
     intakeGood = Math
     .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
-        - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.1
+        - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.1
     && Math.abs(
         robotContainer.intakeSubsystem.getIntakeDistalPosition()
-            - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()) < 0.3;
+            - stateHandler.getDesiredIntakePosition().getArmAngles().getDistalAngle()) < 0.3;
+
+    stateHandler.setArmGood(armGood);
+    stateHandler.setIntakeGood(intakeGood);
 
     SmartDashboard.putNumber("INTAKE PROXIMAL ERROR", Math
     .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
-        - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getProximalAngle()));
+        - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle()));
     
     SmartDashboard.putNumber("INTAKE DISTAL ERROR", Math.abs(
       robotContainer.intakeSubsystem.getIntakeDistalPosition()
-          - StateHandler.getInstance().getDesiredIntakePosition().getArmAngles().getDistalAngle()));
+          - stateHandler.getDesiredIntakePosition().getArmAngles().getDistalAngle()));
 
     robotContainer.armSubsystem.setCoast();
 
@@ -100,7 +108,7 @@ public class Robot extends LoggedRobot {
     SmartDashboard.putBoolean("ARM GOOD TO GO", armGood);
 
    
-
+ 
   }
 
   /**

@@ -115,9 +115,7 @@ public class ArmDefaultCommand extends CommandBase {
       armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());
       armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
     } else if (stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT
-        && stateHandler.getCurrentVerticalLocation() != VerticalLocations.RESET) { //
-      // redundant but leaving for
-      // readability
+        && stateHandler.getCurrentVerticalLocation() != VerticalLocations.RESET) { 
       armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getProximalAngle());
       armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getDistalAngle());
     }

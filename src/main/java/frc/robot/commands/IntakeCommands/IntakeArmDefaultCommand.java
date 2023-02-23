@@ -7,8 +7,6 @@ package frc.robot.commands.IntakeCommands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -124,10 +122,10 @@ public class IntakeArmDefaultCommand extends CommandBase {
     
 
     if (stateHandler.getIsArmMoving()) {
-      intake.setRawWheelSpeed(-0.1);
+      intake.setRawWheelSpeed(IntakeConstants.handoffSpeed);
     } else if (eject.getAsBoolean()) {
       stateHandler.setHasGamePiece(false);
-      intake.setRawWheelSpeed(-0.2);
+      intake.setRawWheelSpeed(IntakeConstants.ejectSpeed);
     } else if (intake.getAverageCurrentAboveThreshold(40)) {
       intake.setRawWheelSpeed(0.1);
     } else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE && driverRightJoystick.getAsDouble() > 0.2) {
@@ -135,7 +133,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
     } else if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE && driverRightJoystick.getAsDouble() > 0.2) {
       intake.setRawWheelSpeed(IntakeConstants.cubeIntakeSpeed);
     } else {
-      intake.setRawWheelSpeed(0.1);
+      intake.setRawWheelSpeed(IntakeConstants.gripSpeed);
     }
 
   
