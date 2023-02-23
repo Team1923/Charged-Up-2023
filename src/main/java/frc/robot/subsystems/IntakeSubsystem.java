@@ -268,5 +268,7 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putString("Scoring Location Vertical", stateHandler.getCurrentVerticalLocation().toString());
     SmartDashboard.putString("Scoring Location Horizontal", stateHandler.getCurrentHorizontalLocation().toString());
 
+    SmartDashboard.putNumber("INTAKE CURRENT", getCurrentDraw());
+
   }
 }
