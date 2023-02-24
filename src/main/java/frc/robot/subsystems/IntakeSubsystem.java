@@ -219,7 +219,7 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeDistalMotor.stopMotor();
   }
 
-  public void setArmsToCurrentPosition() {
+  public void disableMotionMagic() {
     intakeProximalMotor.set(ControlMode.Disabled, 0);
     intakeDistalMotor.set(ControlMode.Disabled, 0);
   }
@@ -227,7 +227,7 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     if(DriverStation.isDisabled()) {
-      setArmsToCurrentPosition();
+      disableMotionMagic();
     }
 
     //If the current for either the proximal or distal is above 50, we stop the motors and stop running the intake subsystem

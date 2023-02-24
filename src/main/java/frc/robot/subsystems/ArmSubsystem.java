@@ -206,6 +206,11 @@ public class ArmSubsystem extends SubsystemBase {
     return proximalMotor.getStatorCurrent();
   }
 
+  public void disableMotionMagic() {
+    proximalMotor.set(ControlMode.Disabled, 0);
+    distalMotor.set(ControlMode.Disabled, 0);
+  }
+
   @Override
   public void periodic() {
     if (getDistalCurrent() > 50 || getProximalCurrent() > 50) { // FIND CURRENT VALUES THAT WORK
@@ -254,4 +259,6 @@ public class ArmSubsystem extends SubsystemBase {
 
 
   }
+
+
 }

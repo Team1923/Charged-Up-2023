@@ -143,7 +143,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.setArmsToCurrentPosition();
+    intake.disableMotionMagic();
   }
 
   // Returns true when the command should end.
