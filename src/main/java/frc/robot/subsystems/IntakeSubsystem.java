@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.sql.Driver;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -11,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -233,8 +236,18 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeDistalMotor.stopMotor();
   }
 
+  public void setArmsToCurrentPosition() {
+    intakeProximalMotor.set(ControlMode.MotionMagic, intakeProximalMotor.getSelectedSensorPosition());
+    intakeDistalMotor.set(ControlMode.MotionMagic, intakeDistalMotor.getSelectedSensorPosition());
+  }
+
   @Override
   public void periodic() {
+
+    if(DriverStation.isDisabled()) {
+      setArmsToCurrentPosition();
+    }
+
     //If the current for either the proximal or distal is above 50, we stop the motors and stop running the intake subsystem
     if(getIntakeProximalCurrent() > 50 || getIntakeDistalCurrent() > 50){
       intakeProximalMotor.stopMotor();
@@ -256,6 +269,7 @@ public class IntakeSubsystem extends SubsystemBase {
       stateHandler.setCurrentIntakePosition(stateHandler.getDesiredIntakePosition());
     }
 
+
     SmartDashboard.putString("DESIRED INTAKE State", stateHandler.getDesiredIntakePosition().toString());
     SmartDashboard.putString("CURRENT INTAKE State", stateHandler.getCurrentIntakePosition().toString());
 
@@ -265,10 +279,13 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("INTAKE ABSOLUTE Proximal Encoder Rads", getIntakeProximalAbsoluteEncoderRads());
     SmartDashboard.putNumber("INTAKE ABSOLUTE Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());
 
-    SmartDashboard.putString("Scoring Location Vertical", stateHandler.getCurrentVerticalLocation().toString());
-    SmartDashboard.putString("Scoring Location Horizontal", stateHandler.getCurrentHorizontalLocation().toString());
+    // SmartDashboard.putString("Scoring Location Vertical", stateHandler.getCurrentVerticalLocation().toString());
+    // SmartDashboard.putString("Scoring Location Horizontal", stateHandler.getCurrentHorizontalLocation().toString());
 
-    SmartDashboard.putNumber("INTAKE CURRENT", getCurrentDraw());
+    // SmartDashboard.putNumber("INTAKE CURRENT", getCurrentDraw());
+
+    // SmartDashboard.putNumber("Proixmal Closed Loop Error", intakeProximalMotor.getSelectedSensorPosition() - intakeProximalMotor.getClosedLoopTarget());
+    // SmartDashboard.putNumber("Distal Closed Loop Error", intakeDistalMotor.getSelectedSensorPosition() - intakeDistalMotor.getClosedLoopTarget());
 
   }
 }
