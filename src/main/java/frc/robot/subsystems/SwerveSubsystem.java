@@ -196,8 +196,6 @@ public class SwerveSubsystem extends SubsystemBase {
         // mod.getState().speedMetersPerSecond);
         // }
 
-        SmartDashboard.putString("heading", getYaw().toString());
-
         // field2D.setRobotPose(getPose());
 
         // SmartDashboard.putString("CORRECT LIMELIGHT",

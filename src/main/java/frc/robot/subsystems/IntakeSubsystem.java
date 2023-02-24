@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.sql.Driver;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -74,31 +72,26 @@ public class IntakeSubsystem extends SubsystemBase {
     resetIntakeProximalPosition();
     resetIntakeDistalPosition();
 
-    //intakeProximalMotor.setSelectedSensorPosition(0);
-    //intakeDistalMotor.setSelectedSensorPosition(0);
   }
 
-  // public void resetIntakeProximalPosition(double angle) {
-  //   intakeProximalMotor.setSelectedSensorPosition(angle * IntakeConstants.intakeProximalRadsToTicks);
-  // }
-
-  // public void resetIntakeDistalPosition(double angle) {
-  //   intakeDistalMotor.setSelectedSensorPosition(angle * IntakeConstants.intakeDistalRadsToTicks);
-  // }
 
   //For both the Proximal and Distal, using the Encoders and physical hardstops, we can reset their position
   public void resetIntakeProximalPosition() {
     intakeProximalMotor.setSelectedSensorPosition(
-        (getIntakeProximalAbsoluteEncoderRads() - IntakeConstants.proximalEncoderZero + IntakeConstants.intakeProximalHardstop)
+        (IntakeConstants.intakeProximalHardstop)
             * IntakeConstants.intakeProximalRadsToTicks);
-    //proximalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getProximalAngle());
+    // intakeProximalMotor.setSelectedSensorPosition(
+    //     (getIntakeProximalAbsoluteEncoderRads() - IntakeConstants.proximalEncoderZero + IntakeConstants.intakeProximalHardstop)
+    //         * IntakeConstants.intakeProximalRadsToTicks);
   }
 
   public void resetIntakeDistalPosition() {
+    // intakeDistalMotor.setSelectedSensorPosition(
+    //     (getIntakeDistalAbsoluteEncoderRads() - IntakeConstants.distalEncoderZero + IntakeConstants.intakeDistalHardstop)
+    //         * IntakeConstants.intakeDistalRadsToTicks);
     intakeDistalMotor.setSelectedSensorPosition(
-        (getIntakeDistalAbsoluteEncoderRads() - IntakeConstants.distalEncoderZero + IntakeConstants.intakeDistalHardstop)
+        (IntakeConstants.intakeDistalHardstop)
             * IntakeConstants.intakeDistalRadsToTicks);
-    //proximalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getProximalAngle());
   }
 
   public void setIntakeProximalPosition(double proximalAngle) {
@@ -169,16 +162,6 @@ public class IntakeSubsystem extends SubsystemBase {
     return Math.atan(averageYG / averageXG);
   }
 
-  public void setWheelSpeed() {
-    if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE) {
-      leftIntakeWheelMotor.set(ControlMode.PercentOutput, IntakeConstants.cubeIntakeSpeed);
-      rightIntakeWheelMotor.set(ControlMode.PercentOutput, -IntakeConstants.cubeIntakeSpeed);
-    } else {
-      leftIntakeWheelMotor.set(ControlMode.PercentOutput, IntakeConstants.coneIntakeSpeed);
-      rightIntakeWheelMotor.set(ControlMode.PercentOutput, IntakeConstants.coneIntakeSpeed);
-    }
-  }
-
   public void setWheelSpeed(double stpt) {
     if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE) {
       leftIntakeWheelMotor.set(ControlMode.PercentOutput, stpt);
@@ -237,13 +220,12 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setArmsToCurrentPosition() {
-    intakeProximalMotor.set(ControlMode.MotionMagic, intakeProximalMotor.getSelectedSensorPosition());
-    intakeDistalMotor.set(ControlMode.MotionMagic, intakeDistalMotor.getSelectedSensorPosition());
+    intakeProximalMotor.set(ControlMode.Disabled, 0);
+    intakeDistalMotor.set(ControlMode.Disabled, 0);
   }
 
   @Override
   public void periodic() {
-
     if(DriverStation.isDisabled()) {
       setArmsToCurrentPosition();
     }
@@ -279,6 +261,7 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("INTAKE ABSOLUTE Proximal Encoder Rads", getIntakeProximalAbsoluteEncoderRads());
     SmartDashboard.putNumber("INTAKE ABSOLUTE Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());
 
+    SmartDashboard.putNumber("Distal Active Trajecotry", intakeDistalMotor.getActiveTrajectoryPosition());
     // SmartDashboard.putString("Scoring Location Vertical", stateHandler.getCurrentVerticalLocation().toString());
     // SmartDashboard.putString("Scoring Location Horizontal", stateHandler.getCurrentHorizontalLocation().toString());
 
