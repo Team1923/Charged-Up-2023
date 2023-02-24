@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -213,6 +214,11 @@ public class ArmSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+  
+    if(DriverStation.isDisabled()) {
+      disableMotionMagic();
+    }
+
     if (getDistalCurrent() > 50 || getProximalCurrent() > 50) { // FIND CURRENT VALUES THAT WORK
       proximalMotor.stopMotor();
       distalMotor.stopMotor();
