@@ -59,13 +59,13 @@ public final class Constants {
     public static final int intakeDistalAbsoluteEncoderID = 3; //3
 
     public static final double intakeProximalCGDistance = 0.0762;
-    public static final double intakeDistalCGDistance = 0.1524;
+    public static final double intakeDistalCGDistance = 0.2032;//
 
     public static final double intakeProximalLength = 0.1397;
     public static final double intakeDistalLength = 0.2286;
 
     public static final double intakeProximalMass = 0.453592;
-    public static final double intakeDistalMass = 3.17515;
+    public static final double intakeDistalMass = 4.127695; // needs to be changed
 
     public static final double intakeProximalkP = 0.1;
     public static final double intakeProximalkI = 0;
