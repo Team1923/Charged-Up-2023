@@ -1,16 +1,16 @@
 #include <FastLED.h>
 
 #define NUM_STRIPS 2
-#define NUM_LEDS_PER_STRIP 300
+#define NUM_LEDS_PER_STRIP 100
 CRGB leds[NUM_STRIPS][NUM_LEDS_PER_STRIP];
 
-#define LED_PIN_1 3
-#define LED_PIN_2 5
+#define LED_PIN_1 10
+#define LED_PIN_2 11
 
 //Define digital input pins from RoboRio
-#define COM_PIN_1 0
-#define COM_PIN_2 1
-#define COM_PIN_3 2
+#define COM_PIN_1 2
+#define COM_PIN_2 3
+#define COM_PIN_3 4
 
 bool getBrighter = true;
 int currentRed = 0;
@@ -25,11 +25,13 @@ void setup() {
   //note that this model uses GRB formatting
   FastLED.addLeds<WS2812B, LED_PIN_1, RGB>(leds[0], NUM_LEDS_PER_STRIP);
   FastLED.addLeds<WS2812B, LED_PIN_2, RGB>(leds[1], NUM_LEDS_PER_STRIP);
+  Serial.begin(9600);
 }
 
 void loop() {
   handleCurrentSelection();
   lightUp();
+  Serial.println(currentState);
 }
 
 void setYellow() {
@@ -59,9 +61,9 @@ void setGreen(int desiredLEDStrip) {
 
 void redOscillating(int desiredLEDStrip) {
   if (getBrighter) {
-    currentRed += 15;
+    currentRed += 5;
   } else {
-    currentRed -= 15;
+    currentRed -= 5;
   }
 
   for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
@@ -79,8 +81,8 @@ void redOscillating(int desiredLEDStrip) {
 }
 
 void handleCurrentSelection() {
-  for (int i = 0; i <= 2; i++) {
-    bitWrite(currentState, i, digitalRead(i));
+  for (int i = 2; i <= 4; i++) {
+    bitWrite(currentState, i-2, digitalRead(i));
   }
 }
 
