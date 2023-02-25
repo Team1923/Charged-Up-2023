@@ -78,19 +78,13 @@ public class IntakeSubsystem extends SubsystemBase {
   //For both the Proximal and Distal, using the Encoders and physical hardstops, we can reset their position
   public void resetIntakeProximalPosition() {
     intakeProximalMotor.setSelectedSensorPosition(
-        (IntakeConstants.intakeProximalHardstop)
+        (getIntakeProximalAbsoluteEncoderRads() - IntakeConstants.proximalEncoderZero + IntakeConstants.intakeProximalHardstop)
             * IntakeConstants.intakeProximalRadsToTicks);
-    // intakeProximalMotor.setSelectedSensorPosition(
-    //     (getIntakeProximalAbsoluteEncoderRads() - IntakeConstants.proximalEncoderZero + IntakeConstants.intakeProximalHardstop)
-    //         * IntakeConstants.intakeProximalRadsToTicks);
   }
 
   public void resetIntakeDistalPosition() {
-    // intakeDistalMotor.setSelectedSensorPosition(
-    //     (getIntakeDistalAbsoluteEncoderRads() - IntakeConstants.distalEncoderZero + IntakeConstants.intakeDistalHardstop)
-    //         * IntakeConstants.intakeDistalRadsToTicks);
     intakeDistalMotor.setSelectedSensorPosition(
-        (IntakeConstants.intakeDistalHardstop)
+        (getIntakeDistalAbsoluteEncoderRads() - IntakeConstants.distalEncoderZero + IntakeConstants.intakeDistalHardstop)
             * IntakeConstants.intakeDistalRadsToTicks);
   }
 
@@ -262,6 +256,7 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("INTAKE ABSOLUTE Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());
 
     SmartDashboard.putNumber("Distal Active Trajecotry", intakeDistalMotor.getActiveTrajectoryPosition());
+    
     // SmartDashboard.putString("Scoring Location Vertical", stateHandler.getCurrentVerticalLocation().toString());
     // SmartDashboard.putString("Scoring Location Horizontal", stateHandler.getCurrentHorizontalLocation().toString());
 

@@ -24,8 +24,6 @@ public class SwerveModule {
     private TalonFX mDriveMotor;
     private CANCoder angleEncoder;
 
-    private double currentOptimizedAngle = 0;
-    private double stateAngle = 0;
 
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Swerve.driveKS, Swerve.driveKV, Swerve.driveKA);
 
@@ -54,9 +52,6 @@ public class SwerveModule {
          * continuous controller which CTRE and Rev onboard is not
          */
         desiredState = CTREModuleState.optimize(desiredState, getState().angle);
-
-        updateCurrentOptimizedAngle(desiredState.angle.getDegrees());
-        stateAngle = getState().angle.getDegrees();
         setAngle(desiredState);
         setSpeed(desiredState, isOpenLoop);
     }
@@ -72,14 +67,67 @@ public class SwerveModule {
                     feedforward.calculate(desiredState.speedMetersPerSecond));
         }
     }
+    /*
+     *  private void setAngle(SwerveModuleState desiredState) {
+            Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Swerve.maxSpeed * 0.01)) ? lastAngle
+                    : desiredState.angle; // Prevent rotating module if speed is less then 1%. Prevents Jittering.
 
-    private void setAngle(SwerveModuleState desiredState) {
-        Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Swerve.maxSpeed * 0.01)) ? lastAngle
-                : desiredState.angle; // Prevent rotating module if speed is less then 1%. Prevents Jittering.
+            mAngleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle.getDegrees(), Swerve.angleGearRatio));
+            lastAngle = angle;
+        }
+     */
 
+    /* START OF STUFF FOR FIXING ROTATION ISSUE */
+
+    private void setAngle(SwerveModuleState desiredState){
+        Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Swerve.maxSpeed * 0.01)) ? lastAngle : desiredState.angle; //Prevent rotating module if speed is less then 1%. Prevents Jittering.
+        Rotation2d oldAngle = getAngle();
+        angle = optimizeTurn(oldAngle, angle);  
         mAngleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle.getDegrees(), Swerve.angleGearRatio));
         lastAngle = angle;
     }
+
+    public double makePositiveDegrees(double anAngle) {
+        double degrees = anAngle;
+        degrees = degrees % 360;
+        if (degrees < 0.0){
+            degrees = degrees + 360;
+        }
+        return degrees;
+
+    }
+
+    public double makePositiveDegrees(Rotation2d anAngle){
+        return makePositiveDegrees(anAngle.getDegrees());
+    }
+
+    public Rotation2d optimizeTurn(Rotation2d oldAngle, Rotation2d newAngle){
+        double steerAngle = makePositiveDegrees(newAngle);
+        steerAngle %= (360);
+        if (steerAngle < 0.0) {
+            steerAngle += 360;
+        }
+
+        double difference = steerAngle - oldAngle.getDegrees();
+        // Change the target angle so the difference is in the range [-360, 360) instead of [0, 360)
+        if (difference >= 360) {
+            steerAngle -= 360;
+        } else if (difference < -360) {
+            steerAngle += 360;
+        }
+        difference = steerAngle - oldAngle.getDegrees(); // Recalculate difference
+
+        // If the difference is greater than 90 deg or less than -90 deg the drive can be inverted so the total
+        // movement of the module is less than 90 deg
+        if (difference >90 || difference < -90) {
+            // Only need to add 180 deg here because the target angle will be put back into the range [0, 2pi)
+            steerAngle += 180;
+        }
+
+        return Rotation2d.fromDegrees(makePositiveDegrees(steerAngle));
+    }
+
+    /* END OF NEW STUFF FOR MODULES */
 
     private Rotation2d getAngle() {
         return Rotation2d.fromDegrees(
@@ -134,17 +182,5 @@ public class SwerveModule {
     public void stop() {
         mDriveMotor.set(ControlMode.PercentOutput, 0);
         mAngleMotor.set(ControlMode.PercentOutput, 0);
-    }
-
-    public void updateCurrentOptimizedAngle(double angle){
-        currentOptimizedAngle = angle;
-    }
-
-    public double getOptimizedAngle(){
-        return currentOptimizedAngle;
-    }
-
-    public double getStateAngle(){
-        return stateAngle;
     }
 }

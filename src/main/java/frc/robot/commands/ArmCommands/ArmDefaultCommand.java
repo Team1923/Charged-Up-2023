@@ -110,17 +110,6 @@ public class ArmDefaultCommand extends CommandBase {
         break;
     }
 
-    //will put arm back into STOW if the passed in stpt is not within boundaries
-    if (stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle() < ArmConstants.minProximalPosition
-        || stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle() > ArmConstants.maxProximalPosition) {
-      armSubsystem.setProximalPosition(ArmPositions.STOW.getArmAngles().getProximalAngle());
-    }
-
-    if (stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle() < ArmConstants.minDistalPosition
-        || stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle() > ArmConstants.maxDistalPosition) {
-      armSubsystem.setDistalPosition(ArmPositions.STOW.getArmAngles().getDistalAngle());
-    }
-
     if (stateHandler.getRobotDirection() == CurrentRobotDirection.RIGHT
         && stateHandler.getCurrentVerticalLocation() != VerticalLocations.RESET) {
       armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());

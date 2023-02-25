@@ -15,6 +15,7 @@ import frc.robot.commands.IntakeCommands.IntakeArmDefaultCommand;
 import frc.robot.commands.IntakeCommands.StowIntakeCommand;
 import frc.robot.commands.Scoring.ManipulatorDefaultCommand;
 import frc.robot.commands.Scoring.ManualScore;
+import frc.robot.commands.Scoring.SequentialScoringCommand;
 import frc.robot.commands.Scoring.TrajectoryToGoal;
 import frc.robot.commands.StateCommands.SetArmLocation;
 import frc.robot.commands.StateCommands.SetGamePiece;
@@ -47,8 +48,8 @@ public class RobotContainer {
     private final int rotationAxis = XboxController.Axis.kRightX.value;
 
     /* Driver Buttons */
-    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
-    private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton rightBumper = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+    private final JoystickButton leftBumper = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton aButton = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
     private final JoystickButton xButton = new JoystickButton(driver, XboxController.Button.kX.value);
@@ -95,7 +96,9 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        zeroGyro.toggleOnTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+        yButton.toggleOnTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+        aButton.toggleOnTrue(new TrajectoryToGoal(s_Swerve));
+        rightBumper.toggleOnTrue(new SequentialScoringCommand(s_Swerve));
 
         operatorUpDPad.onTrue(new SetArmLocation(VerticalLocations.HIGH));
         operatorRightDPad.onTrue(new SetArmLocation(VerticalLocations.RESET));
@@ -109,15 +112,12 @@ public class RobotContainer {
         operatorCrossButton.onTrue(new SetRobotLocation(HorizontalLocations.RESET));
         operatorSquareButton.onTrue(new SetRobotLocation(HorizontalLocations.LEFT));
 
-        //find axis for left trigger
         new Trigger(() -> operator.getRawAxis(3) > 0.2).toggleOnTrue(new ManualScore());
-        
 
         operatorLeftBumper.onTrue(new DeployIntakeCommand());
         operatorRightBumper.onTrue(new StowIntakeCommand(intakeSubsystem));
 
-        aButton.toggleOnTrue(new TrajectoryToGoal(s_Swerve));
-        bButton.onTrue(new InstantCommand(() -> SmartDashboard.putNumber("Calculated Wheel Heading: ", s_Swerve.getWheelHeading().getDegrees())));
+
     }
 
     private void setDefaultCommands() {
@@ -128,7 +128,7 @@ public class RobotContainer {
                         () -> -driver.getRawAxis(strafeAxis),
                         () -> -driver.getRawAxis(rotationAxis),
                         () -> driver.getRawAxis(2) > 0.2,
-                        () -> robotCentric.getAsBoolean()));
+                        () -> leftBumper.getAsBoolean()));
 
         intakeSubsystem.setDefaultCommand(new IntakeArmDefaultCommand(intakeSubsystem, () -> driver.getRawAxis(3), () -> centerLeftButton.getAsBoolean()));
        
