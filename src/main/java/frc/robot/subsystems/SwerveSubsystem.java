@@ -166,7 +166,6 @@ public class SwerveSubsystem extends SubsystemBase {
         } else {
             stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
         }
-
         SmartDashboard.putString("CURRENT ROBOT DIRECTION", stateHandler.getRobotDirection().toString());
 
 

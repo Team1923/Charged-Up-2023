@@ -12,14 +12,14 @@ public class StateVariables {
          * NOTE: DUPLICATE VALUE IF ONLY ONE LOCATION
          */
         STOW(new ArmAngles(Math.PI / 2, -Math.PI / 2 ), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
-        COBRA_FORWARD(new ArmAngles(Math.PI / 2, -Math.PI/4), new ArmAngles(Math.PI / 2, -Math.PI/4)),
-        COBRA_REVERSE(new ArmAngles(Math.PI / 2, -Math.PI/4), new ArmAngles(Math.PI / 2, -Math.PI/4)),
+        COBRA_FORWARD(new ArmAngles(Math.PI / 2, -Math.PI/4), new ArmAngles(Math.PI / 2, -3*Math.PI/4)),
+        COBRA_REVERSE(new ArmAngles(Math.PI / 2, -Math.PI/4), new ArmAngles(Math.PI / 2, -3*Math.PI/4)),
         //DEFINE SCORING LOCATIONS: right is the first object, left is second
-        LOW(new ArmAngles(Math.PI / 2, -Math.PI / 2), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
-        CONE_MID(new ArmAngles(1.429, -.392), new ArmAngles(1.429, -.392)),
-        CONE_HIGH(new ArmAngles(0.983, 0.236), new ArmAngles(0.983, 0.236)),
-        CUBE_MID(new ArmAngles(Math.PI / 2, -Math.PI / 2), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
-        CUBE_HIGH(new ArmAngles(Math.PI / 2, -Math.PI / 2), new ArmAngles(Math.PI / 2, -Math.PI / 2));
+        LOW(new ArmAngles(1.473, -0.830), new ArmAngles(1.632, -2.107)),
+        CONE_MID(new ArmAngles(1.430, -0.327), new ArmAngles(1.722, -2.765)),
+        CONE_HIGH(new ArmAngles(1.005, 0.172), new ArmAngles(2.160 - Math.toRadians(5), -3.304 - Math.toRadians(2))),
+        CUBE_MID(new ArmAngles(1.430, -0.327), new ArmAngles(1.722, -2.765)),
+        CUBE_HIGH(new ArmAngles(1.005, 0.172), new ArmAngles(2.160 - Math.toRadians(5), -3.304 - Math.toRadians(2)));
 
         private ArmAngles armAngles;
         private ArmAngles leftArmAngles;

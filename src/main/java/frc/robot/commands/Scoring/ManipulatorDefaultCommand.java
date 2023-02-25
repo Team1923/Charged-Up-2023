@@ -6,6 +6,7 @@ package frc.robot.commands.Scoring;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ManipulatorSubsystem;
 import frc.robot.util.StateHandler;
@@ -18,6 +19,8 @@ public class ManipulatorDefaultCommand extends CommandBase {
   private boolean lastGripperValue;
 
   private DoubleSupplier breakOut;
+  boolean engage = StateHandler.getInstance().readyToClose();
+
 
 
   /** Creates a new ManipulatorDefaultCommand. */
@@ -34,18 +37,24 @@ public class ManipulatorDefaultCommand extends CommandBase {
   @Override
   public void initialize() {
     lastGripperValue = gripper.get();
+    latch = false;
+    engage = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    boolean engage = StateHandler.getInstance().readyToClose();
+    engage = StateHandler.getInstance().readyToClose();
+    boolean breakout = breakOut.getAsDouble() > 0.2;
 
-    stateHandler.setResetManipulator(breakOut.getAsDouble() > 0.2);
+    SmartDashboard.putBoolean("ENGAGE", engage);
+    SmartDashboard.putBoolean("LATCH", latch);
+    SmartDashboard.putBoolean("RESET MANIPULATOR", stateHandler.getResetManipulator());
+    SmartDashboard.putBoolean("GRIPPER ENGAGED", stateHandler.getGripperEngaged());
 
 
-    if (stateHandler.getResetManipulator()) {
+    if (stateHandler.getResetManipulator() || breakout) {
       latch = false;
       gripper.set(false);
       stateHandler.setGripperEngaged(false);

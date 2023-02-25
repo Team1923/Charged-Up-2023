@@ -58,8 +58,12 @@ public class ArmDefaultCommand extends CommandBase {
           // if the timer has been running for more than a second and the current intake
           // position is stow,
           // we can set the desired arm state to cobra forward
-          if (timer.get() > 1 && stateHandler.getCurrentIntakePosition() == IntakePositions.STOW) {
+          if (timer.get() > 0.5 && (stateHandler.getCurrentIntakePosition() == IntakePositions.STOW
+              || stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF)) {
             stateHandler.setArmDesiredState(ArmPositions.COBRA_FORWARD);
+          } else {
+            System.out.println(stateHandler.getCurrentIntakePosition());
+            System.out.println(timer.get());
           }
 
         }

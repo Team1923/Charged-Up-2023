@@ -6,11 +6,13 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Autos.McDonaldsPath;
+import frc.robot.commands.Autos.TwoConeLeft;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class AutoChooser {
 	public enum AutoMode {
-		ONE_CUBE
+		ONE_CUBE,
+		TWO_CONE_LEFT
 	}
 
 	private SendableChooser<AutoMode> chooser;
@@ -22,6 +24,7 @@ public class AutoChooser {
 	public AutoChooser(){
 		chooser = new SendableChooser<>();
 		chooser.setDefaultOption("ONE CUBE", AutoMode.ONE_CUBE);
+		chooser.addOption("TWO CONE LEFT", AutoMode.TWO_CONE_LEFT);
 		auto.add(chooser);
 	}
 
@@ -30,6 +33,8 @@ public class AutoChooser {
 		switch(mode){
 			case ONE_CUBE:
 				return new McDonaldsPath(swerve);
+			case TWO_CONE_LEFT:
+				return new TwoConeLeft(swerve);
 			default:
 				return new McDonaldsPath(swerve);
 		}

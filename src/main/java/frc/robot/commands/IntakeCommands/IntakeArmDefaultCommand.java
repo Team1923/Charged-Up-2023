@@ -7,6 +7,7 @@ package frc.robot.commands.IntakeCommands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -47,8 +48,8 @@ public class IntakeArmDefaultCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    setWheelSpeeds();
     intake.updateCurrentRollingAvg();
+    setWheelSpeeds();
     IntakePositions currentDesiredState = stateHandler.getDesiredIntakePosition();
 
     /*
@@ -101,6 +102,8 @@ public class IntakeArmDefaultCommand extends CommandBase {
         intake.setSolenoid(true);
         if (stateHandler.getGripperEngaged()) {
           stateHandler.setResetManipulator(true);
+        } else {
+          stateHandler.setResetManipulator(false);
         }
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.REVERSE_HANDOFF_1) {
           stateHandler.setDesiredIntakePosition(IntakePositions.REVERSE_HANDOFF_2);
@@ -118,23 +121,21 @@ public class IntakeArmDefaultCommand extends CommandBase {
   }
 
   public void setWheelSpeeds() {
-
-    
-
     if (stateHandler.getIsArmMoving()) {
       intake.setRawWheelSpeed(IntakeConstants.handoffSpeed);
     } else if (eject.getAsBoolean()) {
       stateHandler.setHasGamePiece(false);
       intake.setRawWheelSpeed(IntakeConstants.ejectSpeed);
-    } else if (intake.getAverageCurrentAboveThreshold(40)) {
+    } else if (intake.getAverageCurrentAboveThreshold(30)) {
       intake.setRawWheelSpeed(0.1);
-    } else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE && driverRightJoystick.getAsDouble() > 0.2) {
+    } else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE && (driverRightJoystick.getAsDouble() > 0.2 || stateHandler.getAutoRunIntake())) {
       intake.setRawWheelSpeed(IntakeConstants.coneIntakeSpeed);
-    } else if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE && driverRightJoystick.getAsDouble() > 0.2) {
+    } else if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE && (driverRightJoystick.getAsDouble() > 0.2 || stateHandler.getAutoRunIntake())) {
       intake.setRawWheelSpeed(IntakeConstants.cubeIntakeSpeed);
     } else {
       intake.setRawWheelSpeed(IntakeConstants.gripSpeed);
     }
+
 
   
 

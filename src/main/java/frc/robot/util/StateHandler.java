@@ -28,7 +28,8 @@ public class StateHandler {
             holdInCobra = false,
             manualLift = false,
             armGood = false,
-            intakeGood = false;
+            intakeGood = false,
+            autoRunIntake = false;
 
     private GamePieceMode mode = GamePieceMode.CUBE;
 
@@ -117,7 +118,7 @@ public class StateHandler {
 
     public boolean readyToClose() {
         return (currentIntakePosition == IntakePositions.FINAL_HANDOFF) &&
-                (currentArmPosition == ArmPositions.STOW);
+                (currentArmPosition == ArmPositions.STOW) && desiredIntakePosition == IntakePositions.FINAL_HANDOFF;
     }
 
     public void setResetManipulator(boolean resetManipulator) {
@@ -219,6 +220,15 @@ public class StateHandler {
     public void setManualLift(boolean m) {
         manualLift = m;
     }
+    
+    public void setAutoRunIntake(boolean runIntake) {
+        autoRunIntake = runIntake;
+    }
+
+    public boolean getAutoRunIntake(){
+        return autoRunIntake;
+    }
+    
     // When the robot is disbaled, it resets the states of the Arm and Intake, preventing them from continuing their command after the robot is disabled
     public void resetStates(){
         desiredArmPosition = ArmPositions.STOW;
@@ -229,7 +239,6 @@ public class StateHandler {
 
         intakeInPosition = false;
         hasGamePiece = false;
-        armInPosition = false;
         resetManipulator = false;
         gripperEngaged = false;
         wantToScore = false;
@@ -238,13 +247,28 @@ public class StateHandler {
         
         currentRobotDirection = CurrentRobotDirection.RIGHT;
 
-    
         isArmMoving = false;
     
         timeSinceLastGripChange = System.currentTimeMillis();
     
         timeSinceReadyToScore = 0;
         
+    }
+
+    public void resetAutoState(){
+        desiredArmPosition = ArmPositions.STOW;
+        currentArmPosition = ArmPositions.STOW;
+        desiredIntakePosition = IntakePositions.FINAL_HANDOFF;
+        currentIntakePosition = IntakePositions.FINAL_HANDOFF;
+        hasGamePiece = true;
+        timeSinceLastGripChange = System.currentTimeMillis();
+        timeSinceReadyToScore = 0;
+        gripperEngaged = true;
+        resetManipulator = false;
+
+        isArmMoving = false;
+        wantToScore = true;
+        holdInCobra = false;
     }
 
     public void setArmGood(boolean isArmGood){

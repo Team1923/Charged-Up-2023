@@ -69,7 +69,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void resetDistalPosition() {
     distalMotor.setSelectedSensorPosition(
         (getDistalAbsoluteEncoderRads() - ArmConstants.distalEncoderZero + ArmConstants.distalHardstop
-            + Math.toRadians(2))
+            - Math.toRadians(0))
             * ArmConstants.distalRadsToTicks);
     // distalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getDistalAngle());
 
@@ -244,8 +244,6 @@ public class ArmSubsystem extends SubsystemBase {
 
     boolean withinThreshold = proximalError < ArmConstants.errorThreshold && distalError < ArmConstants.errorThreshold;
 
-    stateHandler.setArmInPosition(withinThreshold);
-
     if (withinThreshold) {
       stateHandler.setCurrentArmPosition(stateHandler.getArmDesiredPosition());
     }
@@ -256,11 +254,10 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("MOTOR ENCODER PROXIMAL ARM", getProximalPosition());
     SmartDashboard.putNumber("MOTOR ENCODER DISTAL ARM", getDistalPosition());
 
-    SmartDashboard.putString("CURRENT GAME MODE", stateHandler.getGamePieceMode().toString());
 
-    SmartDashboard.putString("Desired Arm State", stateHandler.getArmDesiredPosition().toString());
-    SmartDashboard.putString("Current Arm State", stateHandler.getCurrentArmPosition().toString());
     SmartDashboard.putBoolean("HAS GAME PIECE", stateHandler.getHasGamePiece());
+
+
 
 
 

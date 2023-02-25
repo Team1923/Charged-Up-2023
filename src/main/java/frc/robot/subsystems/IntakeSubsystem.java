@@ -238,8 +238,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
     boolean withinThreshold = proximalError < IntakeConstants.errorThreshold
         && distalError < IntakeConstants.errorThreshold;
-
-    stateHandler.setIntakeInPosition(withinThreshold);
    
     if (withinThreshold) {
       stateHandler.setCurrentIntakePosition(stateHandler.getDesiredIntakePosition());
@@ -254,13 +252,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("INTAKE ABSOLUTE Proximal Encoder Rads", getIntakeProximalAbsoluteEncoderRads());
     SmartDashboard.putNumber("INTAKE ABSOLUTE Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());
-
-    SmartDashboard.putNumber("Distal Active Trajecotry", intakeDistalMotor.getActiveTrajectoryPosition());
     
+
     // SmartDashboard.putString("Scoring Location Vertical", stateHandler.getCurrentVerticalLocation().toString());
     // SmartDashboard.putString("Scoring Location Horizontal", stateHandler.getCurrentHorizontalLocation().toString());
-
-    // SmartDashboard.putNumber("INTAKE CURRENT", getCurrentDraw());
 
     // SmartDashboard.putNumber("Proixmal Closed Loop Error", intakeProximalMotor.getSelectedSensorPosition() - intakeProximalMotor.getClosedLoopTarget());
     // SmartDashboard.putNumber("Distal Closed Loop Error", intakeDistalMotor.getSelectedSensorPosition() - intakeDistalMotor.getClosedLoopTarget());

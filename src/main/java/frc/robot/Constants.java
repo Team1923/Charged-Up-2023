@@ -65,14 +65,14 @@ public final class Constants {
     public static final double intakeDistalLength = 0.2286;
 
     public static final double intakeProximalMass = 0.453592;
-    public static final double intakeDistalMass = 4.127695; // needs to be changed
+    public static final double intakeDistalMass = 4.5; // needs to be changed
 
     public static final double intakeProximalkP = 0.1;
     public static final double intakeProximalkI = 0;
     public static final double intakeProximalkD = 0;
     public static final double intakeDistalkP = 0.2;
     public static final double intakeDistalkI = 0;
-    public static final double intakeDistalkD = 0;
+    public static final double intakeDistalkD = 2;
 
     public static final double maxIntakeProximalVel = 30000;
     public static final double maxIntakeProximalAccel = 30000;
@@ -108,9 +108,9 @@ public final class Constants {
     public static final double kIntakeDistalOffsetRads = 0;
 
     public static final double errorThreshold = 0.1;
-    public static final double cubeIntakeSpeed = .2;
+    public static final double cubeIntakeSpeed = .5;
     public static final double coneIntakeSpeed = .75;
-    public static final double ejectSpeed = -0.4;
+    public static final double ejectSpeed = -1;
     public static final double cubeCurrentThreshold = 80;
     public static final double coneCurrentThreshold = 80;
 
@@ -126,8 +126,8 @@ public final class Constants {
     public static final double proximalkI = 0;
     public static final double proximalkD = 0;
 
-    public static final double distalkP = 0.2;
-    public static final double distalkI = 0.0001;
+    public static final double distalkP = 0.3;
+    public static final double distalkI = 0;
     public static final double distalkD = 0;
 
     // CCW positive
@@ -177,7 +177,7 @@ public final class Constants {
     public static final double proximalHardstop = Math.PI/2;
     public static final double distalHardstop = -Math.PI/2;
     public static final double proximalEncoderZero = 0.460;
-    public static final double distalEncoderZero = -0.821;
+    public static final double distalEncoderZero = -0.791;
 
     public static final double errorThreshold = 0.05;
 
