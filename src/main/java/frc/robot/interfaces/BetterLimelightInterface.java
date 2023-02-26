@@ -1,5 +1,6 @@
 package frc.robot.interfaces;
 
+
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -14,12 +15,16 @@ public class BetterLimelightInterface {
   private static NetworkTable leftLimelight = NetworkTableInstance.getDefault().getTable("limelight-left");
   private static NetworkTable rightLimelight = NetworkTableInstance.getDefault().getTable("limelight-right");
 
+
   private double aprilTagID = 0;
   private boolean hasValidTarget = false;
 
-  /* A singleton that creates the sole instance of BetterLimelightInterface, 
-  this is also used in other classes as well, so we don't have to pass in
-  new instances all the time */
+
+  /*
+   * A singleton that creates the sole instance of BetterLimelightInterface,
+   * this is also used in other classes as well, so we don't have to pass in
+   * new instances all the time
+   */
   public static synchronized BetterLimelightInterface getInstance() {
     if (limelightInterface == null) {
       limelightInterface = new BetterLimelightInterface();
@@ -74,9 +79,10 @@ public class BetterLimelightInterface {
    * Specific AprilTag methods we will need
    */
 
-   /* This method returns the pose of the robot, a combination of translational
-   and rotational offset relative to the april tag
-    */
+  /*
+   * This method returns the pose of the robot, a combination of translational
+   * and rotational offset relative to the april tag
+   */
   public double[] getBotPose(SpecificLimelight limelight) {
     return getArrayEntry("botpose_targetspace", limelight);
   }
@@ -86,9 +92,9 @@ public class BetterLimelightInterface {
     return aprilTagID;
   }
 
-  public boolean hasScoringTarget(){
+  public boolean hasScoringTarget() {
     return (((aprilTagID == 1) || (aprilTagID == 2) || (aprilTagID == 3)
-      || (aprilTagID == 6) || (aprilTagID == 7) || (aprilTagID == 8)) && hasValidTarget);
+        || (aprilTagID == 6) || (aprilTagID == 7) || (aprilTagID == 8)) && hasValidTarget);
   }
 
   /*
@@ -102,5 +108,7 @@ public class BetterLimelightInterface {
 
     return p3d;
   }
+
+  
 
 }
