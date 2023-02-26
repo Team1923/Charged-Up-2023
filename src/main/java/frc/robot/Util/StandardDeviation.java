@@ -20,7 +20,7 @@ public class StandardDeviation {
     HashMap<Double, Double> yawstd = new HashMap<>();
 
     public void xSample(SpecificLimelight limelight){
-        while(limelightInterface.hasScoringTarget()){
+        if(limelightInterface.hasScoringTarget()){
             xdeviation.add(limelightInterface.getBotPose(limelight)[0]);
         }
     }
@@ -35,9 +35,11 @@ public class StandardDeviation {
         }
     }
     public void xMap(SpecificLimelight limelight){
-      while(limelightInterface.hasScoringTarget()){
-        xstd.put(limelightInterface.getBotPose(limelight)[2],calculateStandardDeviation(xdeviation));
-      }
+
+      //calculate std deviation
+
+      xstd.put(limelightInterface.getBotPose(limelight)[2],calculateStandardDeviation(xdeviation));
+
     }
     public void yMap(SpecificLimelight limelight){
         while(limelightInterface.hasScoringTarget()){
@@ -50,7 +52,7 @@ public class StandardDeviation {
         }
       }
 
-     public double  calculateStandardDeviation(ArrayList<Double> Sample){
+     public double calculateStandardDeviation(ArrayList<Double> Sample){
         double StandardDeviation =0 , sum = 0;
         for(double n: Sample){
             sum += n; 

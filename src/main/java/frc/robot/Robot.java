@@ -26,13 +26,16 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
-
+  int distsanceTracker;
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
   @Override
   public void robotInit() {
+
+    distsanceTracker = 10;
+
 
     Logger.getInstance().recordMetadata("ProjectName", "MyProject"); // Set a metadata value
 
@@ -156,6 +159,23 @@ if (isReal()) {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+
+  //  if(sd.xSDs.length < 100 && lockout == false) {
+  //     //sample data
+  //  } else {
+  //   lockout = true;
+  //  }
+
+  //  if(lockout && button.get()) {
+  //   xMap();
+  //   wipe()
+  //   distance = distance + 10;
+  //   lockout = false;
+
+
+
+
+
   }
 
   /** This function is called once when test mode is enabled. */
