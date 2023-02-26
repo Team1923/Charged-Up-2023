@@ -18,8 +18,8 @@ public class McDonaldsPath extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
-    final AutoFromPathPlanner mcd1 = new AutoFromPathPlanner(swerve, "McDonalds", 2.5, false);
-    final AutoFromPathPlanner mcd2 = new AutoFromPathPlanner(swerve, "McDonalds2", 2.5, true);
+    final AutoFromPathPlanner mcd1 = new AutoFromPathPlanner(swerve, "McDonalds", 2.5, 2, false, false, true);
+    final AutoFromPathPlanner mcd2 = new AutoFromPathPlanner(swerve, "McDonalds2", 2.5, 2, false, false, true);
 
     addCommands(new InstantCommand(() -> swerve.resetOdometry(mcd1.getInitialPose())), mcd1,
         new InstantCommand(() -> swerve.resetOdometry(mcd2.getInitialPose())), mcd2);

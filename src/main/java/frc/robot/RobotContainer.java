@@ -138,6 +138,6 @@ public class RobotContainer {
     }
 
     public Command initializeAuto(AutoChooser selector){
-        return selector.startMode(s_Swerve);
+        return selector.startMode(s_Swerve, intakeSubsystem);
     }
 }

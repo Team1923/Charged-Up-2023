@@ -18,7 +18,7 @@ public class TestPath extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
-    final AutoFromPathPlanner testPath = new AutoFromPathPlanner(swerve, "TestPath", 2.5, true);
+    final AutoFromPathPlanner testPath = new AutoFromPathPlanner(swerve, "TestPath", 2.5, 2, false, false, true);
 
     addCommands(new InstantCommand(() -> swerve.resetOdometry(testPath.getInitialPose())),
         new InstantCommand(() -> swerve.zeroGyro(testPath.getInitialPose().getRotation().getDegrees())), testPath);

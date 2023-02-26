@@ -279,14 +279,6 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 				new Pose2d(desiredState.poseMeters.getTranslation(), desiredState.holonomicRotation),
 				currentPose);
 
-		// SmartDashboard.putNumber(
-		// 		"PPSwerveControllerCommand_xError", currentPose.getX() - desiredState.poseMeters.getX());
-		// SmartDashboard.putNumber(
-		// 		"PPSwerveControllerCommand_yError", currentPose.getY() - desiredState.poseMeters.getY());
-		// SmartDashboard.putNumber(
-		// 		"PPSwerveControllerCommand_rotationError",
-		// 		currentPose.getRotation().getRadians() - desiredState.holonomicRotation.getRadians());
-
 		ChassisSpeeds targetChassisSpeeds = this.controller.calculate(currentPose, desiredState);
 
 		if (this.useKinematics) {

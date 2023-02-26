@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Autos.McDonaldsPath;
 import frc.robot.commands.Autos.TwoConeLeft;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class AutoChooser {
@@ -28,13 +29,13 @@ public class AutoChooser {
 		auto.add(chooser);
 	}
 
-	public Command startMode(SwerveSubsystem swerve){
+	public Command startMode(SwerveSubsystem swerve, IntakeSubsystem intake){
 		AutoMode mode = (AutoMode)(chooser.getSelected());
 		switch(mode){
 			case ONE_CUBE:
 				return new McDonaldsPath(swerve);
 			case TWO_CONE_LEFT:
-				return new TwoConeLeft(swerve);
+				return new TwoConeLeft(swerve, intake);
 			default:
 				return new McDonaldsPath(swerve);
 		}
