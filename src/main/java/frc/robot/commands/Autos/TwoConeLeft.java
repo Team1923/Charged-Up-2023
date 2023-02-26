@@ -73,6 +73,7 @@ public class TwoConeLeft extends SequentialCommandGroup {
        * The default commands should've already taken care of holding the game piece. 
        * We just need to tell the arm that we're ready to score
        */
+      new InstantCommand(() -> stateHandler.setWantToScore(true)),
       new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE)
       
     );
