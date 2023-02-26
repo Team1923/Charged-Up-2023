@@ -57,7 +57,7 @@ public class StateHandler {
         this.isArmMoving = isArmMoving;
     }
 
-    public double getTimeSinceReadyToSore() {
+    public double getTimeSinceReadyToScore() {
         return timeSinceReadyToScore;
     }
 

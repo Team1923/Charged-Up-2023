@@ -215,9 +215,9 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
   
-    if(DriverStation.isDisabled()) {
-      disableMotionMagic();
-    }
+    // if(DriverStation.isDisabled()) {
+    //   disableMotionMagic();
+    // }
 
     if (getDistalCurrent() > 50 || getProximalCurrent() > 50) { // FIND CURRENT VALUES THAT WORK
       proximalMotor.stopMotor();
@@ -253,7 +253,6 @@ public class ArmSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("MOTOR ENCODER PROXIMAL ARM", getProximalPosition());
     SmartDashboard.putNumber("MOTOR ENCODER DISTAL ARM", getDistalPosition());
-
 
     SmartDashboard.putBoolean("HAS GAME PIECE", stateHandler.getHasGamePiece());
 

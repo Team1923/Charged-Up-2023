@@ -40,7 +40,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private StateHandler stateHandler = StateHandler.getInstance();
 
-  private RollingAvgDouble averageCurrentDraw = new RollingAvgDouble(50);
+  private RollingAvgDouble averageCurrentDraw = new RollingAvgDouble(20);
 
   public IntakeSubsystem() {
     intakeProximalMotor.configFactoryDefault();
@@ -220,9 +220,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(DriverStation.isDisabled()) {
-      disableMotionMagic();
-    }
+
+    // if(DriverStation.isDisabled()) {
+    //   disableMotionMagic();
+    // }
 
     //If the current for either the proximal or distal is above 50, we stop the motors and stop running the intake subsystem
     if(getIntakeProximalCurrent() > 50 || getIntakeDistalCurrent() > 50){
@@ -244,8 +245,8 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
 
-    SmartDashboard.putString("DESIRED INTAKE State", stateHandler.getDesiredIntakePosition().toString());
-    SmartDashboard.putString("CURRENT INTAKE State", stateHandler.getCurrentIntakePosition().toString());
+    // SmartDashboard.putString("DESIRED INTAKE State", stateHandler.getDesiredIntakePosition().toString());
+    // SmartDashboard.putString("CURRENT INTAKE State", stateHandler.getCurrentIntakePosition().toString());
 
     SmartDashboard.putNumber("INTAKE PROXIMAL POSITION RADS: ", getIntakeProximalPosition());
     SmartDashboard.putNumber("INTAKE DISTAL POSITION RADS: ", getIntakeDistalPosition());

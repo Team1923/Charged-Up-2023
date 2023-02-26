@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Autos.McDonaldsPath;
-import frc.robot.commands.Autos.TwoConeLeft;
+import frc.robot.commands.Autos.TwoConeBalanceNonCableProtector;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -35,7 +35,7 @@ public class AutoChooser {
 			case ONE_CUBE:
 				return new McDonaldsPath(swerve);
 			case TWO_CONE_LEFT:
-				return new TwoConeLeft(swerve, intake);
+				return new TwoConeBalanceNonCableProtector(swerve, intake);
 			default:
 				return new McDonaldsPath(swerve);
 		}

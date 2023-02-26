@@ -79,6 +79,9 @@ public class Robot extends LoggedRobot {
   @Override
   public void disabledPeriodic() {
 
+    robotContainer.armSubsystem.disableMotionMagic();
+    robotContainer.intakeSubsystem.disableMotionMagic();
+
     armGood = Math
         .abs(robotContainer.armSubsystem.getProximalPosition()
             - stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle()) < 0.1

@@ -22,16 +22,15 @@ import frc.robot.util.StateVariables.VerticalLocations;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TwoConeLeft extends SequentialCommandGroup {
+public class TwoConeBalanceNonCableProtector extends SequentialCommandGroup {
   /** Creates a new TwoConeLeft. */
   private StateHandler stateHandler = StateHandler.getInstance();
 
-  public TwoConeLeft(SwerveSubsystem swerve, IntakeSubsystem intake) {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-
-    final AutoFromPathPlanner acquireCone = new AutoFromPathPlanner(swerve, "AcquireCone", 2.5, 2, false, true, true);
-    final AutoFromPathPlanner scoreCone = new AutoFromPathPlanner(swerve, "ScoreCone", 2.5, 2, false, true, true);
+  public TwoConeBalanceNonCableProtector(SwerveSubsystem swerve, IntakeSubsystem intake) {
+    
+    final AutoFromPathPlanner acquireCone = new AutoFromPathPlanner(swerve, "AcquireConeNOCP", 2.5, 2, false, true, true);
+    final AutoFromPathPlanner scoreCone = new AutoFromPathPlanner(swerve, "ScoreConeNOCP", 2.5, 2, false, true, true);
+    final AutoFromPathPlanner balance = new AutoFromPathPlanner(swerve, "BalanceNOCP", 2.5, 2, false, true, true);
 
     addCommands(
       new InstantCommand(() -> swerve.resetOdometry(acquireCone.getInitialPose())),
@@ -74,7 +73,13 @@ public class TwoConeLeft extends SequentialCommandGroup {
        * We just need to tell the arm that we're ready to score
        */
       new InstantCommand(() -> stateHandler.setWantToScore(true)),
-      new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE)
+      new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
+
+      /*
+       * Balance
+       */
+      new InstantCommand(() -> swerve.resetOdometry(balance.getInitialPose())),
+      balance
       
     );
   }

@@ -84,11 +84,11 @@ public class IntakeArmDefaultCommand extends CommandBase {
         break;
       case FINAL_HANDOFF:
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF
-            && stateHandler.getTimeSinceReadyToSore() > .5) {
+            && stateHandler.getTimeSinceReadyToScore() > .5) {
           intake.setSolenoid(false);
         }
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF
-            && stateHandler.getTimeSinceReadyToSore() > .75) {
+            && stateHandler.getTimeSinceReadyToScore() > .75) {
           stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
         }
         break;
@@ -135,9 +135,6 @@ public class IntakeArmDefaultCommand extends CommandBase {
     } else {
       intake.setRawWheelSpeed(IntakeConstants.gripSpeed);
     }
-
-
-  
 
   }
 
