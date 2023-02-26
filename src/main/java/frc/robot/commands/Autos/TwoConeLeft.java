@@ -7,6 +7,7 @@ package frc.robot.commands.Autos;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.IntakeCommands.DeployIntakeCommand;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.StateHandler;
@@ -41,7 +42,13 @@ public class TwoConeLeft extends SequentialCommandGroup {
       new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
       new ParallelCommandGroup(
         new InstantCommand(() -> stateHandler.setAutoRunIntake(true)),
-        new DeployIntakeCommand(),
+        /* The sequential command group below will first 
+         * wait for the arm to be in stow
+         */
+        new SequentialCommandGroup(
+          new WaitUntilCommand(() -> stateHandler.getCurrentArmPosition() == ArmPositions.STOW),
+          new DeployIntakeCommand()
+        ),
         acquireCone
       ),
       new InstantCommand(() -> stateHandler.setAutoRunIntake(false))

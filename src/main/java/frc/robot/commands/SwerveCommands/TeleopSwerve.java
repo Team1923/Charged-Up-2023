@@ -44,12 +44,12 @@ public class TeleopSwerve extends CommandBase {
         if (robotCentricSup.getAsBoolean()) {
             translationVal *= 0.6;
             strafeVal *= 0.6;
-            rotationVal *= 0.2;
+            rotationVal *= 0.3;
         }
         if (leftTrigger.getAsBoolean()) {
             translationVal *= 0.6;
             strafeVal *= 0.6;
-            rotationVal *= 0.2;
+            rotationVal *= 0.3;
         }
 
         /* Drive */

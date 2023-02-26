@@ -6,7 +6,6 @@ package frc.robot.commands.ArmCommands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.ArmPositions;
@@ -61,10 +60,7 @@ public class ArmDefaultCommand extends CommandBase {
           if (timer.get() > 0.5 && (stateHandler.getCurrentIntakePosition() == IntakePositions.STOW
               || stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF)) {
             stateHandler.setArmDesiredState(ArmPositions.COBRA_FORWARD);
-          } else {
-            System.out.println(stateHandler.getCurrentIntakePosition());
-            System.out.println(timer.get());
-          }
+          } 
 
         }
         break;
