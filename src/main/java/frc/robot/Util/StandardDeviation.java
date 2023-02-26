@@ -25,32 +25,28 @@ public class StandardDeviation {
         }
     }
     public void ySample(SpecificLimelight limelight){
-        while(limelightInterface.hasScoringTarget()){
-            xdeviation.add(limelightInterface.getBotPose(limelight)[1]);
+        if(limelightInterface.hasScoringTarget()){
+            ydeviation.add(limelightInterface.getBotPose(limelight)[1]);
         }
     }
     public void yawSample(SpecificLimelight limelight){
-        while(limelightInterface.hasScoringTarget()){
-            xdeviation.add(limelightInterface.getBotPose(limelight)[5]);
+        if(limelightInterface.hasScoringTarget()){
+            yawdeviation.add(limelightInterface.getBotPose(limelight)[5]);
         }
     }
-    public void xMap(SpecificLimelight limelight){
-
-      //calculate std deviation
-
-      xstd.put(limelightInterface.getBotPose(limelight)[2],calculateStandardDeviation(xdeviation));
-
+    public void xMap(double distance){
+        xstd.put(distance,calculateStandardDeviation(xdeviation));
     }
-    public void yMap(SpecificLimelight limelight){
-        while(limelightInterface.hasScoringTarget()){
-          ystd.put(limelightInterface.getBotPose(limelight)[2],calculateStandardDeviation(ydeviation));
-        }
+    public void yMap(double distance){
+        ystd.put(distance,calculateStandardDeviation(ydeviation));
       }
-      public void yawMap(SpecificLimelight limelight){
-        while(limelightInterface.hasScoringTarget()){
-          yawstd.put(limelightInterface.getBotPose(limelight)[2],calculateStandardDeviation(yawdeviation));
-        }
+    public void yawMap(double distance){
+        yawstd.put(distance,calculateStandardDeviation(yawdeviation));
       }
+
+    public void wipeSample(ArrayList<Double> sample){
+      sample.clear();
+    }
 
      public double calculateStandardDeviation(ArrayList<Double> Sample){
         double StandardDeviation =0 , sum = 0;
@@ -63,6 +59,31 @@ public class StandardDeviation {
 
             return Math.sqrt(StandardDeviation/Sample.size());
      }
+
+     public void printMap(HashMap<Double, Double> map, double Distance){
+      System.out.println("Distance Away: " + Distance + ", " + " Standard Deviation: " + map.get(Distance));
+     }
+
+     public ArrayList<Double> getXSample(){
+      return xdeviation;
+     }
+     public ArrayList<Double> getYSample(){
+      return ydeviation;
+     }
+     public ArrayList<Double> getYawSample(){
+      return yawdeviation;
+     }
+
+     public HashMap<Double,Double> getXMap(){
+      return xstd;
+     }
+     public HashMap<Double,Double> getYMap(){
+      return ystd;
+     }
+     public HashMap<Double,Double> getYawMap(){
+      return yawstd;
+     }
+
     
      
     

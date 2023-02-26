@@ -14,9 +14,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.TestGripCommand;
-import frc.robot.commands.TestIntakeCommand;
-import frc.robot.subsystems.IntakeTestSubsystem;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -27,7 +25,7 @@ import frc.robot.subsystems.IntakeTestSubsystem;
  */
 public class RobotContainer {
   // Subsystems
-  IntakeTestSubsystem intakeSubsystem = new IntakeTestSubsystem();
+
 
   // Controller
   private final XboxController controller = new XboxController(0);
@@ -56,8 +54,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    aButton.whileTrue(new TestIntakeCommand(intakeSubsystem, 0.7));
-    bButton.whileTrue(new TestGripCommand(intakeSubsystem, 0.15));
+  
 
 
   }
