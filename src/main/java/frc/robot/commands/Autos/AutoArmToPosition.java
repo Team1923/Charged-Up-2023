@@ -10,13 +10,13 @@ import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.HorizontalLocations;
 import frc.robot.util.StateVariables.VerticalLocations;
 
-public class AutoScoreCommand extends CommandBase {
+public class AutoArmToPosition extends CommandBase {
   /** Creates a new AutoScoreCommand. */
   private StateHandler stateHandler = StateHandler.getInstance();
   private HorizontalLocations desiredHorizontalLocation;
   private VerticalLocations desiredVerticalLocation;
   private GamePieceMode desiredGamePieceMode;
-  public AutoScoreCommand(HorizontalLocations horizontalLocation, VerticalLocations verticalLocation, 
+  public AutoArmToPosition(HorizontalLocations horizontalLocation, VerticalLocations verticalLocation, 
     GamePieceMode gamePieceMode) {
     desiredHorizontalLocation = horizontalLocation;
     desiredVerticalLocation = verticalLocation;
@@ -38,7 +38,6 @@ public class AutoScoreCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    stateHandler.setResetManipulator(true);
   }
 
   // Returns true when the command should end.

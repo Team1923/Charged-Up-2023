@@ -4,6 +4,11 @@
 
 package frc.robot.commands.Autos;
 
+import java.util.HashMap;
+
+import com.pathplanner.lib.commands.FollowPathWithEvents;
+
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -27,60 +32,63 @@ public class TwoConeBalanceNonCableProtector extends SequentialCommandGroup {
   private StateHandler stateHandler = StateHandler.getInstance();
 
   public TwoConeBalanceNonCableProtector(SwerveSubsystem swerve, IntakeSubsystem intake) {
-    
-    final AutoFromPathPlanner acquireCone = new AutoFromPathPlanner(swerve, "AcquireConeNOCP", 2.5, 2, false, true, true);
+
+    final AutoFromPathPlanner acquireCone = new AutoFromPathPlanner(swerve, "AcquireConeNOCP", 2.5, 2, false, true,
+        true);
     final AutoFromPathPlanner scoreCone = new AutoFromPathPlanner(swerve, "ScoreConeNOCP", 2.5, 2, false, true, true);
     final AutoFromPathPlanner balance = new AutoFromPathPlanner(swerve, "BalanceNOCP", 2.5, 2, false, true, true);
 
+    HashMap<String, Command> eventMap = new HashMap<>();
+    eventMap.put("ExtendArm",
+        new AutoArmToPosition(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE));
+
     addCommands(
-      new InstantCommand(() -> swerve.resetOdometry(acquireCone.getInitialPose())),
-      new InstantCommand(() -> swerve.zeroGyro(acquireCone.getInitialPose().getRotation().getDegrees())),
+        new InstantCommand(() -> swerve.resetOdometry(acquireCone.getInitialPose())),
+        new InstantCommand(() -> swerve.zeroGyro(acquireCone.getInitialPose().getRotation().getDegrees())),
 
-      /*
-       * The first line sets the desiredArmPosition.
-       * When the arm is in position, the manipulator disengages.
-       * When this is done, we then go back to STOW
-       */
-      new AutoScoreCommand(HorizontalLocations.RIGHT, VerticalLocations.HIGH, GamePieceMode.CONE),
-      new ParallelCommandGroup(
-        new InstantCommand(() -> stateHandler.setAutoRunIntake(true)), //set intake wheel speeds
-        /* The sequential command group below will first 
-         * wait for the arm to be in stow,
-         * then the intake will deploy
+        /*
+         * The first line sets the desiredArmPosition.
+         * When the arm is in position, the manipulator disengages.
+         * When this is done, we then go back to STOW
          */
-        new SequentialCommandGroup(
-          new WaitUntilCommand(() -> stateHandler.getCurrentArmPosition() == ArmPositions.STOW),
-          new DeployIntakeCommand()
-        ),
-        acquireCone
-      ),
-      //assuming cone has been intaked, no need to run the wheels anymore
-      new InstantCommand(() -> stateHandler.setAutoRunIntake(false)),
+        new AutoScoreCommand(HorizontalLocations.RIGHT, VerticalLocations.HIGH, GamePieceMode.CONE),
+        new ParallelCommandGroup(
+            new InstantCommand(() -> stateHandler.setAutoRunIntake(true)), // set intake wheel speeds
+            /*
+             * The sequential command group below will first
+             * wait for the arm to be in stow,
+             * then the intake will deploy
+             */
+            new SequentialCommandGroup(
+                new WaitUntilCommand(() -> stateHandler.getCurrentArmPosition() == ArmPositions.STOW),
+                new DeployIntakeCommand()),
+            acquireCone),
+        // assuming cone has been intaked, no need to run the wheels anymore
+        new InstantCommand(() -> stateHandler.setAutoRunIntake(false)),
 
-      //reset odometry to the new path (scoring cone)
-      new InstantCommand(() -> swerve.resetOdometry(scoreCone.getInitialPose())),
-      /*
-       * Inside this paralle group, we drive back & STOW the intake
-       */
-      new ParallelCommandGroup(
-        new StowIntakeCommand(intake),
-        scoreCone
-      ),
+        // reset odometry to the new path (scoring cone)
+        new InstantCommand(() -> swerve.resetOdometry(scoreCone.getInitialPose())),
+        /*
+         * Inside this paralle group, we drive back & STOW the intake
+         */
+        new ParallelCommandGroup(
+            new StowIntakeCommand(intake),
+            new FollowPathWithEvents(scoreCone, scoreCone.getEventMarkers(), eventMap)),
 
-      /*
-       * Now, we're at the scoring location. 
-       * The default commands should've already taken care of holding the game piece. 
-       * We just need to tell the arm that we're ready to score
-       */
-      new InstantCommand(() -> stateHandler.setWantToScore(true)),
-      new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
+        /*
+         * Now, we're at the scoring location.
+         * The default commands should've already taken care of holding the game piece.
+         * We just need to tell the arm that we're ready to score
+         */
+        new InstantCommand(() -> stateHandler.setWantToScore(true)),
+        new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
 
-      /*
-       * Balance
-       */
-      new InstantCommand(() -> swerve.resetOdometry(balance.getInitialPose())),
-      balance
-      
+        /*
+         * Balance
+         */
+        new InstantCommand(() -> swerve.resetOdometry(balance.getInitialPose())),
+        balance
+
     );
   }
 }

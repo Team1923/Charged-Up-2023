@@ -1,7 +1,12 @@
 package frc.robot.interfaces;
 
+import java.util.ArrayList;
+import java.util.Optional;
 
+import edu.wpi.first.apriltag.AprilTag;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Quaternion;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTable;
@@ -18,6 +23,15 @@ public class BetterLimelightInterface {
 
   private double aprilTagID = 0;
   private boolean hasValidTarget = false;
+
+
+  ArrayList<AprilTag> aprilTagList = new ArrayList<AprilTag>();
+  public AprilTagFieldLayout aprilTagFieldLayout; 
+
+  public BetterLimelightInterface() {
+    fillAprilTagList();
+    aprilTagFieldLayout = new AprilTagFieldLayout(aprilTagList, 16.54175, 8.0137);
+  }
 
 
   /*
@@ -97,6 +111,10 @@ public class BetterLimelightInterface {
         || (aprilTagID == 6) || (aprilTagID == 7) || (aprilTagID == 8)) && hasValidTarget);
   }
 
+  public void test(){
+    System.out.println(aprilTagFieldLayout.getTagPose(1));
+  }
+
   /*
    * create a Pose3D object for trajectory generation
    */
@@ -108,6 +126,22 @@ public class BetterLimelightInterface {
 
     return p3d;
   }
+
+  public Pose3d getAprilTagPose(SpecificLimelight limelight){
+    Optional<Pose3d> aprilTagPose = aprilTagFieldLayout.getTagPose((int)getID(limelight));
+    return aprilTagPose.get();
+  }
+
+  public void fillAprilTagList(){
+    aprilTagList.add(new AprilTag(1, new Pose3d(15.513558, 1.071626, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
+    aprilTagList.add(new AprilTag(2, new Pose3d(15.513558, 2.748026, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
+    aprilTagList.add(new AprilTag(3, new Pose3d(15.513558, 4.424426, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
+    aprilTagList.add(new AprilTag(4, new Pose3d(16.178784, 6.749796, 0.695452, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
+    aprilTagList.add(new AprilTag(5, new Pose3d(0.36195, 6.749796, 0.695452, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
+    aprilTagList.add(new AprilTag(6, new Pose3d(1.02743, 4.424426, 0.462788, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
+    aprilTagList.add(new AprilTag(7, new Pose3d(1.02743, 2.748026, 0.462788, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
+    aprilTagList.add(new AprilTag(8, new Pose3d(1.02743, 1.071626, 0.462788, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
+}
 
   
 

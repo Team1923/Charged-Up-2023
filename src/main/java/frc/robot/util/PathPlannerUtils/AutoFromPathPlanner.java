@@ -1,9 +1,12 @@
 package frc.robot.util.PathPlannerUtils;
 
 import java.lang.String;
+import java.util.List;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.EventMarker;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -45,5 +48,10 @@ public class AutoFromPathPlanner extends SequentialCommandGroup {
         m_trajectory.getInitialState().poseMeters.getY(),
         m_trajectory.getInitialState().holonomicRotation.times(1.0));
   }
+
+  public List<EventMarker> getEventMarkers() {
+    return m_trajectory.getMarkers();
+  }
+  
 
 }

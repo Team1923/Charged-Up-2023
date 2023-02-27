@@ -8,16 +8,12 @@ import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPoint;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoConstants;
@@ -68,6 +64,7 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
     Pose2d center = new Pose2d(0.5, 0, goalHeading);
     Pose2d left = new Pose2d(0.5, 0.559, goalHeading);
     Pose2d right = new Pose2d(0.5, -0.559, goalHeading);
+
 
     SpecificLimelight limelight = swerve.getCorrectLimelight();
     //Pose3d currentRobotPose = new Pose3d(new Translation3d(-0.5,0,-1.5), new Rotation3d(0,0,0));

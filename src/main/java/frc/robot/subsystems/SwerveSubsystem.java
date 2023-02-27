@@ -55,9 +55,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
     BetterLimelightInterface limelightInterface = BetterLimelightInterface.getInstance();
 
-    public AprilTagFieldLayout aprilTagFieldLayout;
-    ArrayList<AprilTag> aprilTagList = new ArrayList<AprilTag>();
-
     public SwerveSubsystem() {
         gyro.configFactoryDefault();
         zeroGyro();
@@ -79,10 +76,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
         swerveOdometry = new SwerveDrivePoseEstimator(Swerve.swerveKinematics, getYaw(), getModulePositions(),
                 new Pose2d(),
-                stateStdDevs, visionMeasurementStdDevs);
-
-        fillAprilTagList();
-        aprilTagFieldLayout = new AprilTagFieldLayout(aprilTagList, 16.54175, 8.0137);
+                stateStdDevs, visionMeasurementStdDevs);        
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -194,17 +188,6 @@ public class SwerveSubsystem extends SubsystemBase {
                 swerveOdometry.addVisionMeasurement(currentLimelightPose, Timer.getFPGATimestamp() - limelightInterface.getBotPose(getCorrectLimelight())[6]);
             }
         }
-    }
-
-    public void fillAprilTagList(){
-        aprilTagList.add(new AprilTag(1, new Pose3d(15.513558, 1.071626, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
-        aprilTagList.add(new AprilTag(2, new Pose3d(15.513558, 2.748026, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
-        aprilTagList.add(new AprilTag(3, new Pose3d(15.513558, 4.424426, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
-        aprilTagList.add(new AprilTag(4, new Pose3d(16.178784, 6.749796, 0.695452, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
-        aprilTagList.add(new AprilTag(5, new Pose3d(0.36195, 6.749796, 0.695452, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
-        aprilTagList.add(new AprilTag(6, new Pose3d(1.02743, 4.424426, 0.462788, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
-        aprilTagList.add(new AprilTag(7, new Pose3d(1.02743, 2.748026, 0.462788, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
-        aprilTagList.add(new AprilTag(8, new Pose3d(1.02743, 1.071626, 0.462788, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
     }
 
     @Override

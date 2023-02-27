@@ -19,6 +19,7 @@ import frc.robot.commands.EmergencyCommands.CheckArmAngles;
 import frc.robot.commands.EmergencyCommands.EStopArmCommand;
 import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;
 import frc.robot.interfaces.AutoChooser;
+import frc.robot.interfaces.BetterLimelightInterface;
 import frc.robot.interfaces.LEDInterface;
 import frc.robot.util.StateHandler;
 
@@ -66,6 +67,7 @@ public class Robot extends LoggedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
     ledInterface.updateLed();
+    BetterLimelightInterface.getInstance().test();
 
   }
 
@@ -132,7 +134,7 @@ public class Robot extends LoggedRobot {
   public void autonomousInit() {
     stateHandler.resetAutoState();
     autonomousCommand = robotContainer.initializeAuto(selector);
-    robotContainer.s_Swerve.aprilTagFieldLayout.setOrigin(
+    BetterLimelightInterface.getInstance().aprilTagFieldLayout.setOrigin(
         DriverStation.getAlliance() == Alliance.Red ? OriginPosition.kRedAllianceWallRightSide
             : OriginPosition.kBlueAllianceWallRightSide);
 
