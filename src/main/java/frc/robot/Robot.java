@@ -8,9 +8,10 @@ import org.littletonrobotics.junction.LoggedRobot;
 
 import com.pathplanner.lib.server.PathPlannerServer;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -131,6 +132,9 @@ public class Robot extends LoggedRobot {
   public void autonomousInit() {
     stateHandler.resetAutoState();
     autonomousCommand = robotContainer.initializeAuto(selector);
+    robotContainer.s_Swerve.aprilTagFieldLayout.setOrigin(
+        DriverStation.getAlliance() == Alliance.Red ? OriginPosition.kRedAllianceWallRightSide
+            : OriginPosition.kBlueAllianceWallRightSide);
 
     if (!armGood) {
       CommandScheduler.getInstance().schedule(new EStopArmCommand(robotContainer.armSubsystem));
