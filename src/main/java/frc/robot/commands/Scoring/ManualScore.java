@@ -20,6 +20,7 @@ public class ManualScore extends CommandBase {
   public void initialize() {
     //System.out.println("test1");
     stateHandler.setWantToScore(true);
+    stateHandler.setHoldInCobra(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
