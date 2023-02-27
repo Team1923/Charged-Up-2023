@@ -7,13 +7,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Autos.McDonaldsPath;
 import frc.robot.commands.Autos.TwoConeBalanceNonCableProtector;
+import frc.robot.commands.Autos.TwoHalfConeBalanceNonCableProtector;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class AutoChooser {
 	public enum AutoMode {
 		ONE_CUBE,
-		TWO_CONE_LEFT
+		TWO_CONE_NOCP,
+		TWO_HALF_CONE_NOCP
 	}
 
 	private SendableChooser<AutoMode> chooser;
@@ -25,7 +27,8 @@ public class AutoChooser {
 	public AutoChooser(){
 		chooser = new SendableChooser<>();
 		chooser.setDefaultOption("ONE CUBE", AutoMode.ONE_CUBE);
-		chooser.addOption("TWO CONE LEFT", AutoMode.TWO_CONE_LEFT);
+		chooser.addOption("TWO CONE BALANCE NO CP", AutoMode.TWO_CONE_NOCP);
+		chooser.addOption("TWO HALF CONE BALANCE", AutoMode.TWO_HALF_CONE_NOCP);
 		auto.add(chooser);
 	}
 
@@ -34,8 +37,10 @@ public class AutoChooser {
 		switch(mode){
 			case ONE_CUBE:
 				return new McDonaldsPath(swerve);
-			case TWO_CONE_LEFT:
+			case TWO_CONE_NOCP:
 				return new TwoConeBalanceNonCableProtector(swerve, intake);
+			case TWO_HALF_CONE_NOCP:
+				return new TwoHalfConeBalanceNonCableProtector(swerve, intake);
 			default:
 				return new McDonaldsPath(swerve);
 		}
