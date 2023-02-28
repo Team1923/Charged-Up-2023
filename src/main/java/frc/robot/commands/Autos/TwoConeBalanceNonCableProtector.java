@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.IntakeCommands.DeployIntakeCommand;
 import frc.robot.commands.IntakeCommands.StowIntakeCommand;
+import frc.robot.commands.Scoring.ManualScore;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.StateHandler;
@@ -75,13 +76,7 @@ public class TwoConeBalanceNonCableProtector extends SequentialCommandGroup {
             new StowIntakeCommand(intake),
             new FollowPathWithEvents(scoreCone, scoreCone.getEventMarkers(), eventMap)),
 
-        /*
-         * Now, we're at the scoring location.
-         * The default commands should've already taken care of holding the game piece.
-         * We just need to tell the arm that we're ready to score
-         */
-        new InstantCommand(() -> stateHandler.setWantToScore(true)),
-        new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
+        new InstantCommand(() -> stateHandler.setResetManipulator(true)),
 
         /*
          * Balance

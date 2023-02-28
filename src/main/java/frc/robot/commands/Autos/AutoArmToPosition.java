@@ -29,6 +29,8 @@ public class AutoArmToPosition extends CommandBase {
     stateHandler.setVerticalLocation(desiredVerticalLocation);
     stateHandler.setHorizontalLocation(desiredHorizontalLocation);
     stateHandler.setGamePieceMode(desiredGamePieceMode);
+    stateHandler.setWantToScore(true);
+    stateHandler.setHoldInCobra(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
