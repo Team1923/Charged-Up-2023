@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ArmCommands.ArmDefaultCommand;
 import frc.robot.commands.IntakeCommands.DeployIntakeCommand;
+import frc.robot.commands.IntakeCommands.FeederPosition;
 import frc.robot.commands.IntakeCommands.IntakeArmDefaultCommand;
 import frc.robot.commands.IntakeCommands.StowIntakeCommand;
 import frc.robot.commands.Scoring.ManipulatorDefaultCommand;
@@ -117,6 +118,8 @@ public class RobotContainer {
         operatorLeftBumper.onTrue(new DeployIntakeCommand());
         operatorRightBumper.onTrue(new StowIntakeCommand(intakeSubsystem));
 
+
+        xButton.onTrue(new FeederPosition(intakeSubsystem));
 
     }
 

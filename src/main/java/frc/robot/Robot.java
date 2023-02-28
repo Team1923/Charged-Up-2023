@@ -132,7 +132,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    stateHandler.resetAutoState();
+    stateHandler.resetStates();
     autonomousCommand = robotContainer.initializeAuto(selector);
     BetterLimelightInterface.getInstance().aprilTagFieldLayout.setOrigin(
         DriverStation.getAlliance() == Alliance.Red ? OriginPosition.kRedAllianceWallRightSide

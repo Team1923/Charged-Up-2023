@@ -74,6 +74,7 @@ public class StateVariables {
     public static enum IntakePositions {
         // Similar to Arm Positions, diferent Intake Arm States take in Arm Angle Object
         INTAKE(new ArmAngles(-Math.toRadians(15), Math.toRadians(-10))),
+        FEED(new ArmAngles(-Math.toRadians(15), Math.toRadians(-10))),
         STOW(new ArmAngles(2.971, 1.307)),
         HANDOFF_1(new ArmAngles(1.249, Math.toRadians(40))),
         HANDOFF_2(new ArmAngles(2.541, 0.225)),
