@@ -60,13 +60,11 @@ public class TwoHalfConeBalanceNonCableProtector extends SequentialCommandGroup 
       //assuming cone has been intaked, no need to run the wheels anymore
       new InstantCommand(() -> stateHandler.setAutoRunIntake(false)),
 
-      //reset odometry to the new path (scoring cone)
-      new InstantCommand(() -> swerve.resetOdometry(scoreCone.getInitialPose())),
       /*
        * Inside this paralle group, we drive back & STOW the intake
        */
       new ParallelCommandGroup(
-        new StowIntakeCommand(intake),
+        new StowIntakeCommand(intake, () -> true),
         scoreCone
       ),
 
@@ -79,7 +77,6 @@ public class TwoHalfConeBalanceNonCableProtector extends SequentialCommandGroup 
 
       new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
 
-      new InstantCommand(() -> swerve.resetOdometry(acquireSecondCone.getInitialPose())),
 
       new ParallelCommandGroup(
         new InstantCommand(() -> stateHandler.setAutoRunIntake(true)), //set intake wheel speeds
@@ -94,10 +91,9 @@ public class TwoHalfConeBalanceNonCableProtector extends SequentialCommandGroup 
 
       new InstantCommand(() -> stateHandler.setAutoRunIntake(false)),
       
-      new InstantCommand(() -> swerve.resetOdometry(balanceAfterAcquire.getInitialPose())),
 
       new ParallelCommandGroup(
-        new StowIntakeCommand(intake),
+        new StowIntakeCommand(intake, () -> true),
         balanceAfterAcquire
       )
 

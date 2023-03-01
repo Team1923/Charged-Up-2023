@@ -67,13 +67,9 @@ public class TwoConeBalanceNonCableProtector extends SequentialCommandGroup {
         // assuming cone has been intaked, no need to run the wheels anymore
         new InstantCommand(() -> stateHandler.setAutoRunIntake(false)),
 
-        // reset odometry to the new path (scoring cone)
-        //new InstantCommand(() -> swerve.resetOdometry(scoreCone.getInitialPose())),
-        /*
-         * Inside this paralle group, we drive back & STOW the intake
-         */
+
         new ParallelCommandGroup(
-            new StowIntakeCommand(intake),
+            new StowIntakeCommand(intake, () -> true),
             new FollowPathWithEvents(scoreCone, scoreCone.getEventMarkers(), eventMap)),
 
         new InstantCommand(() -> stateHandler.setResetManipulator(true))

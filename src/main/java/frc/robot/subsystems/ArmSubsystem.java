@@ -219,7 +219,7 @@ public class ArmSubsystem extends SubsystemBase {
     //   disableMotionMagic();
     // }
 
-    if (getDistalCurrent() > 50 || getProximalCurrent() > 50) { // FIND CURRENT VALUES THAT WORK
+    if (getDistalCurrent() > 100 || getProximalCurrent() > 100) { // FIND CURRENT VALUES THAT WORK
       proximalMotor.stopMotor();
       distalMotor.stopMotor();
       CommandScheduler.getInstance().schedule(new EStopArmCommand(this));

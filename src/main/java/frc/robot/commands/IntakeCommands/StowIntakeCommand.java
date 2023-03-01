@@ -4,6 +4,8 @@
 
 package frc.robot.commands.IntakeCommands;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.util.StateHandler;
@@ -14,10 +16,13 @@ public class StowIntakeCommand extends CommandBase {
   StateHandler stateHandler = StateHandler.getInstance();
   private IntakeSubsystem intake;
 
-  public StowIntakeCommand(IntakeSubsystem intake) {
+  private BooleanSupplier autoOverride;
+
+  public StowIntakeCommand(IntakeSubsystem intake, BooleanSupplier autoOverride) {
     // Use addRequirements() here to declare subsystem dependencies.
 
     this.intake = intake;
+    this.autoOverride = autoOverride;
   }
 
   // Called when the command is initially scheduled.
@@ -25,7 +30,11 @@ public class StowIntakeCommand extends CommandBase {
   public void initialize() {
     if(stateHandler.getCurrentIntakePosition() == IntakePositions.INTAKE){
       stateHandler.setDesiredIntakePosition(IntakePositions.HANDOFF_1);
-      stateHandler.setHasGamePiece(intake.getAverageCurrentAboveThreshold(11));
+      if(autoOverride.getAsBoolean()) {
+        stateHandler.setHasGamePiece(true);
+      } else {
+        stateHandler.setHasGamePiece(intake.getAverageCurrentAboveThreshold(11));
+      }
     }
   }
 

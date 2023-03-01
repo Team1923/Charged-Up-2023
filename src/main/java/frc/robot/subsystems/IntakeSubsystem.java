@@ -226,7 +226,7 @@ public class IntakeSubsystem extends SubsystemBase {
     // }
 
     //If the current for either the proximal or distal is above 50, we stop the motors and stop running the intake subsystem
-    if(getIntakeProximalCurrent() > 50 || getIntakeDistalCurrent() > 50){
+    if(getIntakeProximalCurrent() > 100 || getIntakeDistalCurrent() > 100){
       intakeProximalMotor.stopMotor();
       intakeDistalMotor.stopMotor();
       CommandScheduler.getInstance().schedule(new EStopIntakeCommand(this));

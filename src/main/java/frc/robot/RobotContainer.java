@@ -24,6 +24,7 @@ import frc.robot.commands.StateCommands.SetRobotLocation;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.interfaces.AutoChooser;
 import frc.robot.subsystems.*;
+import frc.robot.util.PathPlannerUtils.AutoFromPathPlanner;
 import frc.robot.util.StateVariables.HorizontalLocations;
 import frc.robot.util.StateVariables.VerticalLocations;
 
@@ -78,6 +79,11 @@ public class RobotContainer {
     public final ManipulatorSubsystem gripper = new ManipulatorSubsystem();
     public final ShuffleboardSubsystem shuffleboard = new ShuffleboardSubsystem();
 
+    final AutoFromPathPlanner test5MStrafeRight = new AutoFromPathPlanner(s_Swerve, "Test5mStrafeRight", 4.5, 3.5, false, false, true);
+    final AutoFromPathPlanner test5mForward = new AutoFromPathPlanner(s_Swerve, "Test5mForward", 4.5, 3.5, false, false, true);
+    final AutoFromPathPlanner TestSCurve = new AutoFromPathPlanner(s_Swerve, "TestSCurve", 4.5, 3.5, false, false, true);
+
+
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
@@ -116,10 +122,12 @@ public class RobotContainer {
         new Trigger(() -> operator.getRawAxis(3) > 0.2).toggleOnTrue(new ManualScore());
 
         operatorLeftBumper.onTrue(new DeployIntakeCommand());
-        operatorRightBumper.onTrue(new StowIntakeCommand(intakeSubsystem));
+        operatorRightBumper.onTrue(new StowIntakeCommand(intakeSubsystem, () -> false));
 
 
         xButton.onTrue(new FeederPosition());
+
+        bButton.toggleOnTrue(test5mForward);
 
     }
 
