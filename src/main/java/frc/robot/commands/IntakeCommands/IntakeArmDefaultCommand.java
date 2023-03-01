@@ -7,7 +7,6 @@ package frc.robot.commands.IntakeCommands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -65,6 +64,9 @@ public class IntakeArmDefaultCommand extends CommandBase {
           intake.setSolenoid(false);
         }
         break;
+      case FEED:
+        intake.setSolenoid(true);
+        break;
       case INTAKE:
         intake.setSolenoid(true);
         break;
@@ -86,11 +88,13 @@ public class IntakeArmDefaultCommand extends CommandBase {
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF
             && stateHandler.getTimeSinceReadyToScore() > .5) {
           intake.setSolenoid(false);
-        }
-        if (stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF
-            && stateHandler.getTimeSinceReadyToScore() > .75) {
           stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
         }
+        // if (stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF
+        //     && stateHandler.getTimeSinceReadyToScore() > .75) {
+        //   stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
+        //   SmartDashboard.putNumber("TEST 6", 2);
+        // }
         break;
       case REVERSE_HANDOFF_2:
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.REVERSE_HANDOFF_2) {
@@ -118,6 +122,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
     intake.setIntakeProximalPosition(currentDesiredState.getArmAngles().getProximalAngle());
     intake.setIntakeDistalPosition(currentDesiredState.getArmAngles().getDistalAngle());
 
+  
   }
 
   public void setWheelSpeeds() {

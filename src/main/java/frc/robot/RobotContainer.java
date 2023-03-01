@@ -119,7 +119,7 @@ public class RobotContainer {
         operatorRightBumper.onTrue(new StowIntakeCommand(intakeSubsystem));
 
 
-        xButton.onTrue(new FeederPosition(intakeSubsystem));
+        xButton.onTrue(new FeederPosition());
 
     }
 

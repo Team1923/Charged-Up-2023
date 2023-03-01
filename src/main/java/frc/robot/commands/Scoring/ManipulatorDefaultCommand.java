@@ -6,7 +6,6 @@ package frc.robot.commands.Scoring;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ManipulatorSubsystem;
 import frc.robot.util.StateHandler;
@@ -48,13 +47,11 @@ public class ManipulatorDefaultCommand extends CommandBase {
     engage = StateHandler.getInstance().readyToClose();
     boolean breakout = breakOut.getAsDouble() > 0.2;
 
-    SmartDashboard.putBoolean("ENGAGE", engage);
-    SmartDashboard.putBoolean("LATCH", latch);
-    SmartDashboard.putBoolean("RESET MANIPULATOR", stateHandler.getResetManipulator());
-    SmartDashboard.putBoolean("GRIPPER ENGAGED", stateHandler.getGripperEngaged());
-
-
-    if (stateHandler.getResetManipulator() || breakout) {
+   
+    if(stateHandler.getInFeed()) {
+      gripper.set(true);
+    }
+    else if (stateHandler.getResetManipulator() || breakout) {
       latch = false;
       gripper.set(false);
       stateHandler.setGripperEngaged(false);

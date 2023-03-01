@@ -29,7 +29,8 @@ public class StateHandler {
             manualLift = false,
             armGood = false,
             intakeGood = false,
-            autoRunIntake = false;
+            autoRunIntake = false,
+            isFeeding = false;
 
     private GamePieceMode mode = GamePieceMode.CUBE;
 
@@ -227,6 +228,14 @@ public class StateHandler {
 
     public boolean getAutoRunIntake(){
         return autoRunIntake;
+    }
+
+    public void setInFeed(boolean f) {
+        isFeeding = f;
+    }
+
+    public boolean getInFeed(){
+        return isFeeding;
     }
     
     // When the robot is disbaled, it resets the states of the Arm and Intake, preventing them from continuing their command after the robot is disabled

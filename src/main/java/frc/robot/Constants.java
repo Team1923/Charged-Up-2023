@@ -109,13 +109,13 @@ public final class Constants {
 
     public static final double errorThreshold = 0.1;
     public static final double cubeIntakeSpeed = .5;
-    public static final double coneIntakeSpeed = .75;
+    public static final double coneIntakeSpeed = 1; //.75
     public static final double ejectSpeed = -1;
     public static final double cubeCurrentThreshold = 80;
     public static final double coneCurrentThreshold = 80;
 
     public static final double gripSpeed = .1;
-    public static final double handoffSpeed = -.1;
+    public static final double handoffSpeed = -.15;
   }
 
   public final class ArmConstants {
@@ -337,8 +337,8 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXController = 1;
-    public static final double kPYController = 1;
+    public static final double kPXController = 2;
+    public static final double kPYController = 2;
     public static final double kPThetaController = 1;
 
     public static final double looperUpdateTime = 0.01;

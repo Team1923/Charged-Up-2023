@@ -11,13 +11,11 @@ import frc.robot.util.StateVariables.IntakePositions;
 
 public class FeederPosition extends CommandBase {
 
-  private IntakeSubsystem intake;
   private StateHandler stateHandler;
 
   /** Creates a new FeederPosition. */
-  public FeederPosition(IntakeSubsystem intake) {
+  public FeederPosition() {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.intake = intake;
     this.stateHandler = StateHandler.getInstance();
   }
 
@@ -29,8 +27,10 @@ public class FeederPosition extends CommandBase {
 
     if(currentIntakePosition == IntakePositions.INTAKE && desiredIntakePosition == IntakePositions.INTAKE) {
       stateHandler.setDesiredIntakePosition(IntakePositions.FEED);
+      stateHandler.setInFeed(true);
     } else if(currentIntakePosition == IntakePositions.FEED && desiredIntakePosition == IntakePositions.FEED) {
       stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE);
+      stateHandler.setInFeed(false);
     }
 
     

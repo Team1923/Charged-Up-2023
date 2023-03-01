@@ -111,9 +111,6 @@ public class BetterLimelightInterface {
         || (aprilTagID == 6) || (aprilTagID == 7) || (aprilTagID == 8)) && hasValidTarget);
   }
 
-  public void test(){
-    System.out.println(aprilTagFieldLayout.getTagPose(1));
-  }
 
   /*
    * create a Pose3D object for trajectory generation
@@ -128,8 +125,14 @@ public class BetterLimelightInterface {
   }
 
   public Pose3d getAprilTagPose(SpecificLimelight limelight){
-    Optional<Pose3d> aprilTagPose = aprilTagFieldLayout.getTagPose((int)getID(limelight));
-    return aprilTagPose.get();
+    if(hasValidTargets(limelight)) {
+      Optional<Pose3d> aprilTagPose = aprilTagFieldLayout.getTagPose((int)getID(limelight));
+      if(aprilTagPose.isEmpty()) {
+        return new Pose3d();
+      }
+      return aprilTagPose.get();
+    }
+    return new Pose3d();
   }
 
   public void fillAprilTagList(){

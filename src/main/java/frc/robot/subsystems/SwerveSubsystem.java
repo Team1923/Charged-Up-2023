@@ -19,6 +19,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import java.util.ArrayList;
 
 import com.ctre.phoenix.sensors.Pigeon2;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -30,6 +32,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Quaternion;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N3;
@@ -49,9 +52,9 @@ public class SwerveSubsystem extends SubsystemBase {
 
     private StateHandler stateHandler = StateHandler.getInstance();
 
-    public static final Vector<N3> stateStdDevs = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5));
+    public static final Vector<N3> stateStdDevs = VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(5));
 
-    public static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(10));
+    public static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(1, 1, Units.degreesToRadians(10));
 
     BetterLimelightInterface limelightInterface = BetterLimelightInterface.getInstance();
 
@@ -75,8 +78,10 @@ public class SwerveSubsystem extends SubsystemBase {
         resetModulesToAbsolute();
 
         swerveOdometry = new SwerveDrivePoseEstimator(Swerve.swerveKinematics, getYaw(), getModulePositions(),
-                new Pose2d(),
-                stateStdDevs, visionMeasurementStdDevs);        
+                new Pose2d(1.69, 4.96, new Rotation2d(0)),
+                stateStdDevs, visionMeasurementStdDevs);
+
+        SmartDashboard.putData(field2D);
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -179,14 +184,18 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public void updateOdometry() {
         swerveOdometry.update(Rotation2d.fromDegrees(getYawIEEE()), getModulePositions());
-        if(limelightInterface.hasValidTargets(getCorrectLimelight())) {
-            Pose3d limelightPose3d = limelightInterface.getRobotPose3d(getCorrectLimelight());
-            Pose2d currentLimelightPose = new Pose2d(-limelightPose3d.getZ(), limelightPose3d.getX(), getYaw());
-            Pose2d currentRobotPose = getPose();
-            if(Math.sqrt(Math.pow((currentLimelightPose.getX() - currentRobotPose.getX()), 2) 
-                + Math.pow((currentLimelightPose.getY() - currentRobotPose.getY()), 2)) <= 1) {
-                swerveOdometry.addVisionMeasurement(currentLimelightPose, Timer.getFPGATimestamp() - limelightInterface.getBotPose(getCorrectLimelight())[6]);
+        if (limelightInterface.hasValidTargets(getCorrectLimelight())) {
+            Pose3d currentAprilTagPose = limelightInterface.getAprilTagPose(getCorrectLimelight());
+            Pose2d aprilTagPose = new Pose2d(currentAprilTagPose.getX(), currentAprilTagPose.getY(), new Rotation2d());
+            Pose2d robotLimelightPose = new Pose2d(-limelightInterface.getRobotPose3d(getCorrectLimelight()).getZ(),
+                    limelightInterface.getRobotPose3d(getCorrectLimelight()).getX(), getYaw());
+            if (Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) + Math.pow(robotLimelightPose.getY(), 2)) <= 1) {
+                Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() + robotLimelightPose.getX(),
+                        aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
+                swerveOdometry.addVisionMeasurement(newRobotPose,
+                        Timer.getFPGATimestamp() - limelightInterface.getBotPose(getCorrectLimelight())[5] / 1000);
             }
+
         }
     }
 
@@ -199,6 +208,10 @@ public class SwerveSubsystem extends SubsystemBase {
             stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
         }
         SmartDashboard.putString("CURRENT ROBOT DIRECTION", stateHandler.getRobotDirection().toString());
+
+        SmartDashboard.putString("ROBOT ODOMETRY", swerveOdometry.getEstimatedPosition().toString());
+
+        // PathPlannerServer.sendPathFollowingData(new Pose2d(), swerveOdometry.getEstimatedPosition());
 
         // for(SwerveModule mod : mSwerveMods){
         // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",

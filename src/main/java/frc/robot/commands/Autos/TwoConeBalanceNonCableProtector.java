@@ -61,14 +61,14 @@ public class TwoConeBalanceNonCableProtector extends SequentialCommandGroup {
              * then the intake will deploy
              */
             new SequentialCommandGroup(
-                new WaitUntilCommand(() -> stateHandler.getCurrentArmPosition() == ArmPositions.STOW),
+                new WaitUntilCommand(() -> stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_REVERSE),
                 new DeployIntakeCommand()),
             acquireCone),
         // assuming cone has been intaked, no need to run the wheels anymore
         new InstantCommand(() -> stateHandler.setAutoRunIntake(false)),
 
         // reset odometry to the new path (scoring cone)
-        new InstantCommand(() -> swerve.resetOdometry(scoreCone.getInitialPose())),
+        //new InstantCommand(() -> swerve.resetOdometry(scoreCone.getInitialPose())),
         /*
          * Inside this paralle group, we drive back & STOW the intake
          */
@@ -76,13 +76,11 @@ public class TwoConeBalanceNonCableProtector extends SequentialCommandGroup {
             new StowIntakeCommand(intake),
             new FollowPathWithEvents(scoreCone, scoreCone.getEventMarkers(), eventMap)),
 
-        new InstantCommand(() -> stateHandler.setResetManipulator(true)),
+        new InstantCommand(() -> stateHandler.setResetManipulator(true))
 
-        /*
-         * Balance
-         */
-        new InstantCommand(() -> swerve.resetOdometry(balance.getInitialPose())),
-        balance
+     
+        // new InstantCommand(() -> swerve.resetOdometry(balance.getInitialPose())),
+        // balance
 
     );
   }
