@@ -6,6 +6,7 @@ package frc.robot.commands.IntakeCommands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.IntakePositions;
@@ -14,7 +15,10 @@ public class DeployIntakeCommand extends CommandBase {
   /** Creates a new DeployIntakeCommand. */
   StateHandler stateHandler = StateHandler.getInstance();
 
-  public DeployIntakeCommand() {
+  private IntakeSubsystem intake;
+
+  public DeployIntakeCommand(IntakeSubsystem intake) {
+    this.intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -23,12 +27,10 @@ public class DeployIntakeCommand extends CommandBase {
   public void initialize() {
     IntakePositions currentIntakePosition = stateHandler.getCurrentIntakePosition();
 
-    SmartDashboard.putString("DEBUG 1", currentIntakePosition.toString());
-    SmartDashboard.putString("DEBUG 2", stateHandler.getGamePieceMode().toString());
-
     if ((currentIntakePosition == IntakePositions.STOW || currentIntakePosition == IntakePositions.FINAL_HANDOFF)
         && (stateHandler.getGamePieceMode() == GamePieceMode.CUBE || (!stateHandler.getGripperEngaged() && stateHandler.getGamePieceMode() == GamePieceMode.CONE))) {
       SmartDashboard.putBoolean("Deployed Intake", true);
+      intake.setSolenoid(true);
       stateHandler.setDesiredIntakePosition(IntakePositions.REVERSE_HANDOFF_1);
     }
 

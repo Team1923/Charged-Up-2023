@@ -53,7 +53,7 @@ public class TwoHalfConeBalanceNonCableProtector extends SequentialCommandGroup 
          */
         new SequentialCommandGroup(
           new WaitUntilCommand(() -> stateHandler.getCurrentArmPosition() == ArmPositions.STOW),
-          new DeployIntakeCommand()
+          new DeployIntakeCommand(intake)
         ),
         acquireCone
       ),
@@ -83,7 +83,7 @@ public class TwoHalfConeBalanceNonCableProtector extends SequentialCommandGroup 
 
         new SequentialCommandGroup(
           new WaitUntilCommand(() -> stateHandler.getCurrentArmPosition() == ArmPositions.STOW),
-          new DeployIntakeCommand()
+          new DeployIntakeCommand(intake)
         ),
 
         acquireSecondCone

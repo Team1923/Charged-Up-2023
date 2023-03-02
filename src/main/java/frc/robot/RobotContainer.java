@@ -121,13 +121,13 @@ public class RobotContainer {
 
         new Trigger(() -> operator.getRawAxis(3) > 0.2).toggleOnTrue(new ManualScore());
 
-        operatorLeftBumper.onTrue(new DeployIntakeCommand());
+        operatorLeftBumper.onTrue(new DeployIntakeCommand(intakeSubsystem));
         operatorRightBumper.onTrue(new StowIntakeCommand(intakeSubsystem, () -> false));
 
 
         xButton.onTrue(new FeederPosition());
 
-        bButton.toggleOnTrue(test5mForward);
+        bButton.toggleOnTrue(test5MStrafeRight);
 
     }
 

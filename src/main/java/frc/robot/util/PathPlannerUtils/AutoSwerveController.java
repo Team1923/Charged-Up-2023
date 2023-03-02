@@ -232,6 +232,7 @@ public class AutoSwerveController extends CommandBase {
 
   @Override
   public void execute() {
+    controller.setTolerance(new Pose2d(0.1, 0.1, new Rotation2d(0.05)));
     double currentTime = this.timer.get();
     PathPlannerState desiredState = (PathPlannerState) transformedTrajectory.sample(currentTime);
 
@@ -247,24 +248,16 @@ public class AutoSwerveController extends CommandBase {
 	 * Adding in 254 suggestion for drifting
 	 */
 
-    Pose2d robot_pose_vel = new Pose2d(targetChassisSpeeds.vxMetersPerSecond * AutoConstants.looperUpdateTime,
-        targetChassisSpeeds.vyMetersPerSecond * AutoConstants.looperUpdateTime,
-        Rotation2d.fromRadians(targetChassisSpeeds.omegaRadiansPerSecond * AutoConstants.looperUpdateTime));
-    Twist2d twistVel = new Twist2d(robot_pose_vel.getX(), robot_pose_vel.getY(),
-        robot_pose_vel.getRotation().getRadians());
-    var newChassisSpeeds = new ChassisSpeeds(twistVel.dx / AutoConstants.looperUpdateTime,
-        twistVel.dy / AutoConstants.looperUpdateTime,
-        twistVel.dtheta / AutoConstants.looperUpdateTime);
 
 	//NOTE: If 254 suggestion does not work, delete the above 3 instantiations,
 	//change "newChassisSpeeds" to "targetChassisSpeeds"
     if (this.useKinematics) {
       SwerveModuleState[] targetModuleStates =
-          this.kinematics.toSwerveModuleStates(newChassisSpeeds);
+          this.kinematics.toSwerveModuleStates(targetChassisSpeeds);
 
       this.outputModuleStates.accept(targetModuleStates);
     } else {
-      this.outputChassisSpeeds.accept(newChassisSpeeds);
+      this.outputChassisSpeeds.accept(targetChassisSpeeds);
     }
   }
 
@@ -284,6 +277,6 @@ public class AutoSwerveController extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return this.timer.hasElapsed(transformedTrajectory.getTotalTimeSeconds());
+    return controller.atReference() && this.timer.hasElapsed(transformedTrajectory.getTotalTimeSeconds());
   }
 }

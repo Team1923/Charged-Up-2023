@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import com.pathplanner.lib.commands.FollowPathWithEvents;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -23,6 +24,7 @@ import frc.robot.util.PathPlannerUtils.AutoFromPathPlanner;
 import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.HorizontalLocations;
+import frc.robot.util.StateVariables.IntakePositions;
 import frc.robot.util.StateVariables.VerticalLocations;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -39,10 +41,6 @@ public class TwoConeBalanceNonCableProtector extends SequentialCommandGroup {
     final AutoFromPathPlanner scoreCone = new AutoFromPathPlanner(swerve, "ScoreConeNOCP", 2.5, 2, false, true, true);
     final AutoFromPathPlanner balance = new AutoFromPathPlanner(swerve, "BalanceNOCP", 2.5, 2, false, true, true);
 
-    HashMap<String, Command> eventMap = new HashMap<>();
-    eventMap.put("ExtendArm",
-        new AutoArmToPosition(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE));
-
     addCommands(
         new InstantCommand(() -> swerve.resetOdometry(acquireCone.getInitialPose())),
         new InstantCommand(() -> swerve.zeroGyro(acquireCone.getInitialPose().getRotation().getDegrees())),
@@ -52,30 +50,50 @@ public class TwoConeBalanceNonCableProtector extends SequentialCommandGroup {
          * When the arm is in position, the manipulator disengages.
          * When this is done, we then go back to STOW
          */
-        new AutoScoreCommand(HorizontalLocations.RIGHT, VerticalLocations.HIGH, GamePieceMode.CONE),
         new ParallelCommandGroup(
-            new InstantCommand(() -> stateHandler.setAutoRunIntake(true)), // set intake wheel speeds
-            /*
-             * The sequential command group below will first
-             * wait for the arm to be in stow,
-             * then the intake will deploy
-             */
             new SequentialCommandGroup(
-                new WaitUntilCommand(() -> stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_REVERSE),
-                new DeployIntakeCommand()),
-            acquireCone),
+                new AutoScoreCommand(HorizontalLocations.RIGHT, VerticalLocations.HIGH, GamePieceMode.CONE),
+                acquireCone
+            ),
+            new SequentialCommandGroup(
+                new InstantCommand(() -> SmartDashboard.putNumber("DEBUG", 0)),
+                new WaitUntilCommand(() -> stateHandler.getResetManipulator()),
+                new InstantCommand(() -> SmartDashboard.putNumber("DEBUG", 1)),
+                new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.REVERSE_HANDOFF_1)),
+                new InstantCommand(() -> SmartDashboard.putNumber("DEBUG", 2)),
+                new InstantCommand(() -> stateHandler.setAutoRunIntake(true)), // set intake wheel speeds
+                new InstantCommand(() -> SmartDashboard.putNumber("DEBUG", 3))
+            )),
+        // new ParallelCommandGroup(
+        //     /*
+        //      * The sequential command group below will first
+        //      * wait for the arm to be in stow,
+        //      * then the intake will deploy
+        //      */
+        //     // new SequentialCommandGroup(
+        //         //new WaitUntilCommand(() -> stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_REVERSE),
+        //     ),
         // assuming cone has been intaked, no need to run the wheels anymore
         new InstantCommand(() -> stateHandler.setAutoRunIntake(false)),
 
 
         new ParallelCommandGroup(
-            new StowIntakeCommand(intake, () -> true),
-            new FollowPathWithEvents(scoreCone, scoreCone.getEventMarkers(), eventMap)),
+            new SequentialCommandGroup(
+                new InstantCommand(() -> SmartDashboard.putNumber("I DEBUG", 0)),
+                new StowIntakeCommand(intake, () -> true),
+                new InstantCommand(() -> SmartDashboard.putNumber("I DEBUG", 1)),
+                new WaitUntilCommand(() -> stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF),
+                new InstantCommand(() -> SmartDashboard.putNumber("I DEBUG", 2)),
+                new AutoArmToPosition(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
+                new InstantCommand(() -> SmartDashboard.putNumber("I DEBUG", 3))
+            ),
+            scoreCone
+            ),
+
 
         new InstantCommand(() -> stateHandler.setResetManipulator(true))
 
      
-        // new InstantCommand(() -> swerve.resetOdometry(balance.getInitialPose())),
         // balance
 
     );

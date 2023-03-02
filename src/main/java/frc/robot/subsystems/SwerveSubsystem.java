@@ -192,8 +192,8 @@ public class SwerveSubsystem extends SubsystemBase {
             if (Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) + Math.pow(robotLimelightPose.getY(), 2)) <= 1) {
                 Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() + robotLimelightPose.getX(),
                         aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
-                swerveOdometry.addVisionMeasurement(newRobotPose,
-                        Timer.getFPGATimestamp() - limelightInterface.getBotPose(getCorrectLimelight())[5] / 1000);
+                // swerveOdometry.addVisionMeasurement(newRobotPose,
+                //         Timer.getFPGATimestamp() - limelightInterface.getBotPose(getCorrectLimelight())[5] / 1000);
             }
 
         }

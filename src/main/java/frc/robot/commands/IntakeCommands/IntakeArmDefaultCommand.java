@@ -7,6 +7,7 @@ package frc.robot.commands.IntakeCommands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -104,9 +105,9 @@ public class IntakeArmDefaultCommand extends CommandBase {
         break;
       case REVERSE_HANDOFF_1:
         intake.setSolenoid(true);
-        if (stateHandler.getGripperEngaged()) {
+        if (stateHandler.getGripperEngaged() && DriverStation.isTeleopEnabled()) {
           stateHandler.setResetManipulator(true);
-        } else {
+        } else if(DriverStation.isTeleopEnabled()){
           stateHandler.setResetManipulator(false);
         }
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.REVERSE_HANDOFF_1) {
