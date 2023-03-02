@@ -17,6 +17,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.StateHandler;
 import frc.robot.util.PathPlannerUtils.AutoFromPathPlanner;
+import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.HorizontalLocations;
 import frc.robot.util.StateVariables.IntakePositions;
@@ -40,16 +41,14 @@ public class TwoConeBalanceNonCableProtector extends SequentialCommandGroup {
         new InstantCommand(() -> swerve.resetOdometry(acquireCone.getInitialPose())),
         new InstantCommand(() -> swerve.zeroGyro(acquireCone.getInitialPose().getRotation().getDegrees())),
 
-        /*
-         * The first line sets the desiredArmPosition.
-         * When the arm is in position, the manipulator disengages.
-         * When this is done, we then go back to STOW
-         */
+        // new InstantCommand(() -> stateHandler.setArmDesiredState(ArmPositions.COBRA_FORWARD)),
+    
         new ParallelCommandGroup(
             new SequentialCommandGroup(
                 new AutoScoreCommand(HorizontalLocations.RIGHT, VerticalLocations.HIGH, GamePieceMode.CONE),
                 acquireCone
             ),
+
             new SequentialCommandGroup(
                 new WaitUntilCommand(() -> stateHandler.getResetManipulator()),
                 new InstantCommand(() -> stateHandler.setResetManipulator(false)),
@@ -75,7 +74,9 @@ public class TwoConeBalanceNonCableProtector extends SequentialCommandGroup {
         new WaitCommand(0.1),
         new InstantCommand(() -> stateHandler.setResetManipulator(false)),
         new ParallelRaceGroup(
-
+            // GYRO VELOCITY MEASUREMENTS
+            new WaitUntilCommand(() -> swerve.getAngularVelocity() < -6),
+            balance
         )
 
     );

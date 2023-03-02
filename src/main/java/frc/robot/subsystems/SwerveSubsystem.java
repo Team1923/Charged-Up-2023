@@ -29,6 +29,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,6 +42,8 @@ public class SwerveSubsystem extends SubsystemBase {
     public WPI_Pigeon2 gyro = new WPI_Pigeon2(Swerve.pigeonID, "rio");
 
     private Field2d field2D = new Field2d();
+
+    private double[] gyroVelocities = new double[3];
 
     private StateHandler stateHandler = StateHandler.getInstance();
 
@@ -174,6 +177,14 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
+    public void updateGyroVelocities() {
+        gyro.getRawGyro(gyroVelocities);
+    }
+
+    public double getAngularVelocity() {
+        return gyroVelocities[0];
+    }
+
     public void updateOdometry() {
         swerveOdometry.update(Rotation2d.fromDegrees(getYawIEEE()), getModulePositions());
         if (limelightInterface.hasValidTargets(getCorrectLimelight())) {
@@ -193,6 +204,10 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        if(DriverStation.isAutonomousEnabled()) {
+            updateGyroVelocities();
+        }
+
         updateOdometry();
         if (getCorrectLimelight() == SpecificLimelight.LEFT_LIMELIGHT) {
             stateHandler.setRobotDirection(CurrentRobotDirection.LEFT);
