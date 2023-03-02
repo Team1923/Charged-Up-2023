@@ -251,7 +251,6 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 
 		PathPlannerTrajectory trajectory = trajectorySupplier.get();
 
-		swerve.resetOdometry(trajectory.getInitialHolonomicPose());
 
 		if (useAllianceColor && trajectory.fromGUI) {
 			transformedTrajectory = PathPlannerTrajectory.transformTrajectoryForAlliance(
