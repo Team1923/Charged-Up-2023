@@ -6,6 +6,7 @@ package frc.robot.commands.Scoring;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ManipulatorSubsystem;
 import frc.robot.util.StateHandler;
@@ -36,7 +37,8 @@ public class ManipulatorDefaultCommand extends CommandBase {
   @Override
   public void initialize() {
     lastGripperValue = gripper.get();
-    latch = false;
+    // CHANGED LATCH TO DEFAULT TO TRUE IN AUTONOMOUS, SAYING WE HAVE GAME PIECE
+    latch = DriverStation.isAutonomousEnabled();
     engage = false;
   }
 
@@ -61,7 +63,7 @@ public class ManipulatorDefaultCommand extends CommandBase {
     } else if (!latch) {
       gripper.set(false);
       stateHandler.setGripperEngaged(false);
-    }
+    } 
 
     boolean currentGripperValue = gripper.get();
 

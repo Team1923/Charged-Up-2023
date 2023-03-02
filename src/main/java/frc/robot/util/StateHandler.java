@@ -267,15 +267,16 @@ public class StateHandler {
     public void resetAutoState(){
         desiredArmPosition = ArmPositions.STOW;
         currentArmPosition = ArmPositions.STOW;
-        desiredIntakePosition = IntakePositions.FINAL_HANDOFF;
-        currentIntakePosition = IntakePositions.FINAL_HANDOFF;
+        // CHANGED FROM FINAL HANDOFF. IF BAD THEN UNDO ADDITIONS TO MANIPULATOR DEFAULT COMMANDS.
+        desiredIntakePosition = IntakePositions.STOW;
+        currentIntakePosition = IntakePositions.STOW;
         hasGamePiece = true;
         timeSinceLastGripChange = System.currentTimeMillis();
         timeSinceReadyToScore = 0;
         gripperEngaged = true;
         resetManipulator = false;
 
-        isArmMoving = false;
+        isArmMoving = true;
         wantToScore = true;
         holdInCobra = false;
     }
