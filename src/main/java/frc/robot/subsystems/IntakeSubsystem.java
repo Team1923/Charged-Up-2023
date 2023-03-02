@@ -204,7 +204,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public boolean getGamePieceSensor() {
-    return gamePieceSensor.get();
+    return !gamePieceSensor.get();
   }
 
   public void stopIntake(){
@@ -254,6 +254,8 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("INTAKE ABSOLUTE Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());
     
     SmartDashboard.putString("Desired Intake Position", stateHandler.getDesiredIntakePosition().toString());
+
+    SmartDashboard.putBoolean("LIMIT SWITCH", getGamePieceSensor());
 
     // SmartDashboard.putString("Scoring Location Vertical", stateHandler.getCurrentVerticalLocation().toString());
     // SmartDashboard.putString("Scoring Location Horizontal", stateHandler.getCurrentHorizontalLocation().toString());
