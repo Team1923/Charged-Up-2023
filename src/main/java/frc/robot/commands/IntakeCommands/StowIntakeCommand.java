@@ -16,9 +16,9 @@ public class StowIntakeCommand extends CommandBase {
   StateHandler stateHandler = StateHandler.getInstance();
   private IntakeSubsystem intake;
 
-  private BooleanSupplier autoOverride;
+  private boolean autoOverride;
 
-  public StowIntakeCommand(IntakeSubsystem intake, BooleanSupplier autoOverride) {
+  public StowIntakeCommand(IntakeSubsystem intake, boolean autoOverride) {
     // Use addRequirements() here to declare subsystem dependencies.
 
     this.intake = intake;
@@ -28,13 +28,9 @@ public class StowIntakeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(stateHandler.getCurrentIntakePosition() == IntakePositions.INTAKE){
+    if (stateHandler.getCurrentIntakePosition() == IntakePositions.INTAKE) {
       stateHandler.setDesiredIntakePosition(IntakePositions.HANDOFF_1);
-      if(autoOverride.getAsBoolean()) {
-        stateHandler.setHasGamePiece(true);
-      } else {
-        stateHandler.setHasGamePiece(intake.getAverageCurrentAboveThreshold(11));
-      }
+      stateHandler.setHasGamePiece(autoOverride || intake.getGamePieceSensor());
     }
   }
 
@@ -45,7 +41,8 @@ public class StowIntakeCommand extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

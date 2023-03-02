@@ -214,6 +214,8 @@ public class AutoSwerveController extends CommandBase {
   @Override
   public void initialize() {
 
+    controller.setTolerance(new Pose2d(0.05, 0.05, new Rotation2d(0.05)));
+
     if (useAllianceColor && trajectory.fromGUI) {
       transformedTrajectory =
           PathPlannerTrajectory.transformTrajectoryForAlliance(
@@ -232,7 +234,6 @@ public class AutoSwerveController extends CommandBase {
 
   @Override
   public void execute() {
-    controller.setTolerance(new Pose2d(0.1, 0.1, new Rotation2d(0.05)));
     double currentTime = this.timer.get();
     PathPlannerState desiredState = (PathPlannerState) transformedTrajectory.sample(currentTime);
 

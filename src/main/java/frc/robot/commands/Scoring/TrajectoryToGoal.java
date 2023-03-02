@@ -39,10 +39,9 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
 
     var thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
 
-
     addCommands(
         new SuppliedSwerveControllerCommand(
-            ()->getPathPlannerTrajectory(),
+            () -> getPathPlannerTrajectory(),
             swerve::getPose,
             Swerve.swerveKinematics,
             new PIDController(AutoConstants.kPXController, 0, 0),
@@ -57,25 +56,27 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
   public PathPlannerTrajectory getPathPlannerTrajectory() {
     // heading argument = wheel direction
     // holonomic rotation = actual robot heading
-    Rotation2d robotHeading = Rotation2d.fromDegrees(swerve.getYawIEEE());
-    //Rotation2d robotHeading = new Rotation2d(Math.toRadians(swerve.getYawIEEE()));
-    Rotation2d goalHeading = Rotation2d.fromDegrees((robotHeading.getDegrees() > 0 ? 90 : -90));
+    Rotation2d robotRotation = Rotation2d.fromDegrees(swerve.getYawIEEE());
+    // Rotation2d robotHeading = new
+    // Rotation2d(Math.toRadians(swerve.getYawIEEE()));
+    Rotation2d goalRotation = Rotation2d.fromDegrees((robotRotation.getDegrees() > 0 ? 90 : -90));
 
-    Pose2d center = new Pose2d(0.5, 0, goalHeading);
-    Pose2d left = new Pose2d(0.5, 0.559, goalHeading);
-    Pose2d right = new Pose2d(0.5, -0.559, goalHeading);
-
+    Pose2d center = new Pose2d(0.5, 0, goalRotation);
+    Pose2d left = new Pose2d(0.5, 0.559, goalRotation);
+    Pose2d right = new Pose2d(0.5, -0.559, goalRotation);
 
     SpecificLimelight limelight = swerve.getCorrectLimelight();
-    //Pose3d currentRobotPose = new Pose3d(new Translation3d(-0.5,0,-1.5), new Rotation3d(0,0,0));
-    Pose3d currentRobotPose = BetterLimelightInterface.getInstance().getRobotPose3d(limelight);
+
+    Pose2d currentRobotPose = swerve.getPose();
     double desiredWheelHeading = 0;
 
+    Pose3d currentAprilTagPose = BetterLimelightInterface.getInstance().getAprilTagPose(limelight);
+    Pose2d aprilTagPose = new Pose2d(currentAprilTagPose.getX(), currentAprilTagPose.getY(), new Rotation2d());
 
     HorizontalLocations desiredHorizontalLocation = StateHandler.getInstance().getCurrentHorizontalLocation();
     Pose2d desiredLocation = left;
 
-    switch(desiredHorizontalLocation) {
+    switch (desiredHorizontalLocation) {
       case LEFT:
         desiredLocation = left;
         break;
@@ -92,21 +93,22 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
         break;
     }
 
-    
+    Pose2d endPose = new Pose2d(aprilTagPose.getX() + desiredLocation.getX(),
+        aprilTagPose.getY() + desiredLocation.getY(), goalRotation);
+
     if (currentRobotPose.getX() - desiredLocation.getY() >= 0) {
-      desiredWheelHeading = -Math.PI/2;
+      desiredWheelHeading = -Math.PI / 2;
     } else {
-      desiredWheelHeading = Math.PI/2;
+      desiredWheelHeading = Math.PI / 2;
     }
 
-
-    
     return PathPlanner.generatePath(
-        new PathConstraints(3, 3), // stole the values from our WPILib generator
-        new PathPoint(new Translation2d(-currentRobotPose.getZ(), currentRobotPose.getX()), new Rotation2d(desiredWheelHeading), robotHeading,
+        new PathConstraints(3, 3), 
+        new PathPoint(new Translation2d(currentRobotPose.getX(), currentRobotPose.getY()),
+            new Rotation2d(desiredWheelHeading), robotRotation,
             swerve.getRobotVelocity()), // initial
-        //new PathPoint(new Translation2d(-currentRobotPose.getZ(), center.getY()), new Rotation2d(Math.PI), goalHeading), // intermediary
-        new PathPoint(new Translation2d(desiredLocation.getX(), desiredLocation.getY()), new Rotation2d(Math.PI), goalHeading)); // final
+        new PathPoint(new Translation2d(endPose.getX(), endPose.getY()), new Rotation2d(Math.PI),
+          endPose.getRotation())); // final
 
   }
 

@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -38,9 +39,10 @@ public class IntakeSubsystem extends SubsystemBase {
       IntakeConstants.intakeProximalAbsoluteEncoderID);
   private DutyCycleEncoder intakeDistalEncoder = new DutyCycleEncoder(IntakeConstants.intakeDistalAbsoluteEncoderID);
 
+  private DigitalInput gamePieceSensor = new DigitalInput(9);
+
   private StateHandler stateHandler = StateHandler.getInstance();
 
-  private RollingAvgDouble averageCurrentDraw = new RollingAvgDouble(20);
 
   public IntakeSubsystem() {
     intakeProximalMotor.configFactoryDefault();
@@ -183,14 +185,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public double getCurrentDraw() {
     return leftIntakeWheelMotor.getStatorCurrent();
   }
-//Gets the rolling average, or current over period of time, and can be used to monitor current spikes
-  public void updateCurrentRollingAvg() {
-    averageCurrentDraw.add(getCurrentDraw());
-  }
-  
-  public boolean getAverageCurrentAboveThreshold(double goal) {
-    return averageCurrentDraw.getAvg() > goal;
-  }
+
 
   public void setSolenoid(boolean output) {
     intakeSolenoid.set(output ? Value.kForward : Value.kReverse);
@@ -206,6 +201,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public double getIntakeDistalCurrent(){
     return intakeDistalMotor.getStatorCurrent();
+  }
+
+  public boolean getGamePieceSensor() {
+    return gamePieceSensor.get();
   }
 
   public void stopIntake(){

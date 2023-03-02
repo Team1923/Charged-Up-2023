@@ -13,26 +13,18 @@ import frc.robot.Constants;
 import frc.robot.Constants.Swerve;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
-import java.util.ArrayList;
 
 import com.ctre.phoenix.sensors.Pigeon2;
-import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
-import com.pathplanner.lib.server.PathPlannerServer;
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
-import edu.wpi.first.apriltag.AprilTag;
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Quaternion;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N3;
@@ -46,7 +38,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public SwerveDrivePoseEstimator swerveOdometry;
     public SwerveModule[] mSwerveMods;
 
-    public Pigeon2 gyro = new Pigeon2(Swerve.pigeonID, "rio");
+    public WPI_Pigeon2 gyro = new WPI_Pigeon2(Swerve.pigeonID, "rio");
 
     private Field2d field2D = new Field2d();
 
@@ -192,8 +184,8 @@ public class SwerveSubsystem extends SubsystemBase {
             if (Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) + Math.pow(robotLimelightPose.getY(), 2)) <= 1) {
                 Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() + robotLimelightPose.getX(),
                         aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
-                // swerveOdometry.addVisionMeasurement(newRobotPose,
-                //         Timer.getFPGATimestamp() - limelightInterface.getBotPose(getCorrectLimelight())[5] / 1000);
+                swerveOdometry.addVisionMeasurement(newRobotPose,
+                        Timer.getFPGATimestamp() - limelightInterface.getBotPose(getCorrectLimelight())[5] / 1000);
             }
 
         }

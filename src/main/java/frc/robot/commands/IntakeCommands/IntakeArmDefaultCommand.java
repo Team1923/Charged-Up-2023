@@ -48,7 +48,6 @@ public class IntakeArmDefaultCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.updateCurrentRollingAvg();
     setWheelSpeeds();
     IntakePositions currentDesiredState = stateHandler.getDesiredIntakePosition();
 
@@ -132,7 +131,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
     } else if (eject.getAsBoolean()) {
       stateHandler.setHasGamePiece(false);
       intake.setRawWheelSpeed(IntakeConstants.ejectSpeed);
-    } else if (intake.getAverageCurrentAboveThreshold(30)) {
+    } else if (intake.getGamePieceSensor()) {
       intake.setRawWheelSpeed(0.1);
     } else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE && (driverRightJoystick.getAsDouble() > 0.2 || stateHandler.getAutoRunIntake())) {
       intake.setRawWheelSpeed(IntakeConstants.coneIntakeSpeed);

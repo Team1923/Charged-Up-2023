@@ -64,7 +64,7 @@ public class TwoHalfConeBalanceNonCableProtector extends SequentialCommandGroup 
        * Inside this paralle group, we drive back & STOW the intake
        */
       new ParallelCommandGroup(
-        new StowIntakeCommand(intake, () -> true),
+        new StowIntakeCommand(intake, true),
         scoreCone
       ),
 
@@ -93,7 +93,7 @@ public class TwoHalfConeBalanceNonCableProtector extends SequentialCommandGroup 
       
 
       new ParallelCommandGroup(
-        new StowIntakeCommand(intake, () -> true),
+        new StowIntakeCommand(intake, true),
         balanceAfterAcquire
       )
 

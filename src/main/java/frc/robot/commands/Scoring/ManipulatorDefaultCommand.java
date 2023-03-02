@@ -50,8 +50,7 @@ public class ManipulatorDefaultCommand extends CommandBase {
    
     if(stateHandler.getInFeed()) {
       gripper.set(true);
-    }
-    else if (stateHandler.getResetManipulator() || breakout) {
+    } else if (stateHandler.getResetManipulator() || breakout) {
       latch = false;
       gripper.set(false);
       stateHandler.setGripperEngaged(false);
