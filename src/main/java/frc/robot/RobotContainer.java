@@ -23,6 +23,7 @@ import frc.robot.commands.StateCommands.SetRobotLocation;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.interfaces.AutoChooser;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.Arm.ArmSolver;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.util.PathPlannerUtils.AutoFromPathPlanner;
 import frc.robot.util.StateVariables.HorizontalLocations;
@@ -74,7 +75,7 @@ public class RobotContainer {
 
     /* Subsystems */
     public final SwerveSubsystem s_Swerve = new SwerveSubsystem();
-    public final ArmSubsystem armSubsystem = new ArmSubsystem();
+    public final ArmSubsystem armSubsystem = new ArmSubsystem(new ArmSolver() {});
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     public final ManipulatorSubsystem gripper = new ManipulatorSubsystem();
     public final ShuffleboardSubsystem shuffleboard = new ShuffleboardSubsystem();
