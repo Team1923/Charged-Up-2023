@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ArmSolverIOKairos implements ArmSolverIO {
+public class ArmSolverKairos implements ArmSolver {
   private final int instanceCount;
   private final StringPublisher configPublisher;
   private final StringPublisher requestPublisher;
@@ -29,7 +29,7 @@ public class ArmSolverIOKairos implements ArmSolverIO {
   private int parameterHash = 0;
   private boolean resultReceived = true;
 
-  public ArmSolverIOKairos(int instanceCount) {
+  public ArmSolverKairos(int instanceCount) {
     this.instanceCount = instanceCount;
 
     // Create NT publishers and subscribers

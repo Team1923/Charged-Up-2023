@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -33,8 +34,22 @@ public class ArmSubsystem extends SubsystemBase {
   private StateHandler stateHandler = StateHandler.getInstance();
 
   private Map<Integer, ArmTrajectory> allTrajectories = new HashMap<>();
+  private ArmTrajectory currentTrajectory = null;
+  private ArmPose setpointPose = null; // Pose to revert to when not following trajectory
+  private ArmPose queuedPose = null; // Use as setpoint once trajectory is completed
+  private Timer trajectoryTimer = new Timer();
 
-  public ArmSubsystem() {
+  static final String configFilename = "arm_config.json";
+  private final ArmSolver solver;
+  private final String configJson;
+  private final ArmConfig config;
+  private final ArmKinematics kinematics;
+  private final ArmDynamics dynamics;
+
+  public ArmSubsystem(ArmSolver solver) {
+
+    this.solver = solver;
+
     proximalMotor.configFactoryDefault();
     distalMotor.configFactoryDefault();
 
@@ -76,30 +91,6 @@ public class ArmSubsystem extends SubsystemBase {
             * ArmConstants.distalRadsToTicks);
   }
 
-
-  public void setProximalPosition(double proximalAngle) {
-    proximalMotor.set(ControlMode.MotionMagic, proximalAngle * ArmConstants.proximalRadsToTicks, 
-      DemandType.ArbitraryFeedForward, calculateProximalFeedforward());
-  }
-
-  public void setDistalPosition(double distalAngle) {
-    distalMotor.set(ControlMode.MotionMagic, distalAngle * ArmConstants.distalRadsToTicks,
-        DemandType.ArbitraryFeedForward, calculateDistalFeedforward());
-  }
-
-  public double[] calculateArmCartesian(double x, double y) {
-    double distalGoal = (Math.acos(
-        ((x * x) + (y * y) - (Math.pow(ArmConstants.lengthOfProximal, 2)) - (Math.pow(ArmConstants.lengthOfDistal, 2)))
-            / (2 * ArmConstants.lengthOfProximal * ArmConstants.lengthOfDistal)));
-
-    double proximalGoal = (Math.atan(y / x) - Math.atan((ArmConstants.lengthOfDistal * Math.sin(distalGoal))
-        / (ArmConstants.lengthOfProximal + ArmConstants.lengthOfDistal * Math.cos(distalGoal))));
-
-    double[] conv = { proximalGoal, distalGoal };
-
-    return conv;
-  }
-
   public double getProximalPosition() {
     return (proximalMotor.getSelectedSensorPosition() * ArmConstants.proximalTicksToRad)
         + ArmConstants.kProximalOffsetRads;
@@ -122,30 +113,6 @@ public class ArmSubsystem extends SubsystemBase {
     distalMotor.stopMotor();
   }
 
-  public double getAngleToCG() {
-    double proximalCGX = Math.cos(getDistalPosition()) * ArmConstants.proximalCGDistance;
-    double proximalCGY = Math.sin(getDistalPosition()) * ArmConstants.proximalCGDistance;
-    double proximalLengthX = Math.cos(getDistalPosition()) * ArmConstants.lengthOfProximal;
-    double proximalLengthY = Math.sin(getDistalPosition()) * ArmConstants.lengthOfProximal;
-
-    double distalCGX = Math.cos(getDistalPosition()) * ArmConstants.distalCGDistance + proximalLengthX;
-    double distalCGY = Math.sin(getDistalPosition()) * ArmConstants.distalCGDistance + proximalLengthY;
-
-    double averageXG = ((ArmConstants.distalMass * distalCGX) + ArmConstants.proximalMass * proximalCGX)
-        / (ArmConstants.distalMass + ArmConstants.proximalMass);
-    double averageYG = ((ArmConstants.distalMass * distalCGY) + ArmConstants.proximalMass * proximalCGY)
-        / (ArmConstants.distalMass + ArmConstants.proximalMass);
-
-    return Math.atan(averageYG / averageXG);
-  }
-
-  public double calculateProximalFeedforward() {
-    return ArmConstants.maxProximalGravityConstant * Math.cos(getAngleToCG());
-  }
-
-  public double calculateDistalFeedforward() {
-    return ArmConstants.maxDistalGravityConstant * Math.cos(getDistalPosition());
-  }
 
   public double[] anglesToCartesian(double proximalTheta, double distalTheta) {
 

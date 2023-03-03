@@ -7,7 +7,7 @@
 
 package frc.robot.subsystems.Arm;
 
-public interface ArmSolverIO {
+public interface ArmSolver {
 
   public static class ArmSolverIOInputs {
     public long parameterHash = 0;
