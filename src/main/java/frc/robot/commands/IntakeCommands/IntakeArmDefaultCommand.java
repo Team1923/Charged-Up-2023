@@ -51,6 +51,8 @@ public class IntakeArmDefaultCommand extends CommandBase {
     setWheelSpeeds();
     IntakePositions currentDesiredState = stateHandler.getDesiredIntakePosition();
 
+
+
     /*
      * This switch staement takes in the currentDesired state of the intake, and for
      * each case,
@@ -68,6 +70,9 @@ public class IntakeArmDefaultCommand extends CommandBase {
         intake.setSolenoid(true);
         break;
       case INTAKE:
+        if(intake.getGamePieceSensor()) {
+          stateHandler.setHasGamePiece(true);
+        }
         intake.setSolenoid(true);
         break;
       case HANDOFF_1:

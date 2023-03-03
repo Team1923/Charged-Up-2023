@@ -108,13 +108,13 @@ public final class Constants {
     public static final double kIntakeDistalOffsetRads = 0;
 
     public static final double errorThreshold = 0.1;
-    public static final double cubeIntakeSpeed = .5;
+    public static final double cubeIntakeSpeed = .15;
     public static final double coneIntakeSpeed = 1; //.75
     public static final double ejectSpeed = -1;
     public static final double cubeCurrentThreshold = 80;
     public static final double coneCurrentThreshold = 80;
 
-    public static final double gripSpeed = .1;
+    public static final double gripSpeed = .15;
     public static final double handoffSpeed = -.15;
   }
 

@@ -39,7 +39,7 @@ public class IntakeSubsystem extends SubsystemBase {
       IntakeConstants.intakeProximalAbsoluteEncoderID);
   private DutyCycleEncoder intakeDistalEncoder = new DutyCycleEncoder(IntakeConstants.intakeDistalAbsoluteEncoderID);
 
-  private DigitalInput gamePieceSensor = new DigitalInput(9);
+  private DigitalInput gamePieceSensor = new DigitalInput(7);
 
   private StateHandler stateHandler = StateHandler.getInstance();
 

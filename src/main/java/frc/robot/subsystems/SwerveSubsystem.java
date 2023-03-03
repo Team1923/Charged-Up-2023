@@ -73,7 +73,7 @@ public class SwerveSubsystem extends SubsystemBase {
         resetModulesToAbsolute();
 
         swerveOdometry = new SwerveDrivePoseEstimator(Swerve.swerveKinematics, getYaw(), getModulePositions(),
-                new Pose2d(1.69, 4.96, new Rotation2d(0)),
+                new Pose2d(1.66, 4.41, new Rotation2d(0)),
                 stateStdDevs, visionMeasurementStdDevs);
 
         SmartDashboard.putData(field2D);

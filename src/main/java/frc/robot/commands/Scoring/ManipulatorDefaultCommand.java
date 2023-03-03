@@ -7,6 +7,7 @@ package frc.robot.commands.Scoring;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ManipulatorSubsystem;
 import frc.robot.util.StateHandler;
@@ -53,6 +54,7 @@ public class ManipulatorDefaultCommand extends CommandBase {
     if(stateHandler.getInFeed()) {
       gripper.set(true);
     } else if (stateHandler.getResetManipulator() || breakout) {
+      stateHandler.setHasGamePiece(false);
       latch = false;
       gripper.set(false);
       stateHandler.setGripperEngaged(false);
