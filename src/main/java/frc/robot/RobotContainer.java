@@ -23,6 +23,7 @@ import frc.robot.commands.StateCommands.SetRobotLocation;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.interfaces.AutoChooser;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.util.PathPlannerUtils.AutoFromPathPlanner;
 import frc.robot.util.StateVariables.HorizontalLocations;
 import frc.robot.util.StateVariables.VerticalLocations;

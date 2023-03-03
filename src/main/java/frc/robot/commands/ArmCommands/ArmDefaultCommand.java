@@ -6,7 +6,7 @@ package frc.robot.commands.ArmCommands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
@@ -108,16 +108,6 @@ public class ArmDefaultCommand extends CommandBase {
         timer.stop();
       default:
         break;
-    }
-
-    if (stateHandler.getRobotDirection() == CurrentRobotDirection.RIGHT
-        && stateHandler.getCurrentVerticalLocation() != VerticalLocations.RESET) {
-      armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());
-      armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
-    } else if (stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT
-        && stateHandler.getCurrentVerticalLocation() != VerticalLocations.RESET) {
-      armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getProximalAngle());
-      armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getDistalAngle());
     }
 
   }

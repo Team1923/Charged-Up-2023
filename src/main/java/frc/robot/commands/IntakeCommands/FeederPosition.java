@@ -5,7 +5,6 @@
 package frc.robot.commands.IntakeCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.IntakePositions;
 

@@ -5,7 +5,7 @@
 package frc.robot.commands.EmergencyCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.Arm.ArmSubsystem;
 
 public class EStopArmCommand extends CommandBase {
   /** Creates a new EStopArmCommand. */

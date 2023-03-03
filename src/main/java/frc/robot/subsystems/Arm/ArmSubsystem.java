@@ -2,7 +2,10 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.subsystems.Arm;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
@@ -28,6 +31,8 @@ public class ArmSubsystem extends SubsystemBase {
   private DutyCycleEncoder proximalEncoder = new DutyCycleEncoder(ArmConstants.proximalEncoderID); // change this
   private DutyCycleEncoder distalEncoder = new DutyCycleEncoder(ArmConstants.distalEncoderID);
   private StateHandler stateHandler = StateHandler.getInstance();
+
+  private Map<Integer, ArmTrajectory> allTrajectories = new HashMap<>();
 
   public ArmSubsystem() {
     proximalMotor.configFactoryDefault();
@@ -62,7 +67,6 @@ public class ArmSubsystem extends SubsystemBase {
     proximalMotor.setSelectedSensorPosition(
         (getProximalAbsoluteEncoderRads() - ArmConstants.proximalEncoderZero + ArmConstants.proximalHardstop)
             * ArmConstants.proximalRadsToTicks);
-    // proximalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getProximalAngle());
   }
 
   public void resetDistalPosition() {
@@ -70,19 +74,8 @@ public class ArmSubsystem extends SubsystemBase {
         (getDistalAbsoluteEncoderRads() - ArmConstants.distalEncoderZero + ArmConstants.distalHardstop
             - Math.toRadians(0))
             * ArmConstants.distalRadsToTicks);
-    // distalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getDistalAngle());
-
   }
 
-  // public void setproximalPosition(double setPoint){
-  // proximalMotor.set(ControlMode.MotionMagic, setPoint,
-  // DemandType.ArbitraryFeedForward, calculateproximalFeedforward());
-  // }
-
-  // public void setdistalPosition(double setPoint){
-  // distalMotor.set(ControlMode.MotionMagic, -setPoint,
-  // DemandType.ArbitraryFeedForward, calculatedistalFeedforward());
-  // }
 
   public void setProximalPosition(double proximalAngle) {
     proximalMotor.set(ControlMode.MotionMagic, proximalAngle * ArmConstants.proximalRadsToTicks, 
@@ -213,10 +206,6 @@ public class ArmSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-  
-    // if(DriverStation.isDisabled()) {
-    //   disableMotionMagic();
-    // }
 
     if (getDistalCurrent() > 100 || getProximalCurrent() > 100) { // FIND CURRENT VALUES THAT WORK
       proximalMotor.stopMotor();
@@ -224,38 +213,7 @@ public class ArmSubsystem extends SubsystemBase {
       CommandScheduler.getInstance().schedule(new EStopArmCommand(this));
     }
 
-    // This method will be called once per scheduler run
-
-    /* doing this to avoid calling the state handler too much */
-    ArmPositions desiredArmPosition = stateHandler.getArmDesiredPosition();
-
-    double proximalDesiredPosition = desiredArmPosition.getArmAngles().getProximalAngle();
-    double distalDesiredPosition = desiredArmPosition.getArmAngles().getDistalAngle();
-    if (isReflected()) {
-      proximalDesiredPosition = desiredArmPosition.getLeftArmAngles().getProximalAngle();
-      distalDesiredPosition = desiredArmPosition.getLeftArmAngles().getDistalAngle();
-    }
-
-    double proximalError = Math
-        .abs(getProximalPosition() - proximalDesiredPosition);
-    double distalError = Math
-        .abs(getDistalPosition() - distalDesiredPosition);
-
-    boolean withinThreshold = proximalError < ArmConstants.errorThreshold && distalError < ArmConstants.errorThreshold;
-
-    if (withinThreshold) {
-      stateHandler.setCurrentArmPosition(stateHandler.getArmDesiredPosition());
-    }
-
-    SmartDashboard.putNumber("ABS ENCODER PROXIMAL ARM", getProximalAbsoluteEncoderRads());
-    SmartDashboard.putNumber("ABS ENCODER DISTAL ARM", getDistalAbsoluteEncoderRads());
-
-    SmartDashboard.putNumber("MOTOR ENCODER PROXIMAL ARM", getProximalPosition());
-    SmartDashboard.putNumber("MOTOR ENCODER DISTAL ARM", getDistalPosition());
-
-    SmartDashboard.putBoolean("HAS GAME PIECE", stateHandler.getHasGamePiece());
-
-    SmartDashboard.putString("Arm Desired State", stateHandler.getArmDesiredPosition().toString());
+    
 
 
 
