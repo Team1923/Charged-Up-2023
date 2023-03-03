@@ -12,7 +12,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -24,7 +23,6 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.GamePieceMode;
-import frc.robot.util.math.RollingAvgDouble;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
