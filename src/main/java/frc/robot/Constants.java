@@ -176,8 +176,8 @@ public final class Constants {
 
     public static final double proximalHardstop = Math.PI/2;
     public static final double distalHardstop = -Math.PI/2;
-    public static final double proximalEncoderZero = 0.460;
-    public static final double distalEncoderZero = -0.791;
+    public static final double proximalEncoderZero = 0.454;
+    public static final double distalEncoderZero = -1.268;
 
     public static final double errorThreshold = 0.05;
 
