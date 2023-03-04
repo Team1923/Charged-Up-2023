@@ -32,8 +32,6 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 	private final boolean useAllianceColor;
 	private final Field2d field = new Field2d();
 
-	private SwerveSubsystem swerve;
-
 	private PathPlannerTrajectory transformedTrajectory;
 
 	/**
@@ -188,7 +186,6 @@ public class SuppliedSwerveControllerCommand extends CommandBase {
 		this.outputChassisSpeeds = null;
 		this.useKinematics = true;
 		this.useAllianceColor = useAllianceColor;
-		this.swerve = s;
 		addRequirements(requirements);
 
 	}
