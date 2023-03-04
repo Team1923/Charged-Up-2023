@@ -124,7 +124,7 @@ public class RobotContainer {
         operatorRightBumper.onTrue(new StowIntakeCommand(intakeSubsystem, false));
 
 
-        xButton.onTrue(new FeederPosition());
+        operatorCrossButton.onTrue(new FeederPosition());
 
         bButton.toggleOnTrue(test5MStrafeRight);
 

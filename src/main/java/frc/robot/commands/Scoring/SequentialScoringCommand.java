@@ -13,7 +13,7 @@ import frc.robot.util.StateHandler;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SequentialScoringCommand extends SequentialCommandGroup {
+public class SequentialScoringCommand extends ParallelCommandGroup {
   /** Creates a new SequentialScoringCommand. */
   StateHandler stateHandler = StateHandler.getInstance();
   public SequentialScoringCommand(SwerveSubsystem swerve) {
@@ -21,13 +21,12 @@ public class SequentialScoringCommand extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       //STEP 1: Start trajectory and hold arm in COBRA
-      new ParallelCommandGroup(
+      
         new InstantCommand(() -> stateHandler.setWantToScore(true)),
-        new InstantCommand(() -> stateHandler.setHoldInCobra(true)),
+        new InstantCommand(() -> stateHandler.setHoldInCobra(false)),
         new TrajectoryToGoal(swerve)
-      ),
+      
       //STEP 2: Transition from COBRA to SCORE
-      new InstantCommand(() -> stateHandler.setHoldInCobra(false))
 
       /*
        * Note that ArmDefaultCommand takes care of the rest in terms of 

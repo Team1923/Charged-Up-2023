@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
+import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
@@ -72,7 +73,7 @@ public class SwerveSubsystem extends SubsystemBase {
         resetModulesToAbsolute();
 
         swerveOdometry = new SwerveDrivePoseEstimator(Swerve.swerveKinematics, getYaw(), getModulePositions(),
-                new Pose2d(1.66, 4.41, new Rotation2d(0)),
+                new Pose2d(1.68, 2.74, new Rotation2d(0)),
                 stateStdDevs, visionMeasurementStdDevs);
 
         SmartDashboard.putData(field2D);
@@ -207,7 +208,10 @@ public class SwerveSubsystem extends SubsystemBase {
             updateGyroVelocities();
         }
 
+
         updateOdometry();
+        PathPlannerServer.sendPathFollowingData(new Pose2d(), getPose());
+
         if (getCorrectLimelight() == SpecificLimelight.LEFT_LIMELIGHT) {
             stateHandler.setRobotDirection(CurrentRobotDirection.LEFT);
         } else {

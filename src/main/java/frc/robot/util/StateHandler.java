@@ -253,6 +253,7 @@ public class StateHandler {
         wantToScore = false;
         holdInCobra = false;
         manualLift = false;
+        isFeeding = false;
         
         currentRobotDirection = CurrentRobotDirection.RIGHT;
 
@@ -275,6 +276,8 @@ public class StateHandler {
         timeSinceReadyToScore = 0;
         gripperEngaged = true;
         resetManipulator = false;
+        isFeeding = false;
+
 
         isArmMoving = true;
         wantToScore = true;

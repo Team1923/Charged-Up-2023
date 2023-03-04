@@ -14,12 +14,12 @@ public class StateVariables {
         STOW(new ArmAngles(Math.PI / 2, -Math.PI / 2 ), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
         COBRA_FORWARD(new ArmAngles(Math.toRadians(110), -Math.PI/4), new ArmAngles(Math.toRadians(70), -3*Math.PI/4)),
         COBRA_REVERSE(new ArmAngles(Math.toRadians(90), -Math.PI/4), new ArmAngles(Math.toRadians(90), -3*Math.PI/4)),
-        // COBRA_FORWARD(new ArmAngles(Math.PI / 2, -Math.PI/4), new ArmAngles(Math.PI / 2, -3*Math.PI/4)),
-        // COBRA_REVERSE(new ArmAngles(Math.PI / 2, -Math.PI/4), new ArmAngles(Math.PI / 2, -3*Math.PI/4)),
         //DEFINE SCORING LOCATIONS: right is the first object, left is second
         LOW(new ArmAngles(1.473, -0.830), new ArmAngles(1.632, -2.107)),
-        CONE_MID(new ArmAngles(1.430, -0.327), new ArmAngles(1.722, -2.765)),
-        CONE_HIGH(new ArmAngles(1.005, 0.172), new ArmAngles(2.160 - Math.toRadians(5), -3.304 - Math.toRadians(2))),
+        // CONE_MID(new ArmAngles(1.430, -0.327), new ArmAngles(1.722, -2.765)),
+        // CONE_HIGH(new ArmAngles(1.005, 0.172), new ArmAngles(2.160 - Math.toRadians(5), -3.304 - Math.toRadians(2))),
+        CONE_MID(new ArmAngles(1.437, -0.355), new ArmAngles(1.722, -2.765)),
+        CONE_HIGH(new ArmAngles(1.043, 0.153), new ArmAngles(2.160 - Math.toRadians(5), -3.304 - Math.toRadians(2))),
         CUBE_MID(new ArmAngles(1.430, -0.327), new ArmAngles(1.722, -2.765)),
         CUBE_HIGH(new ArmAngles(1.005, 0.172), new ArmAngles(2.160 - Math.toRadians(5), -3.304 - Math.toRadians(2)));
 
@@ -76,7 +76,7 @@ public class StateVariables {
     public static enum IntakePositions {
         // Similar to Arm Positions, diferent Intake Arm States take in Arm Angle Object
         INTAKE(new ArmAngles(-Math.toRadians(15), Math.toRadians(-10))),
-        FEED(new ArmAngles(0.378, 1.257)),
+        FEED(new ArmAngles(0.378+(3*0.175), 1.257-(0.175))),
         STOW(new ArmAngles(2.971, 1.307)),
         HANDOFF_1(new ArmAngles(1.249, Math.toRadians(40))),
         HANDOFF_2(new ArmAngles(2.541, 0.225)),
