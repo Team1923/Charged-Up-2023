@@ -189,19 +189,6 @@ public final class Constants {
 
   }
 
-  public final class GamePieceColorConstants {
-    // public static final double CONEREDTOGREEN = 0.8175;
-    // public static final double CONEBLUETOGREEN = 1.57;
-    // public static final double CONEREDTOBLUE = 0.523;
-
-    // public static final double CUBEREDTOGREEN = 1.085;
-    // public static final double CUBEBLUETOGREEN = 1.945;
-    // public static final double CUBEREDTOBLUE = 0.556;
-
-    public static final double UNKNOWN_THRESHOLD = 1.8; // may need to be adjusted based on lighting environment
-    public static final double Offset = 0.3;
-
-  }
 
   public final class DigitalIDConstants {
     public static final int DigitalID = 0;// Change later

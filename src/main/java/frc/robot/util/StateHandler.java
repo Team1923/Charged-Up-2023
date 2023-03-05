@@ -30,7 +30,7 @@ public class StateHandler {
             armGood = false,
             intakeGood = false,
             autoRunIntake = false,
-            isFeeding = false;
+            wantToEngage = false;
 
     private GamePieceMode mode = GamePieceMode.CUBE;
 
@@ -230,12 +230,13 @@ public class StateHandler {
         return autoRunIntake;
     }
 
-    public void setInFeed(boolean f) {
-        isFeeding = f;
+
+    public void setWantToEngage(boolean e) {
+        wantToEngage = e;
     }
 
-    public boolean getInFeed(){
-        return isFeeding;
+    public boolean getWantToEngage() {
+        return wantToEngage;
     }
     
     // When the robot is disbaled, it resets the states of the Arm and Intake, preventing them from continuing their command after the robot is disabled
@@ -253,7 +254,7 @@ public class StateHandler {
         wantToScore = false;
         holdInCobra = false;
         manualLift = false;
-        isFeeding = false;
+        wantToEngage = false;
         
         currentRobotDirection = CurrentRobotDirection.RIGHT;
 
@@ -276,7 +277,7 @@ public class StateHandler {
         timeSinceReadyToScore = 0;
         gripperEngaged = true;
         resetManipulator = false;
-        isFeeding = false;
+        wantToEngage = false;
 
 
         isArmMoving = true;

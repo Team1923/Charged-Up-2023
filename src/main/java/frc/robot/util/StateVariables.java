@@ -21,7 +21,8 @@ public class StateVariables {
         CONE_MID(new ArmAngles(1.437, -0.355), new ArmAngles(1.787, -2.828)),
         CONE_HIGH(new ArmAngles(0.911 + Math.toRadians(3), 0.277), new ArmAngles(2.205 - Math.toRadians(3), -3.462)),
         CUBE_MID(new ArmAngles(1.430, -0.327), new ArmAngles(1.722, -2.765)),
-        CUBE_HIGH(new ArmAngles(1.005, 0.172), new ArmAngles(2.160 - Math.toRadians(5), -3.304 - Math.toRadians(2)));
+        CUBE_HIGH(new ArmAngles(1.005, 0.172), new ArmAngles(2.160 - Math.toRadians(5), -3.304 - Math.toRadians(2))),
+        FEED(new ArmAngles(Math.toRadians(110), -Math.PI/4), new ArmAngles(Math.toRadians(70), -3*Math.PI/4)); //temporarily set to cobra for now
 
         private ArmAngles armAngles;
         private ArmAngles leftArmAngles;

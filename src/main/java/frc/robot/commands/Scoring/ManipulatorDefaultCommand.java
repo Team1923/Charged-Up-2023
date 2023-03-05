@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ManipulatorSubsystem;
 import frc.robot.util.StateHandler;
+import frc.robot.util.StateVariables.ArmPositions;
 
 public class ManipulatorDefaultCommand extends CommandBase {
 
@@ -47,17 +48,19 @@ public class ManipulatorDefaultCommand extends CommandBase {
   @Override
   public void execute() {
 
-    engage = StateHandler.getInstance().readyToClose();
+    engage = StateHandler.getInstance().readyToClose() || stateHandler.getWantToEngage();
     boolean breakout = breakOut.getAsDouble() > 0.2;
 
+    if(stateHandler.getCurrentArmPosition() == ArmPositions.FEED) {
+      latch = false;
+    }
    
-    if(stateHandler.getInFeed()) {
-      gripper.set(true);
-    } else if (stateHandler.getResetManipulator() || breakout) {
+    if (stateHandler.getResetManipulator() || breakout) {
       stateHandler.setHasGamePiece(false);
       latch = false;
       gripper.set(false);
       stateHandler.setGripperEngaged(false);
+      stateHandler.setWantToEngage(false);
     } else if (engage && !latch) {
       latch = true;
       gripper.set(true);
