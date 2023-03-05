@@ -111,6 +111,14 @@ public class LimelightInterface {
         || (aprilTagID == 6) || (aprilTagID == 7) || (aprilTagID == 8)) && hasValidTarget);
   }
 
+  public double getTL(SpecificLimelight limelight) {
+    return getDoubleEntry("tl", limelight);
+  }
+
+  public double getCL(SpecificLimelight limelight) {
+    return getDoubleEntry("cl", limelight);
+  }
+
 
   /*
    * create a Pose3D object for trajectory generation
