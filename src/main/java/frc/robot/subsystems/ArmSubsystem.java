@@ -74,15 +74,6 @@ public class ArmSubsystem extends SubsystemBase {
 
   }
 
-  // public void setproximalPosition(double setPoint){
-  // proximalMotor.set(ControlMode.MotionMagic, setPoint,
-  // DemandType.ArbitraryFeedForward, calculateproximalFeedforward());
-  // }
-
-  // public void setdistalPosition(double setPoint){
-  // distalMotor.set(ControlMode.MotionMagic, -setPoint,
-  // DemandType.ArbitraryFeedForward, calculatedistalFeedforward());
-  // }
 
   public void setProximalPosition(double proximalAngle) {
     proximalMotor.set(ControlMode.MotionMagic, proximalAngle * ArmConstants.proximalRadsToTicks, 
@@ -92,19 +83,6 @@ public class ArmSubsystem extends SubsystemBase {
   public void setDistalPosition(double distalAngle) {
     distalMotor.set(ControlMode.MotionMagic, distalAngle * ArmConstants.distalRadsToTicks,
         DemandType.ArbitraryFeedForward, calculateDistalFeedforward());
-  }
-
-  public double[] calculateArmCartesian(double x, double y) {
-    double distalGoal = (Math.acos(
-        ((x * x) + (y * y) - (Math.pow(ArmConstants.lengthOfProximal, 2)) - (Math.pow(ArmConstants.lengthOfDistal, 2)))
-            / (2 * ArmConstants.lengthOfProximal * ArmConstants.lengthOfDistal)));
-
-    double proximalGoal = (Math.atan(y / x) - Math.atan((ArmConstants.lengthOfDistal * Math.sin(distalGoal))
-        / (ArmConstants.lengthOfProximal + ArmConstants.lengthOfDistal * Math.cos(distalGoal))));
-
-    double[] conv = { proximalGoal, distalGoal };
-
-    return conv;
   }
 
   public double getProximalPosition() {
@@ -147,7 +125,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double calculateProximalFeedforward() {
-    return ArmConstants.maxProximalGravityConstant * Math.cos(getAngleToCG());
+    return ArmConstants.maxProximalGravityConstant * Math.cos(getAngleToCG());  
   }
 
   public double calculateDistalFeedforward() {

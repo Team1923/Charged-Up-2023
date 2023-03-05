@@ -1,6 +1,6 @@
 package frc.robot.util;
 
-import frc.robot.interfaces.BetterLimelightInterface.SpecificLimelight;
+import frc.robot.interfaces.LimelightInterface.SpecificLimelight;
 import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;

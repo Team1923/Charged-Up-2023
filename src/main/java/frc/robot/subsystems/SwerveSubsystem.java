@@ -4,9 +4,9 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.interfaces.BetterLimelightInterface;
+import frc.robot.interfaces.LimelightInterface;
 import frc.robot.interfaces.SwerveModule;
-import frc.robot.interfaces.BetterLimelightInterface.SpecificLimelight;
+import frc.robot.interfaces.LimelightInterface.SpecificLimelight;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.Constants;
@@ -51,7 +51,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(1, 1, Units.degreesToRadians(10));
 
-    BetterLimelightInterface limelightInterface = BetterLimelightInterface.getInstance();
+    LimelightInterface limelightInterface = LimelightInterface.getInstance();
 
     public SwerveSubsystem() {
         gyro.configFactoryDefault();

@@ -18,8 +18,8 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.Swerve;
-import frc.robot.interfaces.BetterLimelightInterface;
-import frc.robot.interfaces.BetterLimelightInterface.SpecificLimelight;
+import frc.robot.interfaces.LimelightInterface;
+import frc.robot.interfaces.LimelightInterface.SpecificLimelight;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.StateHandler;
 import frc.robot.util.PathPlannerUtils.SuppliedSwerveControllerCommand;
@@ -70,7 +70,7 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
     Pose2d currentRobotPose = swerve.getPose();
     double desiredWheelHeading = 0;
 
-    Pose3d currentAprilTagPose = BetterLimelightInterface.getInstance().getAprilTagPose(limelight);
+    Pose3d currentAprilTagPose = LimelightInterface.getInstance().getAprilTagPose(limelight);
     Pose2d aprilTagPose = new Pose2d(currentAprilTagPose.getX(), currentAprilTagPose.getY(), new Rotation2d());
 
     HorizontalLocations desiredHorizontalLocation = StateHandler.getInstance().getCurrentHorizontalLocation();
