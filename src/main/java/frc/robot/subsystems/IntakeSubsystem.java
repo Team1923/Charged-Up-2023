@@ -7,11 +7,13 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -23,6 +25,7 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.GamePieceMode;
+import frc.robot.util.math.RollingAvgDouble;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
@@ -51,6 +54,8 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeProximalMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
     intakeDistalMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
 
+    intakeDistalMotor.setInverted(InvertType.InvertMotorOutput);
+
     intakeProximalMotor.config_kP(0, IntakeConstants.intakeProximalkP, FalconConstants.timeoutMs);
     intakeProximalMotor.config_kI(0, IntakeConstants.intakeProximalkI, FalconConstants.timeoutMs);
     intakeProximalMotor.config_kD(0, IntakeConstants.intakeProximalkD, FalconConstants.timeoutMs);
@@ -71,6 +76,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
     resetIntakeProximalPosition();
     resetIntakeDistalPosition();
+
+    leftIntakeWheelMotor.setInverted(InvertType.InvertMotorOutput);
+    rightIntakeWheelMotor.setInverted(InvertType.InvertMotorOutput);
 
   }
 
@@ -104,18 +112,18 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public double getIntakeDistalPosition() {
-    return (intakeDistalMotor.getSelectedSensorPosition() * IntakeConstants.intakeDistalTicksToRad)
-        + IntakeConstants.kIntakeDistalOffsetRads;
+    return ((intakeDistalMotor.getSelectedSensorPosition() * IntakeConstants.intakeDistalTicksToRad)
+        + IntakeConstants.kIntakeDistalOffsetRads);
   }
 
   public double getIntakeProximalAbsoluteEncoderRads() {
-    return 2*Math.PI -  (intakeProximalEncoder.getAbsolutePosition() *
+    return (intakeProximalEncoder.getAbsolutePosition() *
         IntakeConstants.intakeProximalAbsoluteEncoderToRadians);
   }
 
   public double getIntakeDistalAbsoluteEncoderRads() {
-    return intakeDistalEncoder.getAbsolutePosition() *
-        IntakeConstants.intakeDistalAbsoluteEncoderToRadians;
+    return 2*Math.PI - (intakeDistalEncoder.getAbsolutePosition() *
+        IntakeConstants.intakeDistalAbsoluteEncoderToRadians);
   }
 
   public double getIntakeProximalAbsoluteEncoderTicks() {

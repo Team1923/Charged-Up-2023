@@ -105,9 +105,9 @@ public class Robot extends TimedRobot {
         .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
             - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle()));
 
-    SmartDashboard.putNumber("INTAKE DISTAL ERROR", Math.abs(
+    SmartDashboard.putNumber("INTAKE DISTAL ERROR", 
         robotContainer.intakeSubsystem.getIntakeDistalPosition()
-            - stateHandler.getDesiredIntakePosition().getArmAngles().getDistalAngle()));
+            - stateHandler.getDesiredIntakePosition().getArmAngles().getDistalAngle());
 
     SmartDashboard.putNumber("ARM PROXIMAL ERROR", Math
         .abs(robotContainer.armSubsystem.getProximalPosition()
