@@ -268,6 +268,8 @@ public class StateHandler {
         currentRobotDirection = CurrentRobotDirection.RIGHT;
 
         isArmMoving = false;
+        wantToEngage = false;
+        intakeInFeed = false;
     
         timeSinceLastGripChange = System.currentTimeMillis();
     
@@ -287,6 +289,8 @@ public class StateHandler {
         gripperEngaged = true;
         resetManipulator = false;
         wantToEngage = false;
+        wantToEngage = false;
+        intakeInFeed = false;
 
 
         isArmMoving = true;
