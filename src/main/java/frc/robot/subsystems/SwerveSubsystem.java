@@ -232,7 +232,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (DriverStation.isAutonomousEnabled()) {
+        if (DriverStation.isAutonomousEnabled() || DriverStation.isDisabled()) {
             updateGyroVelocities();
         }
 

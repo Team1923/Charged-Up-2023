@@ -18,7 +18,15 @@ public class ToggleArmPositionCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    stateHandler.setArmDesiredState(ArmPositions.FEED);
+    ArmPositions currentArmPosition = stateHandler.getCurrentArmPosition();
+    ArmPositions desiredArmPosition = stateHandler.getArmDesiredPosition();
+
+
+    if(currentArmPosition == ArmPositions.STOW && desiredArmPosition == ArmPositions.STOW) {
+      stateHandler.setArmDesiredState(ArmPositions.FEED);
+    } else if(currentArmPosition == ArmPositions.FEED && desiredArmPosition == ArmPositions.FEED) {
+      stateHandler.setArmDesiredState(ArmPositions.STOW);
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -28,7 +36,6 @@ public class ToggleArmPositionCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    stateHandler.setArmDesiredState(ArmPositions.STOW);
   }
 
   // Returns true when the command should end.

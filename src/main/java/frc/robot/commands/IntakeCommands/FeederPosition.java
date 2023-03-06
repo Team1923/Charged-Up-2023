@@ -33,7 +33,6 @@ public class FeederPosition extends CommandBase {
       stateHandler.setIntakeInFeed(false);
     }
 
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.

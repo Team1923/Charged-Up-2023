@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ManipulatorSubsystem;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.ArmPositions;
+import frc.robot.util.StateVariables.IntakePositions;
 
 public class ManipulatorDefaultCommand extends CommandBase {
 
@@ -49,13 +50,16 @@ public class ManipulatorDefaultCommand extends CommandBase {
     engage = StateHandler.getInstance().readyToClose() || stateHandler.getWantToEngage();
     boolean breakout = breakOut.getAsDouble() > 0.2;
 
-    if (stateHandler.getCurrentArmPosition() == ArmPositions.FEED) {
-      latch = false;
-    }
-
     if (stateHandler.getIntakeInFeed()) {
       gripper.set(true);
     } else if (stateHandler.getResetManipulator() || breakout) {
+
+      // Attempted fix to not being able to manually reset gripper
+      if(stateHandler.getDesiredIntakePosition() == IntakePositions.FINAL_HANDOFF &&
+          stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF) {
+        stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
+      }
+
       stateHandler.setHasGamePiece(false);
       latch = false;
       gripper.set(false);
