@@ -23,8 +23,6 @@ public class ManipulatorDefaultCommand extends CommandBase {
   private DoubleSupplier breakOut;
   boolean engage = StateHandler.getInstance().readyToClose();
 
-
-
   /** Creates a new ManipulatorDefaultCommand. */
   public ManipulatorDefaultCommand(ManipulatorSubsystem gripper, DoubleSupplier b) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -51,11 +49,13 @@ public class ManipulatorDefaultCommand extends CommandBase {
     engage = StateHandler.getInstance().readyToClose() || stateHandler.getWantToEngage();
     boolean breakout = breakOut.getAsDouble() > 0.2;
 
-    if(stateHandler.getCurrentArmPosition() == ArmPositions.FEED) {
+    if (stateHandler.getCurrentArmPosition() == ArmPositions.FEED) {
       latch = false;
     }
-   
-    if (stateHandler.getResetManipulator() || breakout) {
+
+    if (stateHandler.getIntakeInFeed()) {
+      gripper.set(true);
+    } else if (stateHandler.getResetManipulator() || breakout) {
       stateHandler.setHasGamePiece(false);
       latch = false;
       gripper.set(false);
@@ -68,7 +68,7 @@ public class ManipulatorDefaultCommand extends CommandBase {
     } else if (!latch) {
       gripper.set(false);
       stateHandler.setGripperEngaged(false);
-    } 
+    }
 
     boolean currentGripperValue = gripper.get();
 
