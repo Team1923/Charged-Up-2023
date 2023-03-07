@@ -258,6 +258,8 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("INTAKE ABSOLUTE Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());
     
     SmartDashboard.putString("Desired Intake Position", stateHandler.getDesiredIntakePosition().toString());
+    SmartDashboard.putString("Current Intake Position", stateHandler.getCurrentIntakePosition().toString());
+
 
     SmartDashboard.putBoolean("LIMIT SWITCH", getGamePieceSensor());
 
