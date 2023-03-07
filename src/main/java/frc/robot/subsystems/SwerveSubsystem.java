@@ -42,9 +42,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public WPI_Pigeon2 gyro = new WPI_Pigeon2(Swerve.pigeonID, "rio");
 
-    private Field2d field2D = new Field2d();
-    private Field2d wheel2d = new Field2d();
-    private Field2d vision2d = new Field2d();
 
     private double[] gyroVelocities = new double[3];
 
@@ -52,7 +49,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public static final Vector<N3> stateStdDevs = VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(5));
 
-    public static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(1, 1, Units.degreesToRadians(10));
+    public static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(0.75, 0.75, Units.degreesToRadians(15));
 
     LimelightInterface limelightInterface = LimelightInterface.getInstance();
 
@@ -86,9 +83,6 @@ public class SwerveSubsystem extends SubsystemBase {
                 new Pose2d(1.68, 2.74, new Rotation2d(0)),
                 stateStdDevs, visionMeasurementStdDevs);
 
-        SmartDashboard.putData(field2D);
-        SmartDashboard.putData(wheel2d);
-        SmartDashboard.putData(vision2d);
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -215,12 +209,17 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void updateVisionOdometry() {
+        SmartDashboard.putBoolean("UPDATING VISION", false);
         if (limelightInterface.hasValidTargets(getCorrectLimelight())) {
             Pose3d currentAprilTagPose = limelightInterface.getAprilTagPose(getCorrectLimelight());
             Pose2d aprilTagPose = new Pose2d(currentAprilTagPose.getX(), currentAprilTagPose.getY(), new Rotation2d());
             Pose2d robotLimelightPose = new Pose2d(-limelightInterface.getRobotPose3d(getCorrectLimelight()).getZ(),
                     limelightInterface.getRobotPose3d(getCorrectLimelight()).getX(), getYaw());
-            if (Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) + Math.pow(robotLimelightPose.getY(), 2)) <= 1) {
+            SmartDashboard.putBoolean("CHECKING THING", Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) + Math.pow(robotLimelightPose.getY(), 2)) <= 1);
+
+            if (Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) + Math.pow(robotLimelightPose.getY(), 2)) <= 2) {
+
+                SmartDashboard.putBoolean("UPDATING VISION", true);
                 Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() + robotLimelightPose.getX(),
                         aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
                 swerveOdometry.addVisionMeasurement(newRobotPose,
@@ -235,10 +234,12 @@ public class SwerveSubsystem extends SubsystemBase {
         if (DriverStation.isAutonomousEnabled() || DriverStation.isDisabled()) {
             updateGyroVelocities();
         }
+        
 
         updateOdometry();
         wheelOdometry.update(Rotation2d.fromDegrees(getYawIEEE()), getModulePositions());
         updateVisionOdometry();
+
 
         PathPlannerServer.sendPathFollowingData(new Pose2d(), getPose());
 
@@ -251,9 +252,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
         SmartDashboard.putString("ROBOT ODOMETRY", swerveOdometry.getEstimatedPosition().toString());
 
-        field2D.setRobotPose(swerveOdometry.getEstimatedPosition());
-        wheel2d.setRobotPose(wheelOdometry.getEstimatedPosition());
-        vision2d.setRobotPose(visionOdometry.getEstimatedPosition());
+        SmartDashboard.putBoolean("LIMELIGHT HAS TARGET", limelightInterface.hasValidTargets(getCorrectLimelight()));
+
 
         // PathPlannerServer.sendPathFollowingData(new Pose2d(),
         // swerveOdometry.getEstimatedPosition());

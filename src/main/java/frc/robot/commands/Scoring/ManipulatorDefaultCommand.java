@@ -55,10 +55,10 @@ public class ManipulatorDefaultCommand extends CommandBase {
     } else if (stateHandler.getResetManipulator() || breakout) {
 
       // Attempted fix to not being able to manually reset gripper
-      if(stateHandler.getDesiredIntakePosition() == IntakePositions.FINAL_HANDOFF &&
-          stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF) {
-        stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
-      }
+      // if(stateHandler.getDesiredIntakePosition() == IntakePositions.FINAL_HANDOFF &&
+      //     stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF) {
+      //   stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
+      // }
 
       stateHandler.setHasGamePiece(false);
       latch = false;
@@ -72,6 +72,7 @@ public class ManipulatorDefaultCommand extends CommandBase {
     } else if (!latch) {
       gripper.set(false);
       stateHandler.setGripperEngaged(false);
+      stateHandler.setWantToEngage(false);
     }
 
     boolean currentGripperValue = gripper.get();

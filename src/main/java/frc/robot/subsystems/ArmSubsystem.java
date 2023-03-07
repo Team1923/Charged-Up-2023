@@ -68,7 +68,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void resetDistalPosition() {
     distalMotor.setSelectedSensorPosition(
         (getDistalAbsoluteEncoderRads() - ArmConstants.distalEncoderZero + ArmConstants.distalHardstop
-            - Math.toRadians(0))
+            + Math.toRadians(1.5))
             * ArmConstants.distalRadsToTicks);
     // distalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getDistalAngle());
 

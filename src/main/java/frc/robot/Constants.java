@@ -107,8 +107,8 @@ public final class Constants {
     public static final double kIntakeProximalOffsetRads = 0;
     public static final double kIntakeDistalOffsetRads = 0;
 
-    public static final double errorThreshold = 0.1;
-    public static final double cubeIntakeSpeed = .15;
+    public static final double errorThreshold = 0.2;
+    public static final double cubeIntakeSpeed = .3;
     public static final double coneIntakeSpeed = 1; //.75
     public static final double ejectSpeed = -1;
     public static final double cubeCurrentThreshold = 80;
@@ -176,8 +176,8 @@ public final class Constants {
 
     public static final double proximalHardstop = Math.PI/2;
     public static final double distalHardstop = -Math.PI/2;
-    public static final double proximalEncoderZero = 0.454;
-    public static final double distalEncoderZero = -1.268;
+    public static final double proximalEncoderZero = 0.447;
+    public static final double distalEncoderZero = -1.606;
 
     public static final double errorThreshold = 0.05;
 
