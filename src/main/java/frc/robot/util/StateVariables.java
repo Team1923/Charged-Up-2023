@@ -78,11 +78,11 @@ public class StateVariables {
     public static enum IntakePositions {
         // Similar to Arm Positions, diferent Intake Arm States take in Arm Angle Object
         INTAKE(new ArmAngles(-Math.toRadians(15), Math.toRadians(-10))),
-        FEED(new ArmAngles(0.378+(3*0.175), 1.257-(0.175))),
-        STOW(new ArmAngles(2.971, 1.307 + Math.toRadians(2.5))),
+        EJECT(new ArmAngles(2.448, 0.811)),
+        STOW(new ArmAngles(2.968, 1.359)),
         HANDOFF_1(new ArmAngles(1.249, Math.toRadians(40))),
         HANDOFF_2(new ArmAngles(2.541, 0.225)),
-        FINAL_HANDOFF(new ArmAngles(2.971, 1.307)),
+        FINAL_HANDOFF(new ArmAngles(2.979, 1.503)),
         /*TO DO: determine the reverse waypoints necessary to go to STOW */
         REVERSE_HANDOFF_1(new ArmAngles(1.249, Math.toRadians(40))),
         REVERSE_HANDOFF_2(new ArmAngles(0.246, 0.661));

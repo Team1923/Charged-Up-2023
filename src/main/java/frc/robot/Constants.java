@@ -75,9 +75,9 @@ public final class Constants {
     public static final double intakeDistalkD = 2;
 
     public static final double maxIntakeProximalVel = 30000;
-    public static final double maxIntakeProximalAccel = 20000;
+    public static final double maxIntakeProximalAccel = 23000;
     public static final double maxIntakeDistalVel = 30000;
-    public static final double maxIntakeDistalAccel = 20000;
+    public static final double maxIntakeDistalAccel = 23000;
 
     public static final double intakeProximalGearRatio = 64;
     public static final double intakeProximalTicksToRad = (2 * Math.PI)
@@ -107,10 +107,10 @@ public final class Constants {
     public static final double kIntakeProximalOffsetRads = 0;
     public static final double kIntakeDistalOffsetRads = 0;
 
-    public static final double errorThreshold = 0.1;
+    public static final double errorThreshold = 0.2;
     public static final double cubeIntakeSpeed = .4;
-    public static final double coneIntakeSpeed = 1; //.75
-    public static final double ejectSpeed = -1;
+    public static final double coneIntakeSpeed = .6; //.75
+    public static final double ejectSpeed = -0.5;
     public static final double cubeCurrentThreshold = 80;
     public static final double coneCurrentThreshold = 80;
 
@@ -176,8 +176,8 @@ public final class Constants {
 
     public static final double proximalHardstop = Math.PI/2;
     public static final double distalHardstop = -Math.PI/2;
-    public static final double proximalEncoderZero = 2.589;
-    public static final double distalEncoderZero = -3.157;
+    public static final double proximalEncoderZero = 2.574;
+    public static final double distalEncoderZero = -3.280;
 
     public static final double errorThreshold = 0.05;
 
