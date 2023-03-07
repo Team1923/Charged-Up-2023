@@ -19,7 +19,7 @@ import frc.robot.commands.EmergencyCommands.CheckArmAngles;
 import frc.robot.commands.EmergencyCommands.EStopArmCommand;
 import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;
 import frc.robot.interfaces.AutoChooser;
-import frc.robot.interfaces.BetterLimelightInterface;
+import frc.robot.interfaces.LimelightInterface;
 import frc.robot.interfaces.LEDInterface;
 import frc.robot.util.StateHandler;
 
@@ -133,7 +133,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     stateHandler.resetAutoState();
     autonomousCommand = robotContainer.initializeAuto(selector);
-    BetterLimelightInterface.getInstance().aprilTagFieldLayout.setOrigin(
+    LimelightInterface.getInstance().aprilTagFieldLayout.setOrigin(
         DriverStation.getAlliance() == Alliance.Red ? OriginPosition.kRedAllianceWallRightSide
             : OriginPosition.kBlueAllianceWallRightSide);
 

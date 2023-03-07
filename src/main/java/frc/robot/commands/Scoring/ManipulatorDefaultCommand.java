@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ManipulatorSubsystem;
 import frc.robot.util.StateHandler;
+import frc.robot.util.StateVariables.ArmPositions;
+import frc.robot.util.StateVariables.IntakePositions;
 
 public class ManipulatorDefaultCommand extends CommandBase {
 
@@ -21,8 +23,6 @@ public class ManipulatorDefaultCommand extends CommandBase {
 
   private DoubleSupplier breakOut;
   boolean engage = StateHandler.getInstance().readyToClose();
-
-
 
   /** Creates a new ManipulatorDefaultCommand. */
   public ManipulatorDefaultCommand(ManipulatorSubsystem gripper, DoubleSupplier b) {
@@ -47,17 +47,24 @@ public class ManipulatorDefaultCommand extends CommandBase {
   @Override
   public void execute() {
 
-    engage = StateHandler.getInstance().readyToClose();
+    engage = StateHandler.getInstance().readyToClose() || stateHandler.getWantToEngage();
     boolean breakout = breakOut.getAsDouble() > 0.2;
 
-   
-    if(stateHandler.getInFeed()) {
+    if (stateHandler.getIntakeInFeed()) {
       gripper.set(true);
     } else if (stateHandler.getResetManipulator() || breakout) {
+
+      //Attempted fix to not being able to manually reset gripper
+      if(stateHandler.getDesiredIntakePosition() == IntakePositions.FINAL_HANDOFF &&
+          stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF) {
+        stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
+      }
+
       stateHandler.setHasGamePiece(false);
       latch = false;
       gripper.set(false);
       stateHandler.setGripperEngaged(false);
+      stateHandler.setWantToEngage(false);
     } else if (engage && !latch) {
       latch = true;
       gripper.set(true);
@@ -65,7 +72,8 @@ public class ManipulatorDefaultCommand extends CommandBase {
     } else if (!latch) {
       gripper.set(false);
       stateHandler.setGripperEngaged(false);
-    } 
+      stateHandler.setWantToEngage(false);
+    }
 
     boolean currentGripperValue = gripper.get();
 

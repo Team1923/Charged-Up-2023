@@ -39,7 +39,7 @@ public class TeleopSwerve extends CommandBase {
         /* Get Values, Deadband */
         double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband);
         double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband);
-        double rotationVal = 0.5* MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
+        double rotationVal = 0.35* MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
 
         if (robotCentricSup.getAsBoolean()) {
             translationVal *= 0.6;

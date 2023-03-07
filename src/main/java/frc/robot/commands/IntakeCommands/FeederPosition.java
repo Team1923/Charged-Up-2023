@@ -27,13 +27,12 @@ public class FeederPosition extends CommandBase {
 
     if(currentIntakePosition == IntakePositions.INTAKE && desiredIntakePosition == IntakePositions.INTAKE) {
       stateHandler.setDesiredIntakePosition(IntakePositions.FEED);
-      stateHandler.setInFeed(true);
+      stateHandler.setIntakeInFeed(true);
     } else if(currentIntakePosition == IntakePositions.FEED && desiredIntakePosition == IntakePositions.FEED) {
       stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE);
-      stateHandler.setInFeed(false);
+      stateHandler.setIntakeInFeed(false);
     }
 
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.

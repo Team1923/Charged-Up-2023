@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ArmCommands.ArmDefaultCommand;
+import frc.robot.commands.ArmCommands.ToggleArmPositionCommand;
+import frc.robot.commands.IntakeCommands.AcquireFromHPCommand;
 import frc.robot.commands.IntakeCommands.DeployIntakeCommand;
 import frc.robot.commands.IntakeCommands.FeederPosition;
 import frc.robot.commands.IntakeCommands.IntakeArmDefaultCommand;
@@ -107,7 +109,6 @@ public class RobotContainer {
         rightBumper.toggleOnTrue(new SequentialScoringCommand(s_Swerve));
 
         operatorUpDPad.onTrue(new SetArmLocation(VerticalLocations.HIGH));
-        operatorRightDPad.onTrue(new SetArmLocation(VerticalLocations.RESET));
         operatorDownDPad.onTrue(new SetArmLocation(VerticalLocations.LOW));
         operatorLeftDPad.onTrue(new SetArmLocation(VerticalLocations.MID));
 
@@ -115,7 +116,6 @@ public class RobotContainer {
 
         operatorTriangleButton.onTrue(new SetRobotLocation(HorizontalLocations.CENTER));
         operatorCircleButton.onTrue(new SetRobotLocation(HorizontalLocations.RIGHT));
-        operatorCrossButton.onTrue(new SetRobotLocation(HorizontalLocations.RESET));
         operatorSquareButton.onTrue(new SetRobotLocation(HorizontalLocations.LEFT));
 
         new Trigger(() -> operator.getRawAxis(3) > 0.2).toggleOnTrue(new ManualScore());
@@ -123,10 +123,14 @@ public class RobotContainer {
         operatorLeftBumper.onTrue(new DeployIntakeCommand(intakeSubsystem));
         operatorRightBumper.onTrue(new StowIntakeCommand(intakeSubsystem, false));
 
+        operatorRightDPad.onTrue(new ToggleArmPositionCommand());
 
-        operatorCrossButton.onTrue(new FeederPosition());
+        operatorCrossButton.onTrue(new AcquireFromHPCommand());
 
-        bButton.toggleOnTrue(test5MStrafeRight);
+        xButton.onTrue(new FeederPosition());
+        
+
+        //bButton.toggleOnTrue(test5MStrafeRight);
 
     }
 

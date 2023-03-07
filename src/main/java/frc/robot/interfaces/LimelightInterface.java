@@ -12,9 +12,9 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-public class BetterLimelightInterface {
+public class LimelightInterface {
   // declare for easy calls
-  private static BetterLimelightInterface limelightInterface;
+  private static LimelightInterface limelightInterface;
 
   // network table declarations
   private static NetworkTable leftLimelight = NetworkTableInstance.getDefault().getTable("limelight-left");
@@ -28,7 +28,7 @@ public class BetterLimelightInterface {
   ArrayList<AprilTag> aprilTagList = new ArrayList<AprilTag>();
   public AprilTagFieldLayout aprilTagFieldLayout; 
 
-  public BetterLimelightInterface() {
+  public LimelightInterface() {
     fillAprilTagList();
     aprilTagFieldLayout = new AprilTagFieldLayout(aprilTagList, 16.54175, 8.0137);
   }
@@ -39,9 +39,9 @@ public class BetterLimelightInterface {
    * this is also used in other classes as well, so we don't have to pass in
    * new instances all the time
    */
-  public static synchronized BetterLimelightInterface getInstance() {
+  public static synchronized LimelightInterface getInstance() {
     if (limelightInterface == null) {
-      limelightInterface = new BetterLimelightInterface();
+      limelightInterface = new LimelightInterface();
     }
     return limelightInterface;
   }
@@ -109,6 +109,14 @@ public class BetterLimelightInterface {
   public boolean hasScoringTarget() {
     return (((aprilTagID == 1) || (aprilTagID == 2) || (aprilTagID == 3)
         || (aprilTagID == 6) || (aprilTagID == 7) || (aprilTagID == 8)) && hasValidTarget);
+  }
+
+  public double getTL(SpecificLimelight limelight) {
+    return getDoubleEntry("tl", limelight);
+  }
+
+  public double getCL(SpecificLimelight limelight) {
+    return getDoubleEntry("cl", limelight);
   }
 
 

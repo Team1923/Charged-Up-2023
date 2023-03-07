@@ -1,6 +1,6 @@
 package frc.robot.util;
 
-import frc.robot.interfaces.BetterLimelightInterface.SpecificLimelight;
+import frc.robot.interfaces.LimelightInterface.SpecificLimelight;
 import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
@@ -30,7 +30,8 @@ public class StateHandler {
             armGood = false,
             intakeGood = false,
             autoRunIntake = false,
-            isFeeding = false;
+            wantToEngage = false,
+            intakeInFeed = false;
 
     private GamePieceMode mode = GamePieceMode.CUBE;
 
@@ -230,12 +231,21 @@ public class StateHandler {
         return autoRunIntake;
     }
 
-    public void setInFeed(boolean f) {
-        isFeeding = f;
+
+    public void setWantToEngage(boolean e) {
+        wantToEngage = e;
     }
 
-    public boolean getInFeed(){
-        return isFeeding;
+    public boolean getWantToEngage() {
+        return wantToEngage;
+    }
+
+    public boolean getIntakeInFeed() {
+        return intakeInFeed;
+    }
+
+    public void setIntakeInFeed(boolean f) {
+        intakeInFeed = f;
     }
     
     // When the robot is disbaled, it resets the states of the Arm and Intake, preventing them from continuing their command after the robot is disabled
@@ -253,11 +263,13 @@ public class StateHandler {
         wantToScore = false;
         holdInCobra = false;
         manualLift = false;
-        isFeeding = false;
+        wantToEngage = false;
         
         currentRobotDirection = CurrentRobotDirection.RIGHT;
 
         isArmMoving = false;
+        wantToEngage = false;
+        intakeInFeed = false;
     
         timeSinceLastGripChange = System.currentTimeMillis();
     
@@ -276,7 +288,9 @@ public class StateHandler {
         timeSinceReadyToScore = 0;
         gripperEngaged = true;
         resetManipulator = false;
-        isFeeding = false;
+        wantToEngage = false;
+        wantToEngage = false;
+        intakeInFeed = false;
 
 
         isArmMoving = true;
