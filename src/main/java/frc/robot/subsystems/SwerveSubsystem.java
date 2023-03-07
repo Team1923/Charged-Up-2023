@@ -21,6 +21,7 @@ import com.pathplanner.lib.server.PathPlannerServer;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -42,6 +43,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public WPI_Pigeon2 gyro = new WPI_Pigeon2(Swerve.pigeonID, "rio");
 
+    LinearFilter filter = LinearFilter.singlePoleIIR(0.1, 0.02);
 
     private double[] gyroVelocities = new double[3];
 
@@ -100,6 +102,12 @@ public class SwerveSubsystem extends SubsystemBase {
 
         for (SwerveModule mod : mSwerveMods) {
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
+        }
+    }
+
+    public void updateModuleStates(SwerveModuleState[] states) {
+        for (SwerveModule mod : mSwerveMods) {
+            mod.setDesiredState(states[mod.moduleNumber], true);
         }
     }
 
@@ -188,7 +196,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public double getAngularVelocity() {
-        return gyroVelocities[0];
+        return filter.calculate(gyroVelocities[0]);
     }
 
     public void updateOdometry() {
@@ -254,6 +262,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
         SmartDashboard.putBoolean("LIMELIGHT HAS TARGET", limelightInterface.hasValidTargets(getCorrectLimelight()));
 
+        SmartDashboard.putNumber("Angular Velocity", getAngularVelocity());
 
         // PathPlannerServer.sendPathFollowingData(new Pose2d(),
         // swerveOdometry.getEstimatedPosition());

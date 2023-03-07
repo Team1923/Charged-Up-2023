@@ -26,6 +26,7 @@ public class AutoScoreCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    stateHandler.setWantToScore(true);
     stateHandler.setVerticalLocation(desiredVerticalLocation);
     stateHandler.setHorizontalLocation(desiredHorizontalLocation);
     stateHandler.setGamePieceMode(desiredGamePieceMode);
@@ -39,6 +40,7 @@ public class AutoScoreCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     stateHandler.setResetManipulator(true);
+    stateHandler.setWantToScore(false);
   }
 
   // Returns true when the command should end.
