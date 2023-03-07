@@ -75,9 +75,9 @@ public final class Constants {
     public static final double intakeDistalkD = 2;
 
     public static final double maxIntakeProximalVel = 30000;
-    public static final double maxIntakeProximalAccel = 30000;
+    public static final double maxIntakeProximalAccel = 20000;
     public static final double maxIntakeDistalVel = 30000;
-    public static final double maxIntakeDistalAccel = 30000;
+    public static final double maxIntakeDistalAccel = 20000;
 
     public static final double intakeProximalGearRatio = 64;
     public static final double intakeProximalTicksToRad = (2 * Math.PI)
@@ -176,8 +176,8 @@ public final class Constants {
 
     public static final double proximalHardstop = Math.PI/2;
     public static final double distalHardstop = -Math.PI/2;
-    public static final double proximalEncoderZero = 2.568;
-    public static final double distalEncoderZero = -3.268;
+    public static final double proximalEncoderZero = 2.589;
+    public static final double distalEncoderZero = -3.157;
 
     public static final double errorThreshold = 0.05;
 
