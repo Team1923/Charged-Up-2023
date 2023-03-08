@@ -110,7 +110,7 @@ public final class Constants {
     public static final double errorThreshold = 0.2;
     public static final double cubeIntakeSpeed = .4;
     public static final double coneIntakeSpeed = .6; //.75
-    public static final double ejectSpeed = -0.5;
+    public static final double ejectSpeed = -0.2;
     public static final double cubeCurrentThreshold = 80;
     public static final double coneCurrentThreshold = 80;
 

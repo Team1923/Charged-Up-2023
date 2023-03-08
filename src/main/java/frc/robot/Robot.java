@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-
 import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
@@ -105,7 +104,7 @@ public class Robot extends TimedRobot {
         .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
             - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle()));
 
-    SmartDashboard.putNumber("INTAKE DISTAL ERROR", 
+    SmartDashboard.putNumber("INTAKE DISTAL ERROR",
         robotContainer.intakeSubsystem.getIntakeDistalPosition()
             - stateHandler.getDesiredIntakePosition().getArmAngles().getDistalAngle());
 
@@ -163,6 +162,10 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
+    LimelightInterface.getInstance().aprilTagFieldLayout.setOrigin(
+        DriverStation.getAlliance() == Alliance.Red ? OriginPosition.kRedAllianceWallRightSide
+            : OriginPosition.kBlueAllianceWallRightSide);
 
     if (!armGood) {
       CommandScheduler.getInstance().schedule(new EStopArmCommand(robotContainer.armSubsystem));

@@ -11,7 +11,7 @@ public class StateVariables {
          * 
          * NOTE: DUPLICATE VALUE IF ONLY ONE LOCATION
          */
-        STOW(new ArmAngles(Math.PI / 2, -Math.PI / 2 ), new ArmAngles(Math.PI / 2, -Math.PI / 2)),
+        STOW(new ArmAngles(1.616, -1.537), new ArmAngles(1.616, -1.537)),
         COBRA_FORWARD(new ArmAngles(Math.toRadians(110), -Math.PI/4), new ArmAngles(Math.toRadians(70), -3*Math.PI/4)),
         COBRA_REVERSE(new ArmAngles(Math.toRadians(90), -Math.PI/4), new ArmAngles(Math.toRadians(90), -3*Math.PI/4)),
         //DEFINE SCORING LOCATIONS: right is the first object, left is second
