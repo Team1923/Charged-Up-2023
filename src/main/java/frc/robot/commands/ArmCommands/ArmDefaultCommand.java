@@ -18,12 +18,14 @@ public class ArmDefaultCommand extends CommandBase {
   private ArmSubsystem armSubsystem;
   private StateHandler stateHandler = StateHandler.getInstance();
   private Timer timer;
+  private CurrentRobotDirection currentRobotDirection;
 
   public ArmDefaultCommand(ArmSubsystem aSubsystem) {
     armSubsystem = aSubsystem;
     addRequirements(armSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
     timer = new Timer();
+    currentRobotDirection = stateHandler.getRobotDirection();
   }
 
   // Called when the command is initially scheduled.
@@ -42,6 +44,7 @@ public class ArmDefaultCommand extends CommandBase {
     // go next, and preps the arm to actually move there
     switch (currentDesiredState) {
       case STOW:
+      currentRobotDirection = stateHandler.getRobotDirection();
         stateHandler.setIsArmMoving(false);
         /*
          * if:
@@ -92,6 +95,16 @@ public class ArmDefaultCommand extends CommandBase {
         timer.reset();
         timer.stop();
         break;
+      case INVERTED_COBRA_REVERSE:
+        stateHandler.setIsArmMoving(false);
+        // if we are currently in the cobra reverse position, then set the desired arm
+        // state to stow
+        if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_REVERSE) {
+          stateHandler.setArmDesiredState(ArmPositions.STOW);
+        }
+        timer.reset();
+        timer.stop();
+        break;
       case CONE_HIGH:
       case CONE_MID:
       case CUBE_HIGH:
@@ -110,12 +123,10 @@ public class ArmDefaultCommand extends CommandBase {
         break;
     }
 
-    if (stateHandler.getRobotDirection() == CurrentRobotDirection.RIGHT
-        && stateHandler.getCurrentVerticalLocation() != VerticalLocations.RESET) {
+    if (currentRobotDirection == CurrentRobotDirection.RIGHT) {
       armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());
       armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
-    } else if (stateHandler.getRobotDirection() == CurrentRobotDirection.LEFT
-        && stateHandler.getCurrentVerticalLocation() != VerticalLocations.RESET) {
+    } else if (currentRobotDirection == CurrentRobotDirection.LEFT) {
       armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getProximalAngle());
       armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getDistalAngle());
     }
