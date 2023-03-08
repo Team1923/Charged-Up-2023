@@ -23,6 +23,7 @@ public class StateVariables {
         CUBE_MID(new ArmAngles(1.430, -0.327), new ArmAngles(1.722, -2.765)),
         CUBE_HIGH(new ArmAngles(1.005, 0.172), new ArmAngles(2.160 - Math.toRadians(5), -3.304 - Math.toRadians(2))),
         FEED(new ArmAngles(1.398, -2.666), new ArmAngles(1.782, -0.302)); //THIS IS INVERTED FOR A REASON
+        
 
         private ArmAngles armAngles;
         private ArmAngles leftArmAngles;
@@ -77,8 +78,8 @@ public class StateVariables {
     public static enum IntakePositions {
         // Similar to Arm Positions, diferent Intake Arm States take in Arm Angle Object
         INTAKE(new ArmAngles(-Math.toRadians(15), Math.toRadians(-10))),
-        FEED(new ArmAngles(0.378+(3*0.175), 1.257-(0.175))),
         STOW(new ArmAngles(2.971, 1.307)),
+        EJECT(new ArmAngles(2.448, 0.811)),
         HANDOFF_1(new ArmAngles(1.249, Math.toRadians(40))),
         HANDOFF_2(new ArmAngles(2.541, 0.225)),
         FINAL_HANDOFF(new ArmAngles(2.971, 1.307)),

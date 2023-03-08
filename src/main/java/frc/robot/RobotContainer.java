@@ -12,7 +12,7 @@ import frc.robot.commands.ArmCommands.ArmDefaultCommand;
 import frc.robot.commands.ArmCommands.ToggleArmPositionCommand;
 import frc.robot.commands.IntakeCommands.AcquireFromHPCommand;
 import frc.robot.commands.IntakeCommands.DeployIntakeCommand;
-import frc.robot.commands.IntakeCommands.FeederPosition;
+import frc.robot.commands.IntakeCommands.EjectPosition;
 import frc.robot.commands.IntakeCommands.IntakeArmDefaultCommand;
 import frc.robot.commands.IntakeCommands.StowIntakeCommand;
 import frc.robot.commands.Scoring.ManipulatorDefaultCommand;
@@ -127,7 +127,7 @@ public class RobotContainer {
 
         operatorCrossButton.onTrue(new AcquireFromHPCommand());
 
-        xButton.onTrue(new FeederPosition());
+        xButton.onTrue(new EjectPosition());
         
 
         //bButton.toggleOnTrue(test5MStrafeRight);

@@ -54,11 +54,11 @@ public class ManipulatorDefaultCommand extends CommandBase {
       gripper.set(true);
     } else if (stateHandler.getResetManipulator() || breakout) {
 
-      // Attempted fix to not being able to manually reset gripper
-      // if(stateHandler.getDesiredIntakePosition() == IntakePositions.FINAL_HANDOFF &&
-      //     stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF) {
-      //   stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
-      // }
+      //Attempted fix to not being able to manually reset gripper
+      if(stateHandler.getDesiredIntakePosition() == IntakePositions.FINAL_HANDOFF &&
+          stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF) {
+        stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
+      }
 
       stateHandler.setHasGamePiece(false);
       latch = false;

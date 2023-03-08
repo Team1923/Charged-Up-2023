@@ -23,8 +23,8 @@ import frc.robot.util.StateVariables.CurrentRobotDirection;
 
 public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
-  private WPI_TalonFX proximalMotor = new WPI_TalonFX(ArmConstants.proximalMotorID, "Default Name");
-  private WPI_TalonFX distalMotor = new WPI_TalonFX(ArmConstants.distalMotorID, "Default Name");
+  private WPI_TalonFX proximalMotor = new WPI_TalonFX(ArmConstants.proximalMotorID, "rio");
+  private WPI_TalonFX distalMotor = new WPI_TalonFX(ArmConstants.distalMotorID, "rio");
   private DutyCycleEncoder proximalEncoder = new DutyCycleEncoder(ArmConstants.proximalEncoderID); // change this
   private DutyCycleEncoder distalEncoder = new DutyCycleEncoder(ArmConstants.distalEncoderID);
   private StateHandler stateHandler = StateHandler.getInstance();

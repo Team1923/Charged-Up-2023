@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.IntakeCommands.StowIntakeCommand;
+import frc.robot.commands.SwerveCommands.SwerveXWheels;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.StateHandler;
@@ -33,7 +34,7 @@ public class TwoConeBalanceNonCableProtector extends SequentialCommandGroup {
     final AutoFromPathPlanner acquireCone = new AutoFromPathPlanner(swerve, "AcquireConeNOCP", 2.5, 2, false, true,
         true);
     final AutoFromPathPlanner scoreCone = new AutoFromPathPlanner(swerve, "ScoreConeNOCP", 2.5, 2, false, true, true);
-    final AutoFromPathPlanner balance = new AutoFromPathPlanner(swerve, "BalanceNOCP", 2.5, 2, false, true, true);
+    final AutoFromPathPlanner balance = new AutoFromPathPlanner(swerve, "TwoConeBalance", 2.5, 2, false, true, true);
 
     addCommands(
         new InstantCommand(() -> swerve.resetOdometry(acquireCone.getInitialPose())),
@@ -73,10 +74,10 @@ public class TwoConeBalanceNonCableProtector extends SequentialCommandGroup {
         new InstantCommand(() -> stateHandler.setResetManipulator(false)),
         new ParallelRaceGroup(
             // GYRO VELOCITY MEASUREMENTS
-            new WaitUntilCommand(() -> swerve.getAngularVelocity() < -6),
+            new WaitUntilCommand(() -> swerve.getAngularVelocity() < -15),
             balance
-        )
-
+        ),
+        new SwerveXWheels(swerve)
     );
   }
 }

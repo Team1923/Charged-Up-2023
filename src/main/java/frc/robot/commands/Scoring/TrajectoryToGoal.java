@@ -61,9 +61,21 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
     // Rotation2d(Math.toRadians(swerve.getYawIEEE()));
     Rotation2d goalRotation = Rotation2d.fromDegrees((robotRotation.getDegrees() > 0 ? 90 : -90));
 
-    Pose2d center = new Pose2d(0.7, 0, goalRotation);
-    Pose2d left = new Pose2d(0.7, 0.659, goalRotation);
-    Pose2d right = new Pose2d(0.7, -0.659, goalRotation);
+    Pose2d left;
+    Pose2d center;
+    Pose2d right;
+
+    if(swerve.getCorrectLimelight() == SpecificLimelight.LEFT_LIMELIGHT) {
+      center = new Pose2d(0.7, 0 - 0.152, goalRotation);
+      left = new Pose2d(0.7, 0.659 + 0.05, goalRotation);
+      right = new Pose2d(0.7, -0.659 + 0.05, goalRotation);
+    } else {
+      center = new Pose2d(0.7, 0 + 0.152, goalRotation);
+      left = new Pose2d(0.7, 0.659 - 0.05, goalRotation);
+      right = new Pose2d(0.7, -0.659 - 0.05, goalRotation);
+    }
+
+
 
     SpecificLimelight limelight = swerve.getCorrectLimelight();
 

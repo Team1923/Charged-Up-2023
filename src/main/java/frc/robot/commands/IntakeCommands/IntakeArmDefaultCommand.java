@@ -66,7 +66,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
           intake.setSolenoid(false);
         }
         break;
-      case FEED:
+      case EJECT:
         intake.setSolenoid(true);
         break;
       case INTAKE:

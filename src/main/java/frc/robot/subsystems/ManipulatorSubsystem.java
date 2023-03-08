@@ -20,7 +20,7 @@ public class ManipulatorSubsystem extends SubsystemBase {
   }
 
   public void set(boolean output) {
-    gripper.set(output ? Value.kForward : Value.kReverse);
+    gripper.set(!output ? Value.kForward : Value.kReverse);
   }
 
   public boolean get() {

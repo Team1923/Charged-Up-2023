@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -51,6 +52,8 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeProximalMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
     intakeDistalMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
 
+    intakeDistalMotor.setInverted(InvertType.InvertMotorOutput);
+
     intakeProximalMotor.config_kP(0, IntakeConstants.intakeProximalkP, FalconConstants.timeoutMs);
     intakeProximalMotor.config_kI(0, IntakeConstants.intakeProximalkI, FalconConstants.timeoutMs);
     intakeProximalMotor.config_kD(0, IntakeConstants.intakeProximalkD, FalconConstants.timeoutMs);
@@ -71,6 +74,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
     resetIntakeProximalPosition();
     resetIntakeDistalPosition();
+
+    leftIntakeWheelMotor.setInverted(InvertType.InvertMotorOutput);
+    rightIntakeWheelMotor.setInverted(InvertType.InvertMotorOutput);
 
   }
 
@@ -104,18 +110,18 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public double getIntakeDistalPosition() {
-    return (intakeDistalMotor.getSelectedSensorPosition() * IntakeConstants.intakeDistalTicksToRad)
-        + IntakeConstants.kIntakeDistalOffsetRads;
+    return ((intakeDistalMotor.getSelectedSensorPosition() * IntakeConstants.intakeDistalTicksToRad)
+        + IntakeConstants.kIntakeDistalOffsetRads);
   }
 
   public double getIntakeProximalAbsoluteEncoderRads() {
-    return 2*Math.PI -  (intakeProximalEncoder.getAbsolutePosition() *
+    return (intakeProximalEncoder.getAbsolutePosition() *
         IntakeConstants.intakeProximalAbsoluteEncoderToRadians);
   }
 
   public double getIntakeDistalAbsoluteEncoderRads() {
-    return intakeDistalEncoder.getAbsolutePosition() *
-        IntakeConstants.intakeDistalAbsoluteEncoderToRadians;
+    return 2*Math.PI - (intakeDistalEncoder.getAbsolutePosition() *
+        IntakeConstants.intakeDistalAbsoluteEncoderToRadians);
   }
 
   public double getIntakeProximalAbsoluteEncoderTicks() {
@@ -252,6 +258,8 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("INTAKE ABSOLUTE Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());
     
     SmartDashboard.putString("Desired Intake Position", stateHandler.getDesiredIntakePosition().toString());
+    SmartDashboard.putString("Current Intake Position", stateHandler.getCurrentIntakePosition().toString());
+
 
     SmartDashboard.putBoolean("LIMIT SWITCH", getGamePieceSensor());
 

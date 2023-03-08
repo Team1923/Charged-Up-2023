@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-
 import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
@@ -60,6 +59,7 @@ public class Robot extends TimedRobot {
 
     robotContainer = new RobotContainer();
     this.selector = new AutoChooser();
+    stateHandler.resetStates();
   }
 
   /** This function is called periodically during all modes. */
@@ -72,10 +72,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {
-    stateHandler.resetStates();
-
-  }
+  public void disabledInit() {}
 
   /** This function is called periodically when disabled. */
   @Override
@@ -105,9 +102,9 @@ public class Robot extends TimedRobot {
         .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
             - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle()));
 
-    SmartDashboard.putNumber("INTAKE DISTAL ERROR", Math.abs(
+    SmartDashboard.putNumber("INTAKE DISTAL ERROR",
         robotContainer.intakeSubsystem.getIntakeDistalPosition()
-            - stateHandler.getDesiredIntakePosition().getArmAngles().getDistalAngle()));
+            - stateHandler.getDesiredIntakePosition().getArmAngles().getDistalAngle());
 
     SmartDashboard.putNumber("ARM PROXIMAL ERROR", Math
         .abs(robotContainer.armSubsystem.getProximalPosition()
@@ -163,6 +160,10 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
+    LimelightInterface.getInstance().aprilTagFieldLayout.setOrigin(
+        DriverStation.getAlliance() == Alliance.Red ? OriginPosition.kRedAllianceWallRightSide
+            : OriginPosition.kBlueAllianceWallRightSide);
 
     if (!armGood) {
       CommandScheduler.getInstance().schedule(new EStopArmCommand(robotContainer.armSubsystem));
