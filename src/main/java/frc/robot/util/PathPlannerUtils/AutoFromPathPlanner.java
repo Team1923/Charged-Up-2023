@@ -6,6 +6,7 @@ import java.util.List;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.EventMarker;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -51,6 +52,10 @@ public class AutoFromPathPlanner extends SequentialCommandGroup {
 
   public List<EventMarker> getEventMarkers() {
     return m_trajectory.getMarkers();
+  }
+
+  public PathPlannerState getInitialState() {
+    return m_trajectory.getInitialState();
   }
   
 

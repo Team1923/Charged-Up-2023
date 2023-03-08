@@ -16,6 +16,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.math.VecBuilder;
@@ -31,6 +33,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -77,12 +80,14 @@ public class SwerveSubsystem extends SubsystemBase {
                 new Pose2d(1.68, 2.74, new Rotation2d(0)),
                 stateStdDevs, visionMeasurementStdDevs);
 
-        // wheelOdometry = new SwerveDrivePoseEstimator(Swerve.swerveKinematics, getYaw(), getModulePositions(),
-        //         new Pose2d(1.68, 2.74, new Rotation2d(0)));
+        // wheelOdometry = new SwerveDrivePoseEstimator(Swerve.swerveKinematics,
+        // getYaw(), getModulePositions(),
+        // new Pose2d(1.68, 2.74, new Rotation2d(0)));
 
-        // visionOdometry = new SwerveDrivePoseEstimator(Swerve.swerveKinematics, getYaw(), getModulePositions(),
-        //         new Pose2d(1.68, 2.74, new Rotation2d(0)),
-        //         stateStdDevs, visionMeasurementStdDevs);
+        // visionOdometry = new SwerveDrivePoseEstimator(Swerve.swerveKinematics,
+        // getYaw(), getModulePositions(),
+        // new Pose2d(1.68, 2.74, new Rotation2d(0)),
+        // stateStdDevs, visionMeasurementStdDevs);
 
     }
 
@@ -124,6 +129,13 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void resetOdometry(Pose2d pose) {
+        swerveOdometry.resetPosition(getYaw(), getModulePositions(), pose);
+    }
+
+    public void resetOdometryForState(PathPlannerState state) {
+        state = PathPlannerTrajectory.transformStateForAlliance(state, DriverStation.getAlliance());
+        Pose2d pose = new Pose2d(state.poseMeters.getTranslation(), state.holonomicRotation);
+        SmartDashboard.putString("POSE AUTO", pose.toString());
         swerveOdometry.resetPosition(getYaw(), getModulePositions(), pose);
     }
 
@@ -209,22 +221,20 @@ public class SwerveSubsystem extends SubsystemBase {
                 Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() + robotLimelightPose.getX(),
                         aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
                 swerveOdometry.addVisionMeasurement(newRobotPose,
-                        Timer.getFPGATimestamp() - (limelightInterface.getTL(getCorrectLimelight()) / 1000) - (limelightInterface.getCL(getCorrectLimelight()) / 1000));
+                        Timer.getFPGATimestamp() - (limelightInterface.getTL(getCorrectLimelight()) / 1000)
+                                - (limelightInterface.getCL(getCorrectLimelight()) / 1000));
             }
 
         }
     }
-
 
     @Override
     public void periodic() {
         if (DriverStation.isAutonomousEnabled() || DriverStation.isDisabled()) {
             updateGyroVelocities();
         }
-    
 
         updateOdometry();
-        
 
         PathPlannerServer.sendPathFollowingData(new Pose2d(), getPose());
 

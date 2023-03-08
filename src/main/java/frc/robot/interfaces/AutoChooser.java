@@ -33,6 +33,7 @@ public class AutoChooser {
 		chooser.setDefaultOption("ONE CUBE", AutoMode.ONE_CUBE);
 		chooser.addOption("TWO CONE BALANCE NO CP", AutoMode.TWO_CONE_NOCP);
 		chooser.addOption("TWO HALF CONE BALANCE", AutoMode.TWO_HALF_CONE_NOCP);
+		chooser.addOption("CENTER BALANCE", AutoMode.CENTER_BALANCE);
 		auto.add(chooser);
 	}
 

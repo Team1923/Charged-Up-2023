@@ -30,18 +30,19 @@ public class ScoreCenterAndBalance extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
 
     final AutoFromPathPlanner balance = new AutoFromPathPlanner(swerve, "ScoreCenterBalance", 2.5, 2, false, true, true);
+    final AutoFromPathPlanner commit = new AutoFromPathPlanner(swerve, "CenterConfirmBalance", 2.5, 2, false, true, true);
 
     addCommands(
-      new InstantCommand(() -> swerve.resetOdometry(balance.getInitialPose())),
-      new InstantCommand(() -> swerve.zeroGyro(balance.getInitialPose().getRotation().getDegrees())),
-
+      new InstantCommand(() -> swerve.resetOdometryForState(balance.getInitialState())),
+      
       new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
       new WaitUntilCommand(() -> stateHandler.getResetManipulator()),
       new InstantCommand(() -> stateHandler.setResetManipulator(false)),
+      balance,
       new ParallelRaceGroup(
             // GYRO VELOCITY MEASUREMENTS
             new WaitUntilCommand(() -> swerve.getAngularVelocity() < -15),
-            balance
+            commit
       ),
       new SwerveXWheels(swerve)
 
