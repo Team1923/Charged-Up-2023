@@ -25,7 +25,7 @@ public class ToggleArmPositionCommand extends CommandBase {
     if(currentArmPosition == ArmPositions.STOW && desiredArmPosition == ArmPositions.STOW) {
       stateHandler.setArmDesiredState(ArmPositions.FEED);
     } else if(currentArmPosition == ArmPositions.FEED && desiredArmPosition == ArmPositions.FEED) {
-      stateHandler.setArmDesiredState(ArmPositions.STOW);
+      stateHandler.setArmDesiredState(ArmPositions.COBRA_REVERSE);
     }
   }
 
