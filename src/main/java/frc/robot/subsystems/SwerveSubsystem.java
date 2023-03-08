@@ -53,7 +53,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public static final Vector<N3> stateStdDevs = VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(5));
 
-    public static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(0.75, 0.75, Units.degreesToRadians(15));
+    public static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(0.75, 0.75, Units.degreesToRadians(20));
 
     LimelightInterface limelightInterface = LimelightInterface.getInstance();
 
