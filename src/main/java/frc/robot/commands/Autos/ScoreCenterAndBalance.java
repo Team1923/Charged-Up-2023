@@ -35,7 +35,7 @@ public class ScoreCenterAndBalance extends SequentialCommandGroup {
       new InstantCommand(() -> swerve.resetOdometry(balance.getInitialPose())),
       new InstantCommand(() -> swerve.zeroGyro(balance.getInitialPose().getRotation().getDegrees())),
 
-      new AutoScoreCommand(HorizontalLocations.RIGHT, VerticalLocations.HIGH, GamePieceMode.CONE),
+      new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
       new WaitUntilCommand(() -> stateHandler.getResetManipulator()),
       new InstantCommand(() -> stateHandler.setResetManipulator(false)),
       new ParallelRaceGroup(
