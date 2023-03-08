@@ -31,7 +31,8 @@ public class StateHandler {
             intakeGood = false,
             autoRunIntake = false,
             wantToEngage = false,
-            intakeInFeed = false;
+            intakeInFeed = false,
+            isOdometryUpdating = false;
 
     private GamePieceMode mode = GamePieceMode.CUBE;
 
@@ -312,6 +313,14 @@ public class StateHandler {
 
     public boolean getIsIntakeGood(){
         return intakeGood;
+    }
+
+    public void setOdometryUpdating(boolean o) {
+        isOdometryUpdating = o;
+    }
+
+    public boolean getOdometryUpdating() {
+        return isOdometryUpdating;
     }
 
     // Returns the current arm position from scoring location depending on where the current Vertical Location Is

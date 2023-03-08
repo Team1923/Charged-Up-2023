@@ -68,11 +68,6 @@ public class SwerveSubsystem extends SubsystemBase {
                 new SwerveModule(3, Constants.Swerve.Mod3.constants)
         };
 
-        /*
-         * By pausing init for a second before setting module offsets, we avoid a bug
-         * with inverting motors.
-         * See https://github.com/Team364/BaseFalconSwerve/issues/8 for more info.
-         */
         Timer.delay(1.0);
         resetModulesToAbsolute();
 
@@ -80,14 +75,6 @@ public class SwerveSubsystem extends SubsystemBase {
                 new Pose2d(1.68, 2.74, new Rotation2d(0)),
                 stateStdDevs, visionMeasurementStdDevs);
 
-        // wheelOdometry = new SwerveDrivePoseEstimator(Swerve.swerveKinematics,
-        // getYaw(), getModulePositions(),
-        // new Pose2d(1.68, 2.74, new Rotation2d(0)));
-
-        // visionOdometry = new SwerveDrivePoseEstimator(Swerve.swerveKinematics,
-        // getYaw(), getModulePositions(),
-        // new Pose2d(1.68, 2.74, new Rotation2d(0)),
-        // stateStdDevs, visionMeasurementStdDevs);
 
     }
 
@@ -218,13 +205,16 @@ public class SwerveSubsystem extends SubsystemBase {
             Pose2d robotLimelightPose = new Pose2d(-limelightInterface.getRobotPose3d(getCorrectLimelight()).getZ(),
                     limelightInterface.getRobotPose3d(getCorrectLimelight()).getX(), getYaw());
             if (Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) + Math.pow(robotLimelightPose.getY(), 2)) <= 1.5) {
+                stateHandler.setOdometryUpdating(true);
                 Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() + robotLimelightPose.getX(),
                         aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
                 swerveOdometry.addVisionMeasurement(newRobotPose,
                         Timer.getFPGATimestamp() - (limelightInterface.getTL(getCorrectLimelight()) / 1000)
                                 - (limelightInterface.getCL(getCorrectLimelight()) / 1000));
-            }
+            } 
 
+        } else {
+            stateHandler.setOdometryUpdating(false);
         }
     }
 

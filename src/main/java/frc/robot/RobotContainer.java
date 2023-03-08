@@ -43,7 +43,9 @@ public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
     private final Joystick operator = new Joystick(1);
-    //private final Joystick test = new Joystick(2);
+
+    //need this for rumble setup, DO NOT USE
+    private final XboxController xboxDriverController = new XboxController(0);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -79,6 +81,7 @@ public class RobotContainer {
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     public final ManipulatorSubsystem gripper = new ManipulatorSubsystem();
     public final ShuffleboardSubsystem shuffleboard = new ShuffleboardSubsystem();
+    public final ControllerRumble controllerRumble = new ControllerRumble(xboxDriverController);
 
     final AutoFromPathPlanner test5MStrafeRight = new AutoFromPathPlanner(s_Swerve, "Test5mStrafeRight", 4.5, 3.5, false, false, true);
     final AutoFromPathPlanner test5mForward = new AutoFromPathPlanner(s_Swerve, "Test5mForward", 4.5, 3.5, false, false, true);
