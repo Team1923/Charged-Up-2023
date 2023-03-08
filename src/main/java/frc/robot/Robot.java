@@ -61,6 +61,8 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer();
     this.selector = new AutoChooser();
     stateHandler.resetStates();
+    SmartDashboard.putData("RESET STATES", new InstantCommand(() -> stateHandler.resetStates()));
+
   }
 
   /** This function is called periodically during all modes. */
@@ -121,7 +123,6 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putBoolean("ARM GOOD TO GO", armGood);
 
-    SmartDashboard.putData("RESET STATES", new InstantCommand(() -> stateHandler.resetStates()));
 
   }
 
