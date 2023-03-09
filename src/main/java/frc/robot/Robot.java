@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.EmergencyCommands.CheckArmAngles;
 import frc.robot.commands.EmergencyCommands.EStopArmCommand;
 import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;
-import frc.robot.commands.StateCommands.ResetStateCommand;
 import frc.robot.interfaces.AutoChooser;
 import frc.robot.interfaces.LimelightInterface;
 import frc.robot.interfaces.LEDInterface;
@@ -62,8 +61,6 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer();
     this.selector = new AutoChooser();
     stateHandler.resetStates();
-    SmartDashboard.putData("RESET STATES", new ResetStateCommand());
-
   }
 
   /** This function is called periodically during all modes. */
@@ -124,6 +121,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putBoolean("ARM GOOD TO GO", armGood);
 
+    SmartDashboard.putData("RESET STATE", new InstantCommand(() -> stateHandler.resetStates()));
 
   }
 
@@ -182,10 +180,6 @@ public class Robot extends TimedRobot {
       autonomousCommand.cancel();
     }
     robotContainer.armSubsystem.setBrake();
-
-    LimelightInterface.getInstance().aprilTagFieldLayout.setOrigin(
-      DriverStation.getAlliance() == Alliance.Red ? OriginPosition.kRedAllianceWallRightSide
-          : OriginPosition.kBlueAllianceWallRightSide);
 
   }
 
