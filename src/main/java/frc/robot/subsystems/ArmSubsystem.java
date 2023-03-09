@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.ResourceBundle.Control;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -68,7 +70,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void resetDistalPosition() {
     distalMotor.setSelectedSensorPosition(
         (getDistalAbsoluteEncoderRads() - ArmConstants.distalEncoderZero + ArmConstants.distalHardstop
-            - Math.toRadians(0))
+            + Math.toRadians(0))
             * ArmConstants.distalRadsToTicks);
     // distalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getDistalAngle());
 
@@ -92,6 +94,10 @@ public class ArmSubsystem extends SubsystemBase {
   public void setDistalPosition(double distalAngle) {
     distalMotor.set(ControlMode.MotionMagic, distalAngle * ArmConstants.distalRadsToTicks,
         DemandType.ArbitraryFeedForward, calculateDistalFeedforward());
+  }
+
+  public double getDistalClosedLoopError() {
+    return distalMotor.getClosedLoopError();
   }
 
   public double[] calculateArmCartesian(double x, double y) {
@@ -163,6 +169,14 @@ public class ArmSubsystem extends SubsystemBase {
 
     double[] conv = { x, y };
     return conv;
+  }
+
+  public void setDistalOutput(double stpt) {
+    distalMotor.set(ControlMode.PercentOutput, stpt);
+  }
+
+  public double getDistalVelocity() {
+    return distalMotor.getSelectedSensorVelocity();
   }
 
   public void setCoast() {

@@ -22,6 +22,7 @@ import frc.robot.commands.Scoring.TrajectoryToGoal;
 import frc.robot.commands.StateCommands.SetArmLocation;
 import frc.robot.commands.StateCommands.SetGamePiece;
 import frc.robot.commands.StateCommands.SetRobotLocation;
+import frc.robot.commands.SwerveCommands.SwerveXWheels;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.interfaces.AutoChooser;
 import frc.robot.subsystems.*;
@@ -133,7 +134,7 @@ public class RobotContainer {
         xButton.onTrue(new EjectPosition());
         
 
-        //bButton.toggleOnTrue(test5MStrafeRight);
+        bButton.toggleOnTrue(new SwerveXWheels(s_Swerve));
 
     }
 

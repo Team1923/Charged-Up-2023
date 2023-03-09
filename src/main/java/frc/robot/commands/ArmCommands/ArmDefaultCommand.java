@@ -19,6 +19,8 @@ public class ArmDefaultCommand extends CommandBase {
   private StateHandler stateHandler = StateHandler.getInstance();
   private Timer timer;
   private CurrentRobotDirection currentRobotDirection;
+  private boolean reengageLatch = false;
+
 
   public ArmDefaultCommand(ArmSubsystem aSubsystem) {
     armSubsystem = aSubsystem;
@@ -31,6 +33,7 @@ public class ArmDefaultCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    reengageLatch = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -46,6 +49,9 @@ public class ArmDefaultCommand extends CommandBase {
       case STOW:
         currentRobotDirection = stateHandler.getRobotDirection();
         stateHandler.setIsArmMoving(false);
+
+       
+
         /*
          * if:
          * we want to score,
@@ -99,7 +105,7 @@ public class ArmDefaultCommand extends CommandBase {
         stateHandler.setIsArmMoving(false);
         // if we are currently in the cobra reverse position, then set the desired arm
         // state to stow
-        if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_REVERSE) {
+        if (stateHandler.getCurrentArmPosition() == ArmPositions.INVERTED_COBRA_REVERSE) {
           stateHandler.setArmDesiredState(ArmPositions.STOW);
         }
         timer.reset();
@@ -123,12 +129,36 @@ public class ArmDefaultCommand extends CommandBase {
         break;
     }
 
-    if (currentRobotDirection == CurrentRobotDirection.RIGHT) {
-      armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());
-      armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
-    } else if (currentRobotDirection == CurrentRobotDirection.LEFT) {
-      armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getProximalAngle());
-      armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getDistalAngle());
+    double closedLoopError = armSubsystem.getDistalClosedLoopError();
+
+    
+    if(stateHandler.getCurrentArmPosition() != ArmPositions.STOW && Math.abs(closedLoopError) < 500) {
+      if (currentRobotDirection == CurrentRobotDirection.RIGHT) {
+        armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());
+        armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
+      } else if (currentRobotDirection == CurrentRobotDirection.LEFT) {
+        armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getProximalAngle());
+        armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getDistalAngle());
+      }
+      reengageLatch = false;
+    } else {
+      if(!reengageLatch) {
+        if(closedLoopError > 0) {
+          armSubsystem.setDistalOutput(-0.05);
+        } else {
+          armSubsystem.setDistalOutput(0.05);
+        } 
+
+        if(Math.abs(armSubsystem.getDistalVelocity()) < 10) {
+          reengageLatch = true;
+        }
+    } else {
+      armSubsystem.setDistalOutput(0);
+    }
+   
+
+   
+      
     }
 
   }

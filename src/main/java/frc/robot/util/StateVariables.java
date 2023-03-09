@@ -14,7 +14,7 @@ public class StateVariables {
         STOW(new ArmAngles(1.616, -1.537), new ArmAngles(1.616, -1.537)),
         COBRA_FORWARD(new ArmAngles(Math.toRadians(110), -Math.PI/4), new ArmAngles(Math.toRadians(70), -3*Math.PI/4)),
         COBRA_REVERSE(new ArmAngles(Math.toRadians(90), -Math.PI/4), new ArmAngles(Math.toRadians(90), -3*Math.PI/4)),
-        INVERTED_COBRA_REVERSE(new ArmAngles(Math.toRadians(90), -3*Math.PI/4), new ArmAngles(Math.toRadians(90), -Math.PI/4)),
+        INVERTED_COBRA_REVERSE(new ArmAngles(Math.toRadians(70), -3*Math.PI/4), new ArmAngles(Math.toRadians(110), -Math.PI/4)),
         //DEFINE SCORING LOCATIONS: right is the first object, left is second
         LOW(new ArmAngles(1.473, -0.830), new ArmAngles(1.632, -2.107)),
         // CONE_MID(new ArmAngles(1.430, -0.327), new ArmAngles(1.722, -2.765)),
@@ -23,7 +23,7 @@ public class StateVariables {
         CONE_HIGH(new ArmAngles(1.043, 0.153), new ArmAngles(2.160 - Math.toRadians(5), -3.304 - Math.toRadians(2))),
         CUBE_MID(new ArmAngles(1.430, -0.327), new ArmAngles(1.722, -2.765)),
         CUBE_HIGH(new ArmAngles(1.005, 0.172), new ArmAngles(2.160 - Math.toRadians(5), -3.304 - Math.toRadians(2))),
-        FEED(new ArmAngles(1.398, -2.666), new ArmAngles(1.782, -0.302)); //THIS IS INVERTED FOR A REASON
+        FEED(new ArmAngles(1.398 + Math.toRadians(5), -2.666 + Math.toRadians(9)), new ArmAngles(1.782 - Math.toRadians(5), -0.302 - Math.toRadians(9))); //THIS IS INVERTED FOR A REASON
         
 
         private ArmAngles armAngles;

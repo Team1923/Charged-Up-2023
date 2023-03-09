@@ -119,7 +119,7 @@ public class Robot extends TimedRobot {
         robotContainer.armSubsystem.getDistalPosition()
             - stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle()));
 
-    robotContainer.armSubsystem.setCoast();
+    // robotContainer.armSubsystem.setCoast();
 
     SmartDashboard.putBoolean("INTAKE GOOD TO GO", intakeGood);
 

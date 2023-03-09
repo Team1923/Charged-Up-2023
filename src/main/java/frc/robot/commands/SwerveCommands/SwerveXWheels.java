@@ -14,10 +14,10 @@ public class SwerveXWheels extends CommandBase {
   private SwerveSubsystem swerve;
 
   private SwerveModuleState[] xStates = {
-    new SwerveModuleState(0, Rotation2d.fromDegrees(-135)),
-    new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
-    new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
-    new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+    new SwerveModuleState(0.1, Rotation2d.fromDegrees(-135)),
+    new SwerveModuleState(0.1, Rotation2d.fromDegrees(135)),
+    new SwerveModuleState(0.1, Rotation2d.fromDegrees(-45)),
+    new SwerveModuleState(0.1, Rotation2d.fromDegrees(45)),
   };
 
   /** Creates a new SwerveXWheels. */
@@ -34,7 +34,7 @@ public class SwerveXWheels extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    swerve.setModuleStates(xStates);
+    swerve.updateModuleStates(xStates);
   }
 
   // Called once the command ends or is interrupted.
@@ -42,6 +42,7 @@ public class SwerveXWheels extends CommandBase {
   public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
+
   @Override
   public boolean isFinished() {
     return false;
