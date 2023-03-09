@@ -19,8 +19,6 @@ public class ArmDefaultCommand extends CommandBase {
   private StateHandler stateHandler = StateHandler.getInstance();
   private Timer timer;
   private CurrentRobotDirection currentRobotDirection;
-  private boolean reengageLatch = false;
-
 
   public ArmDefaultCommand(ArmSubsystem aSubsystem) {
     armSubsystem = aSubsystem;
@@ -33,7 +31,6 @@ public class ArmDefaultCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    reengageLatch = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -49,8 +46,6 @@ public class ArmDefaultCommand extends CommandBase {
       case STOW:
         currentRobotDirection = stateHandler.getRobotDirection();
         stateHandler.setIsArmMoving(false);
-
-       
 
         /*
          * if:
@@ -69,10 +64,16 @@ public class ArmDefaultCommand extends CommandBase {
           if (timer.get() > 0.75 && (stateHandler.getCurrentIntakePosition() == IntakePositions.STOW
               || stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF)) {
             stateHandler.setArmDesiredState(ArmPositions.COBRA_FORWARD);
-          } 
+          }
 
         }
         break;
+
+      case FEED:
+        if (stateHandler.getCurrentArmPosition() == ArmPositions.FEED) {
+          stateHandler.setDesiredIntakePosition(IntakePositions.EJECT);
+        }
+
       case COBRA_FORWARD:
         stateHandler.setIsArmMoving(true);
         stateHandler.setHasGamePiece(false);
@@ -82,6 +83,13 @@ public class ArmDefaultCommand extends CommandBase {
          * we are in the cobra forward position,
          * then we can set the desired state of the arm based on where we want to score
          */
+        if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_FORWARD) {
+          if (stateHandler.getCurrentIntakePosition() == IntakePositions.EJECT &&
+              stateHandler.getDesiredIntakePosition() == IntakePositions.EJECT) {
+            stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
+          }
+        }
+
         if (!stateHandler.getHoldInCobra() && stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_FORWARD) {
           stateHandler.setArmDesiredState(stateHandler.getArmPositionFromScoringLocation());
         }
@@ -129,36 +137,12 @@ public class ArmDefaultCommand extends CommandBase {
         break;
     }
 
-    double closedLoopError = armSubsystem.getDistalClosedLoopError();
-
-    
-    if(stateHandler.getCurrentArmPosition() != ArmPositions.STOW && Math.abs(closedLoopError) < 500) {
-      if (currentRobotDirection == CurrentRobotDirection.RIGHT) {
-        armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());
-        armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
-      } else if (currentRobotDirection == CurrentRobotDirection.LEFT) {
-        armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getProximalAngle());
-        armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getDistalAngle());
-      }
-      reengageLatch = false;
-    } else {
-      if(!reengageLatch) {
-        if(closedLoopError > 0) {
-          armSubsystem.setDistalOutput(-0.05);
-        } else {
-          armSubsystem.setDistalOutput(0.05);
-        } 
-
-        if(Math.abs(armSubsystem.getDistalVelocity()) < 10) {
-          reengageLatch = true;
-        }
-    } else {
-      armSubsystem.setDistalOutput(0);
-    }
-   
-
-   
-      
+    if (currentRobotDirection == CurrentRobotDirection.RIGHT) {
+      armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle());
+      armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle());
+    } else if (currentRobotDirection == CurrentRobotDirection.LEFT) {
+      armSubsystem.setProximalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getProximalAngle());
+      armSubsystem.setDistalPosition(stateHandler.getArmDesiredPosition().getLeftArmAngles().getDistalAngle());
     }
 
   }
