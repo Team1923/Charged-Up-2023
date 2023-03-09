@@ -67,9 +67,23 @@ public class ArmDefaultCommand extends CommandBase {
 
         }
         break;
+
+      case FEED:
+        if (stateHandler.getCurrentArmPosition() == ArmPositions.FEED) {
+          stateHandler.setDesiredIntakePosition(IntakePositions.EJECT);
+        }
+        break; 
+        
       case COBRA_FORWARD:
         stateHandler.setIsArmMoving(true);
         stateHandler.setHasGamePiece(false);
+
+        if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_FORWARD) {
+          if (stateHandler.getCurrentIntakePosition() == IntakePositions.EJECT &&
+              stateHandler.getDesiredIntakePosition() == IntakePositions.EJECT) {
+            stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
+          }
+        }
         /*
          * if:
          * the arm is not being held in the cobra position, and
