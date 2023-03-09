@@ -251,17 +251,17 @@ public class IntakeSubsystem extends SubsystemBase {
     // SmartDashboard.putString("DESIRED INTAKE State", stateHandler.getDesiredIntakePosition().toString());
     // SmartDashboard.putString("CURRENT INTAKE State", stateHandler.getCurrentIntakePosition().toString());
 
-    SmartDashboard.putNumber("INTAKE PROXIMAL POSITION RADS: ", getIntakeProximalPosition());
-    SmartDashboard.putNumber("INTAKE DISTAL POSITION RADS: ", getIntakeDistalPosition());
+    // SmartDashboard.putNumber("INTAKE PROXIMAL POSITION RADS: ", getIntakeProximalPosition());
+    // SmartDashboard.putNumber("INTAKE DISTAL POSITION RADS: ", getIntakeDistalPosition());
 
     SmartDashboard.putNumber("INTAKE ABSOLUTE Proximal Encoder Rads", getIntakeProximalAbsoluteEncoderRads());
     SmartDashboard.putNumber("INTAKE ABSOLUTE Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());
     
-    SmartDashboard.putString("Desired Intake Position", stateHandler.getDesiredIntakePosition().toString());
-    SmartDashboard.putString("Current Intake Position", stateHandler.getCurrentIntakePosition().toString());
+    // SmartDashboard.putString("Desired Intake Position", stateHandler.getDesiredIntakePosition().toString());
+    // SmartDashboard.putString("Current Intake Position", stateHandler.getCurrentIntakePosition().toString());
 
 
-    SmartDashboard.putBoolean("LIMIT SWITCH", getGamePieceSensor());
+    // SmartDashboard.putBoolean("LIMIT SWITCH", getGamePieceSensor());
 
     // SmartDashboard.putString("Scoring Location Vertical", stateHandler.getCurrentVerticalLocation().toString());
     // SmartDashboard.putString("Scoring Location Horizontal", stateHandler.getCurrentHorizontalLocation().toString());

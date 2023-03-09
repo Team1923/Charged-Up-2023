@@ -69,6 +69,9 @@ public class IntakeArmDefaultCommand extends CommandBase {
       case EJECT:
         intake.setSolenoid(true);
         break;
+      case CLEAR:
+        intake.setSolenoid(true);
+        break;
       case INTAKE:
         if(intake.getGamePieceSensor()) {
           stateHandler.setHasGamePiece(true);

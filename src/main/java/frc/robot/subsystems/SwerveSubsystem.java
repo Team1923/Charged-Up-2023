@@ -235,9 +235,9 @@ public class SwerveSubsystem extends SubsystemBase {
         }
         SmartDashboard.putString("CURRENT ROBOT DIRECTION", stateHandler.getRobotDirection().toString());
 
-        SmartDashboard.putBoolean("LIMELIGHT HAS TARGET", limelightInterface.hasValidTargets(getCorrectLimelight()));
+        // SmartDashboard.putBoolean("LIMELIGHT HAS TARGET", limelightInterface.hasValidTargets(getCorrectLimelight()));
 
-        SmartDashboard.putNumber("Angular Velocity", getAngularVelocity());
+        // SmartDashboard.putNumber("Angular Velocity", getAngularVelocity());
 
         // PathPlannerServer.sendPathFollowingData(new Pose2d(),
         // swerveOdometry.getEstimatedPosition());

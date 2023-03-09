@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -10,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ArmCommands.ArmDefaultCommand;
 import frc.robot.commands.ArmCommands.ToggleArmPositionCommand;
+import frc.robot.commands.ArmCommands.ToggleEmergencyArmRecovery;
 import frc.robot.commands.IntakeCommands.AcquireFromHPCommand;
 import frc.robot.commands.IntakeCommands.DeployIntakeCommand;
 import frc.robot.commands.IntakeCommands.EjectPosition;
@@ -153,6 +155,13 @@ public class RobotContainer {
         armSubsystem.setDefaultCommand(new ArmDefaultCommand(armSubsystem));
         //find the operator axis for right trigger
         gripper.setDefaultCommand(new ManipulatorDefaultCommand(gripper, () -> operator.getRawAxis(2)));
+
+        // SmartDashboard.putData("EMERGENCY ARM RECOVERY", new ToggleEmergencyArmRecovery(
+        //     armSubsystem,
+        //     () -> Math.abs(operator.getRawAxis(1)) < 0.05 ? 0 : operator.getRawAxis(1),
+        //     () -> Math.abs(operator.getRawAxis(5)) < 0.05 ? 0 : operator.getRawAxis(5)
+        // ));
+
     }
 
     public Command initializeAuto(AutoChooser selector){

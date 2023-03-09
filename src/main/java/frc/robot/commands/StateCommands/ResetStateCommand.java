@@ -18,7 +18,6 @@ public class ResetStateCommand extends CommandBase {
   @Override
   public void initialize() {
     StateHandler.getInstance().resetStates();
-    SmartDashboard.putNumber("SYSTEM TIME", System.currentTimeMillis());
   }
 
   // Called every time the scheduler runs while the command is scheduled.

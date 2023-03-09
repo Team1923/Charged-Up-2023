@@ -29,7 +29,6 @@ public class DeployIntakeCommand extends CommandBase {
 
     if ((currentIntakePosition == IntakePositions.STOW || currentIntakePosition == IntakePositions.FINAL_HANDOFF)
         && (stateHandler.getGamePieceMode() == GamePieceMode.CUBE || (!stateHandler.getGripperEngaged() && stateHandler.getGamePieceMode() == GamePieceMode.CONE))) {
-      SmartDashboard.putBoolean("Deployed Intake", true);
       intake.setSolenoid(true);
       stateHandler.setDesiredIntakePosition(IntakePositions.REVERSE_HANDOFF_1);
     }

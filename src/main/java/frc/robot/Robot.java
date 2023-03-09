@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.ArmCommands.ToggleEmergencyArmRecovery;
 import frc.robot.commands.EmergencyCommands.CheckArmAngles;
 import frc.robot.commands.EmergencyCommands.EStopArmCommand;
 import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;

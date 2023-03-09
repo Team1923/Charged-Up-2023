@@ -70,7 +70,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void resetDistalPosition() {
     distalMotor.setSelectedSensorPosition(
         (getDistalAbsoluteEncoderRads() - ArmConstants.distalEncoderZero + ArmConstants.distalHardstop
-            + Math.toRadians(0))
+            - Math.toRadians(4.5))
             * ArmConstants.distalRadsToTicks);
     // distalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getDistalAngle());
 
@@ -225,6 +225,16 @@ public class ArmSubsystem extends SubsystemBase {
     distalMotor.set(ControlMode.Disabled, 0);
   }
 
+  public void setMotorOutputs(double proximalOutput, double distalOutput) {
+    proximalMotor.set(ControlMode.PercentOutput, proximalOutput);
+    distalMotor.set(ControlMode.PercentOutput, distalOutput);
+  }
+
+  public void overrideMotorZeros() {
+    proximalMotor.setSelectedSensorPosition(ArmConstants.proximalHardstop * ArmConstants.proximalRadsToTicks);
+    proximalMotor.setSelectedSensorPosition(ArmConstants.distalHardstop * ArmConstants.distalRadsToTicks);
+  }
+
   @Override
   public void periodic() {
   
@@ -264,16 +274,8 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ABS ENCODER PROXIMAL ARM", getProximalAbsoluteEncoderRads());
     SmartDashboard.putNumber("ABS ENCODER DISTAL ARM", getDistalAbsoluteEncoderRads());
 
-    SmartDashboard.putNumber("MOTOR ENCODER PROXIMAL ARM", getProximalPosition());
-    SmartDashboard.putNumber("MOTOR ENCODER DISTAL ARM", getDistalPosition());
-
-    SmartDashboard.putBoolean("HAS GAME PIECE", stateHandler.getHasGamePiece());
-
-    SmartDashboard.putString("Arm Desired State", stateHandler.getArmDesiredPosition().toString());
-
-
-
-
+    // SmartDashboard.putNumber("MOTOR ENCODER PROXIMAL ARM", getProximalPosition());
+    // SmartDashboard.putNumber("MOTOR ENCODER DISTAL ARM", getDistalPosition());
 
   }
 

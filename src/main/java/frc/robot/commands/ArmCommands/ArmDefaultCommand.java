@@ -61,8 +61,10 @@ public class ArmDefaultCommand extends CommandBase {
           // if the timer has been running for more than a second and the current intake
           // position is stow,
           // we can set the desired arm state to cobra forward
+          
           if (timer.get() > 0.75 && (stateHandler.getCurrentIntakePosition() == IntakePositions.STOW
-              || stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF)) {
+              || stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF
+              || stateHandler.getCurrentIntakePosition() == IntakePositions.CLEAR)) {
             stateHandler.setArmDesiredState(ArmPositions.COBRA_FORWARD);
           }
 
@@ -71,7 +73,7 @@ public class ArmDefaultCommand extends CommandBase {
 
       case FEED:
         if (stateHandler.getCurrentArmPosition() == ArmPositions.FEED) {
-          stateHandler.setDesiredIntakePosition(IntakePositions.EJECT);
+          stateHandler.setDesiredIntakePosition(IntakePositions.CLEAR);
         }
         break;
 
@@ -85,8 +87,8 @@ public class ArmDefaultCommand extends CommandBase {
          * then we can set the desired state of the arm based on where we want to score
          */
         if (stateHandler.getCurrentArmPosition() == ArmPositions.COBRA_FORWARD) {
-          if (stateHandler.getCurrentIntakePosition() == IntakePositions.EJECT &&
-              stateHandler.getDesiredIntakePosition() == IntakePositions.EJECT) {
+          if (stateHandler.getCurrentIntakePosition() == IntakePositions.CLEAR &&
+              stateHandler.getDesiredIntakePosition() == IntakePositions.CLEAR) {
             stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
           }
         }
