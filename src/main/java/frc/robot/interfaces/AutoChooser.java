@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Autos.McDonaldsPath;
 import frc.robot.commands.Autos.ScoreCenterAndBalance;
+import frc.robot.commands.Autos.SingleScoreAuto;
+import frc.robot.commands.Autos.SingleScoreBackOutNonCableProtector;
 import frc.robot.commands.Autos.TwoConeBalanceNonCableProtector;
 import frc.robot.commands.Autos.TwoHalfConeBalanceNonCableProtector;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -14,12 +16,14 @@ import frc.robot.subsystems.SwerveSubsystem;
 
 public class AutoChooser {
 	public enum AutoMode {
-		ONE_CUBE,
+		SINGLE_SCORE,
 		TWO_CONE_NOCP,
 		TWO_HALF_CONE_NOCP,
 		CENTER_BALANCE,
 		LEFT_BALANCE,
 		RIGHT_BALANCE,
+		SCORE_BACK_OUT_NOCP,
+		SCORE_BACK_OUT_OVERCP
 	}
 
 	private SendableChooser<AutoMode> chooser;
@@ -30,26 +34,32 @@ public class AutoChooser {
 	
 	public AutoChooser(){
 		chooser = new SendableChooser<>();
-		chooser.setDefaultOption("ONE CUBE", AutoMode.ONE_CUBE);
+		chooser.setDefaultOption("SINGLE SCORE", AutoMode.SINGLE_SCORE);
 		chooser.addOption("TWO CONE BALANCE NO CP", AutoMode.TWO_CONE_NOCP);
 		chooser.addOption("TWO HALF CONE BALANCE", AutoMode.TWO_HALF_CONE_NOCP);
 		chooser.addOption("CENTER BALANCE", AutoMode.CENTER_BALANCE);
+		chooser.addOption("SCORE BACK OUT NO CP", AutoMode.SCORE_BACK_OUT_NOCP);
+		chooser.addOption("SCORE BACK OUT OVER CP", AutoMode.SCORE_BACK_OUT_OVERCP);
 		auto.add(chooser);
 	}
 
 	public Command startMode(SwerveSubsystem swerve, IntakeSubsystem intake){
 		AutoMode mode = (AutoMode)(chooser.getSelected());
 		switch(mode){
-			case ONE_CUBE:
-				return new McDonaldsPath(swerve);
+			case SINGLE_SCORE:
+				return new SingleScoreAuto();
 			case TWO_CONE_NOCP:
 				return new TwoConeBalanceNonCableProtector(swerve, intake);
 			case TWO_HALF_CONE_NOCP:
 				return new TwoHalfConeBalanceNonCableProtector(swerve, intake);
 			case CENTER_BALANCE:
 				return new ScoreCenterAndBalance(swerve);
+			case SCORE_BACK_OUT_NOCP:
+				return new SingleScoreBackOutNonCableProtector(swerve);
+			case SCORE_BACK_OUT_OVERCP:
+				
 			default:
-				return new McDonaldsPath(swerve);
+				return new SingleScoreAuto();
 		}
 	}
 
