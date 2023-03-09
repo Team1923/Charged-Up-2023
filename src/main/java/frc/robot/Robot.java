@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.EmergencyCommands.CheckArmAngles;
 import frc.robot.commands.EmergencyCommands.EStopArmCommand;
 import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;
+import frc.robot.commands.StateCommands.ResetStateCommand;
 import frc.robot.interfaces.AutoChooser;
 import frc.robot.interfaces.LimelightInterface;
 import frc.robot.interfaces.LEDInterface;
@@ -61,7 +62,7 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer();
     this.selector = new AutoChooser();
     stateHandler.resetStates();
-    SmartDashboard.putData("RESET STATES", new InstantCommand(() -> stateHandler.resetStates()));
+    SmartDashboard.putData("RESET STATES", new ResetStateCommand());
 
   }
 
