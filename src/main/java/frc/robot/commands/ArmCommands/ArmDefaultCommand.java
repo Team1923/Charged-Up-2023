@@ -73,6 +73,7 @@ public class ArmDefaultCommand extends CommandBase {
         if (stateHandler.getCurrentArmPosition() == ArmPositions.FEED) {
           stateHandler.setDesiredIntakePosition(IntakePositions.EJECT);
         }
+        break;
 
       case COBRA_FORWARD:
         stateHandler.setIsArmMoving(true);
