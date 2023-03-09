@@ -55,8 +55,8 @@ public final class Constants {
     public static final int intakeDistalID = 17;
     public static final int leftIntakeWheelMotor = 18;
     public static final int rightIntakeWheelMotor = 19;
-    public static final int intakeProximalAbsoluteEncoderID = 3; //2
-    public static final int intakeDistalAbsoluteEncoderID = 2; //3
+    public static final int intakeProximalAbsoluteEncoderID = 2; //2
+    public static final int intakeDistalAbsoluteEncoderID = 3; //3
 
     public static final double intakeProximalCGDistance = 0.0762;
     public static final double intakeDistalCGDistance = 0.2032;
@@ -75,9 +75,9 @@ public final class Constants {
     public static final double intakeDistalkD = 2;
 
     public static final double maxIntakeProximalVel = 30000;
-    public static final double maxIntakeProximalAccel = 23000;
+    public static final double maxIntakeProximalAccel = 30000;
     public static final double maxIntakeDistalVel = 30000;
-    public static final double maxIntakeDistalAccel = 23000;
+    public static final double maxIntakeDistalAccel = 30000;
 
     public static final double intakeProximalGearRatio = 64;
     public static final double intakeProximalTicksToRad = (2 * Math.PI)
@@ -91,8 +91,8 @@ public final class Constants {
 
     public static final double intakeProximalHardstop = 2.971;
     public static final double intakeDistalHardstop = 1.307;
-    public static final double proximalEncoderZero = 1.747;
-    public static final double distalEncoderZero = 5.370;
+    public static final double proximalEncoderZero = 1.539;
+    public static final double distalEncoderZero = 4.48;
 
     public static final double intakeMaxProximalGravityConstant = 0.2;
     public static final double intakeMaxDistalGravityConstant = 0.15;
@@ -282,7 +282,7 @@ public final class Constants {
       public static final int driveMotorID = 1;
       public static final int angleMotorID = 2;
       public static final int canCoderID = 9;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(277.12);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(29.8);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
           canCoderID, angleOffset);
     }
@@ -292,7 +292,7 @@ public final class Constants {
       public static final int driveMotorID = 3;
       public static final int angleMotorID = 4;
       public static final int canCoderID = 10;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(63.72);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(4.75);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
           canCoderID, angleOffset);
     }
@@ -302,7 +302,7 @@ public final class Constants {
       public static final int driveMotorID = 5;
       public static final int angleMotorID = 6;
       public static final int canCoderID = 11;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(22.32);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(350.59);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
           canCoderID, angleOffset);
     }
@@ -312,7 +312,7 @@ public final class Constants {
       public static final int driveMotorID = 7;
       public static final int angleMotorID = 8;
       public static final int canCoderID = 12;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(120.67);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(93.6);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
           canCoderID, angleOffset);
     }
