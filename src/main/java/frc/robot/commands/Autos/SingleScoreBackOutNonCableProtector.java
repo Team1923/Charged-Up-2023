@@ -22,17 +22,17 @@ public class SingleScoreBackOutNonCableProtector extends SequentialCommandGroup 
   StateHandler stateHandler = StateHandler.getInstance();
   public SingleScoreBackOutNonCableProtector(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner acquireCone = new AutoFromPathPlanner(swerve, "AcquireConeNOCP", 2.5, 2, false, true,
+    final AutoFromPathPlanner strafeOutNOCP = new AutoFromPathPlanner(swerve, "StrafeOutNOCP", 2.5, 2, false, true,
     true);
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new InstantCommand(() -> swerve.resetOdometryForState(acquireCone.getInitialState())),
+      new InstantCommand(() -> swerve.resetOdometryForState(strafeOutNOCP.getInitialState())),
       
       new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
       new WaitUntilCommand(() -> stateHandler.getResetManipulator()),
       new InstantCommand(() -> stateHandler.setResetManipulator(false)),
-      acquireCone
+      strafeOutNOCP
     );
   }
 }
