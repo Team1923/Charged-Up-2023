@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.SwerveCommands.SwerveXWheels;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -17,6 +18,7 @@ import frc.robot.util.StateHandler;
 import frc.robot.util.PathPlannerUtils.AutoFromPathPlanner;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.HorizontalLocations;
+import frc.robot.util.StateVariables.IntakePositions;
 import frc.robot.util.StateVariables.VerticalLocations;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -27,7 +29,7 @@ public class ScoreCenterAndBalance extends SequentialCommandGroup {
 
   private StateHandler stateHandler = StateHandler.getInstance();
 
-  public ScoreCenterAndBalance(SwerveSubsystem swerve) {
+  public ScoreCenterAndBalance(SwerveSubsystem swerve, IntakeSubsystem intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
@@ -37,6 +39,12 @@ public class ScoreCenterAndBalance extends SequentialCommandGroup {
     addCommands(
       new InstantCommand(() -> stateHandler.setWantToUpdateOdometry(false)),
       new InstantCommand(() -> swerve.resetOdometryForState(balance.getInitialState())),
+      new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.EJECT)),
+      new WaitUntilCommand(() -> stateHandler.getCurrentIntakePosition() == IntakePositions.EJECT),
+      new InstantCommand(() -> stateHandler.setAutoEjecting(true)),
+      new WaitCommand(0.5),
+      new InstantCommand(() -> stateHandler.setAutoEjecting(false)),
+      
       
       // new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
       // new WaitUntilCommand(() -> stateHandler.getResetManipulator()),

@@ -33,7 +33,8 @@ public class StateHandler {
             wantToEngage = false,
             intakeInFeed = false,
             isOdometryUpdating = false,
-            wantToUpdateOdometry = true;
+            wantToUpdateOdometry = true,
+            isAutoEjecting = false;
 
     private GamePieceMode mode = GamePieceMode.CUBE;
 
@@ -257,6 +258,15 @@ public class StateHandler {
     public boolean getWantToUpdateOdometry() {
         return wantToUpdateOdometry;
     }
+
+    public boolean getIsAutoEjecting() {
+        return isAutoEjecting;
+    }
+
+    public void setAutoEjecting(boolean e) {
+        isAutoEjecting = e;
+    }
+
     
     // When the robot is disbaled, it resets the states of the Arm and Intake, preventing them from continuing their command after the robot is disabled
     public void resetStates(){
@@ -285,6 +295,7 @@ public class StateHandler {
     
         timeSinceReadyToScore = 0;
         wantToUpdateOdometry = true;
+        isAutoEjecting = false;
         
     }
 
@@ -308,6 +319,7 @@ public class StateHandler {
         wantToScore = true;
         holdInCobra = false;
         wantToUpdateOdometry = true;
+        isAutoEjecting = false;
     }
 
     public void setArmGood(boolean isArmGood){

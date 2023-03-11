@@ -137,7 +137,8 @@ public class IntakeArmDefaultCommand extends CommandBase {
 
   public void setWheelSpeeds() {
     // if (stateHandler.getIsArmMoving()) {
-     if (eject.getAsBoolean()) {
+      boolean ejecting = eject.getAsBoolean() || stateHandler.getIsAutoEjecting();
+     if (ejecting) {
       stateHandler.setHasGamePiece(false);
       if(stateHandler.getCurrentVerticalLocation() == VerticalLocations.HIGH) {
         intake.setRawWheelSpeed(IntakeConstants.highEjectSpeed);
