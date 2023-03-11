@@ -38,7 +38,7 @@ public class AutoChooser {
 		chooser = new SendableChooser<>();
 		chooser.setDefaultOption("SINGLE SCORE", AutoMode.SINGLE_SCORE);
 		chooser.addOption("TWO GAME PIECE NO BALANCE", AutoMode.TWO_GP_NO_BALANCE);
-		chooser.addOption("TWO GAME PIECE BALANCE NO CP", AutoMode.TWO_GP_NOCP);
+		chooser.addOption("TWO GAME PIECE BALANCE", AutoMode.TWO_GP_NOCP);
 		chooser.addOption("TWO HALF GAME PIECE NO BALANCE", AutoMode.TWO_HALF_GP_NOCP);
 		chooser.addOption("CENTER BALANCE", AutoMode.CENTER_BALANCE);
 		chooser.addOption("SCORE BACK OUT NO CP", AutoMode.SCORE_BACK_OUT_NOCP);

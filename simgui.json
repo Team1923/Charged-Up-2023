@@ -14,7 +14,8 @@
       "/Shuffleboard/Driver Dashboard/Auto Mode/SendableChooser[0]": "String Chooser",
       "/Shuffleboard/Test Tab/Test Layout/InstantCommand": "Command",
       "/SmartDashboard/Auto Choices": "String Chooser",
-      "/SmartDashboard/Field": "Field2d"
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/RESET STATE": "Command"
     }
   },
   "NetworkTables": {
