@@ -23,7 +23,7 @@ public class StateVariables {
         CONE_HIGH(new ArmAngles(1.043, 0.153), new ArmAngles(2.160 - Math.toRadians(5), -3.304 - Math.toRadians(2))),
         CUBE_MID(new ArmAngles(1.430, -0.327), new ArmAngles(1.722, -2.765)),
         CUBE_HIGH(new ArmAngles(1.005, 0.172), new ArmAngles(2.160 - Math.toRadians(5), -3.304 - Math.toRadians(2))),
-        FEED(new ArmAngles(1.398 + Math.toRadians(5), -2.666 + Math.toRadians(1.5)), new ArmAngles(1.782 - Math.toRadians(5), -0.302 - Math.toRadians(1.5))); //THIS IS INVERTED FOR A REASON
+        FEED(new ArmAngles(1.398 + Math.toRadians(1), -2.666 - Math.toRadians(7.5)), new ArmAngles(1.782 - Math.toRadians(2.75), -0.302 - Math.toRadians(5))); //THIS IS INVERTED FOR A REASON
         
 
         private ArmAngles armAngles;

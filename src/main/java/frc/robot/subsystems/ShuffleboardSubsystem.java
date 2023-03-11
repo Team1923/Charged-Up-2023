@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.ArmPositions;
+import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.HorizontalLocations;
 import frc.robot.util.StateVariables.IntakePositions;
@@ -91,6 +92,12 @@ public class ShuffleboardSubsystem extends SubsystemBase {
       .add("CURRENT ARM", ArmPositions.STOW.toString())
       .withSize(1, 1)
       .withPosition(3, 2)
+      .getEntry();
+
+  private GenericEntry currentRobotDirection = driverDashboard
+      .add("R DIRECTION", CurrentRobotDirection.LEFT.toString())
+      .withSize(1, 1)
+      .withPosition(4, 2)
       .getEntry();
 
   private GenericEntry desiredIntakePosition = driverDashboard
@@ -188,6 +195,8 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 
     desiredIntakePosition.setString(stateHandler.getDesiredIntakePosition().toString());
     currentIntakePosition.setString(stateHandler.getCurrentIntakePosition().toString());
+
+    currentRobotDirection.setString(stateHandler.getRobotDirection().toString());
 
   }
 }

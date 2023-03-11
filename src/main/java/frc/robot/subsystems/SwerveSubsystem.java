@@ -258,5 +258,7 @@ public class SwerveSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber("YAW IEEE", getYawIEEE());
         // SmartDashboard.putNumber("left limelight botpose",
         // BetterLimelightInterface.getInstance().getTargetArea(getCorrectLimelight()));
+
+        SmartDashboard.putNumber("ANGULAR VEL", getAngularVelocity());
     }
 }

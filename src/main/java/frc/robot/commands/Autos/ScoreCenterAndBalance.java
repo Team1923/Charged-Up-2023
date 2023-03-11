@@ -4,6 +4,8 @@
 
 package frc.robot.commands.Autos;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -41,7 +43,7 @@ public class ScoreCenterAndBalance extends SequentialCommandGroup {
       balance,
       new ParallelRaceGroup(
             // GYRO VELOCITY MEASUREMENTS
-            new WaitUntilCommand(() -> swerve.getAngularVelocity() < -15),
+            new WaitUntilCommand(() -> DriverStation.getAlliance() == Alliance.Red ? swerve.getAngularVelocity() > 20 : swerve.getAngularVelocity() < -20),
             commit
       ),
       new SwerveXWheels(swerve)

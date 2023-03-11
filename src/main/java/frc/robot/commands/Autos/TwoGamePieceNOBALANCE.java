@@ -5,6 +5,8 @@
 package frc.robot.commands.Autos;
 
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -25,16 +27,15 @@ import frc.robot.util.StateVariables.VerticalLocations;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TwoConeBalanceNonCableProtector extends SequentialCommandGroup {
+public class TwoGamePieceNOBALANCE extends SequentialCommandGroup {
   /** Creates a new TwoConeLeft. */
   private StateHandler stateHandler = StateHandler.getInstance();
 
-  public TwoConeBalanceNonCableProtector(SwerveSubsystem swerve, IntakeSubsystem intake) {
+  public TwoGamePieceNOBALANCE(SwerveSubsystem swerve, IntakeSubsystem intake) {
 
     final AutoFromPathPlanner acquireCone = new AutoFromPathPlanner(swerve, "AcquireConeNOCP", 2.5, 2, false, true,
         true);
     final AutoFromPathPlanner scoreCone = new AutoFromPathPlanner(swerve, "ScoreConeNOCP", 2.5, 2, false, true, true);
-    final AutoFromPathPlanner balance = new AutoFromPathPlanner(swerve, "TwoConeBalance", 2.5, 2, false, true, true);
 
     addCommands(
         new InstantCommand(() -> swerve.resetOdometry(acquireCone.getInitialPose())),
@@ -71,13 +72,7 @@ public class TwoConeBalanceNonCableProtector extends SequentialCommandGroup {
 
         new InstantCommand(() -> stateHandler.setResetManipulator(true)),
         new WaitCommand(0.1),
-        new InstantCommand(() -> stateHandler.setResetManipulator(false)),
-        new ParallelRaceGroup(
-            // GYRO VELOCITY MEASUREMENTS
-            new WaitUntilCommand(() -> swerve.getAngularVelocity() < -15),
-            balance
-        ),
-        new SwerveXWheels(swerve)
+        new InstantCommand(() -> stateHandler.setResetManipulator(false))
     );
   }
 }

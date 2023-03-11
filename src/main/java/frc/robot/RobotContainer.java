@@ -133,7 +133,7 @@ public class RobotContainer {
 
         operatorCrossButton.onTrue(new AcquireFromHPCommand());
 
-        xButton.onTrue(new EjectPosition());
+        leftBumper.onTrue(new EjectPosition());
         
 
         bButton.toggleOnTrue(new SwerveXWheels(s_Swerve));
@@ -148,7 +148,7 @@ public class RobotContainer {
                         () -> -driver.getRawAxis(strafeAxis),
                         () -> -driver.getRawAxis(rotationAxis),
                         () -> driver.getRawAxis(2) > 0.2,
-                        () -> leftBumper.getAsBoolean()));
+                        () -> xButton.getAsBoolean()));
 
         intakeSubsystem.setDefaultCommand(new IntakeArmDefaultCommand(intakeSubsystem, () -> driver.getRawAxis(3), () -> centerLeftButton.getAsBoolean()));
        
