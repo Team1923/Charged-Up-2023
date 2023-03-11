@@ -32,7 +32,8 @@ public class StateHandler {
             autoRunIntake = false,
             wantToEngage = false,
             intakeInFeed = false,
-            isOdometryUpdating = false;
+            isOdometryUpdating = false,
+            wantToUpdateOdometry = true;
 
     private GamePieceMode mode = GamePieceMode.CUBE;
 
@@ -248,6 +249,14 @@ public class StateHandler {
     public void setIntakeInFeed(boolean f) {
         intakeInFeed = f;
     }
+
+    public void setWantToUpdateOdometry(boolean o) {
+        wantToUpdateOdometry = o;
+    }
+
+    public boolean getWantToUpdateOdometry() {
+        return wantToUpdateOdometry;
+    }
     
     // When the robot is disbaled, it resets the states of the Arm and Intake, preventing them from continuing their command after the robot is disabled
     public void resetStates(){
@@ -275,6 +284,7 @@ public class StateHandler {
         timeSinceLastGripChange = System.currentTimeMillis();
     
         timeSinceReadyToScore = 0;
+        wantToUpdateOdometry = true;
         
     }
 
@@ -282,8 +292,8 @@ public class StateHandler {
         desiredArmPosition = ArmPositions.STOW;
         currentArmPosition = ArmPositions.STOW;
         // CHANGED FROM FINAL HANDOFF. IF BAD THEN UNDO ADDITIONS TO MANIPULATOR DEFAULT COMMANDS.
-        desiredIntakePosition = IntakePositions.STOW;
-        currentIntakePosition = IntakePositions.STOW;
+        desiredIntakePosition = IntakePositions.FINAL_HANDOFF;
+        currentIntakePosition = IntakePositions.FINAL_HANDOFF;
         hasGamePiece = true;
         timeSinceLastGripChange = System.currentTimeMillis();
         timeSinceReadyToScore = 0;
@@ -297,6 +307,7 @@ public class StateHandler {
         isArmMoving = true;
         wantToScore = true;
         holdInCobra = false;
+        wantToUpdateOdometry = true;
     }
 
     public void setArmGood(boolean isArmGood){

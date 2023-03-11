@@ -33,9 +33,9 @@ public class TwoGamePieceNOBALANCE extends SequentialCommandGroup {
 
   public TwoGamePieceNOBALANCE(SwerveSubsystem swerve, IntakeSubsystem intake) {
 
-    final AutoFromPathPlanner acquireCone = new AutoFromPathPlanner(swerve, "AcquireConeNOCP", 2.5, 2, false, true,
+    final AutoFromPathPlanner acquireCone = new AutoFromPathPlanner(swerve, "AcquireConeNOCP", 3.5, 3, false, true,
         true);
-    final AutoFromPathPlanner scoreCone = new AutoFromPathPlanner(swerve, "ScoreConeNOCP", 2.5, 2, false, true, true);
+    final AutoFromPathPlanner scoreCone = new AutoFromPathPlanner(swerve, "ScoreConeNOCP", 3.5, 3, false, true, true);
 
     addCommands(
         new InstantCommand(() -> swerve.resetOdometry(acquireCone.getInitialPose())),

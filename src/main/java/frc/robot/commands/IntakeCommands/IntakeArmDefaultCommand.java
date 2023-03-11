@@ -8,12 +8,14 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.IntakePositions;
+import frc.robot.util.StateVariables.VerticalLocations;
 
 public class IntakeArmDefaultCommand extends CommandBase {
 
@@ -134,19 +136,32 @@ public class IntakeArmDefaultCommand extends CommandBase {
   }
 
   public void setWheelSpeeds() {
-    if (stateHandler.getIsArmMoving()) {
-      intake.setRawWheelSpeed(IntakeConstants.handoffSpeed);
-    } else if (eject.getAsBoolean()) {
+    // if (stateHandler.getIsArmMoving()) {
+     if (eject.getAsBoolean()) {
       stateHandler.setHasGamePiece(false);
-      intake.setRawWheelSpeed(IntakeConstants.ejectSpeed);
+      if(stateHandler.getCurrentVerticalLocation() == VerticalLocations.HIGH) {
+        intake.setRawWheelSpeed(IntakeConstants.highEjectSpeed);
+        SmartDashboard.putNumber("INTAKE THING", 1);
+      }
+      else if (stateHandler.getCurrentVerticalLocation() == VerticalLocations.MID) {
+        intake.setRawWheelSpeed(IntakeConstants.midEjectSpeed);
+        SmartDashboard.putNumber("INTAKE THING", 2);
+      } else {
+        intake.setRawWheelSpeed(IntakeConstants.lowEjectSpeed);
+        SmartDashboard.putNumber("INTAKE THING", 3);
+      }
     } else if (intake.getGamePieceSensor()) {
       intake.setRawWheelSpeed(0.1);
+      SmartDashboard.putNumber("INTAKE THING", 4);
     } else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE && (driverRightJoystick.getAsDouble() > 0.2 || stateHandler.getAutoRunIntake())) {
       intake.setRawWheelSpeed(IntakeConstants.coneIntakeSpeed);
+      SmartDashboard.putNumber("INTAKE THING", 5);
     } else if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE && (driverRightJoystick.getAsDouble() > 0.2 || stateHandler.getAutoRunIntake())) {
       intake.setRawWheelSpeed(IntakeConstants.cubeIntakeSpeed);
+      SmartDashboard.putNumber("INTAKE THING", 6);
     } else {
       intake.setRawWheelSpeed(IntakeConstants.gripSpeed);
+      SmartDashboard.putNumber("INTAKE THING", 7);
     }
 
   }

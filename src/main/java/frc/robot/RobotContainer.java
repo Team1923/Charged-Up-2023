@@ -131,10 +131,11 @@ public class RobotContainer {
 
         operatorRightDPad.onTrue(new ToggleArmPositionCommand());
 
-        operatorCrossButton.onTrue(new AcquireFromHPCommand());
+        // operatorCrossButton.onTrue(new AcquireFromHPCommand());
 
-        leftBumper.onTrue(new EjectPosition());
-        
+        // leftBumper.onTrue(new EjectPosition());
+        operatorCrossButton.onTrue(new EjectPosition());
+
 
         bButton.toggleOnTrue(new SwerveXWheels(s_Swerve));
 

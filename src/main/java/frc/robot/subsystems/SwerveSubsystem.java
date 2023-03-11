@@ -208,9 +208,12 @@ public class SwerveSubsystem extends SubsystemBase {
                 stateHandler.setOdometryUpdating(true);
                 Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() + robotLimelightPose.getX(),
                         aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
-                swerveOdometry.addVisionMeasurement(newRobotPose,
-                        Timer.getFPGATimestamp() - (limelightInterface.getTL(getCorrectLimelight()) / 1000)
-                                - (limelightInterface.getCL(getCorrectLimelight()) / 1000));
+                if(!DriverStation.isAutonomousEnabled() || (DriverStation.isAutonomousEnabled() && stateHandler.getWantToUpdateOdometry())) {
+                    swerveOdometry.addVisionMeasurement(newRobotPose,
+                    Timer.getFPGATimestamp() - (limelightInterface.getTL(getCorrectLimelight()) / 1000)
+                            - (limelightInterface.getCL(getCorrectLimelight()) / 1000));
+                }
+
             } 
 
         } else {

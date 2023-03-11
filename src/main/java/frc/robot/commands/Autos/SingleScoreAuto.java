@@ -23,9 +23,9 @@ public class SingleScoreAuto extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
-      new WaitUntilCommand(() -> stateHandler.getResetManipulator()),
-      new InstantCommand(() -> stateHandler.setResetManipulator(false))
+      // new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
+      // new WaitUntilCommand(() -> stateHandler.getResetManipulator()),
+      // new InstantCommand(() -> stateHandler.setResetManipulator(false))
     );
   }
 }

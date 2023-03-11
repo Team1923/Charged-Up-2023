@@ -35,17 +35,19 @@ public class ScoreCenterAndBalance extends SequentialCommandGroup {
     final AutoFromPathPlanner commit = new AutoFromPathPlanner(swerve, "CenterConfirmBalance", 2.5, 2, false, true, true);
 
     addCommands(
+      new InstantCommand(() -> stateHandler.setWantToUpdateOdometry(false)),
       new InstantCommand(() -> swerve.resetOdometryForState(balance.getInitialState())),
       
-      new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
-      new WaitUntilCommand(() -> stateHandler.getResetManipulator()),
-      new InstantCommand(() -> stateHandler.setResetManipulator(false)),
+      // new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
+      // new WaitUntilCommand(() -> stateHandler.getResetManipulator()),
+      // new InstantCommand(() -> stateHandler.setResetManipulator(false)),
       balance,
       new ParallelRaceGroup(
             // GYRO VELOCITY MEASUREMENTS
             new WaitUntilCommand(() -> DriverStation.getAlliance() == Alliance.Red ? swerve.getAngularVelocity() > 20 : swerve.getAngularVelocity() < -20),
             commit
       ),
+      new InstantCommand(() -> stateHandler.setWantToUpdateOdometry(true)),
       new SwerveXWheels(swerve)
 
     );

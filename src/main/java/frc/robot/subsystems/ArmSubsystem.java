@@ -51,12 +51,13 @@ public class ArmSubsystem extends SubsystemBase {
     distalMotor.configMotionCruiseVelocity(ArmConstants.maxDistalVel);
     distalMotor.configMotionAcceleration(ArmConstants.maxDistalAccel);
 
-    proximalMotor.setNeutralMode(NeutralMode.Brake);
-    distalMotor.setNeutralMode(NeutralMode.Brake);
+    proximalMotor.setNeutralMode(NeutralMode.Coast);
+    distalMotor.setNeutralMode(NeutralMode.Coast);
 
-    // distalMotor.setSelectedSensorPosition(0);
-    resetDistalPosition();
-    resetProximalPosition();
+    // // distalMotor.setSelectedSensorPosition(0);
+    // resetDistalPosition();
+    // resetProximalPosition();'
+    dumbMotorZeros();
 
   }
 
@@ -75,6 +76,8 @@ public class ArmSubsystem extends SubsystemBase {
     // distalMotor.setSelectedSensorPosition(ArmPositions.STOW.getArmAngles().getDistalAngle());
 
   }
+
+
 
   // public void setproximalPosition(double setPoint){
   // proximalMotor.set(ControlMode.MotionMagic, setPoint,
@@ -228,6 +231,11 @@ public class ArmSubsystem extends SubsystemBase {
   public void setMotorOutputs(double proximalOutput, double distalOutput) {
     proximalMotor.set(ControlMode.PercentOutput, proximalOutput);
     distalMotor.set(ControlMode.PercentOutput, distalOutput);
+  }
+
+  public void dumbMotorZeros() {
+    proximalMotor.setSelectedSensorPosition(ArmConstants.proximalHardstop * ArmConstants.proximalTicksToRad);
+    distalMotor.setSelectedSensorPosition(ArmConstants.distalHardstop * ArmConstants.distalTicksToRad);
   }
 
   public void overrideMotorZeros() {
