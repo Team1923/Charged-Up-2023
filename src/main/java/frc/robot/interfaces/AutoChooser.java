@@ -56,7 +56,7 @@ public class AutoChooser {
 			case TWO_HALF_GP_NOCP:
 				return new TwoHalfGamePieceNOBALANCE(swerve, intake);
 			case CENTER_BALANCE:
-				return new ScoreCenterAndBalance(swerve);
+				return new ScoreCenterAndBalance(swerve, intake);
 			case SCORE_BACK_OUT_NOCP:
 				return new SingleScoreBackOutNonCableProtector(swerve);
 			case SCORE_BACK_OUT_OVERCP:

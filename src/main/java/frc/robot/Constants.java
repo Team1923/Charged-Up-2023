@@ -112,7 +112,7 @@ public final class Constants {
     public static final double coneIntakeSpeed = .6; //.75
     public static final double lowEjectSpeed = -0.2;
     public static final double midEjectSpeed = -0.35;
-    public static final double highEjectSpeed = -0.6;
+    public static final double highEjectSpeed = -0.55;
     public static final double cubeCurrentThreshold = 80;
     public static final double coneCurrentThreshold = 80;
 

@@ -41,10 +41,13 @@ public class ScoreCenterAndBalance extends SequentialCommandGroup {
       new InstantCommand(() -> swerve.resetOdometryForState(balance.getInitialState())),
       new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.EJECT)),
       new WaitUntilCommand(() -> stateHandler.getCurrentIntakePosition() == IntakePositions.EJECT),
+      new WaitCommand(0.75),
+      new InstantCommand(() -> stateHandler.setVerticalLocation(VerticalLocations.HIGH)),
       new InstantCommand(() -> stateHandler.setAutoEjecting(true)),
-      new WaitCommand(0.5),
+      new WaitCommand(2),
       new InstantCommand(() -> stateHandler.setAutoEjecting(false)),
-      
+      new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.STOW)),
+
       
       // new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
       // new WaitUntilCommand(() -> stateHandler.getResetManipulator()),

@@ -194,7 +194,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public double getAngularVelocity() {
-        return filter.calculate(gyroVelocities[0]);
+        return filter.calculate(gyroVelocities[1]);
     }
 
     public void updateOdometry() {
