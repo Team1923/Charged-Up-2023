@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.ArmCommands.ToggleEmergencyArmRecovery;
 import frc.robot.commands.EmergencyCommands.CheckArmAngles;
 import frc.robot.commands.EmergencyCommands.EStopArmCommand;
-import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;
 import frc.robot.commands.StateCommands.ResetStateCommand;
 import frc.robot.interfaces.AutoChooser;
 import frc.robot.interfaces.LimelightInterface;
@@ -96,7 +95,7 @@ public class Robot extends TimedRobot {
 
     intakeGood = Math
         .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
-            - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.1
+            - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.2
         && Math.abs(
             robotContainer.intakeSubsystem.getIntakeDistalPosition()
                 - stateHandler.getDesiredIntakePosition().getArmAngles().getDistalAngle()) < 0.3;
@@ -146,7 +145,7 @@ public class Robot extends TimedRobot {
     }
 
     if (!intakeGood) {
-      CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
+      //CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
     }
 
     // schedule the autonomous command (example)
@@ -177,7 +176,7 @@ public class Robot extends TimedRobot {
     }
 
     if (!intakeGood) {
-      CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
+      //CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
     }
 
     if (autonomousCommand != null) {

@@ -52,14 +52,14 @@ public class ScoreCenterAndBalance extends SequentialCommandGroup {
       // new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
       // new WaitUntilCommand(() -> stateHandler.getResetManipulator()),
       // new InstantCommand(() -> stateHandler.setResetManipulator(false)),
-      balance,
-      new ParallelRaceGroup(
-            // GYRO VELOCITY MEASUREMENTS
-            new WaitUntilCommand(() -> DriverStation.getAlliance() == Alliance.Red ? swerve.getAngularVelocity() > 20 : swerve.getAngularVelocity() < -20),
-            commit
-      ),
-      new InstantCommand(() -> stateHandler.setWantToUpdateOdometry(true)),
-      new SwerveXWheels(swerve)
+      // balance,
+      // new ParallelRaceGroup(
+      //       // GYRO VELOCITY MEASUREMENTS
+      //       new WaitUntilCommand(() -> DriverStation.getAlliance() == Alliance.Red ? swerve.getAngularVelocity() > 20 : swerve.getAngularVelocity() < -20),
+      //       commit
+      // ),
+      new InstantCommand(() -> stateHandler.setWantToUpdateOdometry(true))
+      // new SwerveXWheels(swerve)
 
     );
   }

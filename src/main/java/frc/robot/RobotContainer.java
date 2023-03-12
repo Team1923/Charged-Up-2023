@@ -129,7 +129,7 @@ public class RobotContainer {
         operatorLeftBumper.onTrue(new DeployIntakeCommand(intakeSubsystem));
         operatorRightBumper.onTrue(new StowIntakeCommand(intakeSubsystem, false));
 
-        operatorRightDPad.onTrue(new ToggleArmPositionCommand());
+        //operatorRightDPad.onTrue(new ToggleArmPositionCommand());
 
         // operatorCrossButton.onTrue(new AcquireFromHPCommand());
 

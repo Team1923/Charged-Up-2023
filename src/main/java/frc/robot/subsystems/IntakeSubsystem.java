@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FalconConstants;
 import frc.robot.Constants.IntakeConstants;
-import frc.robot.commands.EmergencyCommands.EStopIntakeCommand;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.GamePieceMode;
 
@@ -229,11 +228,11 @@ public class IntakeSubsystem extends SubsystemBase {
     // }
 
     //If the current for either the proximal or distal is above 50, we stop the motors and stop running the intake subsystem
-    if(getIntakeProximalCurrent() > 100 || getIntakeDistalCurrent() > 100){
-      intakeProximalMotor.stopMotor();
-      intakeDistalMotor.stopMotor();
-      CommandScheduler.getInstance().schedule(new EStopIntakeCommand(this));
-    }
+    // if(getIntakeProximalCurrent() > 100 || getIntakeDistalCurrent() > 100){
+    //   intakeProximalMotor.stopMotor();
+    //   intakeDistalMotor.stopMotor();
+    //   CommandScheduler.getInstance().schedule(new EStopIntakeCommand(this));
+    // }
 
     double proximalError = Math
         .abs(getIntakeProximalPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle());
@@ -248,8 +247,8 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
 
-    // SmartDashboard.putString("DESIRED INTAKE State", stateHandler.getDesiredIntakePosition().toString());
-    // SmartDashboard.putString("CURRENT INTAKE State", stateHandler.getCurrentIntakePosition().toString());
+    SmartDashboard.putString("DESIRED INTAKE State", stateHandler.getDesiredIntakePosition().toString());
+    SmartDashboard.putString("CURRENT INTAKE State", stateHandler.getCurrentIntakePosition().toString());
 
     // SmartDashboard.putNumber("INTAKE PROXIMAL POSITION RADS: ", getIntakeProximalPosition());
     // SmartDashboard.putNumber("INTAKE DISTAL POSITION RADS: ", getIntakeDistalPosition());

@@ -33,46 +33,82 @@ public class TwoGamePieceNOBALANCE extends SequentialCommandGroup {
 
   public TwoGamePieceNOBALANCE(SwerveSubsystem swerve, IntakeSubsystem intake) {
 
-    final AutoFromPathPlanner acquireCone = new AutoFromPathPlanner(swerve, "AcquireConeNOCP", 3.5, 3, false, true,
+    final AutoFromPathPlanner acquireCube = new AutoFromPathPlanner(swerve, "AcquireFirstCube", 3.5, 3, false, true,
         true);
-    final AutoFromPathPlanner scoreCone = new AutoFromPathPlanner(swerve, "ScoreConeNOCP", 3.5, 3, false, true, true);
+    final AutoFromPathPlanner scoreCube = new AutoFromPathPlanner(swerve, "ScoreCube", 3.5, 3, false, true, true);
 
     addCommands(
-        new InstantCommand(() -> swerve.resetOdometry(acquireCone.getInitialPose())),
-        new InstantCommand(() -> swerve.zeroGyro(acquireCone.getInitialPose().getRotation().getDegrees())),
 
-        // new InstantCommand(() -> stateHandler.setArmDesiredState(ArmPositions.COBRA_FORWARD)),
-    
+        new InstantCommand(() -> swerve.resetOdometryForState(acquireCube.getInitialState())),
+        new InstantCommand(() -> stateHandler.setWantToUpdateOdometry(false)),
+        new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.EJECT)),
+        new WaitUntilCommand(() -> stateHandler.getCurrentIntakePosition() == IntakePositions.EJECT),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> stateHandler.setVerticalLocation(VerticalLocations.HIGH)),
+        new InstantCommand(() -> stateHandler.setAutoEjecting(true)),
+        new WaitCommand(1),
+        new InstantCommand(() -> stateHandler.setAutoEjecting(false)),
         new ParallelCommandGroup(
+            acquireCube,
             new SequentialCommandGroup(
-                new AutoScoreCommand(HorizontalLocations.RIGHT, VerticalLocations.HIGH, GamePieceMode.CONE),
-                acquireCone
-            ),
+                new WaitCommand(1.5),
+                new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE)),
+                new InstantCommand(() -> stateHandler.setAutoRunIntake(true))
 
-            new SequentialCommandGroup(
-                new WaitUntilCommand(() -> stateHandler.getResetManipulator()),
-                new InstantCommand(() -> stateHandler.setResetManipulator(false)),
-                new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.REVERSE_HANDOFF_1)),
-                new InstantCommand(() -> stateHandler.setAutoRunIntake(true)) // set intake wheel speeds
             )
         ),
-       
-        new InstantCommand(() -> stateHandler.setAutoRunIntake(false)),
-
-
         new ParallelCommandGroup(
+            scoreCube,
             new SequentialCommandGroup(
-                new StowIntakeCommand(intake, true),
-                new WaitUntilCommand(() -> stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF),
-                new AutoArmToPosition(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE)
-            ),
-            scoreCone
+                new WaitCommand(0.25),
+                new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.EJECT)),
+                new InstantCommand(() -> stateHandler.setAutoRunIntake(false))
+
+            )
         ),
+        new WaitUntilCommand(() -> stateHandler.getCurrentIntakePosition() == IntakePositions.EJECT),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> stateHandler.setVerticalLocation(VerticalLocations.LOW)),
+        new InstantCommand(() -> stateHandler.setAutoEjecting(true)),
+        new WaitCommand(1),
+        new InstantCommand(() -> stateHandler.setAutoEjecting(false)),
+        new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.STOW))
 
 
-        new InstantCommand(() -> stateHandler.setResetManipulator(true)),
-        new WaitCommand(0.1),
-        new InstantCommand(() -> stateHandler.setResetManipulator(false))
+        // new InstantCommand(() -> swerve.zeroGyro(acquireCone.getInitialPose().getRotation().getDegrees())),
+
+        // // new InstantCommand(() -> stateHandler.setArmDesiredState(ArmPositions.COBRA_FORWARD)),
+    
+        // new ParallelCommandGroup(
+        //     new SequentialCommandGroup(
+        //         new AutoScoreCommand(HorizontalLocations.RIGHT, VerticalLocations.HIGH, GamePieceMode.CONE),
+        //         acquireCone
+        //     ),
+
+        //     new SequentialCommandGroup(
+        //         new WaitUntilCommand(() -> stateHandler.getResetManipulator()),
+        //         new InstantCommand(() -> stateHandler.setResetManipulator(false)),
+        //         new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.REVERSE_HANDOFF_1)),
+        //         new InstantCommand(() -> stateHandler.setAutoRunIntake(true)) // set intake wheel speeds
+        //     )
+        // ),
+       
+        // new InstantCommand(() -> stateHandler.setAutoRunIntake(false)),
+
+
+        // new ParallelCommandGroup(
+        //     new SequentialCommandGroup(
+        //         new StowIntakeCommand(intake, true),
+        //         new WaitUntilCommand(() -> stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF),
+        //         new AutoArmToPosition(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE)
+        //     ),
+        //     scoreCone
+        // ),
+
+
+        // new InstantCommand(() -> stateHandler.setResetManipulator(true)),
+        // new WaitCommand(0.1),
+        // new InstantCommand(() -> stateHandler.setResetManipulator(false))
     );
   }
 }
