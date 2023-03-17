@@ -205,20 +205,17 @@ public class SwerveSubsystem extends SubsystemBase {
             Pose2d robotLimelightPose = new Pose2d(-limelightInterface.getRobotPose3d(getCorrectLimelight()).getZ(),
                     limelightInterface.getRobotPose3d(getCorrectLimelight()).getX(), getYaw());
             if (Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) + Math.pow(robotLimelightPose.getY(), 2)) <= 1.5) {
-                stateHandler.setOdometryUpdating(true);
                 Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() + robotLimelightPose.getX(),
                         aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
-                if(!DriverStation.isAutonomousEnabled() || (DriverStation.isAutonomousEnabled() && stateHandler.getWantToUpdateOdometry())) {
-                    swerveOdometry.addVisionMeasurement(newRobotPose,
-                    Timer.getFPGATimestamp() - (limelightInterface.getTL(getCorrectLimelight()) / 1000)
-                            - (limelightInterface.getCL(getCorrectLimelight()) / 1000));
-                }
+                 
+                swerveOdometry.addVisionMeasurement(newRobotPose,
+                Timer.getFPGATimestamp() - (limelightInterface.getTL(getCorrectLimelight()) / 1000)
+                        - (limelightInterface.getCL(getCorrectLimelight()) / 1000));
+                
 
             } 
 
-        } else {
-            stateHandler.setOdometryUpdating(false);
-        }
+        } 
     }
 
     @Override
@@ -231,12 +228,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
         PathPlannerServer.sendPathFollowingData(new Pose2d(), getPose());
 
-        if (getCorrectLimelight() == SpecificLimelight.LEFT_LIMELIGHT) {
-            stateHandler.setRobotDirection(CurrentRobotDirection.LEFT);
-        } else {
-            stateHandler.setRobotDirection(CurrentRobotDirection.RIGHT);
-        }
-        SmartDashboard.putString("CURRENT ROBOT DIRECTION", stateHandler.getRobotDirection().toString());
+
 
         // SmartDashboard.putBoolean("LIMELIGHT HAS TARGET", limelightInterface.hasValidTargets(getCorrectLimelight()));
 

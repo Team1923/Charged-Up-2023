@@ -15,9 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.commands.ArmCommands.ToggleEmergencyArmRecovery;
 import frc.robot.commands.EmergencyCommands.CheckArmAngles;
-import frc.robot.commands.EmergencyCommands.EStopArmCommand;
 import frc.robot.commands.StateCommands.ResetStateCommand;
 import frc.robot.interfaces.AutoChooser;
 import frc.robot.interfaces.LimelightInterface;
@@ -83,41 +81,20 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
 
-    robotContainer.armSubsystem.disableMotionMagic();
     robotContainer.intakeSubsystem.disableMotionMagic();
 
-    armGood = Math
-        .abs(robotContainer.armSubsystem.getProximalPosition()
-            - stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle()) < 0.1
-        && Math.abs(
-            robotContainer.armSubsystem.getDistalPosition()
-                - stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle()) < 0.1;
 
     intakeGood = Math
-        .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
-            - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.2
-        && Math.abs(
-            robotContainer.intakeSubsystem.getIntakeDistalPosition()
-                - stateHandler.getDesiredIntakePosition().getArmAngles().getDistalAngle()) < 0.3;
+        .abs(robotContainer.intakeSubsystem.getIntakeArmPosition()
+            - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.2;
+        
 
-    stateHandler.setArmGood(armGood);
+  
     stateHandler.setIntakeGood(intakeGood);
 
-    SmartDashboard.putNumber("INTAKE PROXIMAL ERROR", Math
-        .abs(robotContainer.intakeSubsystem.getIntakeProximalPosition()
+    SmartDashboard.putNumber("INTAKE Arm ERROR", Math
+        .abs(robotContainer.intakeSubsystem.getIntakeArmPosition()
             - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle()));
-
-    SmartDashboard.putNumber("INTAKE DISTAL ERROR",
-        robotContainer.intakeSubsystem.getIntakeDistalPosition()
-            - stateHandler.getDesiredIntakePosition().getArmAngles().getDistalAngle());
-
-    SmartDashboard.putNumber("ARM PROXIMAL ERROR", Math
-        .abs(robotContainer.armSubsystem.getProximalPosition()
-            - stateHandler.getArmDesiredPosition().getArmAngles().getProximalAngle()));
-
-    SmartDashboard.putNumber("ARM DISTAL ERROR", Math.abs(
-        robotContainer.armSubsystem.getDistalPosition()
-            - stateHandler.getArmDesiredPosition().getArmAngles().getDistalAngle()));
 
     // robotContainer.armSubsystem.setCoast();
 
@@ -140,9 +117,7 @@ public class Robot extends TimedRobot {
         DriverStation.getAlliance() == Alliance.Red ? OriginPosition.kRedAllianceWallRightSide
             : OriginPosition.kBlueAllianceWallRightSide);
 
-    if (!armGood) {
-      CommandScheduler.getInstance().schedule(new EStopArmCommand(robotContainer.armSubsystem));
-    }
+ 
 
     if (!intakeGood) {
       //CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
@@ -171,9 +146,7 @@ public class Robot extends TimedRobot {
         DriverStation.getAlliance() == Alliance.Red ? OriginPosition.kRedAllianceWallRightSide
             : OriginPosition.kBlueAllianceWallRightSide);
 
-    if (!armGood) {
-      CommandScheduler.getInstance().schedule(new EStopArmCommand(robotContainer.armSubsystem));
-    }
+   
 
     if (!intakeGood) {
       //CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
@@ -182,7 +155,7 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
-    robotContainer.armSubsystem.setBrake();
+  
 
   }
 

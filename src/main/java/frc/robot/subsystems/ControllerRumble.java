@@ -22,7 +22,7 @@ public class ControllerRumble extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if(DriverStation.isTeleop() && stateHandler.getOdometryUpdating()) {
+    if(DriverStation.isTeleop() && stateHandler.getGamePiece()) {
       xboxController.setRumble(RumbleType.kBothRumble, 0.75);
     } else {
       xboxController.setRumble(RumbleType.kBothRumble, 0);
