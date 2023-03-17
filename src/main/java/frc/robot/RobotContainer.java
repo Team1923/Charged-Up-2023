@@ -9,22 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.ArmCommands.ArmDefaultCommand;
-import frc.robot.commands.ArmCommands.ToggleArmPositionCommand;
-import frc.robot.commands.ArmCommands.ToggleEmergencyArmRecovery;
-import frc.robot.commands.IntakeCommands.AcquireFromHPCommand;
-import frc.robot.commands.IntakeCommands.DeployIntakeCommand;
-import frc.robot.commands.IntakeCommands.EjectPosition;
-import frc.robot.commands.IntakeCommands.IntakeArmDefaultCommand;
-import frc.robot.commands.IntakeCommands.SqueezeIntakeCommand;
-import frc.robot.commands.IntakeCommands.StowIntakeCommand;
-import frc.robot.commands.Scoring.ManipulatorDefaultCommand;
-import frc.robot.commands.Scoring.ManualScore;
-import frc.robot.commands.Scoring.SequentialScoringCommand;
-import frc.robot.commands.Scoring.TrajectoryToGoal;
 import frc.robot.commands.StateCommands.SetArmLocation;
-import frc.robot.commands.StateCommands.SetGamePiece;
-import frc.robot.commands.StateCommands.SetRobotLocation;
 import frc.robot.commands.SwerveCommands.SwerveXWheels;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.interfaces.AutoChooser;
@@ -81,10 +66,7 @@ public class RobotContainer {
 
     /* Subsystems */
     public final SwerveSubsystem s_Swerve = new SwerveSubsystem();
-    public final ArmSubsystem armSubsystem = new ArmSubsystem();
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-    public final ManipulatorSubsystem gripper = new ManipulatorSubsystem();
-    public final ShuffleboardSubsystem shuffleboard = new ShuffleboardSubsystem();
     public final ControllerRumble controllerRumble = new ControllerRumble(xboxDriverController);
 
     final AutoFromPathPlanner test5MStrafeRight = new AutoFromPathPlanner(s_Swerve, "Test5mStrafeRight", 4.5, 3.5, false, false, true);
@@ -112,30 +94,19 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         yButton.toggleOnTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        aButton.toggleOnTrue(new TrajectoryToGoal(s_Swerve));
-        rightBumper.toggleOnTrue(new SequentialScoringCommand(s_Swerve));
 
         operatorUpDPad.onTrue(new SetArmLocation(VerticalLocations.HIGH));
         operatorDownDPad.onTrue(new SetArmLocation(VerticalLocations.LOW));
         operatorLeftDPad.onTrue(new SetArmLocation(VerticalLocations.MID));
 
-        centerRightButton.toggleOnTrue(new SetGamePiece());
 
-        operatorTriangleButton.onTrue(new SetRobotLocation(HorizontalLocations.CENTER));
-        operatorCircleButton.onTrue(new SetRobotLocation(HorizontalLocations.RIGHT));
-        operatorSquareButton.onTrue(new SetRobotLocation(HorizontalLocations.LEFT));
-
-        new Trigger(() -> operator.getRawAxis(3) > 0.2).toggleOnTrue(new ManualScore());
-
-        operatorLeftBumper.onTrue(new DeployIntakeCommand(intakeSubsystem));
-        operatorRightBumper.onTrue(new StowIntakeCommand(intakeSubsystem, false));
 
         //operatorRightDPad.onTrue(new ToggleArmPositionCommand());
 
         // operatorCrossButton.onTrue(new AcquireFromHPCommand());
 
         // leftBumper.onTrue(new EjectPosition());
-        operatorCrossButton.onTrue(new SqueezeIntakeCommand(intakeSubsystem));
+    
 
 
         bButton.toggleOnTrue(new SwerveXWheels(s_Swerve));
@@ -152,11 +123,7 @@ public class RobotContainer {
                         () -> driver.getRawAxis(2) > 0.2,
                         () -> xButton.getAsBoolean()));
 
-        intakeSubsystem.setDefaultCommand(new IntakeArmDefaultCommand(intakeSubsystem, () -> driver.getRawAxis(3), () -> centerLeftButton.getAsBoolean()));
        
-        armSubsystem.setDefaultCommand(new ArmDefaultCommand(armSubsystem));
-        //find the operator axis for right trigger
-        gripper.setDefaultCommand(new ManipulatorDefaultCommand(gripper, () -> operator.getRawAxis(2)));
 
         // SmartDashboard.putData("EMERGENCY ARM RECOVERY", new ToggleEmergencyArmRecovery(
         //     armSubsystem,

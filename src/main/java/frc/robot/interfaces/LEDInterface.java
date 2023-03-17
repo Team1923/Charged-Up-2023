@@ -26,36 +26,37 @@ public class LEDInterface {
 	}
 
 	public void updateLed() {
-		if (DriverStation.isDisabled()) {
-			if (!stateHandler.getIsArmGood() && !stateHandler.getIsIntakeGood()) {
-				bit1.set(false);
-				bit2.set(false);
-				bit3.set(false);
-			} else if (stateHandler.getIsArmGood() && !stateHandler.getIsIntakeGood()) {
-				bit1.set(true);
-				bit2.set(false);
-				bit3.set(false);
-			} else if (!stateHandler.getIsArmGood() && stateHandler.getIsIntakeGood()) {
-				bit1.set(false);
-				bit2.set(true);
-				bit3.set(false);
-			} else {
-				bit1.set(true);
-				bit2.set(true);
-				bit3.set(false);
-			}
-		} else {
-			if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE) {
-				bit1.set(false);
-				bit2.set(false);
-				bit3.set(true);
-			} else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE){
-				bit1.set(true);
-				bit2.set(false);
-				bit3.set(true);
-			}
-		}
+		//if (DriverStation.isDisabled()) {
+		// 	if ( !stateHandler.getIsIntakeGood()) {
+		// 		bit1.set(false);
+		// 		bit2.set(false);
+		// 		bit3.set(false);
+		// 	} else if (stateHandler.getIsArmGood() && !stateHandler.getIsIntakeGood()) {
+		// 		bit1.set(true);
+		// 		bit2.set(false);
+		// 		bit3.set(false);
+		// 	} else if (!stateHandler.getIsArmGood() && stateHandler.getIsIntakeGood()) {
+		// 		bit1.set(false);
+		// 		bit2.set(true);
+		// 		bit3.set(false);
+		// 	} else {
+		// 		bit1.set(true);
+		// 		bit2.set(true);
+		// 		bit3.set(false);
+		// 	}
+		// } else {
+		// 	if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE) {
+		// 		bit1.set(false);
+		// 		bit2.set(false);
+		// 		bit3.set(true);
+		// 	} else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE){
+		// 		bit1.set(true);
+		// 		bit2.set(false);
+		// 		bit3.set(true);
+		// 	}
+		// }
 
+		}
 	}
 
-}
+	

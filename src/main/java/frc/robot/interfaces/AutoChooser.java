@@ -5,13 +5,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.Autos.ScoreCenterAndBalance;
 import frc.robot.commands.Autos.SingleScoreAuto;
-import frc.robot.commands.Autos.SingleScoreBackOutNonCableProtector;
-import frc.robot.commands.Autos.SingleScoreBackOutWithCP;
-import frc.robot.commands.Autos.TwoGamePieceBalance;
-import frc.robot.commands.Autos.TwoGamePieceNOBALANCE;
-import frc.robot.commands.Autos.TwoHalfGamePieceNOBALANCE;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -51,18 +45,6 @@ public class AutoChooser {
 		switch(mode){
 			case SINGLE_SCORE:
 				return new SingleScoreAuto();
-			case TWO_GP_NOCP:
-				return new TwoGamePieceBalance(swerve, intake);
-			case TWO_HALF_GP_NOCP:
-				return new TwoHalfGamePieceNOBALANCE(swerve, intake);
-			case CENTER_BALANCE:
-				return new ScoreCenterAndBalance(swerve, intake);
-			case SCORE_BACK_OUT_NOCP:
-				return new SingleScoreBackOutNonCableProtector(swerve);
-			case SCORE_BACK_OUT_OVERCP:
-				return new SingleScoreBackOutWithCP(swerve);
-			case TWO_GP_NO_BALANCE:
-				return new TwoGamePieceNOBALANCE(swerve, intake);
 			default:
 				return new SingleScoreAuto();
 		}
