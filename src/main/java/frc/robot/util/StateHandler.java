@@ -1,10 +1,7 @@
 package frc.robot.util;
 
 import frc.robot.interfaces.LimelightInterface.SpecificLimelight;
-import frc.robot.util.StateVariables.ArmPositions;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
-import frc.robot.util.StateVariables.GamePieceMode;
-import frc.robot.util.StateVariables.HorizontalLocations;
 import frc.robot.util.StateVariables.IntakePositions;
 import frc.robot.util.StateVariables.VerticalLocations;
 
@@ -90,24 +87,16 @@ public class StateHandler {
     
     // When the robot is disbaled, it resets the states of the Arm and Intake, preventing them from continuing their command after the robot is disabled
     public void resetStates(){
-
-    
         desiredIntakePosition = IntakePositions.STOW;
         currentIntakePosition = IntakePositions.STOW;
-
-
-        
         currentRobotDirection = CurrentRobotDirection.RIGHT;
     }
 
     public void resetAutoState(){
-    
-        // CHANGED FROM FINAL HANDOFF. IF BAD THEN UNDO ADDITIONS TO MANIPULATOR DEFAULT COMMANDS.
-        desiredIntakePosition = IntakePositions.FINAL_HANDOFF;
-        currentIntakePosition = IntakePositions.FINAL_HANDOFF;
+        desiredIntakePosition = IntakePositions.STOW;
+        currentIntakePosition = IntakePositions.STOW;
     }
 
 
 
-    // Returns the current arm position from scoring location depending on where the current Vertical Location Is
 }

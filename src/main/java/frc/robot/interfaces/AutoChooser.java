@@ -11,15 +11,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 
 public class AutoChooser {
 	public enum AutoMode {
-		SINGLE_SCORE,
-		TWO_GP_NOCP,
-		TWO_GP_NO_BALANCE,
-		TWO_HALF_GP_NOCP,
-		CENTER_BALANCE,
-		LEFT_BALANCE,
-		RIGHT_BALANCE,
-		SCORE_BACK_OUT_NOCP,
-		SCORE_BACK_OUT_OVERCP
+		SINGLE_SCORE
 	}
 
 	private SendableChooser<AutoMode> chooser;
@@ -31,12 +23,6 @@ public class AutoChooser {
 	public AutoChooser(){
 		chooser = new SendableChooser<>();
 		chooser.setDefaultOption("SINGLE SCORE", AutoMode.SINGLE_SCORE);
-		chooser.addOption("TWO GAME PIECE NO BALANCE", AutoMode.TWO_GP_NO_BALANCE);
-		chooser.addOption("TWO GAME PIECE BALANCE", AutoMode.TWO_GP_NOCP);
-		chooser.addOption("TWO HALF GAME PIECE NO BALANCE", AutoMode.TWO_HALF_GP_NOCP);
-		chooser.addOption("CENTER BALANCE", AutoMode.CENTER_BALANCE);
-		chooser.addOption("SCORE BACK OUT NO CP", AutoMode.SCORE_BACK_OUT_NOCP);
-		chooser.addOption("SCORE BACK OUT OVER CP", AutoMode.SCORE_BACK_OUT_OVERCP);
 		auto.add(chooser);
 	}
 

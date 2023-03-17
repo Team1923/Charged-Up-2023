@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.commands.EmergencyCommands.CheckArmAngles;
 import frc.robot.commands.StateCommands.ResetStateCommand;
 import frc.robot.interfaces.AutoChooser;
 import frc.robot.interfaces.LimelightInterface;
@@ -52,8 +51,6 @@ public class Robot extends TimedRobot {
 
     CameraServer.startAutomaticCapture(0);
     PathPlannerServer.startServer(5811);
-    CheckArmAngles.getInstance().checkIfInRange();
-
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
 
@@ -86,7 +83,7 @@ public class Robot extends TimedRobot {
 
     intakeGood = Math
         .abs(robotContainer.intakeSubsystem.getIntakeArmPosition()
-            - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle()) < 0.2;
+            - stateHandler.getDesiredIntakePosition().getArmAngles().getAngle()) < 0.2;
         
 
   
@@ -94,7 +91,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("INTAKE Arm ERROR", Math
         .abs(robotContainer.intakeSubsystem.getIntakeArmPosition()
-            - stateHandler.getDesiredIntakePosition().getArmAngles().getProximalAngle()));
+            - stateHandler.getDesiredIntakePosition().getArmAngles().getAngle()));
 
     // robotContainer.armSubsystem.setCoast();
 

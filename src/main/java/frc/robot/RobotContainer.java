@@ -9,13 +9,15 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.StateCommands.SetArmLocation;
+import frc.robot.commands.IntakeCommands.SimpleIntakeStptCommand;
+import frc.robot.commands.StateCommands.SetShootingLocation;
 import frc.robot.commands.SwerveCommands.SwerveXWheels;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.interfaces.AutoChooser;
 import frc.robot.subsystems.*;
 import frc.robot.util.PathPlannerUtils.AutoFromPathPlanner;
 import frc.robot.util.StateVariables.HorizontalLocations;
+import frc.robot.util.StateVariables.IntakePositions;
 import frc.robot.util.StateVariables.VerticalLocations;
 
 /**
@@ -95,21 +97,16 @@ public class RobotContainer {
     private void configureButtonBindings() {
         yButton.toggleOnTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
-        operatorUpDPad.onTrue(new SetArmLocation(VerticalLocations.HIGH));
-        operatorDownDPad.onTrue(new SetArmLocation(VerticalLocations.LOW));
-        operatorLeftDPad.onTrue(new SetArmLocation(VerticalLocations.MID));
+        operatorUpDPad.onTrue(new SetShootingLocation(VerticalLocations.HIGH));
+        operatorDownDPad.onTrue(new SetShootingLocation(VerticalLocations.LOW));
+        operatorLeftDPad.onTrue(new SetShootingLocation(VerticalLocations.MID));
 
-
-
-        //operatorRightDPad.onTrue(new ToggleArmPositionCommand());
-
-        // operatorCrossButton.onTrue(new AcquireFromHPCommand());
-
-        // leftBumper.onTrue(new EjectPosition());
     
 
 
         bButton.toggleOnTrue(new SwerveXWheels(s_Swerve));
+
+        operatorCrossButton.toggleOnTrue(new SimpleIntakeStptCommand(intakeSubsystem, IntakePositions.INTAKE));
 
     }
 
@@ -125,11 +122,7 @@ public class RobotContainer {
 
        
 
-        // SmartDashboard.putData("EMERGENCY ARM RECOVERY", new ToggleEmergencyArmRecovery(
-        //     armSubsystem,
-        //     () -> Math.abs(operator.getRawAxis(1)) < 0.05 ? 0 : operator.getRawAxis(1),
-        //     () -> Math.abs(operator.getRawAxis(5)) < 0.05 ? 0 : operator.getRawAxis(5)
-        // ));
+        
 
     }
 

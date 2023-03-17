@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.VerticalLocations;
 
-public class SetArmLocation extends CommandBase {
+public class SetShootingLocation extends CommandBase {
   /** Creates a new SetArmLocation. */
   VerticalLocations desiredVerticalLocation;
   StateHandler stateHandler = StateHandler.getInstance();
 
-  public SetArmLocation(VerticalLocations desiredLocation) {
+  public SetShootingLocation(VerticalLocations desiredLocation) {
     this.desiredVerticalLocation = desiredLocation;
     // Use addRequirements() here to declare subsystem dependencies.
   }

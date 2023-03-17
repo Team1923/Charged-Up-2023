@@ -25,24 +25,6 @@ import frc.robot.util.SwerveModuleConstants;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final Mode currentMode = Mode.REAL;
-
-  public static enum Mode {
-    /** Running on a real robot. */
-    REAL,
-
-    /** Running a physics simulator. */
-    SIM,
-
-    /** Replaying from a log file. */
-    REPLAY
-  }
-
-  public final class LimeLightConstants {
-    public static final double CAMERA_HEIGHT_METERS = 0;
-    public static final double TARGET_HEIGHT_METERS = 0;
-    public static final double CAMERA_PITCH_RADIANS = 0;
-  }
 
   public final class FalconConstants {
     public static final double ticksPerRev = 2048;
@@ -51,60 +33,34 @@ public final class Constants {
   }
 
   public final class IntakeConstants {
-    public static final int intakeProximalID = 16;
-    public static final int intakeDistalID = 17;
+    public static final int intakeArmMasterID = 16;
+    public static final int intakeArmFollowerID = 17;
     public static final int leftIntakeWheelMotor = 18;
     public static final int rightIntakeWheelMotor = 19;
-    public static final int intakeProximalAbsoluteEncoderID = 3; //2
     public static final int intakeDistalAbsoluteEncoderID = 2; //3
 
-    public static final double intakeProximalCGDistance = 0.0762;
-    public static final double intakeDistalCGDistance = 0.2032;
 
-    public static final double intakeProximalLength = 0.1397;
-    public static final double intakeDistalLength = 0.2286;
+    public static final double intakeArmkP = 0.2;
+    public static final double intakeArmkI = 0;
+    public static final double intakeArmkD = 2;
 
-    public static final double intakeProximalMass = 0.453592;
-    public static final double intakeDistalMass = 4.5; // needs to be changed
+    public static final double maxIntakeArmVel = 30000;
+    public static final double maxIntakeArmAccel = 23000;
 
-    public static final double intakeProximalkP = 0.1;
-    public static final double intakeProximalkI = 0;
-    public static final double intakeProximalkD = 0;
-    public static final double intakeDistalkP = 0.2;
-    public static final double intakeDistalkI = 0;
-    public static final double intakeDistalkD = 2;
+    public static final double intakeArmGearRatio = 64;
+    public static final double intakeArmTicksToRad = (2 * Math.PI)
+        / (FalconConstants.ticksPerRev * intakeArmGearRatio);
+    public static final double intakeArmRadsToTicks = 1 / intakeArmTicksToRad;
 
-    public static final double maxIntakeProximalVel = 30000;
-    public static final double maxIntakeProximalAccel = 23000;
-    public static final double maxIntakeDistalVel = 30000;
-    public static final double maxIntakeDistalAccel = 23000;
+    public static final double intakeArmHardstop = 1.307;
+    public static final double intakeArmEncoderZero = 5.88;
 
-    public static final double intakeProximalGearRatio = 64;
-    public static final double intakeProximalTicksToRad = (2 * Math.PI)
-        / (FalconConstants.ticksPerRev * intakeProximalGearRatio);
-    public static final double intakeProximalRadsToTicks = 1 / intakeProximalTicksToRad;
+    public static final double intakeArmMaxGravityConstant = 0.15;
 
-    public static final double intakeDistalGearRatio = 64;
-    public static final double intakeDistalTicksToRad = (2 * Math.PI)
-        / (FalconConstants.ticksPerRev * intakeDistalGearRatio);
-    public static final double intakeDistalRadsToTicks = 1 / intakeDistalTicksToRad;
+    public static final double intakeArmAbsoluteEncoderToTicks = intakeArmGearRatio * 2048;
+    public static final double intakeDistalAbsoluteEncoderToRadians = intakeArmAbsoluteEncoderToTicks
+        * intakeArmTicksToRad;
 
-    public static final double intakeProximalHardstop = 2.971;
-    public static final double intakeDistalHardstop = 1.307;
-    public static final double proximalEncoderZero = 1.745;
-    public static final double distalEncoderZero = 5.88;
-
-    public static final double intakeMaxProximalGravityConstant = 0.2;
-    public static final double intakeMaxDistalGravityConstant = 0.15;
-
-    public static final double intakeProximalAbsoluteEncoderToTicks = intakeProximalGearRatio * 2048;
-    public static final double intakeDistalAbsoluteEncoderToTicks = intakeDistalGearRatio * 2048;
-    public static final double intakeProximalAbsoluteEncoderToRadians = intakeProximalAbsoluteEncoderToTicks
-        * intakeProximalTicksToRad;
-    public static final double intakeDistalAbsoluteEncoderToRadians = intakeDistalAbsoluteEncoderToTicks
-        * intakeDistalTicksToRad;
-
-    public static final double kIntakeProximalOffsetRads = 0;
     public static final double kIntakeDistalOffsetRads = 0;
 
     public static final double errorThreshold = 0.2;
@@ -113,101 +69,10 @@ public final class Constants {
     public static final double lowEjectSpeed = -0.2;
     public static final double midEjectSpeed = -0.35;
     public static final double highEjectSpeed = -1;//0.55
-    public static final double cubeCurrentThreshold = 80;
-    public static final double coneCurrentThreshold = 80;
 
-    public static final double gripSpeed = .15;
-    public static final double handoffSpeed = -.15;
-  }
-
-  public final class ArmConstants {
-    public static final int proximalMotorID = 15; // needs to be changed
-    public static final int distalMotorID = 14; // needs to be changed
-
-    public static final double proximalkP = 0.2;
-    public static final double proximalkI = 0;
-    public static final double proximalkD = 0;
-
-    public static final double distalkP = 0.3;
-    public static final double distalkI = 0;
-    public static final double distalkD = 0;
-
-    // CCW positive
-    public static final double kProximalOffsetRads = 0;
-    public static final double kDistalOffsetRads = 0;
-
-    public static final double proximalGearRatio = 180;
-    public static final double proximalTicksToRad = (2 * Math.PI) / (FalconConstants.ticksPerRev * proximalGearRatio);
-    public static final double proximalRadsToTicks = 1 / proximalTicksToRad;
-
-    public static final double distalGearRatio = 180;
-    public static final double distalTicksToRad = (2 * Math.PI) / (FalconConstants.ticksPerRev * distalGearRatio);
-    public static final double distalRadsToTicks = 1 / proximalTicksToRad;
-
-    public static final double proximalMass = 1.81437;
-    public static final double distalMass = 0.907185*1.15;
-
-    public static final double proximalCGDistance = 0.7112;
-    public static final double distalCGDistance = 0.432;
-
-    public static final double lengthOfProximal = 1.0922;
-    public static final double lengthOfDistal = 0.83185;
-
-    public static final double maxProximalVel = 10000;
-    public static final double maxProximalAccel = 10000;
-
-    public static final double maxDistalVel = 20000;
-    public static final double maxDistalAccel = 20000;
-
-    public static final double maxDistalGravityConstant = 0;
-    // THE NUMERICAL GRAVITY CONSTANT IS DIVIDED BY COS(21 degrees)
-    public static final double maxProximalGravityConstant = 0.1968;
-
-    public static final double proximalCobra = 110 * Math.PI / 180;
-    public static final double distalCobra = 0;
-
-    public static final int proximalEncoderID = 0;
-    public static final int distalEncoderID = 1;
-
-    public static final double proximalAbsoluteEncoderToTicks = ArmConstants.proximalGearRatio * 2048;
-    public static final double distalAbsoluteEncoderToTicks = ArmConstants.distalGearRatio * 2048;
-    public static final double proximalAbsoluteEncoderToRadians = ArmConstants.proximalAbsoluteEncoderToTicks
-        * ArmConstants.proximalTicksToRad;
-    public static final double distalAbsoluteEncoderToRadians = ArmConstants.distalAbsoluteEncoderToTicks
-        * ArmConstants.distalTicksToRad;
-
-    public static final double proximalHardstop = Math.PI/2;
-    public static final double distalHardstop = -Math.PI/2;
-    public static final double proximalEncoderZero = 2.56;
-    public static final double distalEncoderZero = -5.455;//-1.587;//-3.280;
-
-    public static final double errorThreshold = 0.05;
-
-    public static final double minProximalPosition = Math.PI/4;
-    public static final double maxProximalPosition = 3*Math.PI/4;
-
-    public static final double maxDistalPosition = Math.PI/6;
-    public static final double minDistalPosition = -7*Math.PI/6;
 
   }
 
-  public final class GamePieceColorConstants {
-    // public static final double CONEREDTOGREEN = 0.8175;
-    // public static final double CONEBLUETOGREEN = 1.57;
-    // public static final double CONEREDTOBLUE = 0.523;
-
-    // public static final double CUBEREDTOGREEN = 1.085;
-    // public static final double CUBEBLUETOGREEN = 1.945;
-    // public static final double CUBEREDTOBLUE = 0.556;
-
-    public static final double UNKNOWN_THRESHOLD = 1.8; // may need to be adjusted based on lighting environment
-    public static final double Offset = 0.3;
-
-  }
-
-  public final class DigitalIDConstants {
-    public static final int DigitalID = 0;// Change later
-  }
 
   public static final double stickDeadband = 0.1;
 
