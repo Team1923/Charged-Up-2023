@@ -183,6 +183,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void stopWheels() {
     leftIntakeWheelMotor.stopMotor();
+    rightIntakeWheelMotor.stopMotor();
   }
 
   public double getCurrentDraw() {
@@ -250,8 +251,8 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putString("DESIRED INTAKE State", stateHandler.getDesiredIntakePosition().toString());
     SmartDashboard.putString("CURRENT INTAKE State", stateHandler.getCurrentIntakePosition().toString());
 
-    // SmartDashboard.putNumber("INTAKE PROXIMAL POSITION RADS: ", getIntakeProximalPosition());
-    // SmartDashboard.putNumber("INTAKE DISTAL POSITION RADS: ", getIntakeDistalPosition());
+    SmartDashboard.putNumber("INTAKE PROXIMAL POSITION RADS: ", getIntakeProximalPosition());
+    SmartDashboard.putNumber("INTAKE DISTAL POSITION RADS: ", getIntakeDistalPosition());
 
     SmartDashboard.putNumber("INTAKE ABSOLUTE Proximal Encoder Rads", getIntakeProximalAbsoluteEncoderRads());
     SmartDashboard.putNumber("INTAKE ABSOLUTE Distal Encoder Rads", getIntakeDistalAbsoluteEncoderRads());

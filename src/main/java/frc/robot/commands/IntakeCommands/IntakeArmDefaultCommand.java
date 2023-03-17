@@ -43,7 +43,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.setSolenoid(false);
+    intake.setSolenoid(true);
 
   }
 
@@ -65,7 +65,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
     switch (currentDesiredState) {
       case STOW:
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.STOW) {
-          intake.setSolenoid(false);
+          intake.setSolenoid(true);
         }
         break;
       case EJECT:
@@ -97,7 +97,7 @@ public class IntakeArmDefaultCommand extends CommandBase {
       case FINAL_HANDOFF:
         if (stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF
             && stateHandler.getTimeSinceReadyToScore() > .5) {
-          intake.setSolenoid(false);
+          intake.setSolenoid(true);
           stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
         }
         // if (stateHandler.getCurrentIntakePosition() == IntakePositions.FINAL_HANDOFF

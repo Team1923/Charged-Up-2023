@@ -91,8 +91,8 @@ public final class Constants {
 
     public static final double intakeProximalHardstop = 2.971;
     public static final double intakeDistalHardstop = 1.307;
-    public static final double proximalEncoderZero = 1.808;
-    public static final double distalEncoderZero = 5.866;
+    public static final double proximalEncoderZero = 1.745;
+    public static final double distalEncoderZero = 5.88;
 
     public static final double intakeMaxProximalGravityConstant = 0.2;
     public static final double intakeMaxDistalGravityConstant = 0.15;
@@ -112,7 +112,7 @@ public final class Constants {
     public static final double coneIntakeSpeed = .6; //.75
     public static final double lowEjectSpeed = -0.2;
     public static final double midEjectSpeed = -0.35;
-    public static final double highEjectSpeed = -0.55;
+    public static final double highEjectSpeed = -1;//0.55
     public static final double cubeCurrentThreshold = 80;
     public static final double coneCurrentThreshold = 80;
 

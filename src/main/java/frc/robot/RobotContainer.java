@@ -16,6 +16,7 @@ import frc.robot.commands.IntakeCommands.AcquireFromHPCommand;
 import frc.robot.commands.IntakeCommands.DeployIntakeCommand;
 import frc.robot.commands.IntakeCommands.EjectPosition;
 import frc.robot.commands.IntakeCommands.IntakeArmDefaultCommand;
+import frc.robot.commands.IntakeCommands.SqueezeIntakeCommand;
 import frc.robot.commands.IntakeCommands.StowIntakeCommand;
 import frc.robot.commands.Scoring.ManipulatorDefaultCommand;
 import frc.robot.commands.Scoring.ManualScore;
@@ -134,7 +135,7 @@ public class RobotContainer {
         // operatorCrossButton.onTrue(new AcquireFromHPCommand());
 
         // leftBumper.onTrue(new EjectPosition());
-        operatorCrossButton.onTrue(new EjectPosition());
+        operatorCrossButton.onTrue(new SqueezeIntakeCommand(intakeSubsystem));
 
 
         bButton.toggleOnTrue(new SwerveXWheels(s_Swerve));
