@@ -8,7 +8,7 @@ CRGB leds[NUM_STRIPS][NUM_LEDS_PER_STRIP];
 #define LED_PIN_2 11
 
 //Define digital input pins from RoboRio
-#define COM_PIN_1 2
+#define COM_PIN_1 2 // pin that controls arm 
 #define COM_PIN_2 3
 #define COM_PIN_3 4
 
@@ -92,19 +92,19 @@ void lightUp() {
   //000
   switch (currentState) {
     case 0:
-      redOscillating(0);
+      //redOscillating(0);
       redOscillating(1);
       break;
-    case 1:
-      setGreen(0);
-      redOscillating(1);
-      break;
-    case 2:
-      redOscillating(0);
-      setGreen(1);
-      break;
+    // case 1:
+    //   setGreen(0);
+    //   redOscillating(1);
+    //   break;
+    // case 2:
+    //   redOscillating(0);
+    //   setGreen(1);
+    //   break;
     case 3:
-      setGreen(0);
+      //setGreen(0);
       setGreen(1);
       break;
     case 4:
@@ -114,7 +114,7 @@ void lightUp() {
       setYellow();
       break;
     default:
-      redOscillating(0);
+      //redOscillating(0);
       redOscillating(1);
   }
 }

@@ -2,6 +2,7 @@ package frc.robot.util;
 
 import frc.robot.interfaces.LimelightInterface.SpecificLimelight;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
+import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.IntakePositions;
 import frc.robot.util.StateVariables.VerticalLocations;
 
@@ -19,6 +20,8 @@ public class StateHandler {
     private boolean hasGamePiece = false;
 
     private boolean isIntakeGood = false;
+
+    private GamePieceMode specificGamePeice = GamePieceMode.CUBE;
 
 
     //private boolean resetManipulator = false;
@@ -40,12 +43,20 @@ public class StateHandler {
         verticalLocations = v;
     }
 
-    public boolean getGamePiece(){
+    public boolean hasGamePiece(){
         return hasGamePiece;
     }
 
-    public void setGamePiece(boolean setGamePiece){
+    public void setHasGamePiece(boolean setGamePiece){
         this.hasGamePiece = setGamePiece;
+    }
+
+    public GamePieceMode getGamePieceMode(){
+        return specificGamePeice;
+    }
+
+    public void setGamePieceMode(GamePieceMode gamepiece){
+        this.specificGamePeice = gamepiece;
     }
 
     public IntakePositions getCurrentIntakePosition() {
