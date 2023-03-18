@@ -34,7 +34,6 @@ public class Robot extends TimedRobot {
 
   public static CTREConfigs ctreConfigs = new CTREConfigs();
 
-  private boolean armGood = false;
   private boolean intakeGood = false;
 
   private AutoChooser selector;
@@ -60,6 +59,8 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("RESET STATE", new ResetStateCommand());
 
+    ledInterface.updateLed();
+
   }
 
   /** This function is called periodically during all modes. */
@@ -72,7 +73,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    robotContainer.s_Swerve.resetModulesToAbsolute();
+  }
 
   /** This function is called periodically when disabled. */
   @Override
@@ -85,19 +88,13 @@ public class Robot extends TimedRobot {
         .abs(robotContainer.intakeSubsystem.getIntakeArmPosition()
             - stateHandler.getDesiredIntakePosition().getArmAngles().getAngle()) < 0.2;
         
-
-  
     stateHandler.setIntakeGood(intakeGood);
 
-    SmartDashboard.putNumber("INTAKE Arm ERROR", Math
+    SmartDashboard.putNumber("INTAKE ARM ERROR", Math
         .abs(robotContainer.intakeSubsystem.getIntakeArmPosition()
             - stateHandler.getDesiredIntakePosition().getArmAngles().getAngle()));
 
-    // robotContainer.armSubsystem.setCoast();
-
     SmartDashboard.putBoolean("INTAKE GOOD TO GO", intakeGood);
-
-    SmartDashboard.putBoolean("ARM GOOD TO GO", armGood);
 
 
   }
@@ -114,11 +111,6 @@ public class Robot extends TimedRobot {
         DriverStation.getAlliance() == Alliance.Red ? OriginPosition.kRedAllianceWallRightSide
             : OriginPosition.kBlueAllianceWallRightSide);
 
- 
-
-    if (!intakeGood) {
-      //CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
-    }
 
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
@@ -142,12 +134,6 @@ public class Robot extends TimedRobot {
     LimelightInterface.getInstance().aprilTagFieldLayout.setOrigin(
         DriverStation.getAlliance() == Alliance.Red ? OriginPosition.kRedAllianceWallRightSide
             : OriginPosition.kBlueAllianceWallRightSide);
-
-   
-
-    if (!intakeGood) {
-      //CommandScheduler.getInstance().schedule(new EStopIntakeCommand(robotContainer.intakeSubsystem));
-    }
 
     if (autonomousCommand != null) {
       autonomousCommand.cancel();

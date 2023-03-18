@@ -20,10 +20,10 @@ public class TeleopSwerve extends CommandBase {
     private DoubleSupplier strafeSup;
     private DoubleSupplier rotationSup;
     private BooleanSupplier robotCentricSup;
-    private BooleanSupplier leftTrigger;
+    private BooleanSupplier fieldSlowMode;
 
     public TeleopSwerve(SwerveSubsystem s_Swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup,
-            DoubleSupplier rotationSup, BooleanSupplier robotCentricSup, BooleanSupplier leftTrigger) {
+            DoubleSupplier rotationSup, BooleanSupplier robotCentricSup, BooleanSupplier fieldSlowMode) {
         this.s_Swerve = s_Swerve;
         addRequirements(s_Swerve);
 
@@ -31,7 +31,7 @@ public class TeleopSwerve extends CommandBase {
         this.strafeSup = strafeSup;
         this.rotationSup = rotationSup;
         this.robotCentricSup = robotCentricSup;
-        this.leftTrigger = leftTrigger;
+        this.fieldSlowMode = fieldSlowMode;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class TeleopSwerve extends CommandBase {
             strafeVal *= 0.6;
             rotationVal *= 0.3;
         }
-        if (leftTrigger.getAsBoolean()) {
+        if (fieldSlowMode.getAsBoolean()) {
             translationVal *= 0.6;
             strafeVal *= 0.6;
             rotationVal *= 0.3;

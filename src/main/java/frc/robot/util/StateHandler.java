@@ -10,8 +10,6 @@ public class StateHandler {
     private static StateHandler stateHandler;
     private VerticalLocations verticalLocations = VerticalLocations.LOW;
     
-
-
     private IntakePositions desiredIntakePosition = IntakePositions.STOW;
     private IntakePositions currentIntakePosition = IntakePositions.STOW;
 
@@ -21,10 +19,8 @@ public class StateHandler {
 
     private boolean isIntakeGood = false;
 
-    private GamePieceMode specificGamePeice = GamePieceMode.CUBE;
+    private GamePieceMode currentGamePiece = GamePieceMode.CUBE;
 
-
-    //private boolean resetManipulator = false;
 
     public static synchronized StateHandler getInstance() {
         if (stateHandler == null) {
@@ -52,11 +48,11 @@ public class StateHandler {
     }
 
     public GamePieceMode getGamePieceMode(){
-        return specificGamePeice;
+        return currentGamePiece;
     }
 
     public void setGamePieceMode(GamePieceMode gamepiece){
-        this.specificGamePeice = gamepiece;
+        currentGamePiece = gamepiece;
     }
 
     public IntakePositions getCurrentIntakePosition() {
@@ -83,8 +79,6 @@ public class StateHandler {
         this.isIntakeGood = setIntake;
     }
 
-
-
     public SpecificLimelight getSpecificLimelight() {
         if (currentRobotDirection == CurrentRobotDirection.LEFT) {
             return SpecificLimelight.LEFT_LIMELIGHT;
@@ -94,9 +88,6 @@ public class StateHandler {
     }
 
 
-
-    
-    // When the robot is disbaled, it resets the states of the Arm and Intake, preventing them from continuing their command after the robot is disabled
     public void resetStates(){
         desiredIntakePosition = IntakePositions.STOW;
         currentIntakePosition = IntakePositions.STOW;

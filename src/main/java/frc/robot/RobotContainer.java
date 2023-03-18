@@ -70,6 +70,7 @@ public class RobotContainer {
     public final SwerveSubsystem s_Swerve = new SwerveSubsystem();
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     public final ControllerRumble controllerRumble = new ControllerRumble(xboxDriverController);
+    public final ShuffleboardSubsystem shuffleboardSubsystem = new ShuffleboardSubsystem();
 
     final AutoFromPathPlanner test5MStrafeRight = new AutoFromPathPlanner(s_Swerve, "Test5mStrafeRight", 4.5, 3.5, false, false, true);
     final AutoFromPathPlanner test5mForward = new AutoFromPathPlanner(s_Swerve, "Test5mForward", 4.5, 3.5, false, false, true);
@@ -95,16 +96,16 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
+        //DRIVER CONTROLLER BINDINGS
         yButton.toggleOnTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+        aButton.toggleOnTrue(new SwerveXWheels(s_Swerve));
+        bButton.onTrue(new InstantCommand(() -> s_Swerve.resetModulesToAbsolute()));
 
+
+        //OPERATOR CONTROLLER BINDINGS
         operatorUpDPad.onTrue(new SetShootingLocation(VerticalLocations.HIGH));
         operatorDownDPad.onTrue(new SetShootingLocation(VerticalLocations.LOW));
         operatorLeftDPad.onTrue(new SetShootingLocation(VerticalLocations.MID));
-
-    
-
-
-        bButton.toggleOnTrue(new SwerveXWheels(s_Swerve));
 
         operatorCrossButton.toggleOnTrue(new SimpleIntakeStptCommand(intakeSubsystem, IntakePositions.INTAKE));
 
@@ -119,10 +120,6 @@ public class RobotContainer {
                         () -> -driver.getRawAxis(rotationAxis),
                         () -> driver.getRawAxis(2) > 0.2,
                         () -> xButton.getAsBoolean()));
-
-       
-
-        
 
     }
 

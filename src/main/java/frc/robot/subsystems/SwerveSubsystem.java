@@ -33,14 +33,12 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SwerveSubsystem extends SubsystemBase {
     public SwerveDrivePoseEstimator swerveOdometry;
-    // public SwerveDrivePoseEstimator wheelOdometry;
-    // public SwerveDrivePoseEstimator visionOdometry;
+
     public SwerveModule[] mSwerveMods;
 
     public WPI_Pigeon2 gyro = new WPI_Pigeon2(Swerve.pigeonID, "rio");
@@ -229,14 +227,6 @@ public class SwerveSubsystem extends SubsystemBase {
         PathPlannerServer.sendPathFollowingData(new Pose2d(), getPose());
 
 
-
-        // SmartDashboard.putBoolean("LIMELIGHT HAS TARGET", limelightInterface.hasValidTargets(getCorrectLimelight()));
-
-        // SmartDashboard.putNumber("Angular Velocity", getAngularVelocity());
-
-        // PathPlannerServer.sendPathFollowingData(new Pose2d(),
-        // swerveOdometry.getEstimatedPosition());
-
         // for(SwerveModule mod : mSwerveMods){
         // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",
         // mod.getCanCoder().getDegrees());
@@ -246,13 +236,6 @@ public class SwerveSubsystem extends SubsystemBase {
         // mod.getState().speedMetersPerSecond);
         // }
 
-        // field2D.setRobotPose(getPose());
-
-        // SmartDashboard.putString("CORRECT LIMELIGHT",
-        // getCorrectLimelight().toString());
-        // SmartDashboard.putNumber("YAW IEEE", getYawIEEE());
-        // SmartDashboard.putNumber("left limelight botpose",
-        // BetterLimelightInterface.getInstance().getTargetArea(getCorrectLimelight()));
 
         SmartDashboard.putNumber("ANGULAR VEL", getAngularVelocity());
     }
