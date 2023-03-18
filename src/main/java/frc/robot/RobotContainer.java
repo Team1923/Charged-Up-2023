@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.Autos.TestMarkers;
 import frc.robot.commands.IntakeCommands.SimpleIntakeStptCommand;
 import frc.robot.commands.StateCommands.SetShootingLocation;
 import frc.robot.commands.SwerveCommands.SwerveXWheels;
@@ -72,9 +73,6 @@ public class RobotContainer {
     public final ControllerRumble controllerRumble = new ControllerRumble(xboxDriverController);
     public final ShuffleboardSubsystem shuffleboardSubsystem = new ShuffleboardSubsystem();
 
-    final AutoFromPathPlanner test5MStrafeRight = new AutoFromPathPlanner(s_Swerve, "Test5mStrafeRight", 4.5, 3.5, false, false, true);
-    final AutoFromPathPlanner test5mForward = new AutoFromPathPlanner(s_Swerve, "Test5mForward", 4.5, 3.5, false, false, true);
-    final AutoFromPathPlanner TestSCurve = new AutoFromPathPlanner(s_Swerve, "TestSCurve", 4.5, 3.5, false, false, true);
 
 
     /**
@@ -100,6 +98,9 @@ public class RobotContainer {
         yButton.toggleOnTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         aButton.toggleOnTrue(new SwerveXWheels(s_Swerve));
         bButton.onTrue(new InstantCommand(() -> s_Swerve.resetModulesToAbsolute()));
+
+        //Auto testing stuff
+        rightBumper.toggleOnTrue(new TestMarkers(s_Swerve));
 
 
         //OPERATOR CONTROLLER BINDINGS

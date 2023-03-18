@@ -2,21 +2,23 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 7.1,
-        "y": 3.47
+        "x": 1.0,
+        "y": 3.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.1,
-        "y": 3.47
+        "x": 2.0,
+        "y": 3.0
       },
-      "holonomicAngle": -90.0,
+      "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "startingPath"
+        ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
@@ -24,26 +26,35 @@
     },
     {
       "anchorPoint": {
-        "x": 4.171358334551522,
-        "y": 3.4554537996337276
+        "x": 6.979624978927954,
+        "y": 2.925431539592955
       },
       "prevControl": {
-        "x": 5.171358334551521,
-        "y": 3.4554537996337276
+        "x": 7.507977388047799,
+        "y": 2.9412052437700598
       },
       "nextControl": null,
-      "holonomicAngle": -90.0,
+      "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "endPath"
+        ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 0.43636363636363645,
+      "names": [
+        "midway"
+      ]
+    }
+  ]
 }
