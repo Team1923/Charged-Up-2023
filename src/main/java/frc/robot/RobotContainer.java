@@ -100,7 +100,7 @@ public class RobotContainer {
         bButton.onTrue(new InstantCommand(() -> s_Swerve.resetModulesToAbsolute()));
 
         //Auto testing stuff
-        rightBumper.toggleOnTrue(new TestMarkers(s_Swerve));
+        //rightBumper.toggleOnTrue(new TestMarkers(s_Swerve));
 
 
         //OPERATOR CONTROLLER BINDINGS
