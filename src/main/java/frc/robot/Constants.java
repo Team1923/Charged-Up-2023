@@ -64,11 +64,12 @@ public final class Constants {
     public static final double kIntakeDistalOffsetRads = 0;
 
     public static final double errorThreshold = 0.2;
-    public static final double cubeIntakeSpeed = .4;
-    public static final double coneIntakeSpeed = .6; //.75
+
+    public static final double cubeIntakeSpeed = .5;
+    public static final double intakeHoldSpeed = 0.1;
     public static final double lowEjectSpeed = -0.2;
     public static final double midEjectSpeed = -0.35;
-    public static final double highEjectSpeed = -1;//0.55
+    public static final double highEjectSpeed = -1;
 
 
   }

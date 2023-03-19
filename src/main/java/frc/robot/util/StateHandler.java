@@ -1,5 +1,6 @@
 package frc.robot.util;
 
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.interfaces.LimelightInterface.SpecificLimelight;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
@@ -20,6 +21,9 @@ public class StateHandler {
     private boolean isIntakeGood = false;
 
     private GamePieceMode currentGamePiece = GamePieceMode.CUBE;
+
+    private boolean autoShootWheels = false;
+    private boolean autoIntakeWheels = false;
 
 
     public static synchronized StateHandler getInstance() {
@@ -84,6 +88,32 @@ public class StateHandler {
             return SpecificLimelight.LEFT_LIMELIGHT;
         } else {
             return SpecificLimelight.RIGHT_LIMELIGHT;
+        }
+    }
+
+    public boolean getAutoIntakeWheels() {
+        return autoIntakeWheels;
+    }
+
+    public boolean getAutoShootWheels() {
+        return autoShootWheels;
+    }
+
+    public void setAutoIntakeWheels(boolean i) {
+        autoIntakeWheels = i;
+    }
+
+    public void setAutoShootWheels(boolean s) {
+        autoShootWheels = s;
+    }
+
+    public double getShootingSpeedFromVerticalLocation() {
+        if(stateHandler.getCurrentVerticalLocation() == VerticalLocations.LOW) {
+            return IntakeConstants.lowEjectSpeed;
+        } else if(stateHandler.getCurrentVerticalLocation() == VerticalLocations.MID) {
+            return IntakeConstants.midEjectSpeed;
+        } else {
+            return IntakeConstants.highEjectSpeed;
         }
     }
 
