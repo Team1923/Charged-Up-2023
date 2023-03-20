@@ -1,6 +1,25 @@
 package frc.robot.util;
 
+
 public class StateVariables {
+
+    public static enum IntakeWheelSpeeds{
+        INTAKE(new IntakeSpeed(0.5)),
+        SHOOT_HIGH(new IntakeSpeed(-1)),
+        SHOOT_MID(new IntakeSpeed(-0.35)),
+        SHOOT_LOW(new IntakeSpeed(-0.2)),
+        GRIP(new IntakeSpeed(0.1));
+
+        private IntakeSpeed iWheelSpeed;
+
+        private IntakeWheelSpeeds(IntakeSpeed i) {
+            this.iWheelSpeed = i;
+        }
+
+        public IntakeSpeed getIntakeWheelSpeed() {
+            return iWheelSpeed;
+        }
+    }
     
 
     public static enum IntakePositions {
@@ -46,6 +65,23 @@ public class StateVariables {
             return nextInSequence;
         }
         
+    }
+
+    public static class IntakeSpeed{
+        private double spd;
+
+        public IntakeSpeed(double s) {
+            spd = s;
+        }
+
+        public void setWheelSpeed(double s) {
+            spd = s;
+        }
+
+        public double getWheelSpeed() {
+            return spd;
+        }
+
     }
 
     public static class ArmAngles {

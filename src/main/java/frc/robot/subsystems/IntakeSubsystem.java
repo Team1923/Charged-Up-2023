@@ -12,12 +12,15 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FalconConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.util.StateHandler;
+import frc.robot.util.StateVariables.IntakePositions;
+import frc.robot.util.StateVariables.IntakeWheelSpeeds;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
@@ -71,8 +74,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   }
 
-  // For both the Proximal and Distal, using the Encoders and physical hardstops,
-  // we can reset their position
 
   public void resetIntakePosition() {
     double setZeroPosition = (getIntakeAbsoluteEncoderRads() - IntakeConstants.intakeArmEncoderZero
@@ -140,21 +141,26 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    double intakeError = Math
-        .abs(getIntakeArmPosition() - stateHandler.getDesiredIntakePosition().getArmAngles().getAngle());
 
-    boolean withinThreshold = intakeError < IntakeConstants.errorThreshold;
-
-    if (withinThreshold) {
-      stateHandler.setCurrentIntakePosition(stateHandler.getDesiredIntakePosition());
+    if(DriverStation.isDisabled()) {
+      disableMotionMagic();
+      stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP);
+      stopWheels();
+    } else {
+      setIntakePosition(stateHandler.getDesiredIntakePosition().getArmAngles().getAngle());
+      if(getGamePieceSensor() && stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE) {
+        setRawWheelSpeed(IntakeWheelSpeeds.GRIP.getIntakeWheelSpeed().getWheelSpeed());
+      } else {
+        setRawWheelSpeed(stateHandler.getDesiredIntakeWheelSpeed().getIntakeWheelSpeed().getWheelSpeed());
+      }
     }
 
-    SmartDashboard.putString("DESIRED INTAKE State", stateHandler.getDesiredIntakePosition().toString());
-    SmartDashboard.putString("CURRENT INTAKE State", stateHandler.getCurrentIntakePosition().toString());
+    stateHandler.setHasGamePiece(getGamePieceSensor());
+
 
     SmartDashboard.putNumber("INTAKE Arm POSITION RADS: ", getIntakeArmPosition());
 
-    SmartDashboard.putNumber("INTAKE ABSOLUTE  Encoder Rads", getIntakeAbsoluteEncoderRads());
+    SmartDashboard.putNumber("INTAKE ABSOLUTE Encoder Rads", getIntakeAbsoluteEncoderRads());
 
     SmartDashboard.putNumber("FALCON INTAKE MOTOR ENCODER", getIntakeArmPosition());
 

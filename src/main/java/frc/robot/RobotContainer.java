@@ -10,7 +10,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos.TestMarkers;
-import frc.robot.commands.IntakeCommands.SimpleIntakeStptCommand;
+import frc.robot.commands.IntakeCommands.IntakeGamePiece;
+import frc.robot.commands.IntakeCommands.ShootGamePiece;
+import frc.robot.commands.IntakeCommands.SetIntakePosition;
 import frc.robot.commands.StateCommands.SetShootingLocation;
 import frc.robot.commands.SwerveCommands.SwerveXWheels;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
@@ -19,6 +21,7 @@ import frc.robot.subsystems.*;
 import frc.robot.util.PathPlannerUtils.AutoFromPathPlanner;
 import frc.robot.util.StateVariables.HorizontalLocations;
 import frc.robot.util.StateVariables.IntakePositions;
+import frc.robot.util.StateVariables.IntakeWheelSpeeds;
 import frc.robot.util.StateVariables.VerticalLocations;
 
 /**
@@ -98,6 +101,7 @@ public class RobotContainer {
         yButton.toggleOnTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         aButton.toggleOnTrue(new SwerveXWheels(s_Swerve));
         bButton.onTrue(new InstantCommand(() -> s_Swerve.resetModulesToAbsolute()));
+        new Trigger(() -> driver.getRawAxis(3) > 0.2).whileTrue(new IntakeGamePiece(IntakeWheelSpeeds.INTAKE));
 
         //Auto testing stuff
         //rightBumper.toggleOnTrue(new TestMarkers(s_Swerve));
@@ -107,8 +111,10 @@ public class RobotContainer {
         operatorUpDPad.onTrue(new SetShootingLocation(VerticalLocations.HIGH));
         operatorDownDPad.onTrue(new SetShootingLocation(VerticalLocations.LOW));
         operatorLeftDPad.onTrue(new SetShootingLocation(VerticalLocations.MID));
+        centerLeftButton.whileTrue(new ShootGamePiece());
+        
 
-        operatorCrossButton.toggleOnTrue(new SimpleIntakeStptCommand(intakeSubsystem, IntakePositions.INTAKE));
+        rightBumper.onTrue(new SetIntakePosition());
 
     }
 

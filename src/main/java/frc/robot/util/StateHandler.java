@@ -5,6 +5,7 @@ import frc.robot.interfaces.LimelightInterface.SpecificLimelight;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.IntakePositions;
+import frc.robot.util.StateVariables.IntakeWheelSpeeds;
 import frc.robot.util.StateVariables.VerticalLocations;
 
 public class StateHandler {
@@ -12,17 +13,20 @@ public class StateHandler {
     private VerticalLocations verticalLocations = VerticalLocations.LOW;
     
     private IntakePositions desiredIntakePosition = IntakePositions.STOW;
-    private IntakePositions currentIntakePosition = IntakePositions.STOW;
 
     private CurrentRobotDirection currentRobotDirection = CurrentRobotDirection.RIGHT;
+
+    private IntakeWheelSpeeds desiredIntakeWheelSpeed = IntakeWheelSpeeds.GRIP;
 
     private boolean hasGamePiece = false;
 
     private boolean isIntakeGood = false;
 
+
     private GamePieceMode currentGamePiece = GamePieceMode.CUBE;
 
     private boolean autoShootWheels = false;
+    private boolean autoIntakeWheels = false;
 
 
     public static synchronized StateHandler getInstance() {
@@ -58,14 +62,6 @@ public class StateHandler {
         currentGamePiece = gamepiece;
     }
 
-    public IntakePositions getCurrentIntakePosition() {
-        return currentIntakePosition;
-    }
-
-    public void setCurrentIntakePosition(IntakePositions i) {
-        currentIntakePosition = i;
-    }
-
     public IntakePositions getDesiredIntakePosition() {
         return desiredIntakePosition;
     }
@@ -99,27 +95,23 @@ public class StateHandler {
         autoShootWheels = s;
     }
 
-    public double getShootingSpeedFromVerticalLocation() {
-        if(stateHandler.getCurrentVerticalLocation() == VerticalLocations.LOW) {
-            return IntakeConstants.lowEjectSpeed;
-        } else if(stateHandler.getCurrentVerticalLocation() == VerticalLocations.MID) {
-            return IntakeConstants.midEjectSpeed;
-        } else {
-            return IntakeConstants.highEjectSpeed;
-        }
+    public boolean getAutoIntakeWheels() {
+        return autoIntakeWheels;
+    }
+
+    public void setAutoIntakeWheels(boolean i) {
+        autoIntakeWheels = i;
+    }
+
+    public IntakeWheelSpeeds getDesiredIntakeWheelSpeed() {
+        return desiredIntakeWheelSpeed;
+    } 
+
+    public void setDesiredIntakeWheelSpeed(IntakeWheelSpeeds iWheelSpeeds) {
+        desiredIntakeWheelSpeed = iWheelSpeeds;
     }
 
 
-    public void resetStates(){
-        desiredIntakePosition = IntakePositions.STOW;
-        currentIntakePosition = IntakePositions.STOW;
-        currentRobotDirection = CurrentRobotDirection.RIGHT;
-    }
-
-    public void resetAutoState(){
-        desiredIntakePosition = IntakePositions.STOW;
-        currentIntakePosition = IntakePositions.STOW;
-    }
 
 
 

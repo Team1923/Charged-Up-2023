@@ -9,7 +9,7 @@ public class LEDInterface {
 
 	private static LEDInterface ledInterface;
 
-	//private DigitalOutput bit1 = new DigitalOutput(4);
+	private DigitalOutput bit1 = new DigitalOutput(4);
 	private DigitalOutput bit2 = new DigitalOutput(5);
 	private DigitalOutput bit3 = new DigitalOutput(6);
 
@@ -22,8 +22,13 @@ public class LEDInterface {
 		return ledInterface;
 	}
 
-	public LEDInterface() {
-	}
+	/*
+	 * 0 0 0 = intake not good
+	 * 1 0 0 = intake good
+	 * 1 1 0 = purple (enabled in teleop & does not have game piece)
+	 * 1 1 1 = white (when has game piece)
+	 */
+
 
 	public void updateLed() {
 		if (DriverStation.isDisabled()) {

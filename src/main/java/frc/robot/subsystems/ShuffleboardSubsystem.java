@@ -52,11 +52,6 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 			.withPosition(2, 2)
 			.getEntry();
 
-	private GenericEntry currentIntakePosition = driverDashboard
-			.add("CURRENT INTAKE", IntakePositions.STOW.toString())
-			.withSize(2, 1)
-			.withPosition(2, 1)
-			.getEntry();
 
 
 	@Override
@@ -89,7 +84,6 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 		}
 
 		desiredIntakePosition.setString(stateHandler.getDesiredIntakePosition().toString());
-		currentIntakePosition.setString(stateHandler.getCurrentIntakePosition().toString());
 
 	}
 }

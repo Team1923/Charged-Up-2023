@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.commands.StateCommands.ResetStateCommand;
 import frc.robot.interfaces.AutoChooser;
 import frc.robot.interfaces.LimelightInterface;
 import frc.robot.interfaces.LEDInterface;
@@ -55,9 +54,6 @@ public class Robot extends TimedRobot {
 
     robotContainer = new RobotContainer();
     this.selector = new AutoChooser();
-    stateHandler.resetStates();
-
-    SmartDashboard.putData("RESET STATE", new ResetStateCommand());
 
     ledInterface.updateLed();
 
@@ -81,9 +77,6 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
 
-    robotContainer.intakeSubsystem.disableMotionMagic();
-
-
     intakeGood = Math
         .abs(robotContainer.intakeSubsystem.getIntakeArmPosition()
             - stateHandler.getDesiredIntakePosition().getArmAngles().getAngle()) < 0.2;
@@ -105,7 +98,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    stateHandler.resetAutoState();
     autonomousCommand = robotContainer.initializeAuto(selector);
     LimelightInterface.getInstance().aprilTagFieldLayout.setOrigin(
         DriverStation.getAlliance() == Alliance.Red ? OriginPosition.kRedAllianceWallRightSide

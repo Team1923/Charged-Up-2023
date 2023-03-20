@@ -197,23 +197,23 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public void updateOdometry() {
         swerveOdometry.update(Rotation2d.fromDegrees(getYawIEEE()), getModulePositions());
-        if (limelightInterface.hasValidTargets(getCorrectLimelight())) {
-            Pose3d currentAprilTagPose = limelightInterface.getAprilTagPose(getCorrectLimelight());
-            Pose2d aprilTagPose = new Pose2d(currentAprilTagPose.getX(), currentAprilTagPose.getY(), new Rotation2d());
-            Pose2d robotLimelightPose = new Pose2d(-limelightInterface.getRobotPose3d(getCorrectLimelight()).getZ(),
-                    limelightInterface.getRobotPose3d(getCorrectLimelight()).getX(), getYaw());
-            if (Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) + Math.pow(robotLimelightPose.getY(), 2)) <= 1.5) {
-                Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() + robotLimelightPose.getX(),
-                        aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
+        // if (limelightInterface.hasValidTargets(getCorrectLimelight())) {
+        //     Pose3d currentAprilTagPose = limelightInterface.getAprilTagPose(getCorrectLimelight());
+        //     Pose2d aprilTagPose = new Pose2d(currentAprilTagPose.getX(), currentAprilTagPose.getY(), new Rotation2d());
+        //     Pose2d robotLimelightPose = new Pose2d(-limelightInterface.getRobotPose3d(getCorrectLimelight()).getZ(),
+        //             limelightInterface.getRobotPose3d(getCorrectLimelight()).getX(), getYaw());
+        //     if (Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) + Math.pow(robotLimelightPose.getY(), 2)) <= 1.5) {
+        //         Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() + robotLimelightPose.getX(),
+        //                 aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
                  
-                swerveOdometry.addVisionMeasurement(newRobotPose,
-                Timer.getFPGATimestamp() - (limelightInterface.getTL(getCorrectLimelight()) / 1000)
-                        - (limelightInterface.getCL(getCorrectLimelight()) / 1000));
+        //         swerveOdometry.addVisionMeasurement(newRobotPose,
+        //         Timer.getFPGATimestamp() - (limelightInterface.getTL(getCorrectLimelight()) / 1000)
+        //                 - (limelightInterface.getCL(getCorrectLimelight()) / 1000));
                 
 
-            } 
+        //     } 
 
-        } 
+        // } 
     }
 
     @Override

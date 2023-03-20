@@ -55,7 +55,7 @@ public final class Constants {
     public static final double intakeArmHardstop = 1.307;
     public static final double intakeArmEncoderZero = 5.88;
 
-    public static final double intakeArmMaxGravityConstant = 0.15;
+    public static final double intakeArmMaxGravityConstant = 0.1;
 
     public static final double intakeArmAbsoluteEncoderToTicks = intakeArmGearRatio * 2048;
     public static final double intakeDistalAbsoluteEncoderToRadians = intakeArmAbsoluteEncoderToTicks

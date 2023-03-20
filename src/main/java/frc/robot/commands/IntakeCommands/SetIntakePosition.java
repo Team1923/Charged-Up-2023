@@ -9,36 +9,37 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.IntakePositions;
 
-public class SimpleIntakeStptCommand extends CommandBase {
+public class SetIntakePosition extends CommandBase {
   /** Creates a new SimpleIntakeStptCommand. */
-  private IntakeSubsystem intake;
-  private IntakePositions desiredIntakePosition;
-  public SimpleIntakeStptCommand(IntakeSubsystem intake, IntakePositions desiredIntakePosition) {
-    this.intake = intake;
-    this.desiredIntakePosition = desiredIntakePosition;
-    addRequirements(intake);
-    // Use addRequirements() here to declare subsystem dependencies.
+
+  StateHandler stateHandler = StateHandler.getInstance();
+
+  public SetIntakePosition() {
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    if(stateHandler.getDesiredIntakePosition() == IntakePositions.STOW) {
+      stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE);
+    } else if(stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE){
+      stateHandler.setDesiredIntakePosition(IntakePositions.STOW);
+    }
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setIntakePosition(desiredIntakePosition.getArmAngles().getAngle());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.stopIntake();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return desiredIntakePosition.getArmAngles().getAngle() == intake.getIntakeArmPosition();
+    return true;
   }
 }
