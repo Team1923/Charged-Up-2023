@@ -23,7 +23,6 @@ public class StateHandler {
     private GamePieceMode currentGamePiece = GamePieceMode.CUBE;
 
     private boolean autoShootWheels = false;
-    private boolean autoIntakeWheels = false;
 
 
     public static synchronized StateHandler getInstance() {
@@ -91,16 +90,9 @@ public class StateHandler {
         }
     }
 
-    public boolean getAutoIntakeWheels() {
-        return autoIntakeWheels;
-    }
 
     public boolean getAutoShootWheels() {
         return autoShootWheels;
-    }
-
-    public void setAutoIntakeWheels(boolean i) {
-        autoIntakeWheels = i;
     }
 
     public void setAutoShootWheels(boolean s) {

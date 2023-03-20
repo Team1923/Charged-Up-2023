@@ -10,25 +10,24 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.util.StateHandler;
+import frc.robot.util.StateVariables.IntakePositions;
 
 public class IntakeDefaultCommand extends CommandBase {
-  
+
   private IntakeSubsystem intake;
-  private BooleanSupplier intakeSupplier;
   private BooleanSupplier shootSupplier;
   private StateHandler stateHandler = StateHandler.getInstance();
-  
-  
-  public IntakeDefaultCommand(IntakeSubsystem intake, BooleanSupplier i, BooleanSupplier s) {
+
+  public IntakeDefaultCommand(IntakeSubsystem intake, BooleanSupplier s) {
     this.intake = intake;
-    intakeSupplier = i;
     shootSupplier = s;
     addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -49,12 +48,14 @@ public class IntakeDefaultCommand extends CommandBase {
   }
 
   public void setWheelSpeeds() {
-    if(shootSupplier.getAsBoolean() || stateHandler.getAutoShootWheels()) {
+    if (shootSupplier.getAsBoolean() || stateHandler.getAutoShootWheels()) {
       intake.setRawWheelSpeed(stateHandler.getShootingSpeedFromVerticalLocation());
-    } else if (intakeSupplier.getAsBoolean() || stateHandler.getAutoIntakeWheels()) {
+    } else if (intake.getGamePieceSensor()) {
+      intake.setRawWheelSpeed(IntakeConstants.intakeHoldSpeed);
+    } else if (stateHandler.getCurrentIntakePosition() == IntakePositions.INTAKE) {
       intake.setRawWheelSpeed(IntakeConstants.cubeIntakeSpeed);
     } else {
-      intake.setRawWheelSpeed(IntakeConstants.intakeHoldSpeed);
+      intake.setRawWheelSpeed(IntakeConstants.cubeIntakeSpeed);
     }
   }
 }
