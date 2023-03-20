@@ -26,7 +26,10 @@ public class StateHandler {
     private GamePieceMode currentGamePiece = GamePieceMode.CUBE;
 
     private boolean autoShootWheels = false;
+
     private boolean autoIntakeWheels = false;
+
+    private boolean wantToBeHappy = false;
 
 
     public static synchronized StateHandler getInstance() {
@@ -111,8 +114,13 @@ public class StateHandler {
         desiredIntakeWheelSpeed = iWheelSpeeds;
     }
 
+    public void setWantToBeHappy(boolean s) {
+        wantToBeHappy = s;
+    }
 
-
+    public boolean getWantToBeHappy() {
+        return wantToBeHappy;
+    }
 
 
 }

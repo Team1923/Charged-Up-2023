@@ -59,7 +59,7 @@ void setGreen(int desiredLEDStrip) {
   FastLED.show();
 }
 
-void redOscillating(int desiredLEDStrip) {
+void redOscillating() {
   if (getBrighter) {
     currentRed += 5;
   } else {
@@ -74,7 +74,8 @@ void redOscillating(int desiredLEDStrip) {
       currentRed = 0;
       getBrighter = true;
     }
-    leds[desiredLEDStrip][j] = CRGB(0, currentRed, 0);
+    leds[0][j] = CRGB(0, currentRed, 0);
+    leds[1][j] = CRGB(0, currentRed, 0);
   }
 
   FastLED.show();
@@ -87,34 +88,8 @@ void handleCurrentSelection() {
 }
 
 void lightUp() {
-  //led 0 = arm
-  //led 1 = intake
-  //000
+
   switch (currentState) {
-    case 0:
-      //redOscillating(0);
-      redOscillating(1);
-      break;
-    // case 1:
-    //   setGreen(0);
-    //   redOscillating(1);
-    //   break;
-    // case 2:
-    //   redOscillating(0);
-    //   setGreen(1);
-    //   break;
-    case 3:
-      //setGreen(0);
-      setGreen(1);
-      break;
-    case 4:
-      setPurple();
-      break;
-    case 5:
-      setYellow();
-      break;
-    default:
-      //redOscillating(0);
-      redOscillating(1);
+    if
   }
 }

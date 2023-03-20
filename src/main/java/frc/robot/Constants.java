@@ -35,24 +35,28 @@ public final class Constants {
   public final class IntakeConstants {
     public static final int intakeArmMasterID = 16;
     public static final int intakeArmFollowerID = 17;
+
     public static final int leftIntakeWheelMotor = 18;
     public static final int rightIntakeWheelMotor = 19;
-    public static final int intakeDistalAbsoluteEncoderID = 2; //3
+
+    public static final int intakeAbosluteEncoderID = 3;
+    
+    public static final int horizontalRollerID = 20;
 
 
     public static final double intakeArmkP = 0.2;
     public static final double intakeArmkI = 0;
     public static final double intakeArmkD = 2;
 
-    public static final double maxIntakeArmVel = 30000;
-    public static final double maxIntakeArmAccel = 23000;
+    public static final double maxIntakeArmVel = 15000;
+    public static final double maxIntakeArmAccel = 15000;
 
     public static final double intakeArmGearRatio = 64;
     public static final double intakeArmTicksToRad = (2 * Math.PI)
         / (FalconConstants.ticksPerRev * intakeArmGearRatio);
     public static final double intakeArmRadsToTicks = 1 / intakeArmTicksToRad;
 
-    public static final double intakeArmHardstop = 1.307;
+    public static final double intakeArmHardstop = 0;
     public static final double intakeArmEncoderZero = 5.88;
 
     public static final double intakeArmMaxGravityConstant = 0.1;
@@ -65,11 +69,6 @@ public final class Constants {
 
     public static final double errorThreshold = 0.2;
 
-    public static final double cubeIntakeSpeed = .5;
-    public static final double intakeHoldSpeed = 0.1;
-    public static final double lowEjectSpeed = -0.2;
-    public static final double midEjectSpeed = -0.35;
-    public static final double highEjectSpeed = -1;
 
 
   }

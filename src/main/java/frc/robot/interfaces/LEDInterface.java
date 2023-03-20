@@ -27,27 +27,34 @@ public class LEDInterface {
 	 * 1 0 0 = intake good
 	 * 1 1 0 = purple (enabled in teleop & does not have game piece)
 	 * 1 1 1 = white (when has game piece)
+	 * 0 0 1 = want to be happy
 	 */
 
 
 	public void updateLed() {
 		if (DriverStation.isDisabled()) {
-			if (!stateHandler.getIntakeGood()) {
-				//bit1.set(false);
+			if(!stateHandler.getIntakeGood()) {
+				bit1.set(false);
 				bit2.set(false);
 				bit3.set(false);
 			} else {
-				//bit1.set(true);
-				bit2.set(true);
-				bit3.set(false);
+				bit1.set(true);
+				bit2.set(false);
+				bit3.set(false);				
 			}
 		} else {
-			if (stateHandler.getGamePieceMode() == GamePieceMode.CUBE) {
-				//bit1.set(false);
-				bit2.set(false);
+			if(!stateHandler.hasGamePiece()) {
+				bit1.set(true);
+				bit2.set(true);
+				bit3.set(false);
+			} else {
+				bit1.set(true);
+				bit2.set(true);
 				bit3.set(true);
-			} else if (stateHandler.getGamePieceMode() == GamePieceMode.CONE){
-				//bit1.set(true);
+			}
+
+			if(stateHandler.getWantToBeHappy()) {
+				bit1.set(false);
 				bit2.set(false);
 				bit3.set(true);
 			}

@@ -4,11 +4,11 @@ package frc.robot.util;
 public class StateVariables {
 
     public static enum IntakeWheelSpeeds{
-        INTAKE(new IntakeSpeed(0.5)),
-        SHOOT_HIGH(new IntakeSpeed(-1)),
-        SHOOT_MID(new IntakeSpeed(-0.35)),
-        SHOOT_LOW(new IntakeSpeed(-0.2)),
-        GRIP(new IntakeSpeed(0.1));
+        INTAKE(new IntakeSpeed(0.5, 0.5, true)),
+        SHOOT_HIGH(new IntakeSpeed(-1, 0, false)),
+        SHOOT_MID(new IntakeSpeed(-0.35, 0, false)),
+        SHOOT_LOW(new IntakeSpeed(-0.2, 0, false)),
+        GRIP(new IntakeSpeed(0.1, 0, false));
 
         private IntakeSpeed iWheelSpeed;
 
@@ -69,17 +69,25 @@ public class StateVariables {
 
     public static class IntakeSpeed{
         private double spd;
+        private double horizontalRollerSpd;
+        private boolean engageRollers;
 
-        public IntakeSpeed(double s) {
+        public IntakeSpeed(double s, double horizontalRollerSpd, boolean engageRollers) {
             spd = s;
-        }
-
-        public void setWheelSpeed(double s) {
-            spd = s;
+            this.horizontalRollerSpd = horizontalRollerSpd;
+            this.engageRollers = engageRollers;
         }
 
         public double getWheelSpeed() {
             return spd;
+        }
+
+        public double getHorizontalRollerSpd() {
+            return horizontalRollerSpd;
+        }
+
+        public boolean getEngageRollers() {
+            return engageRollers;
         }
 
     }

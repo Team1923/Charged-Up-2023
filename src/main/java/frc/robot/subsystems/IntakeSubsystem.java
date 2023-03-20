@@ -12,8 +12,10 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FalconConstants;
@@ -29,8 +31,12 @@ public class IntakeSubsystem extends SubsystemBase {
   private WPI_TalonFX leftIntakeWheelMotor = new WPI_TalonFX(IntakeConstants.leftIntakeWheelMotor, "rio");
   private WPI_TalonFX rightIntakeWheelMotor = new WPI_TalonFX(IntakeConstants.rightIntakeWheelMotor, "rio");
 
+  private WPI_TalonFX horizontalRollerMotor = new WPI_TalonFX(IntakeConstants.horizontalRollerID, "rio");
+
+  private DoubleSolenoid rollerSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+
   private DutyCycleEncoder intakeEncoder = new DutyCycleEncoder(
-      IntakeConstants.intakeDistalAbsoluteEncoderID);
+      IntakeConstants.intakeAbosluteEncoderID);
 
   private DigitalInput gamePieceSensor = new DigitalInput(7);
 
@@ -41,6 +47,7 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeArmFollower.configFactoryDefault();
     leftIntakeWheelMotor.configFactoryDefault();
     rightIntakeWheelMotor.configFactoryDefault();
+    horizontalRollerMotor.configFactoryDefault();
 
     intakeArmMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
     intakeArmFollower.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
@@ -61,11 +68,12 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeArmFollower.configMotionCruiseVelocity(IntakeConstants.maxIntakeArmVel);
     intakeArmFollower.configMotionAcceleration(IntakeConstants.maxIntakeArmAccel);
 
-    intakeArmMaster.setNeutralMode(NeutralMode.Coast);
-    intakeArmFollower.setNeutralMode(NeutralMode.Coast);
-    
+    intakeArmMaster.setNeutralMode(NeutralMode.Brake);
+    intakeArmFollower.setNeutralMode(NeutralMode.Brake);
+
     leftIntakeWheelMotor.setNeutralMode(NeutralMode.Brake);
     rightIntakeWheelMotor.setNeutralMode(NeutralMode.Brake);
+    horizontalRollerMotor.setNeutralMode(NeutralMode.Brake);
 
     resetIntakePosition();
 
@@ -73,7 +81,6 @@ public class IntakeSubsystem extends SubsystemBase {
     rightIntakeWheelMotor.setInverted(InvertType.InvertMotorOutput);
 
   }
-
 
   public void resetIntakePosition() {
     double setZeroPosition = (getIntakeAbsoluteEncoderRads() - IntakeConstants.intakeArmEncoderZero
@@ -110,15 +117,16 @@ public class IntakeSubsystem extends SubsystemBase {
     return IntakeConstants.intakeArmMaxGravityConstant * Math.cos(getIntakeArmPosition());
   }
 
-
   public void setRawWheelSpeed(double stpt) {
     leftIntakeWheelMotor.set(stpt);
     rightIntakeWheelMotor.set(-stpt);
+    horizontalRollerMotor.set(stateHandler.getDesiredIntakeWheelSpeed().getIntakeWheelSpeed().getHorizontalRollerSpd());
   }
 
-  public void setRawWheelSpeed(double left, double right) {
-    leftIntakeWheelMotor.set(left);
-    rightIntakeWheelMotor.set(right);
+  public void setRollerSolenoid() {
+    rollerSolenoid.set(stateHandler.getDesiredIntakeWheelSpeed().getIntakeWheelSpeed().getEngageRollers()
+        ? DoubleSolenoid.Value.kForward
+        : DoubleSolenoid.Value.kReverse);
   }
 
   public void stopWheels() {
@@ -139,16 +147,22 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeArmMaster.set(ControlMode.Disabled, 0);
   }
 
+  public void setIntakeArmCoast() {
+    intakeArmFollower.setNeutralMode(NeutralMode.Coast);
+    intakeArmMaster.setNeutralMode(NeutralMode.Coast);
+  }
+
   @Override
   public void periodic() {
 
-    if(DriverStation.isDisabled()) {
+    if (DriverStation.isDisabled()) {
       disableMotionMagic();
       stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP);
       stopWheels();
     } else {
+      setRollerSolenoid();
       setIntakePosition(stateHandler.getDesiredIntakePosition().getArmAngles().getAngle());
-      if(getGamePieceSensor() && stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE) {
+      if (getGamePieceSensor() && stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE) {
         setRawWheelSpeed(IntakeWheelSpeeds.GRIP.getIntakeWheelSpeed().getWheelSpeed());
       } else {
         setRawWheelSpeed(stateHandler.getDesiredIntakeWheelSpeed().getIntakeWheelSpeed().getWheelSpeed());
@@ -156,7 +170,6 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     stateHandler.setHasGamePiece(getGamePieceSensor());
-
 
     SmartDashboard.putNumber("INTAKE Arm POSITION RADS: ", getIntakeArmPosition());
 
