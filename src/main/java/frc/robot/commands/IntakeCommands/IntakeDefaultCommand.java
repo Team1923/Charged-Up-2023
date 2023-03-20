@@ -50,10 +50,10 @@ public class IntakeDefaultCommand extends CommandBase {
   public void setWheelSpeeds() {
     if (shootSupplier.getAsBoolean() || stateHandler.getAutoShootWheels()) {
       intake.setRawWheelSpeed(stateHandler.getShootingSpeedFromVerticalLocation());
+    } else if (!intake.getGamePieceSensor() && stateHandler.getCurrentIntakePosition() == IntakePositions.INTAKE) {
+      intake.setRawWheelSpeed(IntakeConstants.cubeIntakeSpeed);
     } else if (intake.getGamePieceSensor()) {
       intake.setRawWheelSpeed(IntakeConstants.intakeHoldSpeed);
-    } else if (stateHandler.getCurrentIntakePosition() == IntakePositions.INTAKE) {
-      intake.setRawWheelSpeed(IntakeConstants.cubeIntakeSpeed);
     } else {
       intake.setRawWheelSpeed(IntakeConstants.cubeIntakeSpeed);
     }
