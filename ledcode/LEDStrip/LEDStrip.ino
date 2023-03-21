@@ -7,6 +7,10 @@ CRGB leds[NUM_STRIPS][NUM_LEDS_PER_STRIP];
 #define LED_PIN_1 10
 #define LED_PIN_2 11
 
+#define BRIGHTNESS 255
+#define SATURATION 255
+
+
 //Define digital input pins from RoboRio
 #define COM_PIN_1 2 // pin that controls arm 
 #define COM_PIN_2 3
@@ -15,7 +19,12 @@ CRGB leds[NUM_STRIPS][NUM_LEDS_PER_STRIP];
 bool getBrighter = true;
 int currentRed = 0;
 
+int currentColor = 0; 
+bool colorchange = true;
+
+
 int currentState = 0;
+
 
 void setup() {
   pinMode(COM_PIN_1, INPUT);
@@ -52,9 +61,18 @@ void setPurple() {
   FastLED.show();
 }
 
-void setGreen(int desiredLEDStrip) {
+void setGreen() {
   for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
-    leds[desiredLEDStrip][j] = CRGB(255, 0, 0);
+    leds[0][j] = CRGB(255, 0, 0);
+    leds[1][j] = CRGB(255,0,0);
+  }
+  FastLED.show();
+}
+
+void setWhite(){
+  for(int j = 0; j < NUM_LEDS_PER_STRIP; j++){
+    leds[0][j] = CRGB(255,255,255);
+    leds[1][j] = CRGB(255,255,255);
   }
   FastLED.show();
 }
@@ -81,6 +99,21 @@ void redOscillating() {
   FastLED.show();
 }
 
+void RainbowOscillating(){
+    if(colorchange){
+      currentColor += 5; 
+    }
+    for(int j = 0; j<NUM_LEDS_PER_STRIP; j++){
+      if(currentColor > 255){
+        currentColor = 0; 
+      }
+      leds[0][j] = CHSV(currentColor - (j * 2), SATURATION, BRIGHTNESS);
+      leds[1][j] = CHSV(currentColor - (j * 2), SATURATION, BRIGHTNESS);
+    }
+		FastLED.show();  
+    serial.ln(currentColor);
+}
+
 void handleCurrentSelection() {
   for (int i = 2; i <= 4; i++) {
     bitWrite(currentState, i-2, digitalRead(i));
@@ -90,6 +123,19 @@ void handleCurrentSelection() {
 void lightUp() {
 
   switch (currentState) {
-    if
+    case 0:
+      redOscillating();
+      break;
+    case 4:
+      setGreen();
+      break;
+    case 7:
+      setWhite();
+      break;
+    case 1:
+      RainbowOscillating();
+      break;
+    default:
+      break;
   }
 }

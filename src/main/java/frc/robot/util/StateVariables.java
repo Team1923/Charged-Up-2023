@@ -4,7 +4,7 @@ package frc.robot.util;
 public class StateVariables {
 
     public static enum IntakeWheelSpeeds{
-        INTAKE(new IntakeSpeed(0.5, 0.5, true)),
+        INTAKE(new IntakeSpeed(0.5, 0.25, true)),
         SHOOT_HIGH(new IntakeSpeed(-1, 0, false)),
         SHOOT_MID(new IntakeSpeed(-0.35, 0, false)),
         SHOOT_LOW(new IntakeSpeed(-0.2, 0, false)),

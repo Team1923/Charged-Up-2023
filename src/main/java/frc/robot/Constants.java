@@ -40,7 +40,7 @@ public final class Constants {
     public static final int rightIntakeWheelMotor = 19;
 
     public static final int intakeAbosluteEncoderID = 3;
-    
+
     public static final int horizontalRollerID = 20;
 
 
@@ -59,7 +59,7 @@ public final class Constants {
     public static final double intakeArmHardstop = 0;
     public static final double intakeArmEncoderZero = 5.88;
 
-    public static final double intakeArmMaxGravityConstant = 0.1;
+    public static final double intakeArmMaxGravityConstant = 0.07;
 
     public static final double intakeArmAbsoluteEncoderToTicks = intakeArmGearRatio * 2048;
     public static final double intakeDistalAbsoluteEncoderToRadians = intakeArmAbsoluteEncoderToTicks

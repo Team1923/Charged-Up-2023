@@ -79,6 +79,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     leftIntakeWheelMotor.setInverted(InvertType.InvertMotorOutput);
     rightIntakeWheelMotor.setInverted(InvertType.InvertMotorOutput);
+    horizontalRollerMotor.setInverted(InvertType.InvertMotorOutput);
 
   }
 
@@ -87,14 +88,10 @@ public class IntakeSubsystem extends SubsystemBase {
         + IntakeConstants.intakeArmHardstop)
         * IntakeConstants.intakeArmRadsToTicks;
     intakeArmMaster.setSelectedSensorPosition(setZeroPosition);
-
-    intakeArmFollower.setSelectedSensorPosition(setZeroPosition);
   }
 
   public void setIntakePosition(double distalAngle) {
     intakeArmMaster.set(ControlMode.MotionMagic, distalAngle * IntakeConstants.intakeArmRadsToTicks,
-        DemandType.ArbitraryFeedForward, calculateIntakeFeedforward());
-    intakeArmFollower.set(ControlMode.MotionMagic, distalAngle * IntakeConstants.intakeArmRadsToTicks,
         DemandType.ArbitraryFeedForward, calculateIntakeFeedforward());
   }
 
