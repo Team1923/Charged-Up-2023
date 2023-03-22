@@ -47,7 +47,7 @@ public class ShuffleboardSubsystem extends SubsystemBase {
 			.getEntry();
 
 	private GenericEntry desiredIntakePosition = driverDashboard
-			.add("DESIRED INTAKE", IntakePositions.STOW.toString())
+			.add("DESIRED INTAKE", IntakePositions.SHOOT_TALL.toString())
 			.withSize(2, 1)
 			.withPosition(2, 2)
 			.getEntry();

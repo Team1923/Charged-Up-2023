@@ -111,10 +111,12 @@ public class RobotContainer {
         operatorUpDPad.onTrue(new SetShootingLocation(VerticalLocations.HIGH));
         operatorDownDPad.onTrue(new SetShootingLocation(VerticalLocations.LOW));
         operatorLeftDPad.onTrue(new SetShootingLocation(VerticalLocations.MID));
-        centerLeftButton.whileTrue(new ShootGamePiece());
+        operatorCrossButton.whileTrue(new ShootGamePiece());
         
 
-        rightBumper.onTrue(new SetIntakePosition());
+        operatorSquareButton.onTrue(new SetIntakePosition(IntakePositions.INTAKE));
+        operatorTriangleButton.onTrue(new SetIntakePosition(IntakePositions.SHOOT_TALL));
+        operatorCircleButton.onTrue(new SetIntakePosition(IntakePositions.SHOOT_SMALL));
 
     }
 

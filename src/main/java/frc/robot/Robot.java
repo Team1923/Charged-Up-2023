@@ -79,13 +79,13 @@ public class Robot extends TimedRobot {
 
     intakeGood = Math
         .abs(robotContainer.intakeSubsystem.getIntakeArmPosition()
-            - stateHandler.getDesiredIntakePosition().getArmAngles().getAngle()) < 0.2;
+            - stateHandler.getDesiredIntakePosition().getMainAngle().getAngle()) < 0.2;
         
     stateHandler.setIntakeGood(intakeGood);
 
     SmartDashboard.putNumber("INTAKE ARM ERROR", Math
         .abs(robotContainer.intakeSubsystem.getIntakeArmPosition()
-            - stateHandler.getDesiredIntakePosition().getArmAngles().getAngle()));
+            - stateHandler.getDesiredIntakePosition().getMainAngle().getAngle()));
 
     SmartDashboard.putBoolean("INTAKE GOOD TO GO", intakeGood);
 

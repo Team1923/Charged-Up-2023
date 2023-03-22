@@ -1,14 +1,16 @@
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class StateVariables {
 
     public static enum IntakeWheelSpeeds{
-        INTAKE(new IntakeSpeed(0.5, 0.25, true)),
-        SHOOT_HIGH(new IntakeSpeed(-1, 0, false)),
-        SHOOT_MID(new IntakeSpeed(-0.35, 0, false)),
-        SHOOT_LOW(new IntakeSpeed(-0.2, 0, false)),
-        GRIP(new IntakeSpeed(0.1, 0, false));
+        INTAKE(new IntakeSpeed(0.5, 0.25)),
+        SHOOT_FAR(new IntakeSpeed(-0.5, -1)),
+        SHOOT_HIGH(new IntakeSpeed(-1, 0)),
+        SHOOT_MID(new IntakeSpeed(-0.30, 0)),
+        SHOOT_LOW(new IntakeSpeed(-0.15, 0)),
+        GRIP(new IntakeSpeed(0.075, 0));
 
         private IntakeSpeed iWheelSpeed;
 
@@ -24,13 +26,15 @@ public class StateVariables {
 
     public static enum IntakePositions {
         // Similar to Arm Positions, diferent Intake Arm States take in Arm Angle Object
-        INTAKE(new ArmAngles(0)),
-        STOW(new ArmAngles(1.359));
+        INTAKE(new ArmAngles(Math.toRadians(-5)), new ArmAngles(Math.toRadians(-5)), true, true),
+        SHOOT_TALL(new ArmAngles(2.132 + 0.17), new ArmAngles(2), true, false),
+        SHOOT_SMALL(new ArmAngles(2.245 + 0.17), new ArmAngles(2.132 + 0.17), false, true);
 
 
-        private ArmAngles armAngles;
-        private IntakePositions nextInSequence;
-        private double triggerThresholdRadians;
+        private ArmAngles mainArmAngle;
+        private ArmAngles temporaryArmAngle;
+        private boolean hardstopUp;
+        private boolean horizontalEngaged;
 
         /**
          * Enable the state to automatically switch to another state once it
@@ -42,40 +46,45 @@ public class StateVariables {
          * @param triggerRadians The threshold (in radians) for the joint before moving
          *                       to next waypoint
          */
-        private IntakePositions(ArmAngles angles, IntakePositions next, double triggerRadians) {
-            this.armAngles = angles;
-            this.nextInSequence = next;
-            this.triggerThresholdRadians = triggerRadians;
+
+        private IntakePositions(ArmAngles mainAngle, boolean hardstopTall, boolean hEngaged) {
+            this.mainArmAngle = mainAngle;
+            this.hardstopUp = hardstopTall;
+            this.horizontalEngaged = hEngaged;
         }
 
-        private IntakePositions(ArmAngles angles) {
-            this.armAngles = angles;
-
+        private IntakePositions(ArmAngles mainAngle, ArmAngles tempAngle, boolean hardstopTall, boolean hEngaged) {
+            this.mainArmAngle = mainAngle;
+            this.temporaryArmAngle = tempAngle;
+            this.hardstopUp = hardstopTall;
+            this.horizontalEngaged = hEngaged;
         }
 
-        public ArmAngles getArmAngles() {
-            return armAngles;
+        public ArmAngles getMainAngle() {
+            return this.mainArmAngle;
         }
 
-        public double getThresholdRadians() {
-            return triggerThresholdRadians;
-        }
-
-        public IntakePositions getNextInSequence() {
-            return nextInSequence;
+        public ArmAngles getTempAngle() {
+            return this.temporaryArmAngle;
         }
         
+        public Value getHardstopSolenoid() {
+            return this.hardstopUp ? Value.kForward : Value.kReverse;
+        }
+
+        public Value getHorizontalSolenoid() {
+            return this.horizontalEngaged ? Value.kReverse : Value.kForward;
+        }
+
     }
 
     public static class IntakeSpeed{
         private double spd;
         private double horizontalRollerSpd;
-        private boolean engageRollers;
 
-        public IntakeSpeed(double s, double horizontalRollerSpd, boolean engageRollers) {
+        public IntakeSpeed(double s, double horizontalRollerSpd) {
             spd = s;
             this.horizontalRollerSpd = horizontalRollerSpd;
-            this.engageRollers = engageRollers;
         }
 
         public double getWheelSpeed() {
@@ -84,10 +93,6 @@ public class StateVariables {
 
         public double getHorizontalRollerSpd() {
             return horizontalRollerSpd;
-        }
-
-        public boolean getEngageRollers() {
-            return engageRollers;
         }
 
     }

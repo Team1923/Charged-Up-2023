@@ -12,7 +12,7 @@ public class StateHandler {
     private static StateHandler stateHandler;
     private VerticalLocations verticalLocations = VerticalLocations.LOW;
     
-    private IntakePositions desiredIntakePosition = IntakePositions.STOW;
+    private IntakePositions desiredIntakePosition = IntakePositions.SHOOT_TALL;
 
     private CurrentRobotDirection currentRobotDirection = CurrentRobotDirection.RIGHT;
 
