@@ -1,6 +1,5 @@
 package frc.robot.util;
 
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.interfaces.LimelightInterface.SpecificLimelight;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
@@ -30,6 +29,8 @@ public class StateHandler {
     private boolean autoIntakeWheels = false;
 
     private boolean wantToBeHappy = false;
+
+    private boolean useGyroVelocityMeasurement = false;
 
 
     public static synchronized StateHandler getInstance() {
@@ -120,6 +121,20 @@ public class StateHandler {
 
     public boolean getWantToBeHappy() {
         return wantToBeHappy;
+    }
+
+    public void setUseGyroVelocityMeasurement(boolean u) {
+        useGyroVelocityMeasurement = u;
+    }
+
+    public boolean getUseGyroVelocityMeasurement() {
+        return useGyroVelocityMeasurement;
+    }
+
+    public void resetAutoStates() {
+        useGyroVelocityMeasurement = false;
+        desiredIntakePosition = IntakePositions.SHOOT_TALL;
+        desiredIntakeWheelSpeed = IntakeWheelSpeeds.GRIP;
     }
 
 

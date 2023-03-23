@@ -48,13 +48,10 @@ public class IntakeSubsystem extends SubsystemBase {
   private Timer hardstopChangeTimer;
   private Value hardstopValue = Value.kForward;
 
-  private Timer farShotWheelSpinUpTimer;
-
 
   public IntakeSubsystem() {
 
     hardstopChangeTimer = new Timer();
-    farShotWheelSpinUpTimer = new Timer();
 
     hardstopChangeTimer.start();
 
@@ -225,34 +222,20 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     // Set the wheel speeds for the intake motors. If in intake and the sensor is blocked, then run the wheel speeds at grip speeds.
-    if(stateHandler.getDesiredIntakePosition() == IntakePositions.SHOOT_SMALL) {
-      if(stateHandler.getDesiredIntakeWheelSpeed() != IntakeWheelSpeeds.GRIP) {
-        farShotWheelSpinUpTimer.start();
-      } else {
-        farShotWheelSpinUpTimer.stop();
-        farShotWheelSpinUpTimer.reset();
-      }
-      if(!farShotWheelSpinUpTimer.hasElapsed(0.01)) {
-        setHorizontalRawWheelSpeed(IntakeWheelSpeeds.GRIP.getIntakeWheelSpeed().getHorizontalRollerSpd());
-        setMainRawWheelSpeed(IntakeWheelSpeeds.GRIP.getIntakeWheelSpeed().getWheelSpeed());
-      } else if(farShotWheelSpinUpTimer.get() < 0.5) {
-        setHorizontalRawWheelSpeed(IntakeWheelSpeeds.SHOOT_FAR.getIntakeWheelSpeed().getHorizontalRollerSpd());
-        setMainRawWheelSpeed(IntakeWheelSpeeds.GRIP.getIntakeWheelSpeed().getWheelSpeed());
-      } else {
-        setHorizontalRawWheelSpeed(IntakeWheelSpeeds.SHOOT_FAR.getIntakeWheelSpeed().getHorizontalRollerSpd());
-        setMainRawWheelSpeed(IntakeWheelSpeeds.SHOOT_FAR.getIntakeWheelSpeed().getWheelSpeed());      
-      }
+    if(stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE 
+    && (
+      stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.SHOOT_LOW 
+      || stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.SHOOT_MID 
+      || stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.SHOOT_HIGH 
+    )) {
+      setMainRawWheelSpeed(IntakeWheelSpeeds.EJECT.getIntakeWheelSpeed().getWheelSpeed());
+      setHorizontalRawWheelSpeed(IntakeWheelSpeeds.EJECT.getIntakeWheelSpeed().getHorizontalRollerSpd());
     } else if (getGamePieceSensor() 
       && stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE 
       && stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.INTAKE) {
-
-      farShotWheelSpinUpTimer.stop();
-      farShotWheelSpinUpTimer.reset();
       setMainRawWheelSpeed(IntakeWheelSpeeds.GRIP.getIntakeWheelSpeed().getWheelSpeed());
       setHorizontalRawWheelSpeed(IntakeWheelSpeeds.GRIP.getIntakeWheelSpeed().getHorizontalRollerSpd());
     } else {
-      farShotWheelSpinUpTimer.stop();
-      farShotWheelSpinUpTimer.reset();
       setMainRawWheelSpeed(stateHandler.getDesiredIntakeWheelSpeed().getIntakeWheelSpeed().getWheelSpeed());
       setHorizontalRawWheelSpeed(stateHandler.getDesiredIntakeWheelSpeed().getIntakeWheelSpeed().getHorizontalRollerSpd());
     }

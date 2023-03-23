@@ -98,6 +98,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+
+    stateHandler.resetAutoStates();
+
     autonomousCommand = robotContainer.initializeAuto(selector);
     LimelightInterface.getInstance().aprilTagFieldLayout.setOrigin(
         DriverStation.getAlliance() == Alliance.Red ? OriginPosition.kRedAllianceWallRightSide
