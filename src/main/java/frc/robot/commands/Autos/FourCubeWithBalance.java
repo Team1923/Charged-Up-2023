@@ -40,12 +40,7 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
       new SequentialCommandGroup(
         new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
         new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))));
-    eventMap.put("shoot_3", 
-      new SequentialCommandGroup(
-        new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
-        new WaitCommand(0.5),
-        new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP))
-      ));
+    
     eventMap.put("intake_1", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
     eventMap.put("intake_2", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
     eventMap.put("intake_3", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
@@ -67,17 +62,19 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
         ),
         new SequentialCommandGroup(
           new WaitUntilCommand(() -> stateHandler.getUseGyroVelocityMeasurement()),
-           new WaitUntilCommand(() -> swerve.getAngularVelocity() < -30)
+          new ConfirmBalanceCommand(swerve)
         )
       ),
       new InstantCommand(() -> stateHandler.setWantToBeHappy(true)),
+      new SwerveXWheels(swerve),
       new ParallelCommandGroup(
         new SequentialCommandGroup(
+          new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
+          new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL)),
           new WaitCommand(0.5),
           new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
           new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))
-        ),
-        new SwerveXWheels(swerve)
+        )
       )
 
 
