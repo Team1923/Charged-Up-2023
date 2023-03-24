@@ -1,5 +1,6 @@
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.interfaces.LimelightInterface.SpecificLimelight;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
@@ -31,6 +32,8 @@ public class StateHandler {
     private boolean wantToBeHappy = false;
 
     private boolean useGyroVelocityMeasurement = false;
+
+    private boolean stickOut = false;
 
 
     public static synchronized StateHandler getInstance() {
@@ -135,6 +138,14 @@ public class StateHandler {
         useGyroVelocityMeasurement = false;
         desiredIntakePosition = IntakePositions.SHOOT_TALL;
         desiredIntakeWheelSpeed = IntakeWheelSpeeds.GRIP;
+    }
+
+    public Value getStickOutSolenoid(){
+        return this.stickOut ? Value.kReverse : Value.kForward;
+    }
+
+    public void setStickOut(boolean s){
+        this.stickOut = s;
     }
 
 

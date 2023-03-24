@@ -5,13 +5,15 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.Autos.FourCubeWithBalance;
 import frc.robot.commands.Autos.SingleScoreAuto;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class AutoChooser {
 	public enum AutoMode {
-		SINGLE_SCORE
+		SINGLE_SCORE,
+		FOUR_CUBE
 	}
 
 	private SendableChooser<AutoMode> chooser;
@@ -23,6 +25,7 @@ public class AutoChooser {
 	public AutoChooser(){
 		chooser = new SendableChooser<>();
 		chooser.setDefaultOption("SINGLE SCORE", AutoMode.SINGLE_SCORE);
+		chooser.addOption("FourCubeWithBalance", AutoMode.FOUR_CUBE);
 		auto.add(chooser);
 	}
 
@@ -31,6 +34,8 @@ public class AutoChooser {
 		switch(mode){
 			case SINGLE_SCORE:
 				return new SingleScoreAuto();
+			case FOUR_CUBE:
+				return new FourCubeWithBalance(swerve);
 			default:
 				return new SingleScoreAuto();
 		}

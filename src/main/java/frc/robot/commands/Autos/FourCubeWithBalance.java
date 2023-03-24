@@ -10,6 +10,7 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -32,13 +33,13 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
   /** Creates a new FourCubeWithBalance. */
   public FourCubeWithBalance(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "", 3.5, 3, false, false, true);
+    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "4CubeAuto", 2.5, 2.5, false, true, true);
     eventMap.put("shoot_1", new AutoShootSequence());
     eventMap.put("shoot_2", new AutoShootSequence());
     eventMap.put("lift_intake_before_balance", 
       new SequentialCommandGroup(
         new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
-        new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_SMALL))));
+        new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))));
     eventMap.put("shoot_3", 
       new SequentialCommandGroup(
         new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
@@ -53,9 +54,11 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      new InstantCommand(() -> swerve.resetOdometryForState(mcdonaldsCubed.getInitialState())),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
       new WaitCommand(0.5),
-      new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)) ,
+      new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
+      new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE)),
       new ParallelRaceGroup(
         new FollowPathWithEvents(
           mcdonaldsCubed,
@@ -63,11 +66,22 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
           eventMap
         ),
         new SequentialCommandGroup(
-          new WaitUntilCommand(() -> stateHandler.getUseGyroVelocityMeasurement()),
-          new WaitUntilCommand(() -> swerve.getAngularVelocity() < -20)
+          new WaitUntilCommand(() -> stateHandler.getUseGyroVelocityMeasurement())
+          // new WaitUntilCommand(() -> swerve.getAngularVelocity() < -20)
         )
       ),
-      new SwerveXWheels(swerve)
+      new InstantCommand(() -> stateHandler.setWantToBeHappy(true)),
+      new ParallelCommandGroup(
+        new SequentialCommandGroup(
+          new WaitCommand(0.5),
+          new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
+          new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))
+        ),
+        new SwerveXWheels(swerve)
+      )
+
+
+     
     );
   }
 

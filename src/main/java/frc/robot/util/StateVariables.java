@@ -35,6 +35,7 @@ public class StateVariables {
         private ArmAngles temporaryArmAngle;
         private boolean hardstopUp;
         private boolean horizontalEngaged;
+    
 
         /**
          * Enable the state to automatically switch to another state once it
@@ -51,6 +52,7 @@ public class StateVariables {
             this.mainArmAngle = mainAngle;
             this.hardstopUp = hardstopTall;
             this.horizontalEngaged = hEngaged;
+            
         }
 
         private IntakePositions(ArmAngles mainAngle, ArmAngles tempAngle, boolean hardstopTall, boolean hEngaged) {
@@ -58,6 +60,7 @@ public class StateVariables {
             this.temporaryArmAngle = tempAngle;
             this.hardstopUp = hardstopTall;
             this.horizontalEngaged = hEngaged;
+           
         }
 
         public ArmAngles getMainAngle() {
@@ -75,6 +78,8 @@ public class StateVariables {
         public Value getHorizontalSolenoid() {
             return this.horizontalEngaged ? Value.kReverse : Value.kForward;
         }
+
+       
 
     }
 

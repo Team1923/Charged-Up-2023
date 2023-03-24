@@ -37,6 +37,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private DoubleSolenoid rollerSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
   private DoubleSolenoid hardstopSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+  private DoubleSolenoid stickSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 4, 5);
 
   private DutyCycleEncoder intakeEncoder = new DutyCycleEncoder(
       IntakeConstants.intakeAbosluteEncoderID);
@@ -150,6 +151,10 @@ public class IntakeSubsystem extends SubsystemBase {
     hardstopSolenoid.set(stateHandler.getDesiredIntakePosition().getHardstopSolenoid());
   }
 
+  public void setStickSolenoid(){
+    stickSolenoid.set(stateHandler.getStickOutSolenoid());
+  }
+
   public void stopWheels() {
     leftIntakeWheelMotor.stopMotor();
     rightIntakeWheelMotor.stopMotor();
@@ -191,6 +196,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Closed Loop error", intakeArmMaster.getClosedLoopError());
 
+    SmartDashboard.putNumber("Intake Percent Out", intakeArmMaster.get());
+
+
     // Runs when disabled
     if (DriverStation.isDisabled()) {
       disableMotionMagic();
@@ -204,6 +212,9 @@ public class IntakeSubsystem extends SubsystemBase {
     
     // Set the hardstop solenoid to the desired value
     setHardstopSolenoid();
+
+    // Set the stick Solenoid to the desired value
+    setStickSolenoid();
 
     // Reset the timer for the hardstop solenoid if the value has changed since the last loop
     if(hardstopValue != getHardstopSolenoidOutput()) {

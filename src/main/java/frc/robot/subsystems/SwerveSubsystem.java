@@ -226,6 +226,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
         PathPlannerServer.sendPathFollowingData(new Pose2d(), getPose());
 
+        SmartDashboard.putNumber("Gyro Angle", getYaw().getDegrees());
+        SmartDashboard.putNumber("Gyro Angular Velocity", getAngularVelocity());
 
         // for(SwerveModule mod : mSwerveMods){
         // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",

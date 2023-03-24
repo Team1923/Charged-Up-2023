@@ -49,7 +49,7 @@ public final class Constants {
     public static final double intakeArmkD = 0;
 
     public static final double maxIntakeArmVel = 20000;
-    public static final double maxIntakeArmAccel = 15000;
+    public static final double maxIntakeArmAccel = 20000;
 
     public static final double intakeArmGearRatio = 64;
     public static final double intakeArmTicksToRad = (2 * Math.PI)
