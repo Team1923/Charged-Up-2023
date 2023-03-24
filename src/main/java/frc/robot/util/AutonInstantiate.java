@@ -27,7 +27,7 @@ public class AutonInstantiate {
 
 	  //As we are able to get more successful auton routines, we can add them to this class and create 
 	  //getters for them
-	  public SequentialCommandGroup get4BallAuton(){
+	  public SequentialCommandGroup get4CubeAuton(){
 		return fourcubeAuton;
 	  }
 

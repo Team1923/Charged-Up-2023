@@ -36,7 +36,7 @@ public class AutoChooser {
 			case SINGLE_SCORE:
 				return new SingleScoreAuto();
 			case FOUR_CUBE:
-				return new AutonInstantiate(swerve).getInstance(swerve).get4BallAuton();
+				return AutonInstantiate.getInstance(swerve).get4CubeAuton();
 			default:
 				return new SingleScoreAuto();
 		}
