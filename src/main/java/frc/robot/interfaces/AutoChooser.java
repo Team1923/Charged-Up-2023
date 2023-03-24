@@ -9,6 +9,7 @@ import frc.robot.commands.Autos.FourCubeWithBalance;
 import frc.robot.commands.Autos.SingleScoreAuto;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.util.AutonInstantiate;
 
 public class AutoChooser {
 	public enum AutoMode {
@@ -35,7 +36,7 @@ public class AutoChooser {
 			case SINGLE_SCORE:
 				return new SingleScoreAuto();
 			case FOUR_CUBE:
-				return new FourCubeWithBalance(swerve);
+				return new AutonInstantiate(swerve).getInstance(swerve).get4BallAuton();
 			default:
 				return new SingleScoreAuto();
 		}

@@ -18,6 +18,7 @@ import frc.robot.commands.SwerveCommands.SwerveXWheels;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
 import frc.robot.interfaces.AutoChooser;
 import frc.robot.subsystems.*;
+import frc.robot.util.AutonInstantiate;
 import frc.robot.util.PathPlannerUtils.AutoFromPathPlanner;
 import frc.robot.util.StateVariables.HorizontalLocations;
 import frc.robot.util.StateVariables.IntakePositions;
@@ -75,6 +76,11 @@ public class RobotContainer {
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     public final ControllerRumble controllerRumble = new ControllerRumble(xboxDriverController);
     public final ShuffleboardSubsystem shuffleboardSubsystem = new ShuffleboardSubsystem();
+
+
+    //AutonInstantiate
+
+    AutonInstantiate autonInstantiate = AutonInstantiate.getInstance(s_Swerve);
 
 
 
