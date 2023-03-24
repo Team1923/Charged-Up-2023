@@ -66,8 +66,8 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
           eventMap
         ),
         new SequentialCommandGroup(
-          new WaitUntilCommand(() -> stateHandler.getUseGyroVelocityMeasurement())
-          // new WaitUntilCommand(() -> swerve.getAngularVelocity() < -20)
+          new WaitUntilCommand(() -> stateHandler.getUseGyroVelocityMeasurement()),
+           new WaitUntilCommand(() -> swerve.getAngularVelocity() < -30)
         )
       ),
       new InstantCommand(() -> stateHandler.setWantToBeHappy(true)),
