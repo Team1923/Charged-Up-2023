@@ -25,15 +25,15 @@ import frc.robot.util.StateVariables.IntakeWheelSpeeds;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class FourCubeWithBalance extends SequentialCommandGroup {
+public class FourCubeWithBalanceSideLine extends SequentialCommandGroup {
 
   private StateHandler stateHandler = StateHandler.getInstance();
   HashMap<String, Command> eventMap = new HashMap<>();
 
   /** Creates a new FourCubeWithBalance. */
-  public FourCubeWithBalance(SwerveSubsystem swerve) {
+  public FourCubeWithBalanceSideLine(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "4CubeAuto", 3, 3, false, true, true);
+    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "4CubeAutoSideLine", 3, 3, false, true, true);
     eventMap.put("shoot_1", new AutoShootSequence());
     eventMap.put("shoot_2", new AutoShootSequence());
     eventMap.put("lift_intake_before_balance", 

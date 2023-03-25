@@ -14,7 +14,9 @@ import frc.robot.util.AutonInstantiate;
 public class AutoChooser {
 	public enum AutoMode {
 		SINGLE_SCORE,
-		FOUR_CUBE
+		FOUR_CUBE,
+		FOUR_CUBE_SIDELINE,
+		FIVE_CUBE
 	}
 
 	private SendableChooser<AutoMode> chooser;
@@ -27,6 +29,8 @@ public class AutoChooser {
 		chooser = new SendableChooser<>();
 		chooser.setDefaultOption("SINGLE SCORE", AutoMode.SINGLE_SCORE);
 		chooser.addOption("FourCubeWithBalance", AutoMode.FOUR_CUBE);
+		chooser.addOption("FiveCubeWithBalance", AutoMode.FIVE_CUBE);
+		chooser.addOption("FourCubeWithBalanceSideLine", AutoMode.FOUR_CUBE_SIDELINE);
 		auto.add(chooser);
 	}
 
@@ -37,6 +41,10 @@ public class AutoChooser {
 				return new SingleScoreAuto();
 			case FOUR_CUBE:
 				return AutonInstantiate.getInstance(swerve).get4CubeAuton();
+			case FOUR_CUBE_SIDELINE:
+				return AutonInstantiate.getInstance(swerve).get4CubeSideLineAuton();
+			case FIVE_CUBE:
+				return AutonInstantiate.getInstance(swerve).getFiveCubeAuton();
 			default:
 				return new SingleScoreAuto();
 		}
