@@ -66,8 +66,8 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
         )
       ),
       new InstantCommand(() -> stateHandler.setWantToBeHappy(true)),
-      new SwerveXWheels(swerve),
       new ParallelCommandGroup(
+        new SwerveXWheels(swerve),
         new SequentialCommandGroup(
           new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
           new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL)),

@@ -44,9 +44,9 @@ public final class Constants {
     public static final int horizontalRollerID = 20;
 
 
-    public static final double intakeArmkP = 0.2;
+    public static final double intakeArmkP = 0.3;
     public static final double intakeArmkI = 0;
-    public static final double intakeArmkD = 0;
+    public static final double intakeArmkD = 0.01;
 
     public static final double maxIntakeArmVel = 20000;
     public static final double maxIntakeArmAccel = 20000;
