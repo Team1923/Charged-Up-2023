@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.Autos.AutoShootSequence;
 import frc.robot.commands.Autos.TestMarkers;
 import frc.robot.commands.IntakeCommands.IntakeGamePiece;
 import frc.robot.commands.IntakeCommands.ShootGamePiece;
@@ -118,7 +119,7 @@ public class RobotContainer {
         operatorDownDPad.onTrue(new SetShootingLocation(VerticalLocations.LOW));
         operatorLeftDPad.onTrue(new SetShootingLocation(VerticalLocations.MID));
         operatorCrossButton.whileTrue(new ShootGamePiece());
-        
+        operatorLeftBumper.onTrue(new AutoShootSequence());
 
         operatorSquareButton.onTrue(new SetIntakePosition(IntakePositions.INTAKE));
         operatorTriangleButton.onTrue(new SetIntakePosition(IntakePositions.SHOOT_TALL));
