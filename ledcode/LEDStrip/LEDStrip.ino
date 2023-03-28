@@ -129,6 +129,9 @@ void lightUp() {
     case 4:
       setGreen();
       break;
+    case 6:
+      setPurple();
+      break;
     case 7:
       setWhite();
       break;
