@@ -5,27 +5,33 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.StateHandler;
+import frc.robot.util.StateVariables.IntakePositions;
 
 public class ControllerRumble extends SubsystemBase {
   /** Creates a new ControllerRumble. */
   private XboxController xboxController;
+  private PS4Controller ps4Controller;
   private StateHandler stateHandler = StateHandler.getInstance();
 
-  public ControllerRumble(XboxController xboxController) {
+  public ControllerRumble(XboxController xboxController, PS4Controller ps4Controller) {
     this.xboxController = xboxController;
+    this.ps4Controller = ps4Controller;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    // if(DriverStation.isTeleop() && stateHandler.hasGamePiece()) {
-    //   xboxController.setRumble(RumbleType.kBothRumble, 0.75);
-    // } else {
-    //   xboxController.setRumble(RumbleType.kBothRumble, 0);
-    // }
+    if(DriverStation.isTeleop() && stateHandler.hasGamePiece() && stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE) {
+      xboxController.setRumble(RumbleType.kBothRumble, 0.6);
+      ps4Controller.setRumble(RumbleType.kBothRumble, 0.6);
+    } else {
+      xboxController.setRumble(RumbleType.kBothRumble, 0);
+      ps4Controller.setRumble(RumbleType.kBothRumble, 0);
+    }
   }
 }

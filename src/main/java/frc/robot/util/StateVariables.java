@@ -10,7 +10,7 @@ public class StateVariables {
         SHOOT_MID(new IntakeSpeed(-0.30, 0)),
         SHOOT_LOW(new IntakeSpeed(-0.15, 0)),
         GRIP(new IntakeSpeed(0.075, 0)),
-        EJECT(new IntakeSpeed(-1, -1));
+        EJECT(new IntakeSpeed(-0.5, -0.5));
 
         private IntakeSpeed iWheelSpeed;
 

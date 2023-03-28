@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -43,6 +44,7 @@ public class RobotContainer {
 
     //need this for rumble setup, DO NOT USE
     private final XboxController xboxDriverController = new XboxController(0);
+    private final PS4Controller ps4OperatorController = new PS4Controller(1);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -75,7 +77,7 @@ public class RobotContainer {
     /* Subsystems */
     public final SwerveSubsystem s_Swerve = new SwerveSubsystem();
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-    public final ControllerRumble controllerRumble = new ControllerRumble(xboxDriverController);
+    public final ControllerRumble controllerRumble = new ControllerRumble(xboxDriverController, ps4OperatorController);
     public final ShuffleboardSubsystem shuffleboardSubsystem = new ShuffleboardSubsystem();
 
 
@@ -110,8 +112,14 @@ public class RobotContainer {
         bButton.onTrue(new InstantCommand(() -> s_Swerve.resetModulesToAbsolute()));
         new Trigger(() -> driver.getRawAxis(3) > 0.2).whileTrue(new IntakeGamePiece(IntakeWheelSpeeds.INTAKE));
 
-        //Auto testing stuff
-        //rightBumper.toggleOnTrue(new TestMarkers(s_Swerve));
+        /*
+         * Note for Aalind for button bindings:
+         * - right trigger = intake
+         * - right bumper = slow mode = use for charge station
+         * - a = lock swerve wheels 
+         * - b = reset swerve modules
+         * - y = pigeon reset
+         */
 
 
         //OPERATOR CONTROLLER BINDINGS
@@ -135,7 +143,7 @@ public class RobotContainer {
                         () -> -driver.getRawAxis(strafeAxis),
                         () -> -driver.getRawAxis(rotationAxis),
                         () -> driver.getRawAxis(2) > 0.2,
-                        () -> xButton.getAsBoolean()));
+                        () -> rightBumper.getAsBoolean()));
 
     }
 

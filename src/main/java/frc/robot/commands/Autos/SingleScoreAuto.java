@@ -6,11 +6,9 @@ package frc.robot.commands.Autos;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.util.StateHandler;
-import frc.robot.util.StateVariables.GamePieceMode;
-import frc.robot.util.StateVariables.HorizontalLocations;
-import frc.robot.util.StateVariables.VerticalLocations;
+import frc.robot.util.StateVariables.IntakeWheelSpeeds;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -23,9 +21,8 @@ public class SingleScoreAuto extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      // new AutoScoreCommand(HorizontalLocations.LEFT, VerticalLocations.HIGH, GamePieceMode.CONE),
-      // new WaitUntilCommand(() -> stateHandler.getResetManipulator()),
-      // new InstantCommand(() -> stateHandler.setResetManipulator(false))
+      new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
+      new WaitCommand(0.5)
     );
   }
 }
