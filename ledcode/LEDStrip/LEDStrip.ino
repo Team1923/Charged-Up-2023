@@ -1,11 +1,10 @@
 #include <FastLED.h>
 
-#define NUM_STRIPS 2
+#define NUM_STRIPS 1
 #define NUM_LEDS_PER_STRIP 100
 CRGB leds[NUM_STRIPS][NUM_LEDS_PER_STRIP];
 
 #define LED_PIN_1 10
-#define LED_PIN_2 11
 
 #define BRIGHTNESS 255
 #define SATURATION 255
@@ -33,7 +32,6 @@ void setup() {
 
   //note that this model uses GRB formatting
   FastLED.addLeds<WS2812B, LED_PIN_1, RGB>(leds[0], NUM_LEDS_PER_STRIP);
-  FastLED.addLeds<WS2812B, LED_PIN_2, RGB>(leds[1], NUM_LEDS_PER_STRIP);
   Serial.begin(9600);
 }
 
@@ -111,7 +109,6 @@ void RainbowOscillating(){
       leds[1][j] = CHSV(currentColor - (j * 2), SATURATION, BRIGHTNESS);
     }
 		FastLED.show();  
-    serial.ln(currentColor);
 }
 
 void handleCurrentSelection() {
@@ -128,6 +125,9 @@ void lightUp() {
       break;
     case 4:
       setGreen();
+      break;
+    case 6:
+      setPurple();
       break;
     case 7:
       setWhite();

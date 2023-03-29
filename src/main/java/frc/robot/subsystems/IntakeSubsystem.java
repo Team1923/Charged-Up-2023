@@ -19,9 +19,11 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FalconConstants;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.commands.IntakeCommands.EmergencyResetCommand;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.IntakePositions;
 import frc.robot.util.StateVariables.IntakeWheelSpeeds;
@@ -48,7 +50,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private Timer hardstopChangeTimer;
   private Value hardstopValue = Value.kForward;
-
 
   public IntakeSubsystem() {
 
@@ -98,16 +99,15 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void resetIntakePosition() {
-
-    SmartDashboard.putNumber("STEP 1", getIntakeAbsoluteEncoderRads());
-    SmartDashboard.putNumber("STEP 2", IntakeConstants.intakeArmEncoderZero);
-
-
     double setZeroPosition = (getIntakeAbsoluteEncoderRads() - IntakeConstants.intakeArmEncoderZero
         + IntakeConstants.intakeArmHardstop)
         * IntakeConstants.intakeArmRadsToTicks;
-    SmartDashboard.putNumber("SET ZERO POSITION", setZeroPosition);
     intakeArmMaster.setSelectedSensorPosition(setZeroPosition);
+  }
+
+  public void emergencyResetIntakePosition() {
+    intakeArmMaster.setSelectedSensorPosition(
+        IntakePositions.SHOOT_TALL.getMainAngle().getAngle() * IntakeConstants.intakeArmRadsToTicks);
   }
 
   public void setIntakePosition(double distalAngle) {
@@ -139,19 +139,19 @@ public class IntakeSubsystem extends SubsystemBase {
     rightIntakeWheelMotor.set(-stpt);
   }
 
-  public void setHorizontalRawWheelSpeed(double stpt){
+  public void setHorizontalRawWheelSpeed(double stpt) {
     horizontalRollerMotor.set(stpt);
   }
 
   public void setRollerSolenoid() {
     rollerSolenoid.set(stateHandler.getDesiredIntakePosition().getHorizontalSolenoid());
   }
-  
+
   public void setHardstopSolenoid() {
     hardstopSolenoid.set(stateHandler.getDesiredIntakePosition().getHardstopSolenoid());
   }
 
-  public void setStickSolenoid(){
+  public void setStickSolenoid() {
     stickSolenoid.set(stateHandler.getStickOutSolenoid());
   }
 
@@ -182,6 +182,10 @@ public class IntakeSubsystem extends SubsystemBase {
     return hardstopSolenoid.get();
   }
 
+  public void setRawIntakeArmSpeed(double stpt) {
+    intakeArmMaster.set(stpt);
+  }
+
   @Override
   public void periodic() {
 
@@ -190,7 +194,7 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("INTAKE Arm POSITION RADS: ", getIntakeArmPosition());
     SmartDashboard.putNumber("INTAKE ABSOLUTE Encoder Rads", getIntakeAbsoluteEncoderRads());
     SmartDashboard.putNumber("FALCON INTAKE MOTOR ENCODER", getIntakeArmPosition());
-    
+
     SmartDashboard.putString("Desired Intake Position", stateHandler.getDesiredIntakePosition().toString());
     SmartDashboard.putString("Desired Intake Speeds", stateHandler.getDesiredIntakePosition().toString());
 
@@ -202,8 +206,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Intake Arm Velocity", intakeArmMaster.getSelectedSensorVelocity());
 
-
-
     // Runs when disabled
     if (DriverStation.isDisabled()) {
       disableMotionMagic();
@@ -214,15 +216,16 @@ public class IntakeSubsystem extends SubsystemBase {
 
     // Update the intake solenoid based on the desired state
     setRollerSolenoid();
-    
+
     // Set the hardstop solenoid to the desired value
     setHardstopSolenoid();
 
     // Set the stick Solenoid to the desired value
     setStickSolenoid();
 
-    // Reset the timer for the hardstop solenoid if the value has changed since the last loop
-    if(hardstopValue != getHardstopSolenoidOutput()) {
+    // Reset the timer for the hardstop solenoid if the value has changed since the
+    // last loop
+    if (hardstopValue != getHardstopSolenoidOutput()) {
       hardstopValue = getHardstopSolenoidOutput();
       hardstopChangeTimer.reset();
       hardstopChangeTimer.start();
@@ -230,32 +233,33 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("hardstop timer", hardstopChangeTimer.get());
 
-    // Set the intake to the desired setpoint
-    if(hardstopChangeTimer.get() < 0.5) {
-      setIntakePosition(stateHandler.getDesiredIntakePosition().getTempAngle().getAngle());
-    } else {
-      setIntakePosition(stateHandler.getDesiredIntakePosition().getMainAngle().getAngle());
+    if (!CommandScheduler.getInstance().isScheduled(EmergencyResetCommand.getInstance(this))) {
+      // Set the intake to the desired setpoint
+      if (hardstopChangeTimer.get() < 0.5) {
+        setIntakePosition(stateHandler.getDesiredIntakePosition().getTempAngle().getAngle());
+      } else {
+        setIntakePosition(stateHandler.getDesiredIntakePosition().getMainAngle().getAngle());
+      }
     }
 
-    // Set the wheel speeds for the intake motors. If in intake and the sensor is blocked, then run the wheel speeds at grip speeds.
-    if(stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE 
-    && (
-      stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.SHOOT_LOW 
-      || stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.SHOOT_MID 
-      || stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.SHOOT_HIGH 
-    )) {
+    // Set the wheel speeds for the intake motors. If in intake and the sensor is
+    // blocked, then run the wheel speeds at grip speeds.
+    if (stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE
+        && (stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.SHOOT_LOW
+            || stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.SHOOT_MID
+            || stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.SHOOT_HIGH)) {
       setMainRawWheelSpeed(IntakeWheelSpeeds.EJECT.getIntakeWheelSpeed().getWheelSpeed());
       setHorizontalRawWheelSpeed(IntakeWheelSpeeds.EJECT.getIntakeWheelSpeed().getHorizontalRollerSpd());
-    } else if (getGamePieceSensor() 
-      && stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE 
-      && stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.INTAKE) {
+    } else if (getGamePieceSensor()
+        && stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE
+        && stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.INTAKE) {
       setMainRawWheelSpeed(IntakeWheelSpeeds.GRIP.getIntakeWheelSpeed().getWheelSpeed());
       setHorizontalRawWheelSpeed(IntakeWheelSpeeds.GRIP.getIntakeWheelSpeed().getHorizontalRollerSpd());
     } else {
       setMainRawWheelSpeed(stateHandler.getDesiredIntakeWheelSpeed().getIntakeWheelSpeed().getWheelSpeed());
-      setHorizontalRawWheelSpeed(stateHandler.getDesiredIntakeWheelSpeed().getIntakeWheelSpeed().getHorizontalRollerSpd());
+      setHorizontalRawWheelSpeed(
+          stateHandler.getDesiredIntakeWheelSpeed().getIntakeWheelSpeed().getHorizontalRollerSpd());
     }
-    
 
   }
 }

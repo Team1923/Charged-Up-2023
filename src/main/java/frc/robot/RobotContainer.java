@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos.AutoShootSequence;
 import frc.robot.commands.Autos.TestMarkers;
+import frc.robot.commands.IntakeCommands.EmergencyResetCommand;
 import frc.robot.commands.IntakeCommands.IntakeGamePiece;
 import frc.robot.commands.IntakeCommands.ShootGamePiece;
 import frc.robot.commands.IntakeCommands.SetIntakePosition;
@@ -82,7 +83,6 @@ public class RobotContainer {
 
 
     //AutonInstantiate
-
     AutonInstantiate autonInstantiate = AutonInstantiate.getInstance(s_Swerve);
 
 
@@ -127,7 +127,7 @@ public class RobotContainer {
         operatorDownDPad.onTrue(new SetShootingLocation(VerticalLocations.LOW));
         operatorLeftDPad.onTrue(new SetShootingLocation(VerticalLocations.MID));
         operatorCrossButton.whileTrue(new ShootGamePiece());
-        operatorLeftBumper.onTrue(new AutoShootSequence());
+        centerRightButton.toggleOnTrue(EmergencyResetCommand.getInstance(intakeSubsystem));
 
         operatorSquareButton.onTrue(new SetIntakePosition(IntakePositions.INTAKE));
         operatorTriangleButton.onTrue(new SetIntakePosition(IntakePositions.SHOOT_TALL));

@@ -49,6 +49,7 @@ public class FourCubeWithBalanceSideLine extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      new InstantCommand(() -> swerve.resetModulesToAbsolute()),
       new InstantCommand(() -> swerve.resetOdometryForState(mcdonaldsCubed.getInitialState())),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
       new WaitCommand(0.5),
