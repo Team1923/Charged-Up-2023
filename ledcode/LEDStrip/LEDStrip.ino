@@ -1,8 +1,8 @@
 #include <FastLED.h>
 
 #define NUM_STRIPS 1
-#define NUM_LEDS_PER_STRIP 100
-CRGB leds[NUM_STRIPS][NUM_LEDS_PER_STRIP];
+#define NUM_LEDS_PER_STRIP 101
+CRGB leds[NUM_LEDS_PER_STRIP];
 
 #define LED_PIN_1 10
 
@@ -24,6 +24,7 @@ bool colorchange = true;
 
 int currentState = 0;
 
+long white_counter = 0;
 
 void setup() {
   pinMode(COM_PIN_1, INPUT);
@@ -31,7 +32,7 @@ void setup() {
   pinMode(COM_PIN_3, INPUT);
 
   //note that this model uses GRB formatting
-  FastLED.addLeds<WS2812B, LED_PIN_1, RGB>(leds[0], NUM_LEDS_PER_STRIP);
+  FastLED.addLeds<WS2812B, LED_PIN_1, RGB>(leds, NUM_LEDS_PER_STRIP);
   Serial.begin(9600);
 }
 
@@ -42,40 +43,65 @@ void loop() {
 }
 
 void setYellow() {
-  for (int i = 0; i < NUM_STRIPS; i++) {
+    white_counter = 0;
+
     for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
-      leds[i][j] = CRGB(255, 255, 0);
+      leds[j] = CRGB(255, 255, 0);
     }
-  }
+
   FastLED.show();
 }
 
 void setPurple() {
-  for (int i = 0; i < NUM_STRIPS; i++) {
+  white_counter = 0;
+
     for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
-      leds[i][j] = CRGB(0, 119, 200);
+      leds[j] = CRGB(0, 119, 200);
     }
-  }
+  
   FastLED.show();
 }
 
 void setGreen() {
+  white_counter = 0;
+
   for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
-    leds[0][j] = CRGB(255, 0, 0);
-    leds[1][j] = CRGB(255,0,0);
+    leds[j] = CRGB(255, 0, 0);
   }
   FastLED.show();
 }
 
 void setWhite(){
+
+  CRGB desired_color;
+
+  white_counter += 2;
+
+  if(white_counter < 300) {
+    int div = (white_counter / 20) % 2;
+    if(div == 1) {
+      desired_color = CRGB(255,255,255);
+    } else {
+      desired_color = CRGB(0,0,0);
+    }
+  } else {
+    desired_color = CRGB(0, 119, 200);
+  }
+  
+  // if((white_counter > 20 && white_counter < 40) || (white_counter > 60 && white_counter < 80)  || white_counter > 100) {
+  //   desired_color = CRGB(255,255,255);
+  // } else {
+  //   desired_color = CRGB(0,0,0);
+  // }
+
   for(int j = 0; j < NUM_LEDS_PER_STRIP; j++){
-    leds[0][j] = CRGB(255,255,255);
-    leds[1][j] = CRGB(255,255,255);
+    leds[j] = desired_color;
   }
   FastLED.show();
 }
 
 void redOscillating() {
+  white_counter = 0;
   if (getBrighter) {
     currentRed += 5;
   } else {
@@ -90,23 +116,24 @@ void redOscillating() {
       currentRed = 0;
       getBrighter = true;
     }
-    leds[0][j] = CRGB(0, currentRed, 0);
-    leds[1][j] = CRGB(0, currentRed, 0);
+    leds[j] = CRGB(0, currentRed, 0);
+
   }
 
   FastLED.show();
 }
 
 void RainbowOscillating(){
+    white_counter = 0;
+
     if(colorchange){
-      currentColor += 5; 
+      currentColor += 2; 
     }
     for(int j = 0; j<NUM_LEDS_PER_STRIP; j++){
       if(currentColor > 255){
         currentColor = 0; 
       }
-      leds[0][j] = CHSV(currentColor - (j * 2), SATURATION, BRIGHTNESS);
-      leds[1][j] = CHSV(currentColor - (j * 2), SATURATION, BRIGHTNESS);
+      leds[j] = CHSV(currentColor - (j * 2), SATURATION, BRIGHTNESS);
     }
 		FastLED.show();  
 }
@@ -123,18 +150,17 @@ void lightUp() {
     case 0:
       redOscillating();
       break;
-    case 4:
+    case 1:
       setGreen();
-      break;
-    case 6:
-      setPurple();
       break;
     case 7:
       setWhite();
       break;
-    case 1:
+    case 4:
       RainbowOscillating();
       break;
+    case 3:
+      setPurple();
     default:
       break;
   }
