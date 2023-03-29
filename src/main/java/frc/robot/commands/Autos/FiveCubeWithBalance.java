@@ -37,62 +37,64 @@ public class FiveCubeWithBalance extends SequentialCommandGroup {
     eventMap.put("shoot_1", new AutoShootSequence());
     eventMap.put("shoot_2", new AutoShootSequence());
     eventMap.put("shoot_3", new AutoShootSequence());
-    eventMap.put("lift_intake_before_balance", 
-      new SequentialCommandGroup(
-        new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
-        new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))));
-    
-    eventMap.put("intake_1", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
-    eventMap.put("intake_2", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
-    eventMap.put("intake_3", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
-    eventMap.put("intake_4", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
+    eventMap.put("lift_intake_before_balance",
+        new SequentialCommandGroup(
+            new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
+            new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))));
+
+    eventMap.put("intake_1",
+        new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
+    eventMap.put("intake_2",
+        new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
+    eventMap.put("intake_3",
+        new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
+    eventMap.put("intake_4",
+        new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
     eventMap.put("measure_gyro", new InstantCommand(() -> stateHandler.setUseGyroVelocityMeasurement(true)));
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-    new ParallelCommandGroup(
-      new ParallelRaceGroup(
+        new InstantCommand(() -> swerve.resetModulesToAbsolute()),
         new ParallelCommandGroup(
-          new FollowPathWithEvents(
-            mcdonaldsCubed,
-            mcdonaldsCubed.getEventMarkers(),
-            eventMap
-          ),
-          new SequentialCommandGroup(
-            new InstantCommand(() -> swerve.resetOdometryForState(mcdonaldsCubed.getInitialState())),
-            new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
-            new WaitCommand(0.25),
-            new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
-            new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE))
-          )
-        ),
-        new SequentialCommandGroup(
-          new WaitUntilCommand(() -> stateHandler.getUseGyroVelocityMeasurement()),
-          new ConfirmBalanceCommand(swerve)
-        )
-      ),
-      new SequentialCommandGroup(
-        new WaitUntilCommand(() -> stateHandler.getUseGyroVelocityMeasurement()),
-        new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
-        new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL)),
-        new WaitCommand(0.5),
-        new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
-        new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))
-      )
-    ),
-      new InstantCommand(() -> stateHandler.setWantToBeHappy(true)),
-      new SwerveXWheels(swerve)
-     
+            new ParallelRaceGroup(
+                new ParallelCommandGroup(
+                    new FollowPathWithEvents(
+                        mcdonaldsCubed,
+                        mcdonaldsCubed.getEventMarkers(),
+                        eventMap),
+                    new SequentialCommandGroup(
+                        new InstantCommand(() -> swerve.resetOdometryForState(mcdonaldsCubed.getInitialState())),
+                        new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
+                        new WaitCommand(0.25),
+                        new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
+                        new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE)))),
+                new SequentialCommandGroup(
+                    new WaitUntilCommand(() -> stateHandler.getUseGyroVelocityMeasurement()),
+                    new ConfirmBalanceCommand(swerve))),
+            new SequentialCommandGroup(
+                new WaitUntilCommand(() -> stateHandler.getUseGyroVelocityMeasurement()),
+                new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
+                new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL)),
+                new WaitCommand(0.5),
+                new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
+                new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL)))),
+        new InstantCommand(() -> stateHandler.setWantToBeHappy(true)),
+        new SwerveXWheels(swerve)
+
     );
   }
 
   // new SequentialCommandGroup(
-  //   new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
-  //   new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL)),
-  //   new WaitCommand(0.5),
-  //   new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
-  //   new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))
+  // new InstantCommand(() ->
+  // stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
+  // new InstantCommand(() ->
+  // stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL)),
+  // new WaitCommand(0.5),
+  // new InstantCommand(() ->
+  // stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
+  // new InstantCommand(() ->
+  // stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))
   // ),
 
 }
