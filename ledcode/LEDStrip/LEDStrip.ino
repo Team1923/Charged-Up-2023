@@ -6,7 +6,7 @@ CRGB leds[NUM_LEDS_PER_STRIP];
 
 #define LED_PIN_1 10
 
-#define BRIGHTNESS 255
+#define BRIGHTNESS 175
 #define SATURATION 255
 
 
