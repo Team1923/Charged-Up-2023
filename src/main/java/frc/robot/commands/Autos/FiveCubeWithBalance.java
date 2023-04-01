@@ -56,6 +56,7 @@ public class FiveCubeWithBalance extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         new InstantCommand(() -> swerve.resetModulesToAbsolute()),
+        new InstantCommand(() -> swerve.resetOdometryForState(mcdonaldsCubed.getInitialState())),
         new ParallelCommandGroup(
             new ParallelRaceGroup(
                 new ParallelCommandGroup(
@@ -64,7 +65,6 @@ public class FiveCubeWithBalance extends SequentialCommandGroup {
                         mcdonaldsCubed.getEventMarkers(),
                         eventMap),
                     new SequentialCommandGroup(
-                        new InstantCommand(() -> swerve.resetOdometryForState(mcdonaldsCubed.getInitialState())),
                         new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
                         new WaitCommand(0.25),
                         new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
@@ -85,16 +85,6 @@ public class FiveCubeWithBalance extends SequentialCommandGroup {
     );
   }
 
-  // new SequentialCommandGroup(
-  // new InstantCommand(() ->
-  // stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
-  // new InstantCommand(() ->
-  // stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL)),
-  // new WaitCommand(0.5),
-  // new InstantCommand(() ->
-  // stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
-  // new InstantCommand(() ->
-  // stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))
-  // ),
+
 
 }

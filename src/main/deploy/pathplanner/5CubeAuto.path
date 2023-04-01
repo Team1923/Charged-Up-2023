@@ -25,15 +25,15 @@
     {
       "anchorPoint": {
         "x": 6.99,
-        "y": 0.93
+        "y": 1.0
       },
       "prevControl": {
         "x": 6.582647634598748,
-        "y": 0.8820761923057346
+        "y": 0.9520761923057346
       },
       "nextControl": {
         "x": 7.452481451278693,
-        "y": 0.9844095825033765
+        "y": 1.0544095825033764
       },
       "holonomicAngle": -5.0,
       "isReversal": false,
@@ -50,15 +50,15 @@
     {
       "anchorPoint": {
         "x": 5.2,
-        "y": 2.12
+        "y": 2.25
       },
       "prevControl": {
         "x": 5.222838336274964,
-        "y": 1.8459399647004409
+        "y": 1.9759399647004408
       },
       "nextControl": {
         "x": 5.173010615781554,
-        "y": 2.4438726106213498
+        "y": 2.5738726106213496
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -125,17 +125,17 @@
     {
       "anchorPoint": {
         "x": 6.96,
-        "y": 3.55
+        "y": 3.45
       },
       "prevControl": {
         "x": 6.643955384308322,
-        "y": 3.373252632470178
+        "y": 3.2732526324701783
       },
       "nextControl": {
         "x": 7.2785532823632435,
-        "y": 3.728150334731901
+        "y": 3.6281503347319015
       },
-      "holonomicAngle": 22.83639236236535,
+      "holonomicAngle": 20.0,
       "isReversal": false,
       "velOverride": 0.5,
       "isLocked": false,
@@ -199,22 +199,22 @@
     },
     {
       "anchorPoint": {
-        "x": 4.920606698356254,
+        "x": 5.2,
         "y": 3.4212235567328277
       },
       "prevControl": {
-        "x": 5.4288356340623825,
+        "x": 5.708228935706129,
         "y": 3.5211699269636005
       },
       "nextControl": {
-        "x": 4.4790927188691985,
+        "x": 4.758486020512945,
         "y": 3.33439709614462
       },
       "holonomicAngle": 0,
       "isReversal": false,
-      "velOverride": 1.0,
+      "velOverride": null,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
         "names": [],
         "executionBehavior": "parallel",
@@ -224,11 +224,11 @@
     },
     {
       "anchorPoint": {
-        "x": 3.417558692260242,
+        "x": 2.15,
         "y": 3.4498530425632286
       },
       "prevControl": {
-        "x": 3.808324592614166,
+        "x": 2.540765900353924,
         "y": 3.4498530425632286
       },
       "nextControl": null,
@@ -298,7 +298,7 @@
       ]
     },
     {
-      "position": 8.3,
+      "position": 8.7,
       "names": [
         "measure_gyro"
       ]

@@ -15,7 +15,9 @@ public class AutoChooser {
 		SINGLE_SCORE,
 		FOUR_CUBE,
 		FOUR_CUBE_SIDELINE,
-		FIVE_CUBE
+		FIVE_CUBE,
+		TWO_METER_TEST,
+		TUNE_BALANCE
 	}
 
 	private SendableChooser<AutoMode> chooser;
@@ -30,6 +32,8 @@ public class AutoChooser {
 		chooser.addOption("FourCubeWithBalance", AutoMode.FOUR_CUBE);
 		chooser.addOption("FiveCubeWithBalance", AutoMode.FIVE_CUBE);
 		chooser.addOption("FourCubeWithBalanceSideLine", AutoMode.FOUR_CUBE_SIDELINE);
+		chooser.addOption("TwoMeterTest", AutoMode.TWO_METER_TEST);
+		chooser.addOption("TuneBalance", AutoMode.TUNE_BALANCE);
 		auto.add(chooser);
 	}
 
@@ -44,6 +48,10 @@ public class AutoChooser {
 				return AutonInstantiate.getInstance(swerve).get4CubeSideLineAuton();
 			case FIVE_CUBE:
 				return AutonInstantiate.getInstance(swerve).getFiveCubeAuton();
+			case TWO_METER_TEST:
+				return AutonInstantiate.getInstance(swerve).getTwoMeter();
+			case TUNE_BALANCE:
+				return AutonInstantiate.getInstance(swerve).getBalanceTuning();
 			default:
 				return new SingleScoreAuto();
 		}

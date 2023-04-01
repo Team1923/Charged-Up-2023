@@ -186,6 +186,10 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeArmMaster.set(stpt);
   }
 
+  public double getRawIntakeArmCurrent() {
+    return intakeArmMaster.getStatorCurrent();
+  }
+
   @Override
   public void periodic() {
 
@@ -213,6 +217,10 @@ public class IntakeSubsystem extends SubsystemBase {
       stopWheels();
       return;
     }
+
+    // if(stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE && getGamePieceSensor()) {
+    //   stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_BAR_UP);
+    // }
 
     // Update the intake solenoid based on the desired state
     setRollerSolenoid();

@@ -75,7 +75,7 @@ void setWhite(){
 
   CRGB desired_color;
 
-  white_counter += 2;
+  white_counter += 1;
 
   if(white_counter < 300) {
     int div = (white_counter / 20) % 2;

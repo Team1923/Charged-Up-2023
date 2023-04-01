@@ -41,7 +41,7 @@ public class ConfirmBalanceCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+    SmartDashboard.putString("ENDED WITH GRYO", "YES");
   }
 
   // Returns true when the command should end.

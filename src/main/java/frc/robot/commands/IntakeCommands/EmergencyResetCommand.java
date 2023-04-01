@@ -4,15 +4,20 @@
 
 package frc.robot.commands.IntakeCommands;
 
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.util.RollingAvgDouble;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.IntakePositions;
 
 public class EmergencyResetCommand extends CommandBase {
   /** Creates a new EmergencyResetCommand. */
   private static EmergencyResetCommand emergencyResetCommand;
+
+  private Timer timer;
 
   public static synchronized EmergencyResetCommand getInstance(IntakeSubsystem intake) {
     if(emergencyResetCommand == null) {
@@ -26,6 +31,7 @@ public class EmergencyResetCommand extends CommandBase {
 
   public EmergencyResetCommand(IntakeSubsystem intake) {
     intakeSubsystem = intake;
+    timer = new Timer();
     addRequirements(intakeSubsystem);
   }
 
@@ -33,12 +39,16 @@ public class EmergencyResetCommand extends CommandBase {
   @Override
   public void initialize() {
     StateHandler.getInstance().setDesiredIntakePosition(IntakePositions.SHOOT_TALL);
+    timer.stop();
+    timer.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     intakeSubsystem.setRawIntakeArmSpeed(.1);
+    SmartDashboard.putNumber("Current TIMER", timer.get());
+    SmartDashboard.putNumber("MOTOR CURRENT", intakeSubsystem.getRawIntakeArmCurrent());
   }
 
   // Called once the command ends or is interrupted.
@@ -50,6 +60,12 @@ public class EmergencyResetCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if(intakeSubsystem.getRawIntakeArmCurrent() > 18) {
+      timer.start();
+    } else {
+      timer.stop();
+      timer.reset();
+    }
+    return timer.get() > 0.1;
   }
 }

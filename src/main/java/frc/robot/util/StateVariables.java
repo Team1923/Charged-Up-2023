@@ -27,6 +27,7 @@ public class StateVariables {
     public static enum IntakePositions {
         // Similar to Arm Positions, diferent Intake Arm States take in Arm Angle Object
         INTAKE(new ArmAngles(Math.toRadians(-5)), new ArmAngles(Math.toRadians(-5)), true, true),
+        //INTAKE_BAR_UP(new ArmAngles(Math.toRadians(-5)), new ArmAngles(Math.toRadians(-5)), true, false),
         SHOOT_TALL(new ArmAngles(2.132 + 0.17), new ArmAngles(2), true, false),
         SHOOT_SMALL(new ArmAngles(2.245 + 0.17), new ArmAngles(2.132 + 0.17), false, false),
         GOOFY_SHOT(new ArmAngles(0.725), new ArmAngles(0.725), false, true);

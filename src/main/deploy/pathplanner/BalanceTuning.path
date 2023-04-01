@@ -2,17 +2,17 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 2.0,
-        "y": 5.0
+        "x": 6.957,
+        "y": 4.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.9999999999999973,
-        "y": 5.0
+        "x": 6.459970950442831,
+        "y": 4.434323650147609
       },
-      "holonomicAngle": 0,
+      "holonomicAngle": 34.813121559584346,
       "isReversal": false,
-      "velOverride": null,
+      "velOverride": 0.5,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
@@ -24,20 +24,20 @@
     },
     {
       "anchorPoint": {
-        "x": 2.1952590913728836,
-        "y": 4.990176476079449
+        "x": 4.920606698356254,
+        "y": 3.4212235567328277
       },
       "prevControl": {
-        "x": 2.5976295456864404,
-        "y": 4.995088238039724
+        "x": 5.4288356340623825,
+        "y": 3.5211699269636005
       },
       "nextControl": {
-        "x": 1.7928886370593267,
-        "y": 4.9852647141191735
+        "x": 4.4790927188691985,
+        "y": 3.33439709614462
       },
       "holonomicAngle": 0,
       "isReversal": false,
-      "velOverride": null,
+      "velOverride": 1.0,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
@@ -49,15 +49,15 @@
     },
     {
       "anchorPoint": {
-        "x": 1.9897140648982155,
-        "y": 4.990176476079449
+        "x": 3.417558692260242,
+        "y": 3.4498530425632286
       },
       "prevControl": {
-        "x": 3.683686303667579,
-        "y": 5.03094081868943
+        "x": 3.808324592614166,
+        "y": 3.4498530425632286
       },
       "nextControl": null,
-      "holonomicAngle": -7.721825800131038,
+      "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -72,10 +72,9 @@
   ],
   "markers": [
     {
-      "position": 0.490909090909091,
+      "position": 1.2945454545453865,
       "names": [
-        "midway",
-        "thing"
+        "measure_gyro"
       ]
     }
   ]

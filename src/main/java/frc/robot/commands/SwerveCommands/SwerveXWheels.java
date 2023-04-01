@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.util.StateHandler;
 
 public class SwerveXWheels extends CommandBase {
 
@@ -35,11 +36,14 @@ public class SwerveXWheels extends CommandBase {
   @Override
   public void execute() {
     swerve.updateModuleStates(xStates);
+    StateHandler.getInstance().setWantToBeHappy(true);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    StateHandler.getInstance().setWantToBeHappy(false);
+  }
 
   // Returns true when the command should end.
 
