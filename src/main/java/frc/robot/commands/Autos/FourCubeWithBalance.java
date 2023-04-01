@@ -28,25 +28,29 @@ import frc.robot.util.StateVariables.IntakeWheelSpeeds;
 public class FourCubeWithBalance extends SequentialCommandGroup {
 
   private StateHandler stateHandler = StateHandler.getInstance();
-  HashMap<String, Command> eventMap = new HashMap<>();
+  HashMap<String, Command> eventMapMain = new HashMap<>();
+  HashMap<String, Command> eventMapBalance = new HashMap<>();
 
   /** Creates a new FourCubeWithBalance. */
   public FourCubeWithBalance(SwerveSubsystem swerve) {
 
     final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "4CubeAuto", 3.5, 3, false, true, false);
-    final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation4Cube", 1.5, 1.5, false, true, false);
-    final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalance4Cube", 2.5, 2.5, false, true, true);
+    final AutoFromPathPlanner balance = new AutoFromPathPlanner(swerve, "BalanceFourCube", 1.5, 1.5, false, true, false);
 
-    eventMap.put("shoot_1", new AutoShootSequence());
-    eventMap.put("shoot_2", new AutoShootSequence());
-    eventMap.put("lift_intake_before_balance", 
+    eventMapMain.put("shoot_1", new AutoShootSequence());
+    eventMapMain.put("shoot_2", new AutoShootSequence());
+    eventMapMain.put("lift_intake_before_balance", 
       new SequentialCommandGroup(
         new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
         new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))));
     
-    eventMap.put("intake_1", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
-    eventMap.put("intake_2", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
-    eventMap.put("intake_3", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
+    eventMapMain.put("intake_1", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
+    eventMapMain.put("intake_2", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
+    eventMapMain.put("intake_3", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
+    
+    eventMapBalance.put("measure_gyro", new SequentialCommandGroup(
+      new InstantCommand(() -> stateHandler.setUseGyroVelocityMeasurement(true)),
+      new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE))));
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -60,19 +64,24 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
       new FollowPathWithEvents(
         mcdonaldsCubed,
         mcdonaldsCubed.getEventMarkers(),
-        eventMap
+        eventMapMain
       ),
-      mountChargeStation,
-      new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE)),
       new ParallelRaceGroup(
-        commitBalance,
-        new WaitUntilCommand(() -> swerve.getAngularVelocity() > 20)
+        new FollowPathWithEvents(
+          balance,
+          balance.getEventMarkers(),
+          eventMapBalance
+        ),
+        new SequentialCommandGroup(
+          new WaitUntilCommand(() -> stateHandler.getUseGyroVelocityMeasurement()),
+          new WaitUntilCommand(() -> swerve.getAngularVelocity() > 20)
+        )
       ),
-
       new InstantCommand(() -> stateHandler.setWantToBeHappy(true)),
       new ParallelCommandGroup(
         new SwerveXWheels(swerve),
         new SequentialCommandGroup(
+          new WaitCommand(0.75),
           new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
           new WaitCommand(0.5),
           new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),

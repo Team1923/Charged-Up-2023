@@ -107,7 +107,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void emergencyResetIntakePosition() {
     intakeArmMaster.setSelectedSensorPosition(
-        IntakePositions.SHOOT_TALL.getMainAngle().getAngle() * IntakeConstants.intakeArmRadsToTicks);
+        (IntakePositions.SHOOT_TALL.getMainAngle().getAngle() + Math.toRadians(12)) * IntakeConstants.intakeArmRadsToTicks);
   }
 
   public void setIntakePosition(double distalAngle) {

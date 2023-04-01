@@ -2,9 +2,11 @@ package frc.robot.util;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Autos.BalanceTuning;
+import frc.robot.commands.Autos.FiveCubeNoBalance;
 import frc.robot.commands.Autos.FiveCubeWithBalance;
 import frc.robot.commands.Autos.FourCubeWithBalance;
 import frc.robot.commands.Autos.FourCubeWithBalanceSideLine;
+import frc.robot.commands.Autos.ThreeCubeWithBalance;
 import frc.robot.commands.Autos.TwoMeterTest;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -17,6 +19,8 @@ public class AutonInstantiate {
 	private SwerveSubsystem swerve;
 	private TwoMeterTest twoMeterTest;
 	private BalanceTuning tuneBalance;
+	private ThreeCubeWithBalance threeCube;
+	private FiveCubeNoBalance fiveCubeNoBalance;
 
 	public static synchronized AutonInstantiate getInstance(SwerveSubsystem s) {
 		if (autoInstantiate == null) {
@@ -32,6 +36,8 @@ public class AutonInstantiate {
 		fourcubeSideLineAuton = new FourCubeWithBalanceSideLine(this.swerve);
 		twoMeterTest = new TwoMeterTest(this.swerve);
 		tuneBalance = new BalanceTuning(this.swerve);
+		threeCube = new ThreeCubeWithBalance(swerve);
+		fiveCubeNoBalance = new FiveCubeNoBalance(swerve);
 	}
 
 	public SequentialCommandGroup get4CubeSideLineAuton() {
@@ -52,6 +58,14 @@ public class AutonInstantiate {
 
 	public SequentialCommandGroup getBalanceTuning() {
 		return tuneBalance;
+	}
+
+	public SequentialCommandGroup getThreeCube() {
+		return threeCube;
+	}
+
+	public SequentialCommandGroup getFiveCubeNoBalance(){
+		return fiveCubeNoBalance;
 	}
 
 }

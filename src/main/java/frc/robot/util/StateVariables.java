@@ -6,11 +6,11 @@ public class StateVariables {
 
     public static enum IntakeWheelSpeeds{
         INTAKE(new IntakeSpeed(0.5, 0.25)),
-        SHOOT_HIGH(new IntakeSpeed(-1, 0)),
+        SHOOT_HIGH(new IntakeSpeed(-0.8, 0)),
         SHOOT_MID(new IntakeSpeed(-0.30, 0)),
         SHOOT_LOW(new IntakeSpeed(-0.15, 0)),
         GRIP(new IntakeSpeed(0.075, 0)),
-        EJECT(new IntakeSpeed(-0.5, -0.5));
+        EJECT(new IntakeSpeed(-0.5, -0.5)),
 
         private IntakeSpeed iWheelSpeed;
 
@@ -28,9 +28,9 @@ public class StateVariables {
         // Similar to Arm Positions, diferent Intake Arm States take in Arm Angle Object
         INTAKE(new ArmAngles(Math.toRadians(-5)), new ArmAngles(Math.toRadians(-5)), true, true),
         //INTAKE_BAR_UP(new ArmAngles(Math.toRadians(-5)), new ArmAngles(Math.toRadians(-5)), true, false),
-        SHOOT_TALL(new ArmAngles(2.132 + 0.17), new ArmAngles(2), true, false),
+        SHOOT_TALL(new ArmAngles(2.132 + 0.17 - Math.toRadians(4)), new ArmAngles(2), true, false),
         SHOOT_SMALL(new ArmAngles(2.245 + 0.17), new ArmAngles(2.132 + 0.17), false, false),
-        GOOFY_SHOT(new ArmAngles(0.725), new ArmAngles(0.725), false, true);
+        GOOFY_SHOT(new ArmAngles(0.725), new ArmAngles(0.725), false, true),
 
         private ArmAngles mainArmAngle;
         private ArmAngles temporaryArmAngle;
