@@ -34,6 +34,9 @@ public class FourCubeWithBalanceSideLine extends SequentialCommandGroup {
   public FourCubeWithBalanceSideLine(SwerveSubsystem swerve) {
 
     final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "4CubeAutoSideLine", 3, 3, false, true, true);
+    final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation", 2.5, 2, false, true, true);
+    final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalance", 2.5, 2, false, true, true);
+
     eventMap.put("shoot_1", new AutoShootSequence());
     eventMap.put("shoot_2", new AutoShootSequence());
     eventMap.put("lift_intake_before_balance", 
@@ -44,7 +47,6 @@ public class FourCubeWithBalanceSideLine extends SequentialCommandGroup {
     eventMap.put("intake_1", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
     eventMap.put("intake_2", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
     eventMap.put("intake_3", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
-    eventMap.put("measure_gyro", new InstantCommand(() -> stateHandler.setUseGyroVelocityMeasurement(true)));
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -55,23 +57,23 @@ public class FourCubeWithBalanceSideLine extends SequentialCommandGroup {
       new WaitCommand(0.5),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
       new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE)),
-      new ParallelRaceGroup(
-        new FollowPathWithEvents(
-          mcdonaldsCubed,
-          mcdonaldsCubed.getEventMarkers(),
-          eventMap
-        ),
-        new SequentialCommandGroup(
-          new WaitUntilCommand(() -> stateHandler.getUseGyroVelocityMeasurement()),
-          new ConfirmBalanceCommand(swerve)
-        )
+      new FollowPathWithEvents(
+        mcdonaldsCubed,
+        mcdonaldsCubed.getEventMarkers(),
+        eventMap
       ),
+      mountChargeStation,
+      new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE)),
+      new ParallelRaceGroup(
+        commitBalance,
+        new WaitUntilCommand(() -> swerve.getAngularVelocity() > 20)
+      ),
+
       new InstantCommand(() -> stateHandler.setWantToBeHappy(true)),
       new ParallelCommandGroup(
         new SwerveXWheels(swerve),
         new SequentialCommandGroup(
           new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
-          new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL)),
           new WaitCommand(0.5),
           new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
           new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))

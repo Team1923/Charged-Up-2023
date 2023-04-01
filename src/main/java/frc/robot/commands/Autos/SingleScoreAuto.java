@@ -22,7 +22,8 @@ public class SingleScoreAuto extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
-      new WaitCommand(0.5)
+      new WaitCommand(0.5),
+      new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP))
     );
   }
 }

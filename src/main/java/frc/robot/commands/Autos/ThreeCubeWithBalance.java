@@ -25,20 +25,19 @@ import frc.robot.util.StateVariables.IntakeWheelSpeeds;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class FourCubeWithBalance extends SequentialCommandGroup {
+public class ThreeCubeWithBalance extends SequentialCommandGroup {
 
   private StateHandler stateHandler = StateHandler.getInstance();
   HashMap<String, Command> eventMap = new HashMap<>();
 
   /** Creates a new FourCubeWithBalance. */
-  public FourCubeWithBalance(SwerveSubsystem swerve) {
+  public ThreeCubeWithBalance(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "4CubeAuto", 3.5, 3, false, true, false);
-    final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation4Cube", 1.5, 1.5, false, true, false);
-    final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalance4Cube", 2.5, 2.5, false, true, true);
+    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "3CubeAuto", 3.5, 3, false, true, true);
+    final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation", 1.5, 1.5, false, true, true);
+    final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalance", 2.5, 2.5, false, true, true);
 
     eventMap.put("shoot_1", new AutoShootSequence());
-    eventMap.put("shoot_2", new AutoShootSequence());
     eventMap.put("lift_intake_before_balance", 
       new SequentialCommandGroup(
         new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
@@ -46,7 +45,6 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
     
     eventMap.put("intake_1", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
     eventMap.put("intake_2", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
-    eventMap.put("intake_3", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());

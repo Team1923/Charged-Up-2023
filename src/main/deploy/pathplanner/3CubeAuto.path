@@ -3,12 +3,12 @@
     {
       "anchorPoint": {
         "x": 4.30742528151723,
-        "y": 0.37
+        "y": 1.2
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.810248594856164,
-        "y": 1.1304976456106766
+        "x": 5.10734951959301,
+        "y": 1.2
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -99,18 +99,15 @@
     },
     {
       "anchorPoint": {
-        "x": 5.289853656630391,
-        "y": 2.8205345299579494
+        "x": 5.3,
+        "y": 3.0
       },
       "prevControl": {
-        "x": 5.3095508927811546,
-        "y": 2.521793115004704
+        "x": 5.599390070176427,
+        "y": 3.0
       },
-      "nextControl": {
-        "x": 5.2213386478055,
-        "y": 3.8596788304687726
-      },
-      "holonomicAngle": 0,
+      "nextControl": null,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -120,53 +117,6 @@
         "executionBehavior": "parallel",
         "waitBehavior": "after",
         "waitTime": 0.5
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 7.413818930201963,
-        "y": 3.6
-      },
-      "prevControl": {
-        "x": 7.097774314510285,
-        "y": 3.423252632470178
-      },
-      "nextControl": {
-        "x": 7.732372212565206,
-        "y": 3.778150334731901
-      },
-      "holonomicAngle": 0.0,
-      "isReversal": false,
-      "velOverride": 0.5,
-      "isLocked": false,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 5.3,
-        "y": 3.0
-      },
-      "prevControl": {
-        "x": 5.812938620827162,
-        "y": 3.0
-      },
-      "nextControl": null,
-      "holonomicAngle": 180.0,
-      "isReversal": false,
-      "velOverride": 0.5,
-      "isLocked": false,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
       }
     }
   ],
@@ -184,25 +134,13 @@
       ]
     },
     {
-      "position": 2.61,
+      "position": 2.4,
       "names": [
         "intake_2"
       ]
     },
     {
       "position": 2.9,
-      "names": [
-        "shoot_2"
-      ]
-    },
-    {
-      "position": 4.52,
-      "names": [
-        "intake_3"
-      ]
-    },
-    {
-      "position": 5.24,
       "names": [
         "lift_intake_before_balance"
       ]
