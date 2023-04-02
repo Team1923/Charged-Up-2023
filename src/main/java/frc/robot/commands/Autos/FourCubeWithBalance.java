@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import com.pathplanner.lib.commands.FollowPathWithEvents;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -35,7 +36,7 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
   public FourCubeWithBalance(SwerveSubsystem swerve) {
 
     final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "4CubeAuto", 3.5, 3, false, true, false);
-    final AutoFromPathPlanner balance = new AutoFromPathPlanner(swerve, "BalanceFourCube", 1.5, 1.5, false, true, false);
+    final AutoFromPathPlanner balance = new AutoFromPathPlanner(swerve, "BalanceFourCube", 2.5, 1.5, false, true, false);
 
     eventMapMain.put("shoot_1", new AutoShootSequence());
     eventMapMain.put("shoot_2", new AutoShootSequence());
@@ -50,7 +51,7 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
     
     eventMapBalance.put("measure_gyro", new SequentialCommandGroup(
       new InstantCommand(() -> stateHandler.setUseGyroVelocityMeasurement(true)),
-      new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE))));
+      new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_HIGHER))));
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -67,14 +68,19 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
         eventMapMain
       ),
       new ParallelRaceGroup(
-        new FollowPathWithEvents(
-          balance,
-          balance.getEventMarkers(),
-          eventMapBalance
+        new SequentialCommandGroup(
+          new FollowPathWithEvents(
+            balance,
+            balance.getEventMarkers(),
+            eventMapBalance
+          ),
+          new InstantCommand(() -> SmartDashboard.putBoolean("ENDING WITH PATH", true))
         ),
+
         new SequentialCommandGroup(
           new WaitUntilCommand(() -> stateHandler.getUseGyroVelocityMeasurement()),
-          new WaitUntilCommand(() -> swerve.getAngularVelocity() > 20)
+          new WaitUntilCommand(() -> swerve.getAngularVelocity() > 20),
+          new InstantCommand(() -> SmartDashboard.putBoolean("ENDING WITH PATH", false))
         )
       ),
       new InstantCommand(() -> stateHandler.setWantToBeHappy(true)),
@@ -82,7 +88,7 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
         new SwerveXWheels(swerve),
         new SequentialCommandGroup(
           new WaitCommand(0.75),
-          new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
+          new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.HIGH_INTAKE_EJECT)),
           new WaitCommand(0.5),
           new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
           new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))

@@ -74,16 +74,16 @@
     },
     {
       "anchorPoint": {
-        "x": 7.493753107164335,
-        "y": 2.27
+        "x": 7.265369744414703,
+        "y": 2.203899450533944
       },
       "prevControl": {
-        "x": 7.067725821525804,
-        "y": 2.161678650525222
+        "x": 6.839342458776172,
+        "y": 2.095578101059166
       },
       "nextControl": {
-        "x": 7.910876744920933,
-        "y": 2.376057515240842
+        "x": 7.682493382171301,
+        "y": 2.309956965774786
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -124,16 +124,16 @@
     },
     {
       "anchorPoint": {
-        "x": 7.413818930201963,
-        "y": 3.6
+        "x": 7.162597231177368,
+        "y": 3.437169609381954
       },
       "prevControl": {
-        "x": 7.097774314510285,
-        "y": 3.423252632470178
+        "x": 6.84655261548569,
+        "y": 3.2604222418521323
       },
       "nextControl": {
-        "x": 7.732372212565206,
-        "y": 3.778150334731901
+        "x": 7.481150513540611,
+        "y": 3.615319944113855
       },
       "holonomicAngle": 30.0,
       "isReversal": false,
@@ -149,17 +149,42 @@
     },
     {
       "anchorPoint": {
-        "x": 5.3,
+        "x": 5.0,
         "y": 3.0
       },
       "prevControl": {
-        "x": 5.812938620827162,
+        "x": 5.512938620827162,
         "y": 3.0
       },
-      "nextControl": null,
+      "nextControl": {
+        "x": 4.487061379172838,
+        "y": 3.0
+      },
       "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": 0.5,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.9766493208200093,
+        "y": 3.003241220157655
+      },
+      "prevControl": {
+        "x": 3.691606527191086,
+        "y": 2.9959110260100865
+      },
+      "nextControl": null,
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
