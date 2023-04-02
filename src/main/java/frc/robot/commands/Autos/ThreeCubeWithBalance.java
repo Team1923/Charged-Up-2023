@@ -62,7 +62,7 @@ public class ThreeCubeWithBalance extends SequentialCommandGroup {
         eventMap
       ),
       mountChargeStation,
-      new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE)),
+      new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_HIGHER)),
       new ParallelRaceGroup(
         new SequentialCommandGroup(
           commitBalance,
@@ -79,7 +79,7 @@ public class ThreeCubeWithBalance extends SequentialCommandGroup {
         new SwerveXWheels(swerve),
         new SequentialCommandGroup(
           new WaitCommand(0.75),
-          new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
+          new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.HIGH_INTAKE_EJECT)),
           new WaitCommand(0.5),
           new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
           new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))

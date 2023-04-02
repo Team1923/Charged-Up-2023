@@ -11,6 +11,9 @@ public class StateVariables {
         SHOOT_LOW(new IntakeSpeed(-0.15, 0)),
         GRIP(new IntakeSpeed(0.075, 0)),
         EJECT(new IntakeSpeed(-0.5, -0.5)),
+        PLOP_SHOT(new IntakeSpeed(-0.60, 0)),
+        HIGH_INTAKE_EJECT(new IntakeSpeed(-1,0));
+
 
         private IntakeSpeed iWheelSpeed;
 
@@ -31,6 +34,9 @@ public class StateVariables {
         SHOOT_TALL(new ArmAngles(2.132 + 0.17 - Math.toRadians(4)), new ArmAngles(2), true, false),
         SHOOT_SMALL(new ArmAngles(2.245 + 0.17), new ArmAngles(2.132 + 0.17), false, false),
         GOOFY_SHOT(new ArmAngles(0.725), new ArmAngles(0.725), false, true),
+        PLOP_SHOT(new ArmAngles(2.132 - Math.toRadians(8)), new ArmAngles(2), true, false),
+        INTAKE_HIGHER(new ArmAngles(Math.toRadians(60)), new ArmAngles(Math.toRadians(60)), true, false);
+
 
         private ArmAngles mainArmAngle;
         private ArmAngles temporaryArmAngle;

@@ -49,11 +49,13 @@ public class IntakeSubsystem extends SubsystemBase {
   private StateHandler stateHandler = StateHandler.getInstance();
 
   private Timer hardstopChangeTimer;
+  private Timer plopTimer;
   private Value hardstopValue = Value.kForward;
 
   public IntakeSubsystem() {
 
     hardstopChangeTimer = new Timer();
+    plopTimer = new Timer();
 
     hardstopChangeTimer.start();
 
@@ -190,6 +192,7 @@ public class IntakeSubsystem extends SubsystemBase {
     return intakeArmMaster.getStatorCurrent();
   }
 
+
   @Override
   public void periodic() {
 
@@ -252,7 +255,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
     // Set the wheel speeds for the intake motors. If in intake and the sensor is
     // blocked, then run the wheel speeds at grip speeds.
-    if (stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE
+    if ((stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE 
+      || stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE_HIGHER)
         && (stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.SHOOT_LOW
             || stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.SHOOT_MID
             || stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.SHOOT_HIGH)) {
