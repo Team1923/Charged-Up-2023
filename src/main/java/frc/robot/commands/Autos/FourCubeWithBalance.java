@@ -35,9 +35,10 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
   /** Creates a new FourCubeWithBalance. */
   public FourCubeWithBalance(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "4CubeAuto", 3.5, 3, false, true, false);
-    final AutoFromPathPlanner balance = new AutoFromPathPlanner(swerve, "BalanceFourCube", 2.5, 1.5, false, true, false);
-
+    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "4CubeAuto", 3.5, 3.5, false, true, false);
+    final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation", 1, 1, false, true, true);
+    final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalance", 2, 2, false, true, true);
+    
     eventMapMain.put("shoot_1", new AutoShootSequence());
     eventMapMain.put("shoot_2", new AutoShootSequence());
     eventMapMain.put("lift_intake_before_balance", 
@@ -49,9 +50,7 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
     eventMapMain.put("intake_2", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
     eventMapMain.put("intake_3", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
     
-    eventMapBalance.put("measure_gyro", new SequentialCommandGroup(
-      new InstantCommand(() -> stateHandler.setUseGyroVelocityMeasurement(true)),
-      new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_HIGHER))));
+    
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -67,29 +66,26 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
         mcdonaldsCubed.getEventMarkers(),
         eventMapMain
       ),
+      mountChargeStation,
+      new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_HIGHER)),
       new ParallelRaceGroup(
         new SequentialCommandGroup(
-          new FollowPathWithEvents(
-            balance,
-            balance.getEventMarkers(),
-            eventMapBalance
-          ),
-          new InstantCommand(() -> SmartDashboard.putBoolean("ENDING WITH PATH", true))
+          commitBalance,
+          new InstantCommand(() -> SmartDashboard.putBoolean("ENDED WITH GYRO", false))
         ),
-
         new SequentialCommandGroup(
-          new WaitUntilCommand(() -> stateHandler.getUseGyroVelocityMeasurement()),
-          new WaitUntilCommand(() -> swerve.getAngularVelocity() > 20),
-          new InstantCommand(() -> SmartDashboard.putBoolean("ENDING WITH PATH", false))
+          new WaitUntilCommand(() -> swerve.getAngularVelocity() > 20),//20
+          new InstantCommand(() -> SmartDashboard.putBoolean("ENDED WITH GYRO", true))
         )
       ),
+
       new InstantCommand(() -> stateHandler.setWantToBeHappy(true)),
       new ParallelCommandGroup(
         new SwerveXWheels(swerve),
         new SequentialCommandGroup(
-          new WaitCommand(0.75),
-          new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.HIGH_INTAKE_EJECT)),
           new WaitCommand(0.5),
+          new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.HIGH_INTAKE_EJECT)),
+          new WaitCommand(0.25),  
           new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
           new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))
         )

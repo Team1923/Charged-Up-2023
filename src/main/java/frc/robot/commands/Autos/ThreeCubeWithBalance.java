@@ -69,7 +69,7 @@ public class ThreeCubeWithBalance extends SequentialCommandGroup {
           new InstantCommand(() -> SmartDashboard.putBoolean("ENDED WITH GYRO", false))
         ),
         new SequentialCommandGroup(
-          new WaitUntilCommand(() -> swerve.getAngularVelocity() > 20),
+          new WaitUntilCommand(() -> swerve.getAngularVelocity() > 20),//20
           new InstantCommand(() -> SmartDashboard.putBoolean("ENDED WITH GYRO", true))
         )
       ),
