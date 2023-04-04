@@ -8,7 +8,7 @@ public class StateVariables {
         INTAKE(new IntakeSpeed(0.5, 0.25)),
         SHOOT_HIGH(new IntakeSpeed(-0.8, 0)),
         SHOOT_MID(new IntakeSpeed(-0.30, 0)),
-        SHOOT_LOW(new IntakeSpeed(-0.15, 0)),
+        SHOOT_LOW(new IntakeSpeed(-0.15,0)),//-0.1,-0.15
         GRIP(new IntakeSpeed(0.075, 0)),
         EJECT(new IntakeSpeed(-0.5, -0.5)),
         PLOP_SHOT(new IntakeSpeed(-0.60, 0)),
@@ -20,6 +20,7 @@ public class StateVariables {
         private IntakeWheelSpeeds(IntakeSpeed i) {
             this.iWheelSpeed = i;
         }
+
 
         public IntakeSpeed getIntakeWheelSpeed() {
             return iWheelSpeed;

@@ -45,7 +45,9 @@ public class SwerveSubsystem extends SubsystemBase {
 
     LinearFilter filter = LinearFilter.singlePoleIIR(0.1, 0.02);
 
-    private double[] gyroVelocities = new double[3];
+     private double[] gyroVelocities = new double[3];
+
+    // private double[] ypr = new double[3];
 
     private StateHandler stateHandler = StateHandler.getInstance();
 
@@ -72,7 +74,6 @@ public class SwerveSubsystem extends SubsystemBase {
         swerveOdometry = new SwerveDrivePoseEstimator(Swerve.swerveKinematics, getYaw(), getModulePositions(),
                 new Pose2d(1.68, 2.74, new Rotation2d(0)),
                 stateStdDevs, visionMeasurementStdDevs);
-
 
     }
 
@@ -152,6 +153,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public void zeroGyro() {
         gyro.setYaw(0);
+
     }
 
     public void zeroGyro(double yaw) {
@@ -166,6 +168,14 @@ public class SwerveSubsystem extends SubsystemBase {
     public double getYawIEEE() {
         return Math.IEEEremainder(gyro.getYaw(), 360);
     }
+
+    // public Rotation2d getPitch(){
+    //     return Rotation2d.fromDegrees(ypr[1]);
+    // }
+
+    // public Rotation2d getRoll(){
+    //     return Rotation2d.fromDegrees(ypr[2]);
+    // }
 
     public void resetModulesToAbsolute() {
         for (SwerveModule mod : mSwerveMods) {
@@ -193,31 +203,58 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public double getAngularVelocity() {
         return filter.calculate(gyroVelocities[1]);
+        
     }
+
+    // public double getYawVelocity(){
+    //     return filter.calculate(gyroVelocities[2]);
+    // }
+
+    // public double getPitchVelocity(){
+    //     return filter.calculate(gyroVelocities[1]);
+    // }
+
+    // public double getRollVelocity(){
+    //     return filter.calculate(gyroVelocities[0]);
+    // }
+
+
+
+    // public void updateYPR() {
+    //     gyro.getYawPitchRoll(ypr);
+    // }
 
     public void updateOdometry() {
         swerveOdometry.update(Rotation2d.fromDegrees(getYawIEEE()), getModulePositions());
         // if (limelightInterface.hasValidTargets(getCorrectLimelight())) {
-        //     Pose3d currentAprilTagPose = limelightInterface.getAprilTagPose(getCorrectLimelight());
-        //     Pose2d aprilTagPose = new Pose2d(currentAprilTagPose.getX(), currentAprilTagPose.getY(), new Rotation2d());
-        //     Pose2d robotLimelightPose = new Pose2d(-limelightInterface.getRobotPose3d(getCorrectLimelight()).getZ(),
-        //             limelightInterface.getRobotPose3d(getCorrectLimelight()).getX(), getYaw());
-        //     if (Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) + Math.pow(robotLimelightPose.getY(), 2)) <= 1.5) {
-        //         Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() + robotLimelightPose.getX(),
-        //                 aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
-                 
-        //         swerveOdometry.addVisionMeasurement(newRobotPose,
-        //         Timer.getFPGATimestamp() - (limelightInterface.getTL(getCorrectLimelight()) / 1000)
-        //                 - (limelightInterface.getCL(getCorrectLimelight()) / 1000));
-                
+        // Pose3d currentAprilTagPose =
+        // limelightInterface.getAprilTagPose(getCorrectLimelight());
+        // Pose2d aprilTagPose = new Pose2d(currentAprilTagPose.getX(),
+        // currentAprilTagPose.getY(), new Rotation2d());
+        // Pose2d robotLimelightPose = new
+        // Pose2d(-limelightInterface.getRobotPose3d(getCorrectLimelight()).getZ(),
+        // limelightInterface.getRobotPose3d(getCorrectLimelight()).getX(), getYaw());
+        // if (Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) +
+        // Math.pow(robotLimelightPose.getY(), 2)) <= 1.5) {
+        // Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() +
+        // robotLimelightPose.getX(),
+        // aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
 
-        //     } 
+        // swerveOdometry.addVisionMeasurement(newRobotPose,
+        // Timer.getFPGATimestamp() - (limelightInterface.getTL(getCorrectLimelight()) /
+        // 1000)
+        // - (limelightInterface.getCL(getCorrectLimelight()) / 1000));
 
-        // } 
+        // }
+
+        // }
     }
 
     @Override
     public void periodic() {
+
+        // updateYPR();
+
         if (DriverStation.isAutonomousEnabled() || DriverStation.isDisabled()) {
             updateGyroVelocities();
         }
