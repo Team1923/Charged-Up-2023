@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import frc.robot.interfaces.LimelightInterface;
 import frc.robot.interfaces.SwerveModule;
-import frc.robot.interfaces.LimelightInterface.SpecificLimelight;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.Constants;
@@ -45,7 +44,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     LinearFilter filter = LinearFilter.singlePoleIIR(0.1, 0.02);
 
-     private double[] gyroVelocities = new double[3];
+    private double[] gyroVelocities = new double[3];
 
     // private double[] ypr = new double[3];
 
@@ -170,11 +169,11 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     // public Rotation2d getPitch(){
-    //     return Rotation2d.fromDegrees(ypr[1]);
+    // return Rotation2d.fromDegrees(ypr[1]);
     // }
 
     // public Rotation2d getRoll(){
-    //     return Rotation2d.fromDegrees(ypr[2]);
+    // return Rotation2d.fromDegrees(ypr[2]);
     // }
 
     public void resetModulesToAbsolute() {
@@ -189,13 +188,13 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
-    public SpecificLimelight getCorrectLimelight() {
-        if (getYawIEEE() >= 0 && getYawIEEE() <= 180) {
-            return SpecificLimelight.LEFT_LIMELIGHT;
-        } else {
-            return SpecificLimelight.RIGHT_LIMELIGHT;
-        }
-    }
+    // public SpecificLimelight getCorrectLimelight() {
+    // if (getYawIEEE() >= 0 && getYawIEEE() <= 180) {
+    // return SpecificLimelight.LEFT_LIMELIGHT;
+    // } else {
+    // return SpecificLimelight.RIGHT_LIMELIGHT;
+    // }
+    // }
 
     public void updateGyroVelocities() {
         gyro.getRawGyro(gyroVelocities);
@@ -203,49 +202,45 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public double getAngularVelocity() {
         return filter.calculate(gyroVelocities[1]);
-        
+
     }
 
     // public double getYawVelocity(){
-    //     return filter.calculate(gyroVelocities[2]);
+    // return filter.calculate(gyroVelocities[2]);
     // }
 
     // public double getPitchVelocity(){
-    //     return filter.calculate(gyroVelocities[1]);
+    // return filter.calculate(gyroVelocities[1]);
     // }
 
     // public double getRollVelocity(){
-    //     return filter.calculate(gyroVelocities[0]);
+    // return filter.calculate(gyroVelocities[0]);
     // }
 
-
-
     // public void updateYPR() {
-    //     gyro.getYawPitchRoll(ypr);
+    // gyro.getYawPitchRoll(ypr);
     // }
 
     public void updateOdometry() {
         swerveOdometry.update(Rotation2d.fromDegrees(getYawIEEE()), getModulePositions());
-        // if (limelightInterface.hasValidTargets(getCorrectLimelight())) {
-        // Pose3d currentAprilTagPose =
-        // limelightInterface.getAprilTagPose(getCorrectLimelight());
-        // Pose2d aprilTagPose = new Pose2d(currentAprilTagPose.getX(),
-        // currentAprilTagPose.getY(), new Rotation2d());
-        // Pose2d robotLimelightPose = new
-        // Pose2d(-limelightInterface.getRobotPose3d(getCorrectLimelight()).getZ(),
-        // limelightInterface.getRobotPose3d(getCorrectLimelight()).getX(), getYaw());
-        // if (Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) +
-        // Math.pow(robotLimelightPose.getY(), 2)) <= 1.5) {
-        // Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() +
-        // robotLimelightPose.getX(),
-        // aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
+        // if (limelightInterface.hasValidTargets()) {
+        //     Pose3d currentAprilTagPose = limelightInterface.getAprilTagPose();
+        //     Pose2d aprilTagPose = new Pose2d(currentAprilTagPose.getX(),
+        //             currentAprilTagPose.getY(), new Rotation2d());
+        //     Pose2d robotLimelightPose = new Pose2d(-limelightInterface.getRobotPose3d().getZ(),
+        //             limelightInterface.getRobotPose3d().getX(), getYaw());
+        //     if (Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) +
+        //             Math.pow(robotLimelightPose.getY(), 2)) <= 1.5) {
+        //         Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() +
+        //                 robotLimelightPose.getX(),
+        //                 aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
 
-        // swerveOdometry.addVisionMeasurement(newRobotPose,
-        // Timer.getFPGATimestamp() - (limelightInterface.getTL(getCorrectLimelight()) /
-        // 1000)
-        // - (limelightInterface.getCL(getCorrectLimelight()) / 1000));
+        //         swerveOdometry.addVisionMeasurement(newRobotPose,
+        //                 Timer.getFPGATimestamp() - (limelightInterface.getTL() /
+        //                         1000)
+        //                         - (limelightInterface.getCL() / 1000));
 
-        // }
+        //     }
 
         // }
     }

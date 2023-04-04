@@ -17,8 +17,7 @@ public class LimelightInterface {
   private static LimelightInterface limelightInterface;
 
   // network table declarations
-  private static NetworkTable leftLimelight = NetworkTableInstance.getDefault().getTable("limelight-left");
-  private static NetworkTable rightLimelight = NetworkTableInstance.getDefault().getTable("limelight-right");
+  private static NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
 
   private double aprilTagID = 0;
@@ -46,47 +45,30 @@ public class LimelightInterface {
     return limelightInterface;
   }
 
-  // an emun to keep track
-  public enum SpecificLimelight {
-    LEFT_LIMELIGHT,
-    RIGHT_LIMELIGHT
+
+  public double getDoubleEntry(String entry) {
+      return limelight.getEntry(entry).getDouble(0);
   }
 
-  public double getDoubleEntry(String entry, SpecificLimelight limelight) {
-    if (limelight == SpecificLimelight.LEFT_LIMELIGHT) {
-      return leftLimelight.getEntry(entry).getDouble(0);
-    } else {
-      return rightLimelight.getEntry(entry).getDouble(0);
-    }
-  }
-
-  public double[] getArrayEntry(String entry, SpecificLimelight limelight) {
-    if (limelight == SpecificLimelight.LEFT_LIMELIGHT) {
-      return leftLimelight.getEntry(entry).getDoubleArray(new double[6]);
-    } else {
-      return rightLimelight.getEntry(entry).getDoubleArray(new double[6]);
-    }
+  public double[] getArrayEntry(String entry) {
+      return limelight.getEntry(entry).getDoubleArray(new double[6]);
   }
 
   /*
    * the only setting we really need to do on the limelight
    * is the pipeline (if we decide to vision track)
    */
-  public void setPipeline(int pipeline, SpecificLimelight limelight) {
-    if (limelight == SpecificLimelight.LEFT_LIMELIGHT) {
-      leftLimelight.getEntry("pipeline").setNumber(pipeline);
-    } else {
-      rightLimelight.getEntry("pipeline").setNumber(pipeline);
-    }
+  public void setPipeline(int pipeline) {
+      limelight.getEntry("pipeline").setNumber(pipeline);
   }
 
-  public boolean hasValidTargets(SpecificLimelight limelight) {
-    hasValidTarget = getDoubleEntry("tv", limelight) == 1.0;
+  public boolean hasValidTargets() {
+    hasValidTarget = getDoubleEntry("tv") == 1.0;
     return hasValidTarget;
   }
 
-  public double getTargetArea(SpecificLimelight limelight) {
-    return getDoubleEntry("ta", limelight);
+  public double getTargetArea() {
+    return getDoubleEntry("ta");
   }
 
   /*
@@ -97,12 +79,12 @@ public class LimelightInterface {
    * This method returns the pose of the robot, a combination of translational
    * and rotational offset relative to the april tag
    */
-  public double[] getBotPose(SpecificLimelight limelight) {
-    return getArrayEntry("botpose_targetspace", limelight);
+  public double[] getBotPose() {
+    return getArrayEntry("botpose_targetspace");
   }
 
-  public double getID(SpecificLimelight limelight) {
-    aprilTagID = getDoubleEntry("tid", limelight);
+  public double getID() {
+    aprilTagID = getDoubleEntry("tid");
     return aprilTagID;
   }
 
@@ -111,20 +93,20 @@ public class LimelightInterface {
         || (aprilTagID == 6) || (aprilTagID == 7) || (aprilTagID == 8)) && hasValidTarget);
   }
 
-  public double getTL(SpecificLimelight limelight) {
-    return getDoubleEntry("tl", limelight);
+  public double getTL() {
+    return getDoubleEntry("tl");
   }
 
-  public double getCL(SpecificLimelight limelight) {
-    return getDoubleEntry("cl", limelight);
+  public double getCL() {
+    return getDoubleEntry("cl");
   }
 
 
   /*
    * create a Pose3D object for trajectory generation
    */
-  public Pose3d getRobotPose3d(SpecificLimelight limelight) {
-    double[] result = getBotPose(limelight);
+  public Pose3d getRobotPose3d() {
+    double[] result = getBotPose();
     Translation3d tran3d = new Translation3d(result[0], result[1], result[2]);
     Rotation3d r3d = new Rotation3d(result[3], result[4], result[5]);
     Pose3d p3d = new Pose3d(tran3d, r3d);
@@ -132,9 +114,9 @@ public class LimelightInterface {
     return p3d;
   }
 
-  public Pose3d getAprilTagPose(SpecificLimelight limelight){
-    if(hasValidTargets(limelight)) {
-      Optional<Pose3d> aprilTagPose = aprilTagFieldLayout.getTagPose((int)getID(limelight));
+  public Pose3d getAprilTagPose(){
+    if(hasValidTargets()) {
+      Optional<Pose3d> aprilTagPose = aprilTagFieldLayout.getTagPose((int)getID());
       if(aprilTagPose.isEmpty()) {
         return new Pose3d();
       }

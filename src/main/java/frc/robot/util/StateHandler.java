@@ -1,7 +1,6 @@
 package frc.robot.util;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import frc.robot.interfaces.LimelightInterface.SpecificLimelight;
 import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.IntakePositions;
