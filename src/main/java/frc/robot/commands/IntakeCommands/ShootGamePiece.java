@@ -53,7 +53,7 @@ public class ShootGamePiece extends CommandBase {
   @Override
   public void execute() {
 
-    SmartDashboard.putNumber("HIGH TIMER?", plopTimer.get());
+    // SmartDashboard.putNumber("HIGH TIMER?", plopTimer.get());
 
     if(desiredShootSpeed == IntakeWheelSpeeds.SHOOT_HIGH && plopTimer.get() < 0.35) {
       stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP);

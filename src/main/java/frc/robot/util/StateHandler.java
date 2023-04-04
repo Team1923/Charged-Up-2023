@@ -84,13 +84,13 @@ public class StateHandler {
         this.isIntakeGood = setIntake;
     }
 
-    public SpecificLimelight getSpecificLimelight() {
-        if (currentRobotDirection == CurrentRobotDirection.LEFT) {
-            return SpecificLimelight.LEFT_LIMELIGHT;
-        } else {
-            return SpecificLimelight.RIGHT_LIMELIGHT;
-        }
-    }
+    // public SpecificLimelight getSpecificLimelight() {
+    //     if (currentRobotDirection == CurrentRobotDirection.LEFT) {
+    //         return SpecificLimelight.LEFT_LIMELIGHT;
+    //     } else {
+    //         return SpecificLimelight.RIGHT_LIMELIGHT;
+    //     }
+    // }
 
 
     public boolean getAutoShootWheels() {
