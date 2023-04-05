@@ -200,18 +200,18 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("INTAKE Arm POSITION RADS: ", getIntakeArmPosition());
     SmartDashboard.putNumber("INTAKE ABSOLUTE Encoder Rads", getIntakeAbsoluteEncoderRads());
-    SmartDashboard.putNumber("FALCON INTAKE MOTOR ENCODER", getIntakeArmPosition());
+    // SmartDashboard.putNumber("FALCON INTAKE MOTOR ENCODER", getIntakeArmPosition());
 
-    SmartDashboard.putString("Desired Intake Position", stateHandler.getDesiredIntakePosition().toString());
-    SmartDashboard.putString("Desired Intake Speeds", stateHandler.getDesiredIntakePosition().toString());
+    // SmartDashboard.putString("Desired Intake Position", stateHandler.getDesiredIntakePosition().toString());
+    // SmartDashboard.putString("Desired Intake Speeds", stateHandler.getDesiredIntakePosition().toString());
 
-    SmartDashboard.putNumber("Closed Loop error", intakeArmMaster.getClosedLoopError());
+    // SmartDashboard.putNumber("Closed Loop error", intakeArmMaster.getClosedLoopError());
 
-    SmartDashboard.putNumber("Intake Percent Out", intakeArmMaster.getMotorOutputPercent());
+    // SmartDashboard.putNumber("Intake Percent Out", intakeArmMaster.getMotorOutputPercent());
 
-    SmartDashboard.putNumber("Intake Follower Percent Out", intakeArmFollower.getMotorOutputPercent());
+    // SmartDashboard.putNumber("Intake Follower Percent Out", intakeArmFollower.getMotorOutputPercent());
 
-    SmartDashboard.putNumber("Intake Arm Velocity", intakeArmMaster.getSelectedSensorVelocity());
+    // SmartDashboard.putNumber("Intake Arm Velocity", intakeArmMaster.getSelectedSensorVelocity());
 
     // Runs when disabled
     if (DriverStation.isDisabled()) {
@@ -241,8 +241,6 @@ public class IntakeSubsystem extends SubsystemBase {
       hardstopChangeTimer.reset();
       hardstopChangeTimer.start();
     }
-
-    SmartDashboard.putNumber("hardstop timer", hardstopChangeTimer.get());
 
     if (!CommandScheduler.getInstance().isScheduled(EmergencyResetCommand.getInstance(this))) {
       // Set the intake to the desired setpoint
