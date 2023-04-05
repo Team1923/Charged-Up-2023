@@ -57,7 +57,7 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
     addCommands(
       new InstantCommand(() -> swerve.resetModulesToAbsolute()),
       new InstantCommand(() -> swerve.resetOdometryForState(mcdonaldsCubed.getInitialState())),
-      new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
+      new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.CHARGE_STATION_PLOP)),
       new WaitCommand(0.5),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
       new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE)),

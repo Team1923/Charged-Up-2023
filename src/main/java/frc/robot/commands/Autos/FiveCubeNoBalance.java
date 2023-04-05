@@ -60,7 +60,7 @@ public class FiveCubeNoBalance extends SequentialCommandGroup {
                 fiveNoBalance.getEventMarkers(),
                 eventMap),
             new SequentialCommandGroup(
-                new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
+                new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.CHARGE_STATION_PLOP)),
                 new WaitCommand(0.25),
                 new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
                 new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE))
