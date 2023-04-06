@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.commands.AutoBalance;
 import frc.robot.commands.SwerveCommands.SwerveXWheels;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.StateHandler;
@@ -36,8 +37,8 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
   public FourCubeWithBalance(SwerveSubsystem swerve) {
 
     final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "4CubeAuto", 3.5, 3.5, false, true, false);
-    final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation", 1, 1, false, true, true);
-    final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalance", 2, 2, false, true, true);
+    final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation", 0.75, 0.75, false, true, true);
+    final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalance", 1.5, 1.5, false, true, true);
     
     eventMapMain.put("shoot_1", new AutoShootSequence());
     eventMapMain.put("shoot_2", new AutoShootSequence());
@@ -71,6 +72,7 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
       new ParallelRaceGroup(
         new SequentialCommandGroup(
           commitBalance,
+          // new AutoBalance(swerve),
           new InstantCommand(() -> SmartDashboard.putBoolean("ENDED WITH GYRO", false))
         )//,
         // new SequentialCommandGroup(
@@ -81,7 +83,7 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
       new ParallelCommandGroup(
         new SwerveXWheels(swerve),
         new SequentialCommandGroup(
-          new WaitCommand(0.5),
+          // new WaitCommand(0.25),
           new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.HIGH_INTAKE_EJECT)),
           new WaitCommand(0.25),  
           new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),

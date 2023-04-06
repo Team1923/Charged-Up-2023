@@ -71,6 +71,10 @@ public class LimelightInterface {
     return getDoubleEntry("ta");
   }
 
+  public double getXOffset(){
+    return getDoubleEntry("tx");
+  }
+
   /*
    * Specific AprilTag methods we will need
    */

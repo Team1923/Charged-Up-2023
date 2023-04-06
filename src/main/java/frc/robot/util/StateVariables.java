@@ -37,8 +37,7 @@ public class StateVariables {
         SHOOT_SMALL(new ArmAngles(2.245 + 0.17), new ArmAngles(2.132 + 0.17), false, false),
         GOOFY_SHOT(new ArmAngles(0.725), new ArmAngles(0.725), false, true),
         PLOP_SHOT(new ArmAngles(2.132 - Math.toRadians(8)), new ArmAngles(2), true, false),
-        INTAKE_HIGHER(new ArmAngles(Math.toRadians(60)), new ArmAngles(Math.toRadians(60)), true, false);
-
+        INTAKE_HIGHER(new ArmAngles(Math.toRadians(40)), new ArmAngles(Math.toRadians(40)), true, false);
 
         private ArmAngles mainArmAngle;
         private ArmAngles temporaryArmAngle;

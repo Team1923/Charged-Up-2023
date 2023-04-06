@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.interfaces.LimelightInterface;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.IntakePositions;
 
@@ -27,11 +28,17 @@ public class ControllerRumble extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     if(DriverStation.isTeleop() && stateHandler.hasGamePiece() && stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE) {
-      xboxController.setRumble(RumbleType.kBothRumble, 0.6);
+      xboxController.setRumble(RumbleType.kBothRumble, 0.3);
       ps4Controller.setRumble(RumbleType.kBothRumble, 0.6);
     } else {
       xboxController.setRumble(RumbleType.kBothRumble, 0);
       ps4Controller.setRumble(RumbleType.kBothRumble, 0);
     }
+
+    // if(LimelightInterface.getInstance().hasValidTargets()) {
+    //   xboxController.setRumble(RumbleType.kBothRumble, 0.6);
+    // } else {
+    //   xboxController.setRumble(RumbleType.kBothRumble, 0);
+    // }
   }
 }

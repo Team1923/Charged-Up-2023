@@ -44,7 +44,11 @@ public class Fancy3Cube extends SequentialCommandGroup {
         new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
         new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))));
     
-    eventMap.put("intake_1", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
+    eventMap.put("intake_1", 
+      new SequentialCommandGroup(
+        new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE)),
+        new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE))));
+  
     eventMap.put("intake_2", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
 
     // Add your commands in the addCommands() call, e.g.

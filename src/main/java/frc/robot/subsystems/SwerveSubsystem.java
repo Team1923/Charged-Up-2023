@@ -46,7 +46,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     private double[] gyroVelocities = new double[3];
 
-    // private double[] ypr = new double[3];
+    private double[] ypr = new double[3];
 
     private StateHandler stateHandler = StateHandler.getInstance();
 
@@ -168,13 +168,13 @@ public class SwerveSubsystem extends SubsystemBase {
         return Math.IEEEremainder(gyro.getYaw(), 360);
     }
 
-    // public Rotation2d getPitch(){
-    // return Rotation2d.fromDegrees(ypr[1]);
-    // }
+    public Rotation2d getPitch(){
+    return Rotation2d.fromDegrees(ypr[1]);
+    }
 
-    // public Rotation2d getRoll(){
-    // return Rotation2d.fromDegrees(ypr[2]);
-    // }
+    public Rotation2d getRoll(){
+    return Rotation2d.fromDegrees(ypr[2]);
+    }
 
     public void resetModulesToAbsolute() {
         for (SwerveModule mod : mSwerveMods) {
@@ -205,21 +205,21 @@ public class SwerveSubsystem extends SubsystemBase {
 
     }
 
-    // public double getYawVelocity(){
-    // return filter.calculate(gyroVelocities[2]);
-    // }
+    public double getYawVelocity(){
+    return filter.calculate(gyroVelocities[2]);
+    }
 
-    // public double getPitchVelocity(){
-    // return filter.calculate(gyroVelocities[1]);
-    // }
+    public double getPitchVelocity(){
+    return filter.calculate(gyroVelocities[1]);
+    }
 
-    // public double getRollVelocity(){
-    // return filter.calculate(gyroVelocities[0]);
-    // }
+    public double getRollVelocity(){
+    return filter.calculate(gyroVelocities[0]);
+    }
 
-    // public void updateYPR() {
-    // gyro.getYawPitchRoll(ypr);
-    // }
+    public void updateYPR() {
+    gyro.getYawPitchRoll(ypr);
+    }
 
     public void updateOdometry() {
         swerveOdometry.update(Rotation2d.fromDegrees(getYawIEEE()), getModulePositions());
@@ -248,7 +248,7 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
 
-        // updateYPR();
+        updateYPR();
 
         if (DriverStation.isAutonomousEnabled() || DriverStation.isDisabled()) {
             updateGyroVelocities();
