@@ -19,7 +19,8 @@ public class AutoChooser {
 		TWO_METER_TEST,
 		TUNE_BALANCE, 
 		THREE_CUBE,
-		FIVE_CUBE_NO_BALANCE
+		FIVE_CUBE_NO_BALANCE, 
+		FANCY_3_CUBE;
 	}
 
 	private SendableChooser<AutoMode> chooser;
@@ -31,13 +32,14 @@ public class AutoChooser {
 	public AutoChooser(){
 		chooser = new SendableChooser<>();
 		chooser.setDefaultOption("SINGLE SCORE", AutoMode.SINGLE_SCORE);
-		chooser.addOption("FourCubeWithBalance", AutoMode.FOUR_CUBE);
-		chooser.addOption("FiveCubeWithBalance", AutoMode.FIVE_CUBE);
-		chooser.addOption("FourCubeWithBalanceSideLine", AutoMode.FOUR_CUBE_SIDELINE);
+		chooser.addOption("4CubeWithBalance", AutoMode.FOUR_CUBE);
+		chooser.addOption("5CubeWithBalance", AutoMode.FIVE_CUBE);
+		chooser.addOption("4CubeWithBalanceSideLine", AutoMode.FOUR_CUBE_SIDELINE);
 		chooser.addOption("TwoMeterTest", AutoMode.TWO_METER_TEST);
 		chooser.addOption("TuneBalance", AutoMode.TUNE_BALANCE);
-		chooser.addOption("THREE CUBE BALANCE", AutoMode.THREE_CUBE);
-		chooser.addOption("FiveCubeNoBalance", AutoMode.FIVE_CUBE_NO_BALANCE);
+		chooser.addOption("3 CUBE BALANCE", AutoMode.THREE_CUBE);
+		chooser.addOption("5CubeNoBalance", AutoMode.FIVE_CUBE_NO_BALANCE);
+		chooser.addOption("FANCY 3 CUBE", AutoMode.FANCY_3_CUBE);
 		auto.add(chooser);
 	}
 
@@ -60,6 +62,8 @@ public class AutoChooser {
 				return AutonInstantiate.getInstance(swerve).getThreeCube();
 			case FIVE_CUBE_NO_BALANCE:
 				return AutonInstantiate.getInstance(swerve).getFiveCubeNoBalance();
+			case FANCY_3_CUBE:
+				return AutonInstantiate.getInstance(swerve).getFancy3Cube();
 			default:
 				return new SingleScoreAuto();
 		}

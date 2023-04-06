@@ -2,6 +2,7 @@ package frc.robot.util;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Autos.BalanceTuning;
+import frc.robot.commands.Autos.Fancy3Cube;
 import frc.robot.commands.Autos.FiveCubeNoBalance;
 import frc.robot.commands.Autos.FiveCubeWithBalance;
 import frc.robot.commands.Autos.FourCubeWithBalance;
@@ -21,6 +22,7 @@ public class AutonInstantiate {
 	private BalanceTuning tuneBalance;
 	private ThreeCubeWithBalance threeCube;
 	private FiveCubeNoBalance fiveCubeNoBalance;
+	private Fancy3Cube fancy3Cube;
 
 	public static synchronized AutonInstantiate getInstance(SwerveSubsystem s) {
 		if (autoInstantiate == null) {
@@ -38,6 +40,7 @@ public class AutonInstantiate {
 		tuneBalance = new BalanceTuning(this.swerve);
 		threeCube = new ThreeCubeWithBalance(swerve);
 		fiveCubeNoBalance = new FiveCubeNoBalance(swerve);
+		fancy3Cube = new Fancy3Cube(swerve);
 	}
 
 	public SequentialCommandGroup get4CubeSideLineAuton() {
@@ -66,6 +69,10 @@ public class AutonInstantiate {
 
 	public SequentialCommandGroup getFiveCubeNoBalance(){
 		return fiveCubeNoBalance;
+	}
+
+	public SequentialCommandGroup getFancy3Cube() {
+		return fancy3Cube;
 	}
 
 }
