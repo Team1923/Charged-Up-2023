@@ -20,7 +20,8 @@ public class AutoChooser {
 		TUNE_BALANCE, 
 		THREE_CUBE,
 		FIVE_CUBE_NO_BALANCE, 
-		FANCY_3_CUBE;
+		FANCY_3_CUBE,
+		NEW_3_CUBE_CHARGE;
 	}
 
 	private SendableChooser<AutoMode> chooser;
@@ -40,6 +41,7 @@ public class AutoChooser {
 		chooser.addOption("3 CUBE BALANCE", AutoMode.THREE_CUBE);
 		chooser.addOption("5CubeNoBalance", AutoMode.FIVE_CUBE_NO_BALANCE);
 		chooser.addOption("FANCY 3 CUBE", AutoMode.FANCY_3_CUBE);
+		chooser.addOption("NEW 3 CUBE CHARGE STATION", AutoMode.NEW_3_CUBE_CHARGE);
 		auto.add(chooser);
 	}
 
@@ -64,6 +66,8 @@ public class AutoChooser {
 				return AutonInstantiate.getInstance(swerve).getFiveCubeNoBalance();
 			case FANCY_3_CUBE:
 				return AutonInstantiate.getInstance(swerve).getFancy3Cube();
+			case NEW_3_CUBE_CHARGE:
+				return AutonInstantiate.getInstance(swerve).getNew3CubeChargeStation();
 			default:
 				return new SingleScoreAuto();
 		}

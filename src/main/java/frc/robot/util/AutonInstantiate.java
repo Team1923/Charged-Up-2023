@@ -7,6 +7,7 @@ import frc.robot.commands.Autos.FiveCubeNoBalance;
 import frc.robot.commands.Autos.FiveCubeWithBalance;
 import frc.robot.commands.Autos.FourCubeWithBalance;
 import frc.robot.commands.Autos.FourCubeWithBalanceSideLine;
+import frc.robot.commands.Autos.New3CubeChargeStation;
 import frc.robot.commands.Autos.ThreeCubeWithBalance;
 import frc.robot.commands.Autos.TwoMeterTest;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -23,6 +24,7 @@ public class AutonInstantiate {
 	private ThreeCubeWithBalance threeCube;
 	private FiveCubeNoBalance fiveCubeNoBalance;
 	private Fancy3Cube fancy3Cube;
+	private New3CubeChargeStation new3CubeChargeStation;
 
 	public static synchronized AutonInstantiate getInstance(SwerveSubsystem s) {
 		if (autoInstantiate == null) {
@@ -41,6 +43,7 @@ public class AutonInstantiate {
 		threeCube = new ThreeCubeWithBalance(swerve);
 		fiveCubeNoBalance = new FiveCubeNoBalance(swerve);
 		fancy3Cube = new Fancy3Cube(swerve);
+		new3CubeChargeStation = new New3CubeChargeStation(swerve);
 	}
 
 	public SequentialCommandGroup get4CubeSideLineAuton() {
@@ -73,6 +76,10 @@ public class AutonInstantiate {
 
 	public SequentialCommandGroup getFancy3Cube() {
 		return fancy3Cube;
+	}
+
+	public SequentialCommandGroup getNew3CubeChargeStation() {
+		return new3CubeChargeStation;
 	}
 
 }
