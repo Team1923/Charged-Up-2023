@@ -34,12 +34,12 @@ public class New3CubeChargeStation extends SequentialCommandGroup {
   /** Creates a new New3CubeChargeStation. */
   public New3CubeChargeStation(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner getToCharge = new AutoFromPathPlanner(swerve, "New3CubeGetToChargeStation", 2, 2, false, true, true);
+    final AutoFromPathPlanner getToCharge = new AutoFromPathPlanner(swerve, "New3CubeGetToChargeStation", 2.5, 2.5, false, true, true);
     final AutoFromPathPlanner getOnCharge = new AutoFromPathPlanner(swerve, "New3CubeGetOnChargeStation", 0.75, 0.75, false, true, true);
-    final AutoFromPathPlanner getOffCharge = new AutoFromPathPlanner(swerve, "New3CubeGetOffChargeStation", 1.5, 1.5, false, true, true);
-    final AutoFromPathPlanner getCubes = new AutoFromPathPlanner(swerve, "New3CubeGetCubes", 2.5, 2.5, false, true, true);
+    final AutoFromPathPlanner getOffCharge = new AutoFromPathPlanner(swerve, "New3CubeGetOffChargeStation", 2.5, 2, false, true, true);
+    final AutoFromPathPlanner getCubes = new AutoFromPathPlanner(swerve, "New3CubeGetCubes", 3.5, 3, false, true, true);
     final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation", 0.75, 0.75, false, true, true);
-    final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalance", 1.5, 1.5, false, true, true);
+    final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalanceNew3Cube", 1.5, 1.5, false, true, true);
 
 
     eventMap1.put("intake_1", new SequentialCommandGroup(
@@ -57,16 +57,19 @@ public class New3CubeChargeStation extends SequentialCommandGroup {
     addCommands(
       new InstantCommand(() -> swerve.resetModulesToAbsolute()),
       new InstantCommand(() -> swerve.resetOdometryForState(getToCharge.getInitialState())),
+      new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL)),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
       new WaitCommand(0.5),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
       getToCharge,
       getOnCharge,
+      new InstantCommand(() -> SmartDashboard.putBoolean("GET OFF CHARGE OVER", false)),
       new FollowPathWithEvents(
         getOffCharge,
         getOffCharge.getEventMarkers(),
         eventMap1
-      ),
+      ).withTimeout(2),
+      new InstantCommand(() -> SmartDashboard.putBoolean("GET OFF CHARGE OVER", true)),
       new FollowPathWithEvents(
         getCubes,
         getCubes.getEventMarkers(),
@@ -74,10 +77,14 @@ public class New3CubeChargeStation extends SequentialCommandGroup {
       ),
       mountChargeStation,
       new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_HIGHER)),
-      new ParallelRaceGroup(
+      new ParallelCommandGroup(
         new SequentialCommandGroup(
           commitBalance,
-          // new AutoBalance(swerve),
+          new WaitCommand(0.35),
+          new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.HIGH_INTAKE_EJECT)),
+          new WaitCommand(0.25),  
+          new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
+          new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL)),
           new InstantCommand(() -> SmartDashboard.putBoolean("ENDED WITH GYRO", false))
         )//,
         // new SequentialCommandGroup(
@@ -88,11 +95,7 @@ public class New3CubeChargeStation extends SequentialCommandGroup {
       new ParallelCommandGroup(
         new SwerveXWheels(swerve),
         new SequentialCommandGroup(
-          // new WaitCommand(0.25),
-          new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.HIGH_INTAKE_EJECT)),
-          new WaitCommand(0.25),  
-          new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
-          new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))
+
         )
       ) 
 
