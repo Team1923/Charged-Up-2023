@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos.AutoShootSequence;
 import frc.robot.commands.Autos.TestMarkers;
 import frc.robot.commands.IntakeCommands.EmergencyResetCommand;
+import frc.robot.commands.IntakeCommands.FerryShootGroup;
 import frc.robot.commands.IntakeCommands.IntakeGamePiece;
 import frc.robot.commands.IntakeCommands.ShootGamePiece;
 import frc.robot.commands.IntakeCommands.SetIntakePosition;
@@ -133,7 +134,7 @@ public class RobotContainer {
 
         operatorSquareButton.onTrue(new SetIntakePosition(IntakePositions.INTAKE));
         operatorTriangleButton.onTrue(new SetIntakePosition(IntakePositions.SHOOT_TALL));
-        operatorCircleButton.onTrue(new SetIntakePosition(IntakePositions.SHOOT_SMALL));
+        operatorCircleButton.onTrue(new FerryShootGroup());
 
     }
 
