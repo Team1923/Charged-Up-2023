@@ -4,8 +4,6 @@
 
 package frc.robot.commands.IntakeCommands;
 
-import java.nio.charset.StandardCharsets;
-
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;

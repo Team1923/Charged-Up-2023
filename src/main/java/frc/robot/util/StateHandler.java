@@ -1,7 +1,6 @@
 package frc.robot.util;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
 import frc.robot.util.StateVariables.IntakePositions;
 import frc.robot.util.StateVariables.IntakeWheelSpeeds;
@@ -12,8 +11,6 @@ public class StateHandler {
     private VerticalLocations verticalLocations = VerticalLocations.LOW;
     
     private IntakePositions desiredIntakePosition = IntakePositions.SHOOT_TALL;
-
-    private CurrentRobotDirection currentRobotDirection = CurrentRobotDirection.RIGHT;
 
     private IntakeWheelSpeeds desiredIntakeWheelSpeed = IntakeWheelSpeeds.GRIP;
 
@@ -33,6 +30,8 @@ public class StateHandler {
     private boolean useGyroVelocityMeasurement = false;
 
     private boolean stickOut = false;
+
+    private boolean readyToScore = false;
 
 
     public static synchronized StateHandler getInstance() {
@@ -145,6 +144,14 @@ public class StateHandler {
 
     public void setStickOut(boolean s){
         this.stickOut = s;
+    }
+
+    public void setReadyToScore(boolean r) {
+        readyToScore = r;
+    }
+
+    public boolean getReadyToScore() {
+        return readyToScore;
     }
 
 

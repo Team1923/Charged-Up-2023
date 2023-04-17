@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import frc.robot.interfaces.LimelightInterface;
 import frc.robot.interfaces.SwerveModule;
 import frc.robot.util.StateHandler;
-import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.Constants;
 import frc.robot.Constants.Swerve;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;

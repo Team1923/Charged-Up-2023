@@ -11,9 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.StateHandler;
-import frc.robot.util.StateVariables.CurrentRobotDirection;
 import frc.robot.util.StateVariables.GamePieceMode;
-import frc.robot.util.StateVariables.HorizontalLocations;
 import frc.robot.util.StateVariables.IntakePositions;
 import frc.robot.util.StateVariables.VerticalLocations;
 
