@@ -71,6 +71,29 @@ void setGreen() {
   FastLED.show();
 }
 
+void setBlue(){
+
+  CRGB desired_color;
+
+  white_counter = (int)(((double)white_counter) + 1.5);
+
+  if(white_counter < 300) {
+    int div = (white_counter / 20) % 2;
+    if(div == 1) {
+      desired_color = CRGB(0, 0, 255);
+    } else {
+      desired_color = CRGB(0,0,0);
+    }
+  } else {
+    desired_color = CRGB(0, 0, 255);
+  }
+
+  for(int j = 0; j < NUM_LEDS_PER_STRIP; j++){
+    leds[j] = desired_color;
+  }
+  FastLED.show();
+}
+
 void setWhite(){
 
   CRGB desired_color;
@@ -158,6 +181,9 @@ void lightUp() {
       break;
     case 4:
       RainbowOscillating();
+      break;
+    case 2:
+      setBlue();
       break;
     case 3:
       setPurple();

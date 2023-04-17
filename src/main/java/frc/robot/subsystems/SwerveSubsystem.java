@@ -26,6 +26,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
@@ -54,6 +55,8 @@ public class SwerveSubsystem extends SubsystemBase {
     public static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(0.75, 0.75, Units.degreesToRadians(20));
 
     LimelightInterface limelightInterface = LimelightInterface.getInstance();
+
+    private Twist2d fieldVelocity = new Twist2d();
 
     public SwerveSubsystem() {
         gyro.configFactoryDefault();
@@ -143,10 +146,17 @@ public class SwerveSubsystem extends SubsystemBase {
     // taken from
     // a forward kinematics calculation from the swerve drive kinematics object
     public double getRobotVelocity() {
-        ChassisSpeeds currentChassisSpeeds = Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
+        ChassisSpeeds chassisSpeeds = Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
+        Translation2d linearFieldVelocity =
+            new Translation2d(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond)
+                .rotateBy(Rotation2d.fromDegrees(getYawIEEE()));
+        fieldVelocity =
+            new Twist2d(
+                linearFieldVelocity.getX(),
+                linearFieldVelocity.getY(),
+                getYawVelocity());
 
-        return Math.sqrt(Math.pow(currentChassisSpeeds.vxMetersPerSecond, 2)
-                + Math.pow(currentChassisSpeeds.vyMetersPerSecond, 2));
+        return Math.sqrt(Math.pow(fieldVelocity.dx, 2) + Math.pow(fieldVelocity.dy, 2));
     }
 
     public void zeroGyro() {

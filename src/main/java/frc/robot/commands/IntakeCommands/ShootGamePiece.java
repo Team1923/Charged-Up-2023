@@ -71,6 +71,8 @@ public class ShootGamePiece extends CommandBase {
     if(stateHandler.getDesiredIntakePosition() == IntakePositions.PLOP_SHOT) {
       stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL);
     }
+
+    stateHandler.setReadyToScore(false);
   }
 
   // Returns true when the command should end.

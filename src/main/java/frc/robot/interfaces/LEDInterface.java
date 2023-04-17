@@ -58,6 +58,12 @@ public class LEDInterface {
 				bit2.set(false);
 				bit3.set(true);
 			}
+
+			if(stateHandler.getReadyToScore()) {
+				bit1.set(false);
+				bit2.set(true);
+				bit3.set(false);
+			}
 		}
 
 		}

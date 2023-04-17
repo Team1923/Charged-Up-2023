@@ -19,19 +19,16 @@ public class LimelightInterface {
   // network table declarations
   private static NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
-
   private double aprilTagID = 0;
   private boolean hasValidTarget = false;
 
-
   ArrayList<AprilTag> aprilTagList = new ArrayList<AprilTag>();
-  public AprilTagFieldLayout aprilTagFieldLayout; 
+  public AprilTagFieldLayout aprilTagFieldLayout;
 
   public LimelightInterface() {
     fillAprilTagList();
     aprilTagFieldLayout = new AprilTagFieldLayout(aprilTagList, 16.54175, 8.0137);
   }
-
 
   /*
    * A singleton that creates the sole instance of BetterLimelightInterface,
@@ -45,13 +42,16 @@ public class LimelightInterface {
     return limelightInterface;
   }
 
+  public ArrayList<AprilTag> getAprilTagList() {
+    return aprilTagList;
+  }
 
   public double getDoubleEntry(String entry) {
-      return limelight.getEntry(entry).getDouble(0);
+    return limelight.getEntry(entry).getDouble(0);
   }
 
   public double[] getArrayEntry(String entry) {
-      return limelight.getEntry(entry).getDoubleArray(new double[6]);
+    return limelight.getEntry(entry).getDoubleArray(new double[6]);
   }
 
   /*
@@ -59,7 +59,7 @@ public class LimelightInterface {
    * is the pipeline (if we decide to vision track)
    */
   public void setPipeline(int pipeline) {
-      limelight.getEntry("pipeline").setNumber(pipeline);
+    limelight.getEntry("pipeline").setNumber(pipeline);
   }
 
   public boolean hasValidTargets() {
@@ -71,7 +71,7 @@ public class LimelightInterface {
     return getDoubleEntry("ta");
   }
 
-  public double getXOffset(){
+  public double getXOffset() {
     return getDoubleEntry("tx");
   }
 
@@ -105,7 +105,6 @@ public class LimelightInterface {
     return getDoubleEntry("cl");
   }
 
-
   /*
    * create a Pose3D object for trajectory generation
    */
@@ -118,10 +117,10 @@ public class LimelightInterface {
     return p3d;
   }
 
-  public Pose3d getAprilTagPose(){
-    if(hasValidTargets()) {
-      Optional<Pose3d> aprilTagPose = aprilTagFieldLayout.getTagPose((int)getID());
-      if(aprilTagPose.isEmpty()) {
+  public Pose3d getAprilTagPose() {
+    if (hasValidTargets()) {
+      Optional<Pose3d> aprilTagPose = aprilTagFieldLayout.getTagPose((int) getID());
+      if (aprilTagPose.isEmpty()) {
         return new Pose3d();
       }
       return aprilTagPose.get();
@@ -129,16 +128,24 @@ public class LimelightInterface {
     return new Pose3d();
   }
 
-  public void fillAprilTagList(){
-    aprilTagList.add(new AprilTag(1, new Pose3d(15.513558, 1.071626, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
-    aprilTagList.add(new AprilTag(2, new Pose3d(15.513558, 2.748026, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
-    aprilTagList.add(new AprilTag(3, new Pose3d(15.513558, 4.424426, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
-    aprilTagList.add(new AprilTag(4, new Pose3d(16.178784, 6.749796, 0.695452, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
-    aprilTagList.add(new AprilTag(5, new Pose3d(0.36195, 6.749796, 0.695452, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
-    aprilTagList.add(new AprilTag(6, new Pose3d(1.02743, 4.424426, 0.462788, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
-    aprilTagList.add(new AprilTag(7, new Pose3d(1.02743, 2.748026, 0.462788, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
-    aprilTagList.add(new AprilTag(8, new Pose3d(1.02743, 1.071626, 0.462788, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
-}
+  public void fillAprilTagList() {
+    aprilTagList
+        .add(new AprilTag(1, new Pose3d(15.513558, 1.071626, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
+    aprilTagList
+        .add(new AprilTag(2, new Pose3d(15.513558, 2.748026, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
+    aprilTagList
+        .add(new AprilTag(3, new Pose3d(15.513558, 4.424426, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
+    aprilTagList
+        .add(new AprilTag(4, new Pose3d(16.178784, 6.749796, 0.695452, new Rotation3d(new Quaternion(0, 0, 0, 1)))));
+    aprilTagList
+        .add(new AprilTag(5, new Pose3d(0.36195, 6.749796, 0.695452, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
+    aprilTagList
+        .add(new AprilTag(6, new Pose3d(1.02743, 4.424426, 0.462788, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
+    aprilTagList
+        .add(new AprilTag(7, new Pose3d(1.02743, 2.748026, 0.462788, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
+    aprilTagList
+        .add(new AprilTag(8, new Pose3d(1.02743, 1.071626, 0.462788, new Rotation3d(new Quaternion(1, 0, 0, 0)))));
+  }
 
   
 
