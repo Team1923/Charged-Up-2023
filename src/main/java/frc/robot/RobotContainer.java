@@ -21,6 +21,7 @@ import frc.robot.commands.StateCommands.SetShootingLocation;
 import frc.robot.commands.SwerveCommands.AlignToTag;
 import frc.robot.commands.SwerveCommands.SwerveXWheels;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
+import frc.robot.commands.SwerveCommands.TrajectoryToGoal;
 import frc.robot.interfaces.AutoChooser;
 import frc.robot.subsystems.*;
 import frc.robot.util.AutonInstantiate;
@@ -113,7 +114,8 @@ public class RobotContainer {
         aButton.toggleOnTrue(new SwerveXWheels(s_Swerve));
         bButton.onTrue(new InstantCommand(() -> s_Swerve.resetModulesToAbsolute()));
         new Trigger(() -> driver.getRawAxis(3) > 0.2).whileTrue(new IntakeGamePiece(IntakeWheelSpeeds.INTAKE));
-        new Trigger(() -> driver.getRawAxis(2) > 0.2).whileTrue(new AlignToTag(s_Swerve,() -> -driver.getRawAxis(translationAxis)));
+        // new Trigger(() -> driver.getRawAxis(2) > 0.2).whileTrue(new AlignToTag(s_Swerve,() -> -driver.getRawAxis(translationAxis)));
+        new Trigger(() -> driver.getRawAxis(2) > 0.2).onTrue(new TrajectoryToGoal(s_Swerve));
 
         /*
          * Note for Aalind for button bindings:

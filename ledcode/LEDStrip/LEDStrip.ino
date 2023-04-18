@@ -179,6 +179,9 @@ void lightUp() {
     case 7:
       setWhite();
       break;
+    case 5:
+      setGreen();
+      break;
     case 4:
       RainbowOscillating();
       break;

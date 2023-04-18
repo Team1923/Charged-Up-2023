@@ -64,6 +64,18 @@ public class LEDInterface {
 				bit2.set(true);
 				bit3.set(false);
 			}
+
+			if(LimelightInterface.getInstance().hasScoringTarget()) {
+				bit1.set(true);
+				bit2.set(false);
+				bit3.set(true);
+			} else {
+				bit1.set(true);
+				bit2.set(true);
+				bit3.set(false);
+			}
+
+
 		}
 
 		}
