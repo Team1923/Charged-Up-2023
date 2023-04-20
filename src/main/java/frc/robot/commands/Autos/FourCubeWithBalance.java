@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.commands.AutoBalance;
 import frc.robot.commands.SwerveCommands.SwerveXWheels;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.StateHandler;
@@ -71,28 +70,22 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
       new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE_HIGHER)),
       new ParallelRaceGroup(
         new SequentialCommandGroup(
-          commitBalance,
-          // new AutoBalance(swerve),
+          //commitBalance,
           new InstantCommand(() -> SmartDashboard.putBoolean("ENDED WITH GYRO", false))
-        )//,
-        // new SequentialCommandGroup(
-        //   new WaitUntilCommand(() -> swerve.getAngularVelocity() > 20),//20
-        //   new InstantCommand(() -> SmartDashboard.putBoolean("ENDED WITH GYRO", true))
-        // )
+        )
       ),
+
       new ParallelCommandGroup(
-        new SwerveXWheels(swerve),
         new SequentialCommandGroup(
-          // new WaitCommand(0.25),
+          new WaitCommand(0.5),
           new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.HIGH_INTAKE_EJECT)),
           new WaitCommand(0.25),  
           new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
           new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))
-        )
-      )
-
-
-     
+        ),
+        new ConfirmBalanceCommand(swerve)
+      ),
+      new SwerveXWheels(swerve)
     );
   }
 

@@ -12,7 +12,7 @@ public class StateVariables {
         GRIP(new IntakeSpeed(0.075, 0)),
         EJECT(new IntakeSpeed(-0.5, -0.5)),
         PLOP_HIGH(new IntakeSpeed(-0.60, 0)),
-        PLOP_MID(new IntakeSpeed(-0.40, 0)),
+        PLOP_MID(new IntakeSpeed(-0.295, 0)),
         CHARGE_STATION_PLOP(new IntakeSpeed(-1, 0)),
         HIGH_INTAKE_EJECT(new IntakeSpeed(-1,0));
 

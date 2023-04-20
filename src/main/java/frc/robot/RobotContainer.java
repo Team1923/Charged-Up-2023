@@ -115,7 +115,7 @@ public class RobotContainer {
         bButton.onTrue(new InstantCommand(() -> s_Swerve.resetModulesToAbsolute()));
         new Trigger(() -> driver.getRawAxis(3) > 0.2).whileTrue(new IntakeGamePiece(IntakeWheelSpeeds.INTAKE));
         // new Trigger(() -> driver.getRawAxis(2) > 0.2).whileTrue(new AlignToTag(s_Swerve,() -> -driver.getRawAxis(translationAxis)));
-        new Trigger(() -> driver.getRawAxis(2) > 0.2).onTrue(new TrajectoryToGoal(s_Swerve));
+        //new Trigger(() -> driver.getRawAxis(2) > 0.2).whileTrue(new TrajectoryToGoal(s_Swerve));
 
         /*
          * Note for Aalind for button bindings:
@@ -136,9 +136,9 @@ public class RobotContainer {
 
         operatorSquareButton.onTrue(new SetIntakePosition(IntakePositions.INTAKE));
         operatorTriangleButton.onTrue(new SetIntakePosition(IntakePositions.SHOOT_TALL));
-        operatorCircleButton.onTrue(new FerryShootGroup());
+        operatorRightBumper.onTrue(new FerryShootGroup());
 
-    }
+    } 
 
     private void setDefaultCommands() {
         s_Swerve.setDefaultCommand(

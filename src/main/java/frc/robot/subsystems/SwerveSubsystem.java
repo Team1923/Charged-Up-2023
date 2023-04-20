@@ -232,30 +232,32 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public void updateOdometry() {
         swerveOdometry.update(Rotation2d.fromDegrees(getYawIEEE()), getModulePositions());
-        // if (limelightInterface.hasValidTargets()) {
-        //     Pose3d currentAprilTagPose = limelightInterface.getAprilTagPose();
-        //     Pose2d aprilTagPose = new Pose2d(currentAprilTagPose.getX(),
-        //             currentAprilTagPose.getY(), new Rotation2d());
-        //     Pose2d robotLimelightPose = new Pose2d(-limelightInterface.getRobotPose3d().getZ(),
-        //             limelightInterface.getRobotPose3d().getX(), getYaw());
-        //     if (Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) +
-        //             Math.pow(robotLimelightPose.getY(), 2)) <= 1.5) {
-        //         Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() +
-        //                 robotLimelightPose.getX(),
-        //                 aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
+        if (limelightInterface.hasValidTargets() && DriverStation.isTeleop()) {
+            Pose3d currentAprilTagPose = limelightInterface.getAprilTagPose();
+            Pose2d aprilTagPose = new Pose2d(currentAprilTagPose.getX(),
+                    currentAprilTagPose.getY(), new Rotation2d());
+            Pose2d robotLimelightPose = new Pose2d(-limelightInterface.getRobotPose3d().getZ(),
+                    limelightInterface.getRobotPose3d().getX(), getYaw());
+            if (Math.sqrt(Math.pow(robotLimelightPose.getX(), 2) +
+                    Math.pow(robotLimelightPose.getY(), 2)) <= 1.5) {
+                Pose2d newRobotPose = new Pose2d(aprilTagPose.getX() +
+                        robotLimelightPose.getX(),
+                        aprilTagPose.getY() + robotLimelightPose.getY(), getYaw());
 
-        //         swerveOdometry.addVisionMeasurement(newRobotPose,
-        //                 Timer.getFPGATimestamp() - (limelightInterface.getTL() /
-        //                         1000)
-        //                         - (limelightInterface.getCL() / 1000));
+                swerveOdometry.addVisionMeasurement(newRobotPose,
+                        Timer.getFPGATimestamp() - (limelightInterface.getTL() /
+                                1000)
+                                - (limelightInterface.getCL() / 1000));
 
-        //     }
+            }
 
-        // }
+        }
     }
 
     @Override
     public void periodic() {
+
+        SmartDashboard.putBoolean("HAS SCORING TARGET", limelightInterface.hasValidTargets());
 
         updateYPR();
 
@@ -266,6 +268,8 @@ public class SwerveSubsystem extends SubsystemBase {
         updateOdometry();
 
         PathPlannerServer.sendPathFollowingData(new Pose2d(), getPose());
+
+        SmartDashboard.putNumber("ROBOT PITCH", getPitch().getDegrees());
 
         // SmartDashboard.putNumber("Gyro Angle", getYaw().getDegrees());
         // SmartDashboard.putNumber("Gyro Angular Velocity", getAngularVelocity());

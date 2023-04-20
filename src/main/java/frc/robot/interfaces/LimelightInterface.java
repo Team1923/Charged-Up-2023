@@ -93,8 +93,8 @@ public class LimelightInterface {
   }
 
   public boolean hasScoringTarget() {
-    return (((aprilTagID == 1) || (aprilTagID == 2) || (aprilTagID == 3)
-        || (aprilTagID == 6) || (aprilTagID == 7) || (aprilTagID == 8)) && hasValidTarget);
+    return (((getID() == 1) || (getID() == 2) || (getID() == 3)
+        || (getID() == 6) || (getID() == 7) || (getID() == 8)) && hasValidTargets());
   }
 
   public double getTL() {
@@ -126,6 +126,10 @@ public class LimelightInterface {
       return aprilTagPose.get();
     }
     return new Pose3d();
+  }
+
+  public Pose3d getAprilTagPose(int id) {
+      return aprilTagFieldLayout.getTagPose(id).get();
   }
 
   public void fillAprilTagList() {

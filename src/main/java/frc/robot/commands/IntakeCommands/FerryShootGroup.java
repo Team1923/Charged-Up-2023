@@ -5,6 +5,7 @@
 package frc.robot.commands.IntakeCommands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.util.StateHandler;
@@ -26,9 +27,17 @@ public class FerryShootGroup extends SequentialCommandGroup {
       new WaitCommand(.1),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.CHARGE_STATION_PLOP)),
       new WaitCommand(.2),
-      new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL)),
-      new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.CHARGE_STATION_PLOP)),
-      new InstantCommand(() -> stateHandler.setStickOut(false))
+      new ParallelCommandGroup(
+        new SequentialCommandGroup(
+          new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL)),
+          new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP))
+        ), 
+        new SequentialCommandGroup(
+          new WaitCommand(0.25),
+          new InstantCommand(() -> stateHandler.setStickOut(false))
+        )
+      )
+
     );
   }
 }

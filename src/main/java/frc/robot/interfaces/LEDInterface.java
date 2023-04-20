@@ -30,55 +30,43 @@ public class LEDInterface {
 	 * 0 0 1 = want to be happy
 	 */
 
-
 	public void updateLed() {
 		if (DriverStation.isDisabled()) {
-			if(!stateHandler.getIntakeGood()) {
+			if (!stateHandler.getIntakeGood()) {
 				bit1.set(false);
 				bit2.set(false);
 				bit3.set(false);
 			} else {
 				bit1.set(true);
 				bit2.set(false);
-				bit3.set(false);				
+				bit3.set(false);
 			}
 		} else {
-			if(!stateHandler.hasGamePiece()) {
-				bit1.set(true);
-				bit2.set(true);
-				bit3.set(false);
-			} else {
+			// if (LimelightInterface.getInstance().hasScoringTarget()) {
+			// 	bit1.set(true);
+			// 	bit2.set(false);
+			// 	bit3.set(false);
+			// } else 
+			if (stateHandler.hasGamePiece()) {
 				bit1.set(true);
 				bit2.set(true);
 				bit3.set(true);
-			}
 
-			if(stateHandler.getWantToBeHappy()) {
+			} else if (stateHandler.getWantToBeHappy()) {
 				bit1.set(false);
 				bit2.set(false);
 				bit3.set(true);
-			}
-
-			if(stateHandler.getReadyToScore()) {
+			} else if (stateHandler.getReadyToScore()) {
 				bit1.set(false);
 				bit2.set(true);
 				bit3.set(false);
-			}
-
-			if(LimelightInterface.getInstance().hasScoringTarget()) {
-				bit1.set(true);
-				bit2.set(false);
-				bit3.set(true);
 			} else {
 				bit1.set(true);
 				bit2.set(true);
 				bit3.set(false);
 			}
 
-
 		}
 
-		}
 	}
-
-	
+}

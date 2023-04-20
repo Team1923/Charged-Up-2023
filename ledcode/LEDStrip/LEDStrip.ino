@@ -1,7 +1,7 @@
 #include <FastLED.h>
 
 #define NUM_STRIPS 1
-#define NUM_LEDS_PER_STRIP 101
+#define NUM_LEDS_PER_STRIP 105
 CRGB leds[NUM_LEDS_PER_STRIP];
 
 #define LED_PIN_1 10
@@ -72,24 +72,10 @@ void setGreen() {
 }
 
 void setBlue(){
+  white_counter = 0;
 
-  CRGB desired_color;
-
-  white_counter = (int)(((double)white_counter) + 1.5);
-
-  if(white_counter < 300) {
-    int div = (white_counter / 20) % 2;
-    if(div == 1) {
-      desired_color = CRGB(0, 0, 255);
-    } else {
-      desired_color = CRGB(0,0,0);
-    }
-  } else {
-    desired_color = CRGB(0, 0, 255);
-  }
-
-  for(int j = 0; j < NUM_LEDS_PER_STRIP; j++){
-    leds[j] = desired_color;
+  for (int j = 0; j < NUM_LEDS_PER_STRIP; j++) {
+    leds[j] = CRGB(0, 0, 255);
   }
   FastLED.show();
 }
@@ -178,9 +164,6 @@ void lightUp() {
       break;
     case 7:
       setWhite();
-      break;
-    case 5:
-      setGreen();
       break;
     case 4:
       RainbowOscillating();

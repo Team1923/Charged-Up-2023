@@ -200,6 +200,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("INTAKE Arm POSITION RADS: ", getIntakeArmPosition());
     SmartDashboard.putNumber("INTAKE ABSOLUTE Encoder Rads", getIntakeAbsoluteEncoderRads());
+
+    SmartDashboard.putString("Intake Speed", stateHandler.getDesiredIntakeWheelSpeed().toString());
+
+    SmartDashboard.putString("INTAKE POSITION", stateHandler.getDesiredIntakePosition().toString());
     // SmartDashboard.putNumber("FALCON INTAKE MOTOR ENCODER", getIntakeArmPosition());
 
     // SmartDashboard.putString("Desired Intake Position", stateHandler.getDesiredIntakePosition().toString());

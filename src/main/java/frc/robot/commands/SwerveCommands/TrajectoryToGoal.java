@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.Swerve;
 import frc.robot.interfaces.LimelightInterface;
@@ -32,12 +33,14 @@ import frc.robot.util.PathPlannerUtils.SuppliedSwerveControllerCommand;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TrajectoryToGoal extends SequentialCommandGroup {
   private SwerveSubsystem swerve;
+  LimelightInterface limelightInterface = LimelightInterface.getInstance();
 
   public TrajectoryToGoal(SwerveSubsystem s) {
     swerve = s;
     PIDController thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
 
     addCommands(
+        new WaitUntilCommand(() -> limelightInterface.hasScoringTarget() == true),
         new SuppliedSwerveControllerCommand(
             () -> getPPTrajectory(),
             swerve::getPose,
@@ -60,7 +63,8 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
 
     Pose2d currentRobotPose = swerve.getPose();
 
-    Pose2d closestTag = getMinPose(currentRobotPose, DriverStation.getAlliance());
+    Pose2d closestTag = new Pose2d(limelightInterface.getAprilTagPose().getX(), limelightInterface.getAprilTagPose().getY(), new Rotation2d());
+    //getMinPose(currentRobotPose, DriverStation.getAlliance());
 
     Rotation2d desiredWheelHeading = getWheelHeading(currentRobotPose, closestTag);
 
@@ -69,7 +73,9 @@ public class TrajectoryToGoal extends SequentialCommandGroup {
         new PathPoint(new Translation2d(currentRobotPose.getX(), currentRobotPose.getY()),
             desiredWheelHeading, currentHolonomicRotation,
             swerve.getRobotVelocity()), // initial
-        new PathPoint(new Translation2d(closestTag.getX(), closestTag.getY()), desiredWheelHeading,
+        new PathPoint(new Translation2d(closestTag.getX() + 0.75, closestTag.getY()), desiredWheelHeading,
+            goalHolonomicRotation),
+        new PathPoint(new Translation2d(closestTag.getX() + 0.457, closestTag.getY()), desiredWheelHeading,
             goalHolonomicRotation)); // final
 
   }
