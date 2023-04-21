@@ -136,13 +136,13 @@ public class IntakeSubsystem extends SubsystemBase {
     return IntakeConstants.intakeArmMaxGravityConstant * Math.cos(getIntakeArmPosition());
   }
 
-  public void setMainRawWheelSpeed(double stpt) {
-    leftIntakeWheelMotor.set(stpt);
-    rightIntakeWheelMotor.set(-stpt);
+  public void setMainRawWheelSpeed(IntakeWheelSpeeds wheelSpeed) {
+    leftIntakeWheelMotor.set(wheelSpeed.getIntakeWheelSpeed().getLeftSpeed());
+    rightIntakeWheelMotor.set(-wheelSpeed.getIntakeWheelSpeed().getRightSpeed());
   }
 
-  public void setHorizontalRawWheelSpeed(double stpt) {
-    horizontalRollerMotor.set(stpt);
+  public void setHorizontalRawWheelSpeed(IntakeWheelSpeeds rollerSpeed) {
+    horizontalRollerMotor.set(rollerSpeed.getIntakeWheelSpeed().getHorizontalRollerSpd());
   }
 
   public void setRollerSolenoid() {
@@ -262,17 +262,17 @@ public class IntakeSubsystem extends SubsystemBase {
         && (stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.SHOOT_LOW
             || stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.SHOOT_MID
             || stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.SHOOT_HIGH)) {
-      setMainRawWheelSpeed(IntakeWheelSpeeds.EJECT.getIntakeWheelSpeed().getWheelSpeed());
-      setHorizontalRawWheelSpeed(IntakeWheelSpeeds.EJECT.getIntakeWheelSpeed().getHorizontalRollerSpd());
+      setMainRawWheelSpeed(IntakeWheelSpeeds.EJECT);
+      setHorizontalRawWheelSpeed(IntakeWheelSpeeds.EJECT);
     } else if (getGamePieceSensor()
         && stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE
         && stateHandler.getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.INTAKE) {
-      setMainRawWheelSpeed(IntakeWheelSpeeds.GRIP.getIntakeWheelSpeed().getWheelSpeed());
-      setHorizontalRawWheelSpeed(IntakeWheelSpeeds.GRIP.getIntakeWheelSpeed().getHorizontalRollerSpd());
+      setMainRawWheelSpeed(IntakeWheelSpeeds.GRIP);
+      setHorizontalRawWheelSpeed(IntakeWheelSpeeds.GRIP);
     } else {
-      setMainRawWheelSpeed(stateHandler.getDesiredIntakeWheelSpeed().getIntakeWheelSpeed().getWheelSpeed());
+      setMainRawWheelSpeed(stateHandler.getDesiredIntakeWheelSpeed());
       setHorizontalRawWheelSpeed(
-          stateHandler.getDesiredIntakeWheelSpeed().getIntakeWheelSpeed().getHorizontalRollerSpd());
+          stateHandler.getDesiredIntakeWheelSpeed());
     }
 
   }

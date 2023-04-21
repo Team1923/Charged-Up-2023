@@ -14,7 +14,9 @@ public class StateVariables {
         PLOP_HIGH(new IntakeSpeed(-0.60, 0)),
         PLOP_MID(new IntakeSpeed(-0.295, 0)),
         CHARGE_STATION_PLOP(new IntakeSpeed(-1, 0)),
-        HIGH_INTAKE_EJECT(new IntakeSpeed(-1,0));
+        HIGH_INTAKE_EJECT(new IntakeSpeed(-1,0)), 
+        FIRST_AUTO_SHOT_BLUE(new IntakeSpeed(-0.85, -1, 0)),
+        FIRST_AUTO_SHOT_RED(new IntakeSpeed(-1, -0.5, 0));
 
 
         private IntakeSpeed iWheelSpeed;
@@ -94,19 +96,32 @@ public class StateVariables {
 
     public static class IntakeSpeed{
         private double spd;
+        private double leftSpd;
+        private double rightSpd;
         private double horizontalRollerSpd;
 
         public IntakeSpeed(double s, double horizontalRollerSpd) {
-            spd = s;
+            leftSpd = s;
+            rightSpd = s;
             this.horizontalRollerSpd = horizontalRollerSpd;
         }
 
-        public double getWheelSpeed() {
-            return spd;
+        public IntakeSpeed(double leftSpd, double rightSpd, double horizontalRollerSpd) {
+            this.leftSpd = leftSpd;
+            this.rightSpd = rightSpd;
+            this.horizontalRollerSpd = horizontalRollerSpd;
         }
 
         public double getHorizontalRollerSpd() {
             return horizontalRollerSpd;
+        }
+
+        public double getLeftSpeed() {
+            return leftSpd;
+        }
+
+        public double getRightSpeed() {
+            return rightSpd;
         }
 
     }

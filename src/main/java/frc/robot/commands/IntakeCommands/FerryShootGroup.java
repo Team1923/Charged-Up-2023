@@ -24,7 +24,7 @@ public class FerryShootGroup extends SequentialCommandGroup {
     addCommands(
       new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_SMALL)),
       new InstantCommand(() -> stateHandler.setStickOut(true)),
-      new WaitCommand(.1),
+      new WaitCommand(.35),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.CHARGE_STATION_PLOP)),
       new WaitCommand(.2),
       new ParallelCommandGroup(
@@ -33,7 +33,7 @@ public class FerryShootGroup extends SequentialCommandGroup {
           new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP))
         ), 
         new SequentialCommandGroup(
-          new WaitCommand(0.25),
+          new WaitCommand(0.4),
           new InstantCommand(() -> stateHandler.setStickOut(false))
         )
       )

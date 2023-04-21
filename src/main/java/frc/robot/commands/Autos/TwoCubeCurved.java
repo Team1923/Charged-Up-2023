@@ -28,26 +28,23 @@ import frc.robot.util.StateVariables.IntakeWheelSpeeds;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ThreeCubeWithBalance extends SequentialCommandGroup {
+public class TwoCubeCurved extends SequentialCommandGroup {
 
   private StateHandler stateHandler = StateHandler.getInstance();
   HashMap<String, Command> eventMap = new HashMap<>();
 
   /** Creates a new FourCubeWithBalance. */
-  public ThreeCubeWithBalance(SwerveSubsystem swerve) {
+  public TwoCubeCurved(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "3CubeAuto", 3, 3, false, true, true);
+    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "2CubeCurved", 3, 3, false, true, true);
     final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation", 1, 1, false, true, true);
-    final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalance", 2.5, 2.5, false, true, true);
 
-    eventMap.put("shoot_1", new AutoShootSequence());
     eventMap.put("lift_intake_before_balance", 
       new SequentialCommandGroup(
         new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
         new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))));
     
     eventMap.put("intake_1", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
-    eventMap.put("intake_2", new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)));
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());

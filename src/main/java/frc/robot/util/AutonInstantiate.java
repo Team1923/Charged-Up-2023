@@ -2,13 +2,16 @@ package frc.robot.util;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Autos.BalanceTuning;
+import frc.robot.commands.Autos.CurvedThreeCube;
 import frc.robot.commands.Autos.Fancy3Cube;
 import frc.robot.commands.Autos.FiveCubeNoBalance;
 import frc.robot.commands.Autos.FiveCubeWithBalance;
 import frc.robot.commands.Autos.FourCubeWithBalance;
 import frc.robot.commands.Autos.FourCubeWithBalanceSideLine;
 import frc.robot.commands.Autos.New3CubeChargeStation;
+import frc.robot.commands.Autos.ScoreCenterBalance;
 import frc.robot.commands.Autos.ThreeCubeWithBalance;
+import frc.robot.commands.Autos.TwoCubeCurved;
 import frc.robot.commands.Autos.TwoMeterTest;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -25,6 +28,9 @@ public class AutonInstantiate {
 	private FiveCubeNoBalance fiveCubeNoBalance;
 	private Fancy3Cube fancy3Cube;
 	private New3CubeChargeStation new3CubeChargeStation;
+	private ScoreCenterBalance newScoreCenterBalance;
+	private CurvedThreeCube curved;
+	private TwoCubeCurved twoCubeCurved;
 
 	public static synchronized AutonInstantiate getInstance(SwerveSubsystem s) {
 		if (autoInstantiate == null) {
@@ -44,6 +50,9 @@ public class AutonInstantiate {
 		fiveCubeNoBalance = new FiveCubeNoBalance(swerve);
 		fancy3Cube = new Fancy3Cube(swerve);
 		new3CubeChargeStation = new New3CubeChargeStation(swerve);
+		newScoreCenterBalance = new ScoreCenterBalance(swerve);
+		curved = new CurvedThreeCube(swerve);
+		twoCubeCurved = new TwoCubeCurved(swerve);
 	}
 
 	public SequentialCommandGroup get4CubeSideLineAuton() {
@@ -82,4 +91,15 @@ public class AutonInstantiate {
 		return new3CubeChargeStation;
 	}
 
+	public SequentialCommandGroup getScoreCenterBalance(){
+		return newScoreCenterBalance;
+	}
+
+	public SequentialCommandGroup getCurvedThreeCube() {
+		return curved;
+	}
+
+	public SequentialCommandGroup getTwoCubeCurved() {
+		return twoCubeCurved;
+	}
 }
