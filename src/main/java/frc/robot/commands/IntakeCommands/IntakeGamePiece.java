@@ -6,6 +6,7 @@ package frc.robot.commands.IntakeCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.util.StateHandler;
+import frc.robot.util.StateVariables.IntakePositions;
 import frc.robot.util.StateVariables.IntakeWheelSpeeds;
 
 public class IntakeGamePiece extends CommandBase {
@@ -27,6 +28,9 @@ public class IntakeGamePiece extends CommandBase {
   @Override
   public void execute() {
     stateHandler.setDesiredIntakeWheelSpeed(desiredIntakeWheelSpeed);
+    if(stateHandler.getDesiredIntakePosition() == IntakePositions.INTAKE) {
+      
+    }
   }
 
   // Called once the command ends or is interrupted.

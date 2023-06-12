@@ -33,6 +33,8 @@ public class StateHandler {
 
     private boolean readyToScore = false;
 
+    
+
 
     public static synchronized StateHandler getInstance() {
         if (stateHandler == null) {
