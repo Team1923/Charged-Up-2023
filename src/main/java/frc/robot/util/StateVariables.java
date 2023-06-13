@@ -1,5 +1,7 @@
 package frc.robot.util;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class StateVariables {
@@ -34,18 +36,18 @@ public class StateVariables {
 
     public static enum IntakePositions {
         // Similar to Arm Positions, diferent Intake Arm States take in Arm Angle Object
-        INTAKE(new ArmAngles(Math.toRadians(-5)), new ArmAngles(Math.toRadians(-5)), true, true),
+        INTAKE(new ArmAngles(Math.toRadians(-5)), new ArmAngles(Math.toRadians(-5)), true, () -> StateHandler.getInstance().getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.INTAKE),
         //INTAKE_BAR_UP(new ArmAngles(Math.toRadians(-5)), new ArmAngles(Math.toRadians(-5)), true, false),
-        SHOOT_TALL(new ArmAngles(2.132 + 0.17 - Math.toRadians(4)), new ArmAngles(2), true, false),
-        SHOOT_SMALL(new ArmAngles(2.245 + 0.17), new ArmAngles(2.132 + 0.17), false, false),
-        GOOFY_SHOT(new ArmAngles(0.725), new ArmAngles(0.725), false, true),
-        PLOP_SHOT(new ArmAngles(2.132 - Math.toRadians(8)), new ArmAngles(2), true, false),
-        INTAKE_HIGHER(new ArmAngles(Math.toRadians(40)), new ArmAngles(Math.toRadians(40)), true, false);
+        SHOOT_TALL(new ArmAngles(2.132 + 0.17 - Math.toRadians(4)), new ArmAngles(2), true, () -> false),
+        SHOOT_SMALL(new ArmAngles(2.245 + 0.17), new ArmAngles(2.132 + 0.17), false, () -> false),
+        GOOFY_SHOT(new ArmAngles(0.725), new ArmAngles(0.725), false, () -> false),
+        PLOP_SHOT(new ArmAngles(2.132 - Math.toRadians(8)), new ArmAngles(2), true, () -> false),
+        INTAKE_HIGHER(new ArmAngles(Math.toRadians(40)), new ArmAngles(Math.toRadians(40)), true, () -> false);
 
         private ArmAngles mainArmAngle;
         private ArmAngles temporaryArmAngle;
         private boolean hardstopUp;
-        private boolean horizontalEngaged;
+        private BooleanSupplier horizontalEngaged;
     
 
         /**
@@ -59,14 +61,14 @@ public class StateVariables {
          *                       to next waypoint
          */
 
-        private IntakePositions(ArmAngles mainAngle, boolean hardstopTall, boolean hEngaged) {
+        private IntakePositions(ArmAngles mainAngle, boolean hardstopTall, BooleanSupplier hEngaged) {
             this.mainArmAngle = mainAngle;
             this.hardstopUp = hardstopTall;
             this.horizontalEngaged = hEngaged;
             
         }
 
-        private IntakePositions(ArmAngles mainAngle, ArmAngles tempAngle, boolean hardstopTall, boolean hEngaged) {
+        private IntakePositions(ArmAngles mainAngle, ArmAngles tempAngle, boolean hardstopTall, BooleanSupplier hEngaged) {
             this.mainArmAngle = mainAngle;
             this.temporaryArmAngle = tempAngle;
             this.hardstopUp = hardstopTall;
@@ -87,7 +89,7 @@ public class StateVariables {
         }
 
         public Value getHorizontalSolenoid() {
-            return this.horizontalEngaged ? Value.kReverse : Value.kForward;
+            return this.horizontalEngaged.getAsBoolean() ? Value.kReverse : Value.kForward;
         }
 
        
