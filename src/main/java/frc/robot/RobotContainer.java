@@ -27,6 +27,7 @@ import frc.robot.commands.SwerveCommands.TrajectoryToGoal;
 import frc.robot.interfaces.AutoChooser;
 import frc.robot.subsystems.*;
 import frc.robot.util.AutonInstantiate;
+import frc.robot.util.StateHandler;
 import frc.robot.util.PathPlannerUtils.AutoFromPathPlanner;
 import frc.robot.util.StateVariables.HorizontalLocations;
 import frc.robot.util.StateVariables.IntakePositions;
@@ -141,7 +142,7 @@ public class RobotContainer {
         operatorRightBumper.onTrue(new FerryShootGroup());
 
         operatorLeftBumper.whileTrue(new EjectCommand());
-
+  
     } 
 
     private void setDefaultCommands() {

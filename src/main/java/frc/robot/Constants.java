@@ -51,13 +51,14 @@ public final class Constants {
     public static final double maxIntakeArmVel = 20000;
     public static final double maxIntakeArmAccel = 20000;
 
+     
     public static final double intakeArmGearRatio = 64;
     public static final double intakeArmTicksToRad = (2 * Math.PI)
         / (FalconConstants.ticksPerRev * intakeArmGearRatio);
     public static final double intakeArmRadsToTicks = 1 / intakeArmTicksToRad;
 
     public static final double intakeArmHardstop = 2.132;
-    public static final double intakeArmEncoderZero = 4.995;
+    public static final double intakeArmEncoderZero = 4.983;
 
     public static final double intakeArmMaxGravityConstant = 0.07;
 
