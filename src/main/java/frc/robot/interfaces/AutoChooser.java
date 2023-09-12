@@ -24,7 +24,8 @@ public class AutoChooser {
 		NEW_3_CUBE_CHARGE,
 		CURVED_THREE_CUBE,
 		SCORE_CENTER_BALANCE, 
-		TWO_CUBE_CURVED;
+		TWO_CUBE_CURVED,
+		COOL_CHARGE_STATION;
 	}
 
 	private SendableChooser<AutoMode> chooser;
@@ -48,6 +49,7 @@ public class AutoChooser {
 		chooser.addOption("SCORE CENTER BALANCE", AutoMode.SCORE_CENTER_BALANCE);
 		chooser.addOption("CURVED THREE CUBE", AutoMode.CURVED_THREE_CUBE);
 		chooser.addOption("TWO CUBE CURVED", AutoMode.TWO_CUBE_CURVED);
+		chooser.addOption("COOL CHARGE STATION NO ACQUIRE", AutoMode.COOL_CHARGE_STATION);
 		auto.add(chooser);
 	}
 
@@ -80,6 +82,8 @@ public class AutoChooser {
 				return AutonInstantiate.getInstance(swerve).getCurvedThreeCube();
 			case TWO_CUBE_CURVED:
 				return AutonInstantiate.getInstance(swerve).getTwoCubeCurved();
+			case COOL_CHARGE_STATION:
+				return AutonInstantiate.getInstance(swerve).getCoolChargeStationAuto();
 			default:
 				return new SingleScoreAuto();
 		}

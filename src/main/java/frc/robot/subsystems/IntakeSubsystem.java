@@ -211,9 +211,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
     // SmartDashboard.putNumber("Closed Loop error", intakeArmMaster.getClosedLoopError());
 
-    // SmartDashboard.putNumber("Intake Percent Out", intakeArmMaster.getMotorOutputPercent());
+    SmartDashboard.putNumber("LEFT WHEEL Percent Out", leftIntakeWheelMotor.getMotorOutputPercent());
 
-    // SmartDashboard.putNumber("Intake Follower Percent Out", intakeArmFollower.getMotorOutputPercent());
+    SmartDashboard.putNumber("RIGHT WHEEL Percent Out", rightIntakeWheelMotor.getMotorOutputPercent());
 
     // SmartDashboard.putNumber("Intake Arm Velocity", intakeArmMaster.getSelectedSensorVelocity());
 

@@ -10,7 +10,7 @@ import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.IntakePositions;
 
 public class IntakeHome extends CommandBase {
-  /** Creates a new SimpleIntakeStptCommand. */
+  /** Creates a new IntakeHome. */
 
   private StateHandler stateHandler = StateHandler.getInstance();
 

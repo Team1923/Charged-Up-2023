@@ -2,6 +2,7 @@ package frc.robot.util;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Autos.BalanceTuning;
+import frc.robot.commands.Autos.CoolChargeStation;
 import frc.robot.commands.Autos.CurvedThreeCube;
 import frc.robot.commands.Autos.Fancy3Cube;
 import frc.robot.commands.Autos.FiveCubeNoBalance;
@@ -31,6 +32,7 @@ public class AutonInstantiate {
 	private ScoreCenterBalance newScoreCenterBalance;
 	private CurvedThreeCube curved;
 	private TwoCubeCurved twoCubeCurved;
+	private CoolChargeStation coolChargeStationAuto;
 
 	public static synchronized AutonInstantiate getInstance(SwerveSubsystem s) {
 		if (autoInstantiate == null) {
@@ -53,6 +55,7 @@ public class AutonInstantiate {
 		newScoreCenterBalance = new ScoreCenterBalance(swerve);
 		curved = new CurvedThreeCube(swerve);
 		twoCubeCurved = new TwoCubeCurved(swerve);
+		coolChargeStationAuto = new CoolChargeStation(swerve);
 	}
 
 	public SequentialCommandGroup get4CubeSideLineAuton() {
@@ -101,5 +104,9 @@ public class AutonInstantiate {
 
 	public SequentialCommandGroup getTwoCubeCurved() {
 		return twoCubeCurved;
+	}
+
+	public SequentialCommandGroup getCoolChargeStationAuto() {
+		return coolChargeStationAuto;
 	}
 }

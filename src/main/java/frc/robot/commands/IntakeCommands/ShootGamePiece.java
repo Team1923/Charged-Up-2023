@@ -55,9 +55,9 @@ public class ShootGamePiece extends CommandBase {
 
     // SmartDashboard.putNumber("HIGH TIMER?", plopTimer.get());
 
-    if((desiredShootSpeed == IntakeWheelSpeeds.SHOOT_HIGH || desiredShootSpeed == IntakeWheelSpeeds.SHOOT_MID) && plopTimer.get() < 0.7) {
+    if((desiredShootSpeed == IntakeWheelSpeeds.SHOOT_HIGH || desiredShootSpeed == IntakeWheelSpeeds.SHOOT_MID) && plopTimer.get() < 1) {
       stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP);
-    } else if((desiredShootSpeed == IntakeWheelSpeeds.SHOOT_HIGH || desiredShootSpeed == IntakeWheelSpeeds.SHOOT_MID) && plopTimer.get() > 0.7) {
+    } else if((desiredShootSpeed == IntakeWheelSpeeds.SHOOT_HIGH || desiredShootSpeed == IntakeWheelSpeeds.SHOOT_MID) && plopTimer.get() > 1) {
       stateHandler.setDesiredIntakeWheelSpeed(desiredShootSpeed == IntakeWheelSpeeds.SHOOT_HIGH ? IntakeWheelSpeeds.PLOP_HIGH : IntakeWheelSpeeds.PLOP_MID);
     } else {
       stateHandler.setDesiredIntakeWheelSpeed(desiredShootSpeed);
