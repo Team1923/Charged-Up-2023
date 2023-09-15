@@ -33,8 +33,8 @@ public class FiveCubeNoBalanceMallRat extends SequentialCommandGroup {
   /** Creates a new FourCubeWithBalance. */
   public FiveCubeNoBalanceMallRat(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner fiveNoBalance = new AutoFromPathPlanner(swerve, "5CubeAutoNoBalanceMallRat", 3, 3, false, true, true);
-    eventMap.put("shoot_1", new AutoShootSequence());
+    final AutoFromPathPlanner fiveNoBalance = new AutoFromPathPlanner(swerve, "5CubeAutoMallRat", 1.5, 1.5, false, true, true);
+    eventMap.put("shoot_1", new AutoShootSequence(true));
     eventMap.put("shoot_2", new AutoShootSequence());
     eventMap.put("shoot_3", new AutoShootSequence());
     eventMap.put("shoot_4", new AutoShootSequence());
@@ -55,10 +55,16 @@ public class FiveCubeNoBalanceMallRat extends SequentialCommandGroup {
         new InstantCommand(() -> swerve.resetModulesToAbsolute()),
         new InstantCommand(() -> swerve.resetOdometryForState(fiveNoBalance.getInitialState())),
         new ParallelCommandGroup(
-            new FollowPathWithEvents(
-                fiveNoBalance,
-                fiveNoBalance.getEventMarkers(),
-                eventMap),
+            new ParallelCommandGroup(
+                new WaitCommand(0.25),
+                new SequentialCommandGroup(
+                    new FollowPathWithEvents(
+                        fiveNoBalance,
+                        fiveNoBalance.getEventMarkers(),
+                        eventMap),
+                    new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL))
+                )
+            ),
             new SequentialCommandGroup(
                 new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.CHARGE_STATION_PLOP)),
                 new WaitCommand(0.25),
