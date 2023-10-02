@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -52,7 +54,14 @@ public class IntakeSubsystem extends SubsystemBase {
   private Timer plopTimer;
   private Value hardstopValue = Value.kForward;
 
-  public IntakeSubsystem() {
+  // private DoubleSupplier upIntake; //Left
+  // private DoubleSupplier downIntake; //Right\
+
+  private DoubleSupplier intakeControl;
+  private DoubleSupplier horizontRoller;
+
+
+  public IntakeSubsystem(DoubleSupplier speed, DoubleSupplier pressed) {
 
     hardstopChangeTimer = new Timer();
     plopTimer = new Timer();
@@ -98,24 +107,31 @@ public class IntakeSubsystem extends SubsystemBase {
     rightIntakeWheelMotor.setInverted(InvertType.InvertMotorOutput);
     horizontalRollerMotor.setInverted(InvertType.InvertMotorOutput);
 
+    // upIntake = l;
+    // downIntake = R;
+
+    intakeControl=speed;
+    horizontRoller = pressed;
+
   }
 
   public void resetIntakePosition() {
-    double setZeroPosition = (getIntakeAbsoluteEncoderRads() - IntakeConstants.intakeArmEncoderZero
-        + IntakeConstants.intakeArmHardstop)
+    double setZeroPosition = (IntakeConstants.intakeArmHardstop)
         * IntakeConstants.intakeArmRadsToTicks;
     intakeArmMaster.setSelectedSensorPosition(setZeroPosition);
   }
 
   public void emergencyResetIntakePosition() {
-    intakeArmMaster.setSelectedSensorPosition(
-        (IntakePositions.SHOOT_TALL.getMainAngle().getAngle() + Math.toRadians(12)) * IntakeConstants.intakeArmRadsToTicks);
+    double setZeroPosition = (IntakeConstants.intakeArmHardstop+Math.toRadians(10)) * IntakeConstants.intakeArmRadsToTicks;
+    
+    intakeArmMaster.setSelectedSensorPosition(setZeroPosition);
   }
 
   public void setIntakePosition(double distalAngle) {
     intakeArmMaster.set(ControlMode.MotionMagic, distalAngle * IntakeConstants.intakeArmRadsToTicks,
         DemandType.ArbitraryFeedForward, calculateIntakeFeedforward());
   }
+
 
   public double getIntakeArmPosition() {
     return ((intakeArmMaster.getSelectedSensorPosition() * IntakeConstants.intakeArmTicksToRad)
@@ -147,6 +163,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setRollerSolenoid() {
     rollerSolenoid.set(stateHandler.getDesiredIntakePosition().getHorizontalSolenoid());
+  }
+
+  public void setRollerSolenoidOverwritten(boolean out) {
+    rollerSolenoid.set(out ? Value.kReverse : Value.kForward);
   }
 
   public void setHardstopSolenoid() {
@@ -230,7 +250,7 @@ public class IntakeSubsystem extends SubsystemBase {
     // }
 
     // Update the intake solenoid based on the desired state
-    setRollerSolenoid();
+    //setRollerSolenoid();
 
     // Set the hardstop solenoid to the desired value
     setHardstopSolenoid();
@@ -246,14 +266,43 @@ public class IntakeSubsystem extends SubsystemBase {
       hardstopChangeTimer.start();
     }
 
-    if (!CommandScheduler.getInstance().isScheduled(EmergencyResetCommand.getInstance(this))) {
-      // Set the intake to the desired setpoint
-      if (hardstopChangeTimer.get() < 0.5) {
-        setIntakePosition(stateHandler.getDesiredIntakePosition().getTempAngle().getAngle());
-      } else {
-        setIntakePosition(stateHandler.getDesiredIntakePosition().getMainAngle().getAngle());
+    // if (!CommandScheduler.getInstance().isScheduled(EmergencyResetCommand.getInstance(this))) {
+    //   // Set the intake to the desired setpoint
+    //   if (hardstopChangeTimer.get() < 0.5) {
+    //     setIntakePosition(stateHandler.getDesiredIntakePosition().getTempAngle().getAngle());
+    //   } else {
+    //     setIntakePosition(stateHandler.getDesiredIntakePosition().getMainAngle().getAngle());
+    //   }
+    // }
+
+
+    
+      if (horizontRoller.getAsDouble()>0.5){
+        setRollerSolenoidOverwritten(true);
+      }
+      else{
+        setRollerSolenoidOverwritten(false);
+      }
+
+
+    //deadzone of 0.2s
+    if (!(getRawIntakeArmCurrent()>30)){
+      if (intakeControl.getAsDouble() < -0.2){
+        setRawIntakeArmSpeed(intakeControl.getAsDouble()*0.5);
+      }
+      else if(intakeControl.getAsDouble() > 0.2){
+        setRawIntakeArmSpeed(intakeControl.getAsDouble()*0.5);
+      }
+      else{
+        setRawIntakeArmSpeed(0);
       }
     }
+    else{
+      setRawIntakeArmSpeed(0);
+    }
+   
+    SmartDashboard.putNumber("Intake Stator Current", getRawIntakeArmCurrent());
+    
 
     // Set the wheel speeds for the intake motors. If in intake and the sensor is
     // blocked, then run the wheel speeds at grip speeds.

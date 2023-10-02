@@ -83,7 +83,10 @@ public class RobotContainer {
 
     /* Subsystems */
     public final SwerveSubsystem s_Swerve = new SwerveSubsystem();
-    public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    //public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem(() -> operator.getRawAxis(2), () -> operator.getRawAxis(3));
+    public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem(() -> operator.getRawAxis(5), () -> driver.getRawAxis(3));//Up is negative, so sign change
+
+
     public final ControllerRumble controllerRumble = new ControllerRumble(xboxDriverController, ps4OperatorController);
     public final ShuffleboardSubsystem shuffleboardSubsystem = new ShuffleboardSubsystem();
 
@@ -135,7 +138,7 @@ public class RobotContainer {
         operatorDownDPad.onTrue(new SetShootingLocation(VerticalLocations.LOW));
         operatorLeftDPad.onTrue(new SetShootingLocation(VerticalLocations.MID));
         operatorCrossButton.whileTrue(new ShootGamePiece());
-        centerRightButton.toggleOnTrue(EmergencyResetCommand.getInstance(intakeSubsystem));
+        centerRightButton.whileTrue(EmergencyResetCommand.getInstance(intakeSubsystem));
 
         operatorSquareButton.onTrue(new SetIntakePosition(IntakePositions.INTAKE));
         operatorTriangleButton.onTrue(new SetIntakePosition(IntakePositions.SHOOT_TALL));

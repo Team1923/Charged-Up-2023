@@ -28,7 +28,10 @@ public class AutoChooser {
 		FOUR_CUBE_WITH_BALANCE_MALL_RAT,
 		THREE_CUBE_WITH_BALANCE_MALL_RAT,
 		FIVE_CUBE_NO_BALANCE_MALL_RAT,
-		COOL_CHARGE_STATION;
+		NOTHING,
+		COOL_CHARGE_STATION,
+		THREE_CUBE_NB,
+		SCORE_CENTER_BALANCE_MR;
 	}
 
 	private SendableChooser<AutoMode> chooser;
@@ -42,6 +45,9 @@ public class AutoChooser {
 		chooser.setDefaultOption("FOUR CUBE WITH BALANCE MALL RAT", AutoMode.FOUR_CUBE_WITH_BALANCE_MALL_RAT);
 		chooser.addOption("THREE CUBE WITH BALANCE MALL RAT", AutoMode.THREE_CUBE_WITH_BALANCE_MALL_RAT);
 		chooser.addOption("FIVE CUBE NO BALANCE MALL RAT", AutoMode.FIVE_CUBE_NO_BALANCE_MALL_RAT);
+		chooser.addOption("NOTHING", AutoMode.NOTHING);
+		chooser.addOption("THREE CUBE NO BALANCE MR", AutoMode.THREE_CUBE_NB);
+		chooser.addOption("SCORE CENTER BALANCE MR", AutoMode.SCORE_CENTER_BALANCE_MR);
 
 		// chooser.setDefaultOption("SINGLE SCORE", AutoMode.SINGLE_SCORE);
 		// chooser.addOption("4CubeWithBalance", AutoMode.FOUR_CUBE);
@@ -71,6 +77,13 @@ public class AutoChooser {
 
 			case FIVE_CUBE_NO_BALANCE_MALL_RAT:
 				return AutonInstantiate.getInstance(swerve).getFiveCubeNoBalanceMallRat();
+			case NOTHING:
+				return null;
+			case THREE_CUBE_NB:
+				return AutonInstantiate.getInstance(swerve).getThreeCubeNBMall();
+			case SCORE_CENTER_BALANCE_MR:
+				return AutonInstantiate.getInstance(swerve).getScoreCenterBalanceMR();
+
 			// case SINGLE_SCORE:
 			// 	return new SingleScoreAuto();
 			// case FOUR_CUBE:

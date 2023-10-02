@@ -78,12 +78,12 @@
         "y": 2.1353844417090553
       },
       "prevControl": {
-        "x": 6.157095840687408,
-        "y": -0.28547920343703986
+        "x": 6.20598642363563,
+        "y": -0.2838318779735767
       },
       "nextControl": {
-        "x": 6.088140982173333,
-        "y": 2.6382067975597203
+        "x": 6.0419679394914345,
+        "y": 3.4600079456569177
       },
       "holonomicAngle": 90.0,
       "isReversal": false,
@@ -99,15 +99,15 @@
     },
     {
       "anchorPoint": {
-        "x": 5.3,
-        "y": 2.8
+        "x": 5.278434488492909,
+        "y": 3.642714635856623
       },
       "prevControl": {
-        "x": 5.599390070176427,
-        "y": 2.8
+        "x": 5.577824558669336,
+        "y": 3.642714635856623
       },
       "nextControl": null,
-      "holonomicAngle": 180.0,
+      "holonomicAngle": 0.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -140,9 +140,9 @@
       ]
     },
     {
-      "position": 3.1,
+      "position": 3.15,
       "names": [
-        "lift_intake_before_balance"
+        "shoot_2"
       ]
     }
   ]
