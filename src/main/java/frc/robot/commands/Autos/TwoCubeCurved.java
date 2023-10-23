@@ -36,7 +36,7 @@ public class TwoCubeCurved extends SequentialCommandGroup {
   /** Creates a new FourCubeWithBalance. */
   public TwoCubeCurved(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "2CubeCurved", 3, 3, false, true, true);
+    final AutoFromPathPlanner TwoCubeCurved = new AutoFromPathPlanner(swerve, "2CubeCurved", 3, 3, false, true, true);
     final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation", 1, 1, false, true, true);
 
     eventMap.put("lift_intake_before_balance", 
@@ -50,14 +50,14 @@ public class TwoCubeCurved extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> swerve.resetModulesToAbsolute()),
-      new InstantCommand(() -> swerve.resetOdometryForState(mcdonaldsCubed.getInitialState())),
+      new InstantCommand(() -> swerve.resetOdometryForState(TwoCubeCurved.getInitialState())),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.CHARGE_STATION_PLOP)),
       new WaitCommand(0.5),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
       new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE)),
       new FollowPathWithEvents(
-        mcdonaldsCubed,
-        mcdonaldsCubed.getEventMarkers(),
+        TwoCubeCurved,
+        TwoCubeCurved.getEventMarkers(),
         eventMap
       ),
       mountChargeStation,

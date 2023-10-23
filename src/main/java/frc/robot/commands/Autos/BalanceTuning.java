@@ -24,7 +24,7 @@ public class BalanceTuning extends SequentialCommandGroup {
   /** Creates a new BalanceTuning. */
   public BalanceTuning(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "5CubeAuto", 3, 3, false, true, true);
+    final AutoFromPathPlanner FiveCubeAuto = new AutoFromPathPlanner(swerve, "5CubeAuto", 3, 3, false, true, true);
     StateHandler stateHandler = StateHandler.getInstance();
     HashMap<String, Command> eventMap = new HashMap<>();
     eventMap.put("measure_gyro", new InstantCommand(() -> stateHandler.setUseGyroVelocityMeasurement(true)));
@@ -33,8 +33,8 @@ public class BalanceTuning extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         new ParallelRaceGroup(
-            new FollowPathWithEvents(mcdonaldsCubed,
-                mcdonaldsCubed.getEventMarkers(),
+            new FollowPathWithEvents(FiveCubeAuto,
+                FiveCubeAuto.getEventMarkers(),
                 eventMap),
 
             new SequentialCommandGroup(

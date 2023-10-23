@@ -33,7 +33,7 @@ public class FourCubeWithBalanceSideLine extends SequentialCommandGroup {
   /** Creates a new FourCubeWithBalance. */
   public FourCubeWithBalanceSideLine(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "4CubeAutoSideLine", 3, 3, false, true, true);
+    final AutoFromPathPlanner FourCubeAutoSideLine = new AutoFromPathPlanner(swerve, "4CubeAutoSideLine", 3, 3, false, true, true);
     final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation", 2.5, 2, false, true, true);
     final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalance", 2.5, 2, false, true, true);
 
@@ -52,14 +52,14 @@ public class FourCubeWithBalanceSideLine extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> swerve.resetModulesToAbsolute()),
-      new InstantCommand(() -> swerve.resetOdometryForState(mcdonaldsCubed.getInitialState())),
+      new InstantCommand(() -> swerve.resetOdometryForState(FourCubeAutoSideLine.getInitialState())),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
       new WaitCommand(0.5),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
       new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE)),
       new FollowPathWithEvents(
-        mcdonaldsCubed,
-        mcdonaldsCubed.getEventMarkers(),
+        FourCubeAutoSideLine,
+        FourCubeAutoSideLine.getEventMarkers(),
         eventMap
       ),
       mountChargeStation,

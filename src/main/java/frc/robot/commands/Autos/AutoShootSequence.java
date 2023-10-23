@@ -26,9 +26,8 @@ public class AutoShootSequence extends SequentialCommandGroup {
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.INTAKE)),
       new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_SMALL)),
       new WaitCommand(0.75),
-      // new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
       new InstantCommand(() -> stateHandler.setStickOut(true)),
-      new WaitCommand(0.6),//0.6
+      new WaitCommand(0.6),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.CHARGE_STATION_PLOP)),
       new InstantCommand(() -> stateHandler.setStickOut(false)),
       new WaitCommand(0.25),

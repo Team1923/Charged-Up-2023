@@ -36,9 +36,9 @@ public class ThreeCubeWithBalance extends SequentialCommandGroup {
   /** Creates a new FourCubeWithBalance. */
   public ThreeCubeWithBalance(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "3CubeAuto", 3, 3, false, true, true);
+    final AutoFromPathPlanner ThreeCubeAuto = new AutoFromPathPlanner(swerve, "3CubeAuto", 3, 3, false, true, true);
     final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation", 1, 1, false, true, true);
-    final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalance", 2.5, 2.5, false, true, true);
+    final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalance", 2.5, 2.5, false, true, true); //?
 
     eventMap.put("shoot_1", new AutoShootSequence());
     eventMap.put("lift_intake_before_balance", 
@@ -53,14 +53,14 @@ public class ThreeCubeWithBalance extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> swerve.resetModulesToAbsolute()),
-      new InstantCommand(() -> swerve.resetOdometryForState(mcdonaldsCubed.getInitialState())),
+      new InstantCommand(() -> swerve.resetOdometryForState(ThreeCubeAuto.getInitialState())),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.CHARGE_STATION_PLOP)),
       new WaitCommand(0.5),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
       new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE)),
       new FollowPathWithEvents(
-        mcdonaldsCubed,
-        mcdonaldsCubed.getEventMarkers(),
+        ThreeCubeAuto,
+        ThreeCubeAuto.getEventMarkers(),
         eventMap
       ),
       mountChargeStation,

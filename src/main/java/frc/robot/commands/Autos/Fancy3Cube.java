@@ -34,7 +34,7 @@ public class Fancy3Cube extends SequentialCommandGroup {
   /** Creates a new FourCubeWithBalance. */
   public Fancy3Cube(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "Fancy3Cube", 3, 3, false, true, true);
+    final AutoFromPathPlanner Fancy3Cube = new AutoFromPathPlanner(swerve, "Fancy3Cube", 3, 3, false, true, true);
     final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation", 1, 1, false, true, true);
     final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalance", 2.5, 2.5, false, true, true);
 
@@ -55,13 +55,13 @@ public class Fancy3Cube extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> swerve.resetModulesToAbsolute()),
-      new InstantCommand(() -> swerve.resetOdometryForState(mcdonaldsCubed.getInitialState())),
+      new InstantCommand(() -> swerve.resetOdometryForState(Fancy3Cube.getInitialState())),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),
       new WaitCommand(0.5),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
       new FollowPathWithEvents(
-        mcdonaldsCubed,
-        mcdonaldsCubed.getEventMarkers(),
+        Fancy3Cube,
+        Fancy3Cube.getEventMarkers(),
         eventMap
       ),
       mountChargeStation,

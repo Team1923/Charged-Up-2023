@@ -36,7 +36,7 @@ public class CoolChargeStation extends SequentialCommandGroup {
   /** Creates a new FourCubeWithBalance. */
   public CoolChargeStation(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "CoolCenterAuto", 3, 3, false, true, true);
+    final AutoFromPathPlanner CoolCenterAuto = new AutoFromPathPlanner(swerve, "CoolCenterAuto", 3, 3, false, true, true);
     final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation", 1, 1, false, true, true);
 
 
@@ -44,11 +44,11 @@ public class CoolChargeStation extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> swerve.resetModulesToAbsolute()),
-      new InstantCommand(() -> swerve.resetOdometryForState(mcdonaldsCubed.getInitialState())),
+      new InstantCommand(() -> swerve.resetOdometryForState(CoolCenterAuto.getInitialState())),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.CHARGE_STATION_PLOP)),
       new WaitCommand(0.5),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
-      mcdonaldsCubed,
+      CoolCenterAuto,
       mountChargeStation,
       new ParallelRaceGroup(
         new SequentialCommandGroup(

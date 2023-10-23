@@ -36,7 +36,7 @@ public class CurvedThreeCube extends SequentialCommandGroup {
   /** Creates a new FourCubeWithBalance. */
   public CurvedThreeCube(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "3CubeAutoCurved", 3, 3, false, true, true);
+    final AutoFromPathPlanner ThreeCubeAutoCurved = new AutoFromPathPlanner(swerve, "3CubeAutoCurved", 3, 3, false, true, true);
     final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation", 1, 1, false, true, true);
 
     eventMap.put("shoot_1", new AutoShootSequence());
@@ -52,14 +52,14 @@ public class CurvedThreeCube extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> swerve.resetModulesToAbsolute()),
-      new InstantCommand(() -> swerve.resetOdometryForState(mcdonaldsCubed.getInitialState())),
+      new InstantCommand(() -> swerve.resetOdometryForState(ThreeCubeAutoCurved.getInitialState())),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.CHARGE_STATION_PLOP)),
       new WaitCommand(0.5),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
       new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE)),
       new FollowPathWithEvents(
-        mcdonaldsCubed,
-        mcdonaldsCubed.getEventMarkers(),
+        ThreeCubeAutoCurved,
+        ThreeCubeAutoCurved.getEventMarkers(),
         eventMap
       ),
       mountChargeStation,

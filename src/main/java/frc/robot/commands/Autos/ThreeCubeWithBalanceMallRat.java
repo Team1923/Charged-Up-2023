@@ -36,7 +36,7 @@ public class ThreeCubeWithBalanceMallRat extends SequentialCommandGroup {
   /** Creates a new FourCubeWithBalance. */
   public ThreeCubeWithBalanceMallRat(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "3CubeAutoMallRat", 1.5, 1.5, false, true, true);
+    final AutoFromPathPlanner ThreeCubeAutoMallRat = new AutoFromPathPlanner(swerve, "3CubeAutoMallRat", 1.5, 1.5, false, true, true);
     final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation", 1, 1, false, true, true);
     final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalance", 2.5, 2.5, false, true, true);
 
@@ -53,14 +53,14 @@ public class ThreeCubeWithBalanceMallRat extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> swerve.resetModulesToAbsolute()),
-      new InstantCommand(() -> swerve.resetOdometryForState(mcdonaldsCubed.getInitialState())),
+      new InstantCommand(() -> swerve.resetOdometryForState(ThreeCubeAutoMallRat.getInitialState())),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.CHARGE_STATION_PLOP)),
       new WaitCommand(0.5),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP)),
       new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.INTAKE)),
       new FollowPathWithEvents(
-        mcdonaldsCubed,
-        mcdonaldsCubed.getEventMarkers(),
+        ThreeCubeAutoMallRat,
+        ThreeCubeAutoMallRat.getEventMarkers(),
         eventMap
       ),
       mountChargeStation,

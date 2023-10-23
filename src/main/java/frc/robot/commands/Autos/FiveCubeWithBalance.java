@@ -33,7 +33,7 @@ public class FiveCubeWithBalance extends SequentialCommandGroup {
   /** Creates a new FourCubeWithBalance. */
   public FiveCubeWithBalance(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner mcdonaldsCubed = new AutoFromPathPlanner(swerve, "5CubeAuto", 3, 3, false, true, true);
+    final AutoFromPathPlanner FiveCubeAuto = new AutoFromPathPlanner(swerve, "5CubeAuto", 3, 3, false, true, true);
     eventMap.put("shoot_1", new AutoShootSequence());
     eventMap.put("shoot_2", new AutoShootSequence());
     eventMap.put("shoot_3", new AutoShootSequence());
@@ -56,13 +56,13 @@ public class FiveCubeWithBalance extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         new InstantCommand(() -> swerve.resetModulesToAbsolute()),
-        new InstantCommand(() -> swerve.resetOdometryForState(mcdonaldsCubed.getInitialState())),
+        new InstantCommand(() -> swerve.resetOdometryForState(FiveCubeAuto.getInitialState())),
         new ParallelCommandGroup(
             new ParallelRaceGroup(
                 new ParallelCommandGroup(
                     new FollowPathWithEvents(
-                        mcdonaldsCubed,
-                        mcdonaldsCubed.getEventMarkers(),
+                        FiveCubeAuto,
+                        FiveCubeAuto.getEventMarkers(),
                         eventMap),
                     new SequentialCommandGroup(
                         new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_HIGH)),

@@ -48,8 +48,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
     private double[] ypr = new double[3];
 
-    private StateHandler stateHandler = StateHandler.getInstance();
-
     public static final Vector<N3> stateStdDevs = VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(5));
 
     public static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(0.75, 0.75, Units.degreesToRadians(20));
@@ -197,14 +195,6 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
-    // public SpecificLimelight getCorrectLimelight() {
-    // if (getYawIEEE() >= 0 && getYawIEEE() <= 180) {
-    // return SpecificLimelight.LEFT_LIMELIGHT;
-    // } else {
-    // return SpecificLimelight.RIGHT_LIMELIGHT;
-    // }
-    // }
-
     public void updateGyroVelocities() {
         gyro.getRawGyro(gyroVelocities);
     }
@@ -271,17 +261,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("ROBOT PITCH", getPitch().getDegrees());
 
-        // SmartDashboard.putNumber("Gyro Angle", getYaw().getDegrees());
-        // SmartDashboard.putNumber("Gyro Angular Velocity", getAngularVelocity());
 
-        // for(SwerveModule mod : mSwerveMods){
-        // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",
-        // mod.getCanCoder().getDegrees());
-        // // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated",
-        // // mod.getPosition().angle.getDegrees());
-        // // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity",
-        // // mod.getState().speedMetersPerSecond);
-        // }
+        
 
     }
 }
