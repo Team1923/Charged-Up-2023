@@ -22,14 +22,12 @@ public class FerryShootGroup extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_SMALL)),
       new InstantCommand(() -> stateHandler.setStickOut(true)),
       new WaitCommand(.35),
       new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.CHARGE_STATION_PLOP)),
       new WaitCommand(.2),
       new ParallelCommandGroup(
         new SequentialCommandGroup(
-          new InstantCommand(() -> stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL)),
           new InstantCommand(() -> stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP))
         ), 
         new SequentialCommandGroup(

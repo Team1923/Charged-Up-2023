@@ -11,7 +11,7 @@ public class StateVariables {
         INTAKE(new IntakeSpeed(0.5, 0.25)),
         SHOOT_HIGH(new IntakeSpeed(-0.8, 0)),
         SHOOT_MID(new IntakeSpeed(-0.30, 0)),
-        SHOOT_LOW(new IntakeSpeed(-0.15,0)),
+        SHOOT_LOW(new IntakeSpeed(-0.15, -0.15)),
         GRIP(new IntakeSpeed(0.075, 0)),
         EJECT(new IntakeSpeed(-0.5, -0.5)),
         PLOP_HIGH(new IntakeSpeed(-0.60, 0)),
@@ -37,7 +37,7 @@ public class StateVariables {
 
     public static enum IntakePositions {
         // Similar to Arm Positions, diferent Intake Arm States take in Arm Angle Object
-        INTAKE(new ArmAngles(Math.toRadians(-5)), new ArmAngles(Math.toRadians(-5)), true, () -> StateHandler.getInstance().getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.INTAKE),
+        INTAKE(new ArmAngles(Math.toRadians(5)), new ArmAngles(Math.toRadians(5)), true, () -> StateHandler.getInstance().getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.INTAKE),
         INTAKE_RESET(new ArmAngles(Math.toRadians(-5)), new ArmAngles(Math.toRadians(-5)), true, () -> true),
         //INTAKE_BAR_UP(new ArmAngles(Math.toRadians(-5)), new ArmAngles(Math.toRadians(-5)), true, false),
         SHOOT_TALL(new ArmAngles(2.132 + 0.17 - Math.toRadians(4)), new ArmAngles(2), true, () -> false),

@@ -42,7 +42,7 @@ public class EmergencyResetCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.setRawIntakeArmSpeed(.15);
+    intakeSubsystem.setRawIntakeArmSpeed(.10);
   }
 
   // Called once the command ends or is interrupted.

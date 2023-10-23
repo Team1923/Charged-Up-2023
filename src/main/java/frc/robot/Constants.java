@@ -57,8 +57,8 @@ public final class Constants {
         / (FalconConstants.ticksPerRev * intakeArmGearRatio);
     public static final double intakeArmRadsToTicks = 1 / intakeArmTicksToRad;
 
-    public static final double intakeArmHardstop = 2.132;
-    public static final double intakeArmEncoderZero = 4.983;
+    public static final double intakeArmHardstop = 2.132;//-0.25;
+    public static final double intakeArmEncoderZero = 9;
 
     public static final double intakeArmMaxGravityConstant = 0.07;
 
@@ -163,7 +163,7 @@ public final class Constants {
       public static final int driveMotorID = 1;
       public static final int angleMotorID = 2;
       public static final int canCoderID = 9;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(278.52);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(275.18);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
           canCoderID, angleOffset);
     }

@@ -13,6 +13,8 @@ import frc.robot.commands.Autos.FourCubeWithBalanceMallRat;
 import frc.robot.commands.Autos.FourCubeWithBalanceSideLine;
 import frc.robot.commands.Autos.New3CubeChargeStation;
 import frc.robot.commands.Autos.ScoreCenterBalance;
+import frc.robot.commands.Autos.ScoreCenterBalanceMR;
+import frc.robot.commands.Autos.ThreeCubeNBMallRat;
 import frc.robot.commands.Autos.ThreeCubeWithBalance;
 import frc.robot.commands.Autos.ThreeCubeWithBalanceMallRat;
 import frc.robot.commands.Autos.TwoCubeCurved;
@@ -29,6 +31,8 @@ public class AutonInstantiate {
 	private FourCubeWithBalanceMallRat fourCubeWithBalanceMallRat;
 	private ThreeCubeWithBalanceMallRat threeCubeWithBalMR;
 	private FiveCubeNoBalanceMallRat fiveCubeNoBalanceMallRat;
+	private ThreeCubeNBMallRat threeCubeNBMallRat;
+	private ScoreCenterBalanceMR scoreCenterBalanceMR;
 	// private FourCubeWithBalance fourcubeAuton;
 	// private FiveCubeWithBalance fiveCube;
 	// private FourCubeWithBalanceSideLine fourcubeSideLineAuton;
@@ -56,6 +60,8 @@ public class AutonInstantiate {
 		fourCubeWithBalanceMallRat = new FourCubeWithBalanceMallRat(this.swerve);
 		threeCubeWithBalMR = new ThreeCubeWithBalanceMallRat(this.swerve);
 		fiveCubeNoBalanceMallRat = new FiveCubeNoBalanceMallRat(this.swerve);
+		threeCubeNBMallRat = new ThreeCubeNBMallRat(this.swerve);
+		scoreCenterBalanceMR = new ScoreCenterBalanceMR(this.swerve);
 
 		// fiveCube = new FiveCubeWithBalance(this.swerve);
 		// fourcubeAuton = new FourCubeWithBalance(this.swerve);
@@ -70,6 +76,7 @@ public class AutonInstantiate {
 		// curved = new CurvedThreeCube(swerve);
 		// twoCubeCurved = new TwoCubeCurved(swerve);
 		// coolChargeStationAuto = new CoolChargeStation(swerve);
+
 	}
 
 // 	public SequentialCommandGroup get4CubeSideLineAuton() {
@@ -133,5 +140,13 @@ public class AutonInstantiate {
 	} 
 	public SequentialCommandGroup getFiveCubeNoBalanceMallRat() {
 		return fiveCubeNoBalanceMallRat;
+	}
+
+	public SequentialCommandGroup getThreeCubeNBMall() {
+		return threeCubeNBMallRat;
+	}
+
+	public SequentialCommandGroup getScoreCenterBalanceMR(){
+		return scoreCenterBalanceMR;
 	}
 }
