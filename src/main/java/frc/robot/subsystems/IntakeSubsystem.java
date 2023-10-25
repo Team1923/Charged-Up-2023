@@ -68,7 +68,10 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeArmMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
     intakeArmFollower.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, FalconConstants.timeoutMs);
 
+    //intakeArmMaster.setInverted(InvertType.InvertMotorOutput);
+
     intakeArmFollower.follow(intakeArmMaster);
+
     intakeArmFollower.setInverted(InvertType.OpposeMaster);
 
     intakeArmMaster.config_kP(0, IntakeConstants.intakeArmkP, FalconConstants.timeoutMs);
@@ -204,6 +207,7 @@ public class IntakeSubsystem extends SubsystemBase {
     SmartDashboard.putString("Intake Speed", stateHandler.getDesiredIntakeWheelSpeed().toString());
 
     SmartDashboard.putString("INTAKE POSITION", stateHandler.getDesiredIntakePosition().toString());
+    SmartDashboard.putString("Intake Wheel Speeds", stateHandler.getDesiredIntakeWheelSpeed().toString());
     // SmartDashboard.putNumber("FALCON INTAKE MOTOR ENCODER", getIntakeArmPosition());
 
     // SmartDashboard.putString("Desired Intake Position", stateHandler.getDesiredIntakePosition().toString());

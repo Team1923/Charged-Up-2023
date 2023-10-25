@@ -13,13 +13,16 @@ public class StateVariables {
         SHOOT_MID(new IntakeSpeed(-0.30, 0)),
         SHOOT_LOW(new IntakeSpeed(-0.15,0)),
         GRIP(new IntakeSpeed(0.075, 0)),
-        EJECT(new IntakeSpeed(-0.5, -0.5)),
+        EJECT(new IntakeSpeed(-0.35, -0.35)),
         PLOP_HIGH(new IntakeSpeed(-0.60, 0)),
         PLOP_MID(new IntakeSpeed(-0.295, 0)),
         CHARGE_STATION_PLOP(new IntakeSpeed(-1, 0)),
         HIGH_INTAKE_EJECT(new IntakeSpeed(-1,0)), 
         FIRST_AUTO_SHOT_BLUE(new IntakeSpeed(-0.85, -1, 0)),
-        FIRST_AUTO_SHOT_RED(new IntakeSpeed(-1, -0.5, 0));
+        FIRST_AUTO_SHOT_RED(new IntakeSpeed(-1, -0.5, 0)),
+        SHOOT_FRONT_HIGH(new IntakeSpeed(-0.38, 0)),
+        SHOOT_FRONT_MID(new IntakeSpeed(-0.25, 0)),
+        SHOOT_FRONT_LOW(new IntakeSpeed(-0.08, 0));
 
 
         private IntakeSpeed iWheelSpeed;
@@ -44,7 +47,8 @@ public class StateVariables {
         SHOOT_SMALL(new ArmAngles(2.245 + 0.17), new ArmAngles(2.132 + 0.17), false, () -> false),
         GOOFY_SHOT(new ArmAngles(0.725), new ArmAngles(0.725), false, () -> false),
         PLOP_SHOT(new ArmAngles(2.132 - Math.toRadians(8)), new ArmAngles(2), true, () -> false),
-        INTAKE_HIGHER(new ArmAngles(Math.toRadians(40)), new ArmAngles(Math.toRadians(40)), true, () -> false);
+        INTAKE_HIGHER(new ArmAngles(Math.toRadians(40)), new ArmAngles(Math.toRadians(40)), true, () -> false),
+        SHOOT_FRONT_HIGH(new ArmAngles(Math.toRadians(55)), new ArmAngles(Math.toRadians(40)), true, () -> false);
 
         private ArmAngles mainArmAngle;
         private ArmAngles temporaryArmAngle;
