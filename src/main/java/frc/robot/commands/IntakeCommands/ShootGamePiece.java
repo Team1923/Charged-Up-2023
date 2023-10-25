@@ -5,6 +5,7 @@
 package frc.robot.commands.IntakeCommands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Encoder.IndexingType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.util.StateHandler;
@@ -34,18 +35,20 @@ public class ShootGamePiece extends CommandBase {
     plopTimer.stop();
     plopTimer.reset();
 
-    if(stateHandler.getCurrentVerticalLocation() == VerticalLocations.LOW) {
-      desiredShootSpeed = IntakeWheelSpeeds.SHOOT_LOW;
-    } else if(stateHandler.getCurrentVerticalLocation() == VerticalLocations.MID) {
-      desiredShootSpeed = IntakeWheelSpeeds.SHOOT_MID;
-    } else {
-      desiredShootSpeed = IntakeWheelSpeeds.SHOOT_HIGH;
-    }
-
-    if(desiredShootSpeed == IntakeWheelSpeeds.SHOOT_HIGH || desiredShootSpeed == IntakeWheelSpeeds.SHOOT_MID) {
-      plopTimer.start();
-      stateHandler.setDesiredIntakePosition(IntakePositions.PLOP_SHOT);
-    }
+    if(!(stateHandler.getDesiredIntakePosition() == IntakePositions.SHOOT_FRONT_HIGH)){
+      if(stateHandler.getCurrentVerticalLocation() == VerticalLocations.LOW) {
+        desiredShootSpeed = IntakeWheelSpeeds.SHOOT_LOW;
+      } else if(stateHandler.getCurrentVerticalLocation() == VerticalLocations.MID) {
+        desiredShootSpeed = IntakeWheelSpeeds.SHOOT_MID;
+      } else {
+        desiredShootSpeed = IntakeWheelSpeeds.SHOOT_HIGH;
+      }
+  
+      if(desiredShootSpeed == IntakeWheelSpeeds.SHOOT_HIGH  || desiredShootSpeed == IntakeWheelSpeeds.SHOOT_MID)  {
+        plopTimer.start();
+        stateHandler.setDesiredIntakePosition(IntakePositions.PLOP_SHOT);
+      }
+    } 
 
   }
 
@@ -54,7 +57,7 @@ public class ShootGamePiece extends CommandBase {
   public void execute() {
 
     // SmartDashboard.putNumber("HIGH TIMER?", plopTimer.get());
-
+    if(!(stateHandler.getDesiredIntakePosition() == IntakePositions.SHOOT_FRONT_HIGH)){
     if((desiredShootSpeed == IntakeWheelSpeeds.SHOOT_HIGH || desiredShootSpeed == IntakeWheelSpeeds.SHOOT_MID) && plopTimer.get() < 1) {
       stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP);
     } else if((desiredShootSpeed == IntakeWheelSpeeds.SHOOT_HIGH || desiredShootSpeed == IntakeWheelSpeeds.SHOOT_MID) && plopTimer.get() > 1) {
@@ -63,6 +66,23 @@ public class ShootGamePiece extends CommandBase {
       stateHandler.setDesiredIntakeWheelSpeed(desiredShootSpeed);
     }
   }
+  else{
+    switch (stateHandler.getCurrentVerticalLocation()){
+      case HIGH:
+        stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_FRONT_HIGH);
+        break;
+      case MID:
+        stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_FRONT_MID);
+        break;
+      case LOW:
+        stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_FRONT_LOW);
+        break;
+      default:
+        break;
+
+    }   
+  }
+}
 
   // Called once the command ends or is interrupted.
   @Override

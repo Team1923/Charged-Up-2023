@@ -20,6 +20,7 @@ import frc.robot.commands.IntakeCommands.ShootGamePiece;
 import frc.robot.commands.IntakeCommands.TestFIre;
 import frc.robot.commands.IntakeCommands.SetIntakePosition;
 import frc.robot.commands.StateCommands.SetShootingLocation;
+import frc.robot.commands.StateCommands.ShootFront;
 import frc.robot.commands.SwerveCommands.AlignToTag;
 import frc.robot.commands.SwerveCommands.SwerveXWheels;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
@@ -142,8 +143,10 @@ public class RobotContainer {
 
         operatorSquareButton.onTrue(new SetIntakePosition(IntakePositions.INTAKE));
         operatorTriangleButton.onTrue(new SetIntakePosition(IntakePositions.SHOOT_TALL));
+        operatorCircleButton.onTrue(new ShootFront());
+        
         operatorRightBumper.onTrue(new FerryShootGroup());
-
+ 
         operatorLeftBumper.whileTrue(new EjectCommand());
   
     } 
