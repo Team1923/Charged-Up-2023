@@ -30,6 +30,7 @@ public class ShootGamePiece extends CommandBase {
 
   public ShootGamePiece(SwerveSubsystem s) {
     plopTimer = new Timer();
+    frontTimer = new Timer();
     plopTimer.stop();
     plopTimer.reset();
     frontTimer.stop();
