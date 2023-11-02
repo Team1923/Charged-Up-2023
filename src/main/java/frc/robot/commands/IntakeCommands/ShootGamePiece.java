@@ -24,6 +24,7 @@ public class ShootGamePiece extends CommandBase {
   IntakeWheelSpeeds desiredShootSpeed = IntakeWheelSpeeds.GRIP;
 
   Timer plopTimer;
+  Timer frontTimer;
 
   private SwerveSubsystem swerveSubsystem;
 
@@ -31,6 +32,8 @@ public class ShootGamePiece extends CommandBase {
     plopTimer = new Timer();
     plopTimer.stop();
     plopTimer.reset();
+    frontTimer.stop();
+    frontTimer.reset();
     this.swerveSubsystem = s;
   }
 
@@ -40,6 +43,9 @@ public class ShootGamePiece extends CommandBase {
 
     plopTimer.stop();
     plopTimer.reset();
+
+    frontTimer.stop();
+    frontTimer.reset();
 
     if(!(stateHandler.getDesiredIntakePosition() == IntakePositions.SHOOT_FRONT_HIGH)){
       if(stateHandler.getCurrentVerticalLocation() == VerticalLocations.LOW) {
@@ -55,6 +61,12 @@ public class ShootGamePiece extends CommandBase {
         stateHandler.setDesiredIntakePosition(IntakePositions.PLOP_SHOT);
       }
     } 
+    else{
+        //here our position is shoot front high, still question of wheelspeeds being set
+        frontTimer.start();
+      
+    }
+    
 
   }
 
@@ -77,10 +89,14 @@ public class ShootGamePiece extends CommandBase {
     CommandScheduler.getInstance().schedule(new LockWheels(swerveSubsystem));
     switch (stateHandler.getCurrentVerticalLocation()){
       case HIGH:
-        stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_FRONT_HIGH);
+        if(frontTimer.get() > 0.5){
+          stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_FRONT_HIGH);
+        }
         break;
       case MID:
-        stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_FRONT_MID);
+        if(frontTimer.get() > 0.5){
+          stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_FRONT_MID);
+        }
         break;
       case LOW:
         stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_FRONT_LOW);
