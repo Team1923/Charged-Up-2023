@@ -14,13 +14,13 @@ public class StateVariables {
         SHOOT_LOW(new IntakeSpeed(-0.15, -0.15)),
         GRIP(new IntakeSpeed(0.075, 0)),
         EJECT(new IntakeSpeed(-0.35, -0.35)),
-        PLOP_HIGH(new IntakeSpeed(-0.60, 0)),
+        PLOP_HIGH(new IntakeSpeed(-0.42, 0)),// 42 not inflated, 35 for fully inflated
         PLOP_MID(new IntakeSpeed(-0.295, 0)),
         CHARGE_STATION_PLOP(new IntakeSpeed(-1, 0)),
         HIGH_INTAKE_EJECT(new IntakeSpeed(-1,0)), 
         FIRST_AUTO_SHOT_BLUE(new IntakeSpeed(-0.85, -1, 0)),
         FIRST_AUTO_SHOT_RED(new IntakeSpeed(-1, -0.5, 0)),
-        SHOOT_FRONT_HIGH(new IntakeSpeed(-0.38, 0)),
+        SHOOT_FRONT_HIGH(new IntakeSpeed(-0.45, 0)),//38 for high inflation
         SHOOT_FRONT_MID(new IntakeSpeed(-0.25, 0)),
         SHOOT_FRONT_LOW(new IntakeSpeed(-0.08, 0));
 

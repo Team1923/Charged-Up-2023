@@ -254,7 +254,7 @@ public class IntakeSubsystem extends SubsystemBase {
     // }
 
     // Update the intake solenoid based on the desired state
-    //setRollerSolenoid();
+    setRollerSolenoid();
 
     // Set the hardstop solenoid to the desired value
     setHardstopSolenoid();
@@ -270,40 +270,16 @@ public class IntakeSubsystem extends SubsystemBase {
       hardstopChangeTimer.start();
     }
 
-    // if (!CommandScheduler.getInstance().isScheduled(EmergencyResetCommand.getInstance(this))) {
-    //   // Set the intake to the desired setpoint
-    //   if (hardstopChangeTimer.get() < 0.5) {
-    //     setIntakePosition(stateHandler.getDesiredIntakePosition().getTempAngle().getAngle());
-    //   } else {
-    //     setIntakePosition(stateHandler.getDesiredIntakePosition().getMainAngle().getAngle());
-    //   }
-    // }
-
-
-    
-      if (horizontRoller.getAsDouble()>0.5){
-        setRollerSolenoidOverwritten(true);
-      }
-      else{
-        setRollerSolenoidOverwritten(false);
-      }
-
-
-    //deadzone of 0.2s
-    if (!(getRawIntakeArmCurrent()>30)){
-      if (intakeControl.getAsDouble() < -0.2){
-        setRawIntakeArmSpeed(intakeControl.getAsDouble()*0.5);
-      }
-      else if(intakeControl.getAsDouble() > 0.2){
-        setRawIntakeArmSpeed(intakeControl.getAsDouble()*0.5);
-      }
-      else{
-        setRawIntakeArmSpeed(0);
+    if (!CommandScheduler.getInstance().isScheduled(EmergencyResetCommand.getInstance(this))) {
+      // Set the intake to the desired setpoint
+      if (hardstopChangeTimer.get() < 0.5) {
+        setIntakePosition(stateHandler.getDesiredIntakePosition().getTempAngle().getAngle());
+      } else {
+        setIntakePosition(stateHandler.getDesiredIntakePosition().getMainAngle().getAngle());
       }
     }
-    else{
-      setRawIntakeArmSpeed(0);
-    }
+
+
    
     SmartDashboard.putNumber("Intake Stator Current", getRawIntakeArmCurrent());
     

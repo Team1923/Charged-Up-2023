@@ -37,7 +37,7 @@ public class FourCubeWithBalance extends SequentialCommandGroup {
   /** Creates a new FourCubeWithBalance. */
   public FourCubeWithBalance(SwerveSubsystem swerve) {
 
-    final AutoFromPathPlanner FourCubeAuto = new AutoFromPathPlanner(swerve, "4CubeAuto", 3.5, 3.5, false, true, false);
+    final AutoFromPathPlanner FourCubeAuto = new AutoFromPathPlanner(swerve, "4CubeAuto", 2.5, 3, false, true, false);
     final AutoFromPathPlanner mountChargeStation = new AutoFromPathPlanner(swerve, "MountChargeStation", 0.75, 0.75, false, true, true);
     final AutoFromPathPlanner commitBalance = new AutoFromPathPlanner(swerve, "ConfirmBalance", 1.5, 1.5, false, true, true); //?
     

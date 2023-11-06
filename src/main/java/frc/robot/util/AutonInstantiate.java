@@ -33,19 +33,19 @@ public class AutonInstantiate {
 	private FiveCubeNoBalanceMallRat fiveCubeNoBalanceMallRat;
 	private ThreeCubeNBMallRat threeCubeNBMallRat;
 	private ScoreCenterBalanceMR scoreCenterBalanceMR;
-	// private FourCubeWithBalance fourcubeAuton;
-	// private FiveCubeWithBalance fiveCube;
-	// private FourCubeWithBalanceSideLine fourcubeSideLineAuton;
-	// private TwoMeterTest twoMeterTest;
-	// private BalanceTuning tuneBalance;
-	// private ThreeCubeWithBalance threeCube;
-	// private FiveCubeNoBalance fiveCubeNoBalance;
-	// private Fancy3Cube fancy3Cube;
-	// private New3CubeChargeStation new3CubeChargeStation;
-	// private ScoreCenterBalance newScoreCenterBalance;
-	// private CurvedThreeCube curved;
-	// private TwoCubeCurved twoCubeCurved;
-	// private CoolChargeStation coolChargeStationAuto;
+	private FourCubeWithBalance fourcubeAuton;
+	private FiveCubeWithBalance fiveCube;
+	private FourCubeWithBalanceSideLine fourcubeSideLineAuton;
+	private TwoMeterTest twoMeterTest;
+	private BalanceTuning tuneBalance;
+	private ThreeCubeWithBalance threeCube;
+	private FiveCubeNoBalance fiveCubeNoBalance;
+	private Fancy3Cube fancy3Cube;
+	private New3CubeChargeStation new3CubeChargeStation;
+	private ScoreCenterBalance newScoreCenterBalance;
+	private CurvedThreeCube curved;
+	private TwoCubeCurved twoCubeCurved;
+	private CoolChargeStation coolChargeStationAuto;
 
 	public static synchronized AutonInstantiate getInstance(SwerveSubsystem s) {
 		if (autoInstantiate == null) {
@@ -63,73 +63,73 @@ public class AutonInstantiate {
 		threeCubeNBMallRat = new ThreeCubeNBMallRat(this.swerve);
 		scoreCenterBalanceMR = new ScoreCenterBalanceMR(this.swerve);
 
-		// fiveCube = new FiveCubeWithBalance(this.swerve);
-		// fourcubeAuton = new FourCubeWithBalance(this.swerve);
-		// fourcubeSideLineAuton = new FourCubeWithBalanceSideLine(this.swerve);
-		// twoMeterTest = new TwoMeterTest(this.swerve);
-		// tuneBalance = new BalanceTuning(this.swerve);
-		// threeCube = new ThreeCubeWithBalance(swerve);
-		// fiveCubeNoBalance = new FiveCubeNoBalance(swerve);
-		// fancy3Cube = new Fancy3Cube(swerve);
-		// new3CubeChargeStation = new New3CubeChargeStation(swerve);
-		// newScoreCenterBalance = new ScoreCenterBalance(swerve);
-		// curved = new CurvedThreeCube(swerve);
-		// twoCubeCurved = new TwoCubeCurved(swerve);
-		// coolChargeStationAuto = new CoolChargeStation(swerve);
+		fiveCube = new FiveCubeWithBalance(this.swerve);
+		fourcubeAuton = new FourCubeWithBalance(this.swerve);
+		fourcubeSideLineAuton = new FourCubeWithBalanceSideLine(this.swerve);
+		twoMeterTest = new TwoMeterTest(this.swerve);
+		tuneBalance = new BalanceTuning(this.swerve);
+		threeCube = new ThreeCubeWithBalance(swerve);
+		fiveCubeNoBalance = new FiveCubeNoBalance(swerve);
+		fancy3Cube = new Fancy3Cube(swerve);
+		new3CubeChargeStation = new New3CubeChargeStation(swerve);
+		newScoreCenterBalance = new ScoreCenterBalance(swerve);
+		curved = new CurvedThreeCube(swerve);
+		twoCubeCurved = new TwoCubeCurved(swerve);
+		coolChargeStationAuto = new CoolChargeStation(swerve);
 
 	}
 
-// 	public SequentialCommandGroup get4CubeSideLineAuton() {
-// 		return fourcubeSideLineAuton;
-// 	}
+	public SequentialCommandGroup get4CubeSideLineAuton() {
+		return fourcubeSideLineAuton;
+	}
 
-// 	public SequentialCommandGroup getFiveCubeAuton() {
-// 		return fiveCube;
-// 	}
+	public SequentialCommandGroup getFiveCubeAuton() {
+		return fiveCube;
+	}
 
-// 	public SequentialCommandGroup get4CubeAuton() {
-// 		return fourcubeAuton;
-// 	}
+	public SequentialCommandGroup get4CubeAuton() {
+		return fourcubeAuton;
+	}
 
-// 	public SequentialCommandGroup getTwoMeter() {
-// 		return twoMeterTest;
-// 	}
+	public SequentialCommandGroup getTwoMeter() {
+		return twoMeterTest;
+	}
 
-// 	public SequentialCommandGroup getBalanceTuning() {
-// 		return tuneBalance;
-// 	}
+	public SequentialCommandGroup getBalanceTuning() {
+		return tuneBalance;
+	}
 
-// 	public SequentialCommandGroup getThreeCube() {
-// 		return threeCube;
-// 	}
+	public SequentialCommandGroup getThreeCube() {
+		return threeCube;
+	}
 
-// 	public SequentialCommandGroup getFiveCubeNoBalance(){
-// 		return fiveCubeNoBalance;
-// 	}
+	public SequentialCommandGroup getFiveCubeNoBalance(){
+		return fiveCubeNoBalance;
+	}
 
-// 	public SequentialCommandGroup getFancy3Cube() {
-// 		return fancy3Cube;
-// 	}
+	public SequentialCommandGroup getFancy3Cube() {
+		return fancy3Cube;
+	}
 
-// 	public SequentialCommandGroup getNew3CubeChargeStation() {
-// 		return new3CubeChargeStation;
-// 	}
+	public SequentialCommandGroup getNew3CubeChargeStation() {
+		return new3CubeChargeStation;
+	}
 
-// 	public SequentialCommandGroup getScoreCenterBalance(){
-// 		return newScoreCenterBalance;
-// 	}
+	public SequentialCommandGroup getScoreCenterBalance(){
+		return newScoreCenterBalance;
+	}
 
-// 	public SequentialCommandGroup getCurvedThreeCube() {
-// 		return curved;
-// 	}
+	public SequentialCommandGroup getCurvedThreeCube() {
+		return curved;
+	}
 
-// 	public SequentialCommandGroup getTwoCubeCurved() {
-// 		return twoCubeCurved;
-// 	}
+	public SequentialCommandGroup getTwoCubeCurved() {
+		return twoCubeCurved;
+	}
 
-// 	public SequentialCommandGroup getCoolChargeStationAuto() {
-// 		return coolChargeStationAuto;
-// 	}
+	public SequentialCommandGroup getCoolChargeStationAuto() {
+		return coolChargeStationAuto;
+	}
 
 	public SequentialCommandGroup getFourCubeWithBalanceMallRat() {
 		return fourCubeWithBalanceMallRat;

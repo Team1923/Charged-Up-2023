@@ -49,20 +49,20 @@ public class AutoChooser {
 		chooser.addOption("THREE CUBE NO BALANCE MR", AutoMode.THREE_CUBE_NB);
 		chooser.addOption("SCORE CENTER BALANCE MR", AutoMode.SCORE_CENTER_BALANCE_MR);
 
-		// chooser.setDefaultOption("SINGLE SCORE", AutoMode.SINGLE_SCORE);
-		// chooser.addOption("4CubeWithBalance", AutoMode.FOUR_CUBE);
-		// chooser.addOption("5CubeWithBalance", AutoMode.FIVE_CUBE);
-		// chooser.addOption("4CubeWithBalanceSideLine", AutoMode.FOUR_CUBE_SIDELINE);
-		// chooser.addOption("TwoMeterTest", AutoMode.TWO_METER_TEST);
-		// chooser.addOption("TuneBalance", AutoMode.TUNE_BALANCE);
-		// chooser.addOption("3 CUBE BALANCE", AutoMode.THREE_CUBE);
-		// chooser.addOption("5CubeNoBalance", AutoMode.FIVE_CUBE_NO_BALANCE);
-		// chooser.addOption("FANCY 3 CUBE", AutoMode.FANCY_3_CUBE);
-		// chooser.addOption("NEW 3 CUBE CHARGE STATION", AutoMode.NEW_3_CUBE_CHARGE);
-		// chooser.addOption("SCORE CENTER BALANCE", AutoMode.SCORE_CENTER_BALANCE);
-		// chooser.addOption("CURVED THREE CUBE", AutoMode.CURVED_THREE_CUBE);
-		// chooser.addOption("TWO CUBE CURVED", AutoMode.TWO_CUBE_CURVED);
-		// chooser.addOption("COOL CHARGE STATION NO ACQUIRE", AutoMode.COOL_CHARGE_STATION);
+		chooser.setDefaultOption("SINGLE SCORE", AutoMode.SINGLE_SCORE);
+		chooser.addOption("4CubeWithBalance", AutoMode.FOUR_CUBE);
+		chooser.addOption("5CubeWithBalance", AutoMode.FIVE_CUBE);
+		chooser.addOption("4CubeWithBalanceSideLine", AutoMode.FOUR_CUBE_SIDELINE);
+		chooser.addOption("TwoMeterTest", AutoMode.TWO_METER_TEST);
+		chooser.addOption("TuneBalance", AutoMode.TUNE_BALANCE);
+		chooser.addOption("3 CUBE BALANCE", AutoMode.THREE_CUBE);
+		chooser.addOption("5CubeNoBalance", AutoMode.FIVE_CUBE_NO_BALANCE);
+		chooser.addOption("FANCY 3 CUBE", AutoMode.FANCY_3_CUBE);
+		chooser.addOption("NEW 3 CUBE CHARGE STATION", AutoMode.NEW_3_CUBE_CHARGE);
+		chooser.addOption("SCORE CENTER BALANCE", AutoMode.SCORE_CENTER_BALANCE);
+		chooser.addOption("CURVED THREE CUBE", AutoMode.CURVED_THREE_CUBE);
+		chooser.addOption("TWO CUBE CURVED", AutoMode.TWO_CUBE_CURVED);
+		chooser.addOption("COOL CHARGE STATION NO ACQUIRE", AutoMode.COOL_CHARGE_STATION);
 		auto.add(chooser);
 	}
 
@@ -84,27 +84,27 @@ public class AutoChooser {
 			case SCORE_CENTER_BALANCE_MR:
 				return AutonInstantiate.getInstance(swerve).getScoreCenterBalanceMR();
 
-			// case SINGLE_SCORE:
-			// 	return new SingleScoreAuto();
-			// case FOUR_CUBE:
-			// 	return AutonInstantiate.getInstance(swerve).get4CubeAuton();
-			// case FOUR_CUBE_SIDELINE:
-			// 	return AutonInstantiate.getInstance(swerve).get4CubeSideLineAuton();
-			// case FIVE_CUBE:
-			// 	return AutonInstantiate.getInstance(swerve).getFiveCubeAuton();
-			// case TWO_METER_TEST:
-			// 	return AutonInstantiate.getInstance(swerve).getTwoMeter();
-			// case TUNE_BALANCE:
-			// 	return AutonInstantiate.getInstance(swerve).getBalanceTuning();
-			// case THREE_CUBE:
-			// 	return AutonInstantiate.getInstance(swerve).getThreeCube();
-			// case FIVE_CUBE_NO_BALANCE:
-			// 	return AutonInstantiate.getInstance(swerve).getFiveCubeNoBalance();
-			// case FANCY_3_CUBE:
-			// 	return AutonInstantiate.getInstance(swerve).getFancy3Cube();
-			// case NEW_3_CUBE_CHARGE:
-			// 	return AutonInstantiate.getInstance(swerve).getNew3CubeChargeStation();
-			// case SCORE_CENTER_BALANCE:
+			case SINGLE_SCORE:
+				return new SingleScoreAuto();
+			case FOUR_CUBE:
+				return AutonInstantiate.getInstance(swerve).get4CubeAuton();
+			case FOUR_CUBE_SIDELINE:
+				return AutonInstantiate.getInstance(swerve).get4CubeSideLineAuton();
+			case FIVE_CUBE:
+				return AutonInstantiate.getInstance(swerve).getFiveCubeAuton();
+			case TWO_METER_TEST:
+				return AutonInstantiate.getInstance(swerve).getTwoMeter();
+			case TUNE_BALANCE:
+				return AutonInstantiate.getInstance(swerve).getBalanceTuning();
+			case THREE_CUBE:
+				return AutonInstantiate.getInstance(swerve).getThreeCube();
+			case FIVE_CUBE_NO_BALANCE:
+				return AutonInstantiate.getInstance(swerve).getFiveCubeNoBalance();
+			case FANCY_3_CUBE:
+				return AutonInstantiate.getInstance(swerve).getFancy3Cube();
+			case NEW_3_CUBE_CHARGE:
+				return AutonInstantiate.getInstance(swerve).getNew3CubeChargeStation();
+			case SCORE_CENTER_BALANCE:
 			// 	return AutonInstantiate.getInstance(swerve).getScoreCenterBalance();
 			// case CURVED_THREE_CUBE:
 			// 	return AutonInstantiate.getInstance(swerve).getCurvedThreeCube();
