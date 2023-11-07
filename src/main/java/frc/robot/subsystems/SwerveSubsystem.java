@@ -93,6 +93,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
         for (SwerveModule mod : mSwerveMods) {
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
+           
         }
     }
 
@@ -274,14 +275,17 @@ public class SwerveSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber("Gyro Angle", getYaw().getDegrees());
         // SmartDashboard.putNumber("Gyro Angular Velocity", getAngularVelocity());
 
-        // for(SwerveModule mod : mSwerveMods){
+        for(SwerveModule mod : mSwerveMods){
+
+            SmartDashboard.putString("MOD"+mod.moduleNumber, mod.getOptimizedAngle()+" "+mod.getStateAngle()+" "+mod.getPosition());
         // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",
         // mod.getCanCoder().getDegrees());
         // // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated",
         // // mod.getPosition().angle.getDegrees());
         // // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity",
         // // mod.getState().speedMetersPerSecond);
-        // }
+        }
+
 
     }
 }

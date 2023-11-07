@@ -15,6 +15,7 @@
       "/Shuffleboard/Test Tab/Test Layout/InstantCommand": "Command",
       "/SmartDashboard/Auto Choices": "String Chooser",
       "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/IntakeHome": "Command",
       "/SmartDashboard/RESET STATE": "Command"
     }
   },
