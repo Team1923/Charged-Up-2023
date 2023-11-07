@@ -20,6 +20,7 @@ import frc.robot.commands.IntakeCommands.ShootGamePiece;
 import frc.robot.commands.IntakeCommands.TestFIre;
 import frc.robot.commands.IntakeCommands.SetIntakePosition;
 import frc.robot.commands.StateCommands.SetShootingLocation;
+import frc.robot.commands.StateCommands.ShootFront;
 import frc.robot.commands.SwerveCommands.AlignToTag;
 import frc.robot.commands.SwerveCommands.SwerveXWheels;
 import frc.robot.commands.SwerveCommands.TeleopSwerve;
@@ -83,7 +84,10 @@ public class RobotContainer {
 
     /* Subsystems */
     public final SwerveSubsystem s_Swerve = new SwerveSubsystem();
+    //public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem(() -> operator.getRawAxis(2), () -> operator.getRawAxis(3));
     public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+
+
     public final ControllerRumble controllerRumble = new ControllerRumble(xboxDriverController, ps4OperatorController);
     public final ShuffleboardSubsystem shuffleboardSubsystem = new ShuffleboardSubsystem();
 
@@ -134,13 +138,15 @@ public class RobotContainer {
         operatorUpDPad.onTrue(new SetShootingLocation(VerticalLocations.HIGH));
         operatorDownDPad.onTrue(new SetShootingLocation(VerticalLocations.LOW));
         operatorLeftDPad.onTrue(new SetShootingLocation(VerticalLocations.MID));
-        operatorCrossButton.whileTrue(new ShootGamePiece());
-        centerRightButton.toggleOnTrue(EmergencyResetCommand.getInstance(intakeSubsystem));
+        operatorCrossButton.whileTrue(new ShootGamePiece(s_Swerve));
+        centerRightButton.whileTrue(EmergencyResetCommand.getInstance(intakeSubsystem));
 
         operatorSquareButton.onTrue(new SetIntakePosition(IntakePositions.INTAKE));
         operatorTriangleButton.onTrue(new SetIntakePosition(IntakePositions.SHOOT_TALL));
+        operatorCircleButton.onTrue(new ShootFront());
+        
         operatorRightBumper.onTrue(new FerryShootGroup());
-
+ 
         operatorLeftBumper.whileTrue(new EjectCommand());
   
     } 

@@ -5,8 +5,12 @@
 package frc.robot.commands.IntakeCommands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Encoder.IndexingType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.SwerveCommands.LockWheels;
+import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.IntakePositions;
 import frc.robot.util.StateVariables.IntakeWheelSpeeds;
@@ -20,11 +24,18 @@ public class ShootGamePiece extends CommandBase {
   IntakeWheelSpeeds desiredShootSpeed = IntakeWheelSpeeds.GRIP;
 
   Timer plopTimer;
+  Timer frontTimer;
 
-  public ShootGamePiece() {
+  private SwerveSubsystem swerveSubsystem;
+
+  public ShootGamePiece(SwerveSubsystem s) {
     plopTimer = new Timer();
+    frontTimer = new Timer();
     plopTimer.stop();
     plopTimer.reset();
+    frontTimer.stop();
+    frontTimer.reset();
+    this.swerveSubsystem = s;
   }
 
   // Called when the command is initially scheduled.
@@ -34,18 +45,29 @@ public class ShootGamePiece extends CommandBase {
     plopTimer.stop();
     plopTimer.reset();
 
-    if(stateHandler.getCurrentVerticalLocation() == VerticalLocations.LOW) {
-      desiredShootSpeed = IntakeWheelSpeeds.SHOOT_LOW;
-    } else if(stateHandler.getCurrentVerticalLocation() == VerticalLocations.MID) {
-      desiredShootSpeed = IntakeWheelSpeeds.SHOOT_MID;
-    } else {
-      desiredShootSpeed = IntakeWheelSpeeds.SHOOT_HIGH;
-    }
+    frontTimer.stop();
+    frontTimer.reset();
 
-    if(desiredShootSpeed == IntakeWheelSpeeds.SHOOT_HIGH || desiredShootSpeed == IntakeWheelSpeeds.SHOOT_MID) {
-      plopTimer.start();
-      stateHandler.setDesiredIntakePosition(IntakePositions.PLOP_SHOT);
+    if(!(stateHandler.getDesiredIntakePosition() == IntakePositions.SHOOT_FRONT_HIGH)){
+      if(stateHandler.getCurrentVerticalLocation() == VerticalLocations.LOW) {
+        desiredShootSpeed = IntakeWheelSpeeds.SHOOT_LOW;
+      } else if(stateHandler.getCurrentVerticalLocation() == VerticalLocations.MID) {
+        desiredShootSpeed = IntakeWheelSpeeds.SHOOT_MID;
+      } else {
+        desiredShootSpeed = IntakeWheelSpeeds.SHOOT_HIGH;
+      }
+  
+      if(desiredShootSpeed == IntakeWheelSpeeds.SHOOT_HIGH  || desiredShootSpeed == IntakeWheelSpeeds.SHOOT_MID)  {
+        plopTimer.start();
+        stateHandler.setDesiredIntakePosition(IntakePositions.PLOP_SHOT);
+      }
+    } 
+    else{
+        //here our position is shoot front high, still question of wheelspeeds being set
+        frontTimer.start();
+      
     }
+    
 
   }
 
@@ -54,7 +76,7 @@ public class ShootGamePiece extends CommandBase {
   public void execute() {
 
     // SmartDashboard.putNumber("HIGH TIMER?", plopTimer.get());
-
+    if(!(stateHandler.getDesiredIntakePosition() == IntakePositions.SHOOT_FRONT_HIGH)){
     if((desiredShootSpeed == IntakeWheelSpeeds.SHOOT_HIGH || desiredShootSpeed == IntakeWheelSpeeds.SHOOT_MID) && plopTimer.get() < 1) {
       stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.GRIP);
     } else if((desiredShootSpeed == IntakeWheelSpeeds.SHOOT_HIGH || desiredShootSpeed == IntakeWheelSpeeds.SHOOT_MID) && plopTimer.get() > 1) {
@@ -63,6 +85,31 @@ public class ShootGamePiece extends CommandBase {
       stateHandler.setDesiredIntakeWheelSpeed(desiredShootSpeed);
     }
   }
+  else{
+    stateHandler.setLockWheels(true);
+    CommandScheduler.getInstance().schedule(new LockWheels(swerveSubsystem));
+    StateHandler.getInstance().setWantToBeHappy(true);
+    switch (stateHandler.getCurrentVerticalLocation()){
+      case HIGH:
+        if(frontTimer.get() > 0.5){
+          StateHandler.getInstance().setWantToBeHappy(false);
+          stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_FRONT_HIGH);
+        }
+        break;
+      case MID:
+        if(frontTimer.get() > 0.5){
+          stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_FRONT_MID);
+        }
+        break;
+      case LOW:
+        stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_FRONT_LOW);
+        break;
+      default:
+        break;
+
+    }   
+  }
+}
 
   // Called once the command ends or is interrupted.
   @Override
@@ -71,7 +118,8 @@ public class ShootGamePiece extends CommandBase {
     if(stateHandler.getDesiredIntakePosition() == IntakePositions.PLOP_SHOT) {
       stateHandler.setDesiredIntakePosition(IntakePositions.SHOOT_TALL);
     }
-
+    
+    stateHandler.setLockWheels(false);
     stateHandler.setReadyToScore(false);
   }
 

@@ -33,7 +33,10 @@ public class StateHandler {
 
     private boolean readyToScore = false;
 
-    
+    private boolean LockWheels = false;
+
+    //You could also use a boolean in the statehandler to set to true before running CommandScheduler.schedule 
+    //and set it to false when the shot button is released and the end condition for the command is constantly checking that boolean
 
 
     public static synchronized StateHandler getInstance() {
@@ -43,7 +46,13 @@ public class StateHandler {
         return stateHandler;
     }
 
-   
+   public boolean getShootFrontLockWheels(){
+    return LockWheels;
+   }
+
+   public void setLockWheels(boolean l){
+    this.LockWheels = l;
+   }
 
     public VerticalLocations getCurrentVerticalLocation() {
         return verticalLocations;

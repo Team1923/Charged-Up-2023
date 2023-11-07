@@ -47,15 +47,15 @@ public class LEDInterface {
 			// 	bit2.set(false);
 			// 	bit3.set(false);
 			// } else 
-			if (stateHandler.hasGamePiece()) {
+			if (stateHandler.getWantToBeHappy()) {
+				bit1.set(false);
+				bit2.set(false);
+				bit3.set(true);
+			}else if (stateHandler.hasGamePiece()) {
 				bit1.set(true);
 				bit2.set(true);
 				bit3.set(true);
 
-			} else if (stateHandler.getWantToBeHappy()) {
-				bit1.set(false);
-				bit2.set(false);
-				bit3.set(true);
 			} else if (stateHandler.getReadyToScore()) {
 				bit1.set(false);
 				bit2.set(true);
