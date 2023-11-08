@@ -86,13 +86,14 @@ public class ShootGamePiece extends CommandBase {
     }
   }
   else{
-    stateHandler.setLockWheels(true);
-    CommandScheduler.getInstance().schedule(new LockWheels(swerveSubsystem));
-    StateHandler.getInstance().setWantToBeHappy(true);
+    if (stateHandler.getCurrentVerticalLocation() == VerticalLocations.HIGH || stateHandler.getCurrentVerticalLocation() == VerticalLocations.MID ){
+        stateHandler.setLockWheels(true);
+        CommandScheduler.getInstance().schedule(new LockWheels(swerveSubsystem));
+        StateHandler.getInstance().setWantToBeHappy(true);
+      }
     switch (stateHandler.getCurrentVerticalLocation()){
       case HIGH:
         if(frontTimer.get() > 0.5){
-          StateHandler.getInstance().setWantToBeHappy(false);
           stateHandler.setDesiredIntakeWheelSpeed(IntakeWheelSpeeds.SHOOT_FRONT_HIGH);
         }
         break;
@@ -121,6 +122,8 @@ public class ShootGamePiece extends CommandBase {
     
     stateHandler.setLockWheels(false);
     stateHandler.setReadyToScore(false);
+    StateHandler.getInstance().setWantToBeHappy(false);
+
   }
 
   // Returns true when the command should end.

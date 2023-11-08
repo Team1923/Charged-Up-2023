@@ -22,7 +22,7 @@ public class StateVariables {
         FIRST_AUTO_SHOT_RED(new IntakeSpeed(-1, -0.5, 0)),
         SHOOT_FRONT_HIGH(new IntakeSpeed(-0.45, 0)),//38 for high inflation
         SHOOT_FRONT_MID(new IntakeSpeed(-0.25, 0)),
-        SHOOT_FRONT_LOW(new IntakeSpeed(-0.08, 0));
+        SHOOT_FRONT_LOW(new IntakeSpeed(-0.12, 0));
 
 
         private IntakeSpeed iWheelSpeed;
@@ -40,7 +40,7 @@ public class StateVariables {
 
     public static enum IntakePositions {
         // Similar to Arm Positions, diferent Intake Arm States take in Arm Angle Object
-        INTAKE(new ArmAngles(Math.toRadians(5)), new ArmAngles(Math.toRadians(5)), true, () -> StateHandler.getInstance().getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.INTAKE),
+        INTAKE(new ArmAngles(Math.toRadians(-8)), new ArmAngles(Math.toRadians(-8)), true, () -> StateHandler.getInstance().getDesiredIntakeWheelSpeed() == IntakeWheelSpeeds.INTAKE),
         INTAKE_RESET(new ArmAngles(Math.toRadians(-5)), new ArmAngles(Math.toRadians(-5)), true, () -> true),
         //INTAKE_BAR_UP(new ArmAngles(Math.toRadians(-5)), new ArmAngles(Math.toRadians(-5)), true, false),
         SHOOT_TALL(new ArmAngles(2.132 + 0.17 - Math.toRadians(4)), new ArmAngles(2), true, () -> false),
