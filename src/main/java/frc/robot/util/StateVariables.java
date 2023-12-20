@@ -34,6 +34,22 @@ public class StateVariables {
         }
     }
     
+    public static enum IntakeWheelPositions{
+        FREE(new IntakePos(-1)),
+        POS_180(new IntakePos(180)),
+        POS_0(new IntakePos(0));
+
+
+        private IntakePos position;
+
+        private IntakeWheelPositions(IntakePos pos){
+            position = pos;
+        }
+
+        public double getPos(){
+            return position.getIntakePos();
+        }
+    }
 
     public static enum IntakePositions {
         // Similar to Arm Positions, diferent Intake Arm States take in Arm Angle Object
@@ -96,6 +112,18 @@ public class StateVariables {
 
        
 
+    }
+
+    public static class IntakePos{
+        private double radians;
+
+        public IntakePos(double r){
+            radians=r;
+        }
+
+        public double getIntakePos(){
+            return radians;
+        }
     }
 
     public static class IntakeSpeed{

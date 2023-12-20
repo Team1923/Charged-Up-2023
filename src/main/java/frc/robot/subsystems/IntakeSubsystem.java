@@ -23,11 +23,13 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.FalconConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.IntakeCommands.EmergencyResetCommand;
 import frc.robot.util.StateHandler;
 import frc.robot.util.StateVariables.IntakePositions;
+import frc.robot.util.StateVariables.IntakeWheelPositions;
 import frc.robot.util.StateVariables.IntakeWheelSpeeds;
 
 public class IntakeSubsystem extends SubsystemBase {
@@ -198,6 +200,10 @@ public class IntakeSubsystem extends SubsystemBase {
   public void setIntakeArmCoast() {
     intakeArmFollower.setNeutralMode(NeutralMode.Coast);
     intakeArmMaster.setNeutralMode(NeutralMode.Coast);
+  }
+
+  public void setIntakeWheelPosition(IntakeWheelPositions i){
+    intakeArmMaster.set(ControlMode.MotionMagic,Math.toRadians(i.getPos())*Constants.IntakeConstants.intakeWheelsRadsToTicks);
   }
 
   public Value getHardstopSolenoidOutput() {
