@@ -44,7 +44,7 @@ public class ArmDefaultCommand extends CommandBase {
     // go next, and preps the arm to actually move there
     switch (currentDesiredState) {
       case STOW:
-      currentRobotDirection = stateHandler.getRobotDirection();
+        currentRobotDirection = stateHandler.getRobotDirection();
         stateHandler.setIsArmMoving(false);
         /*
          * if:
@@ -72,8 +72,7 @@ public class ArmDefaultCommand extends CommandBase {
         if (stateHandler.getCurrentArmPosition() == ArmPositions.FEED) {
           stateHandler.setDesiredIntakePosition(IntakePositions.EJECT);
         }
-        break; 
-        
+        break;
       case COBRA_FORWARD:
         stateHandler.setIsArmMoving(true);
         stateHandler.setHasGamePiece(false);
