@@ -15,7 +15,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class ConfirmBalanceCommand extends CommandBase {
 
   private SwerveSubsystem swerve;
-  private PIDController pitchController = new PIDController(3.5, 0, 0.02);
+  private PIDController pitchController = new PIDController(3, 0, 0.02);
 
   private Timer timer;
 
